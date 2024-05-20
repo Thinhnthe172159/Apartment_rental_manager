@@ -39,39 +39,70 @@
             margin-bottom: 25px;
         }
 
-        /* Set a style for all buttons */
-        button {
-            background-color: #04AA6D;
+        /*         Set a style for all buttons 
+                button {
+                    background-color: #04AA6D;
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    opacity: 0.9;
+                }
+        
+                button:hover {
+                    opacity:1;
+                }
+        
+                 Extra styles for the cancel button 
+                .cancelbtn {
+                    padding: 14px 20px;
+                    background-color: #f44336;
+                }
+        
+                 Float cancel and signup buttons and add an equal width 
+                .cancelbtn, .signupbtn {
+                    float: left;
+                    width: 50%;
+                }*/
+        /* Restyle cancel button */
+        .cancelbtn {
+            background-color: #f44336; /* Red background */
             color: white;
             padding: 14px 20px;
             margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-            opacity: 0.9;
         }
 
-        button:hover {
-            opacity:1;
+        /* Hover effect for cancel button */
+        .cancelbtn:hover {
+            background-color: #d32f2f; /* Darker shade of red */
         }
 
-        /* Extra styles for the cancel button */
-        .cancelbtn {
+        /* Restyle sign up button */
+        .signupbtn {
+            background-color: #4CAF50; /* Green background */
+            color: white;
             padding: 14px 20px;
-            background-color: #f44336;
+            margin: 8px 0;
         }
 
-        /* Float cancel and signup buttons and add an equal width */
-        .cancelbtn, .signupbtn {
-            float: left;
-            width: 50%;
+        /* Hover effect for sign up button */
+        .signupbtn:hover {
+            background-color: #45a049; /* Darker shade of green */
+        }
+
+        /* Adjust button width and margin */
+        button {
+            width: auto; /* Adjust width automatically */
+            margin: 10px; /* Add margin for spacing */
         }
 
         /* Add padding to container elements */
         .container {
             padding: 16px;
         }
-        
+
         .alert {
             padding: 15px;
             margin-bottom: 20px;
@@ -89,6 +120,7 @@
             content: "";
             clear: both;
             display: table;
+            
         }
 
         /* Change styles for cancel button and signup button on extra small screens */
