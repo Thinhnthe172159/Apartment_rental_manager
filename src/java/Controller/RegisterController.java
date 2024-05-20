@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeParseException;
 import model.Role;
 
 /**
@@ -84,14 +87,11 @@ public class RegisterController extends HttpServlet {
         String re_password = request.getParameter("psw-repeat");
         String image = "default-avatar.jpg";
         String dobStr = request.getParameter("dob");
-        Date dob = Date.valueOf(dobStr);
 
         int roleId = 4;
         Role role = new Role(roleId);
 
-        User user = new User(email, password, role, 0, firstname, lastname, dob, image);
         UserDao user_DAO = new UserDao();
-
         boolean isValid = true;
 
         String nameRegex = "^[A-Za-z]+([-'][A-Za-z]+)*$";
@@ -115,11 +115,27 @@ public class RegisterController extends HttpServlet {
             request.setAttribute("message5", "Repeat password does not match.");
             isValid = false;
         }
+Date dob = null;
+        try {
+             dob = Date.valueOf(dobStr);
+            LocalDate dobLocal = dob.toLocalDate();
+            LocalDate today = LocalDate.now();
+            if (Period.between(dobLocal, today).getYears() < 18) {
+                // User is less than 18 years old
+                request.setAttribute("message6", "You must be at least 18 years old to register.");
+                isValid = false;
+            }
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            // Invalid date format or null value
+            request.setAttribute("message6", "Invalid date of birth format.");
+            isValid = false;
+        }
 
         if (!isValid) {
             doGet(request, response);
         } else {
-            // Perform registration if all validations pass
+            // All validations passed, proceed with registration
+            User user = new User(email, password, role, 0, firstname, lastname, dob, image);
             if (user_DAO.registerUser(user)) {
                 request.getRequestDispatcher("Success.jsp").forward(request, response);
             } else {
@@ -127,7 +143,7 @@ public class RegisterController extends HttpServlet {
             }
         }
     }
-    
+
     private boolean hasUpperCase(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isUpperCase(c)) {
