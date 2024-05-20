@@ -156,7 +156,7 @@
                 <input type="date" placeholder="Enter Date of Birth" name="dob" required>
                 <c:if test="${message5 != null}">
                     <div class="alert alert-danger" role="alert">
-                        ${message5}
+                        ${message6}
                     </div>
                 </c:if>
 
