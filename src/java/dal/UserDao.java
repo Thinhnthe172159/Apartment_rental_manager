@@ -4,10 +4,12 @@
  */
 package dal;
 
+import java.sql.Connection;
 import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import model.Role;
 
 /**
@@ -18,32 +20,58 @@ public class UserDao extends DBContext {
     private RoleDao roleDao ;
 
     // register user fuction
-    public void registerUser(User u) {
-        String sql = "INSERT INTO [dbo].[User]\n"
-                + "           ([email]\n"
-                + "           ,[password]\n"
-                + "           ,[role_id]\n"
-                + "           ,[status]\n"
-                + "           ,[first_name]\n"
-                + "           ,[last_name]\n"
-                + "           ,[dob]\n"
-                + "           ,[image])\n"
-                + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, u.getEmail());
-            st.setString(2, u.getPassword());
-            st.setInt(3, u.getRole_id().getId());
-            st.setInt(4, u.getStatus());
-            st.setString(5, u.getFirst_name());
-            st.setString(6, u.getLast_name());
-            st.setDate(7, u.getDob());
-            st.setString(8, u.getImage());
-            st.executeUpdate();
-        } catch (SQLException e) {
+    Connection cnn;
+    Statement stm;
+    ResultSet rs;
+    PreparedStatement pstm;
 
+    private void connect() {
+        cnn = super.connection;
+        if (cnn != null) {
+            System.out.println("Connect success");
+        } else {
+            System.out.println("Connect fail");
         }
+    }
+
+    public UserDao() {
+        connect();
+    }
+
+    public boolean registerUser(User user) {
+        try {
+            String strSQL = "INSERT INTO [User](email, password, role_id, status, first_name, last_name, dob, image) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, user.getEmail());
+            pstm.setString(2, user.getPassword());
+            pstm.setInt(3, user.getRole_id().getId());
+            pstm.setInt(4, user.getStatus());
+            pstm.setString(5, user.getFirst_name());
+            pstm.setString(6, user.getLast_name());
+            pstm.setDate(7, user.getDob());
+            pstm.setString(8, user.getImage());
+            pstm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("RegisterUser: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean checkEmail(String email) {
+        try {
+            String strSQL = "SELECT * FROM [dbo].[User] WHERE email = ?";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, email);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkEmail" + e.getMessage());
+        }
+        return false;
     }
 
     //login function
