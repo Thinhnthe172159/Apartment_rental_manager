@@ -1,14 +1,15 @@
+<%-- 
+    Document   : Incident_Report
+    Created on : May 20, 2024, 9:26:55 PM
+    Author     : vumin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tenant Incident Report Form</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Tenant Incident Report</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
