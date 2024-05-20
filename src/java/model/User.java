@@ -4,7 +4,7 @@
  */
 package model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -107,6 +107,11 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", email=" + email + ", password=" + password + ", role_id=" + role_id + ", status=" + status + ", first_name=" + first_name + ", last_name=" + last_name + ", dob=" + dob + ", image=" + image + '}';
     }
     
     
