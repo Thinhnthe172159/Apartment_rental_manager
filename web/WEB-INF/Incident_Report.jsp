@@ -1,6 +1,6 @@
 <%-- 
-    Document   : IR
-    Created on : May 20, 2024, 9:13:51 PM
+    Document   : Incident_Report
+    Created on : May 20, 2024, 9:26:55 PM
     Author     : vumin
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title> Tenant Incident Report</title>
+        <title>Tenant Incident Report</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
