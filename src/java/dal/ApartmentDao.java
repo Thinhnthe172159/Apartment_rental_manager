@@ -24,7 +24,7 @@ import model.Apartment_image;
 public class ApartmentDao extends DBContext {
 
     //input apartment room
-    public void input_apartApartment_room(Apartment a, Room r,Property p) {
+    public void input_apartApartment_room(Apartment a, Room r, Property p) {
         String sql = "INSERT INTO [dbo].[Apartment_room]\n"
                 + "           ([room_id]\n"
                 + "           ,[aprartment_id]\n"
@@ -105,16 +105,16 @@ public class ApartmentDao extends DBContext {
         }
         return null;
     }
-    
+
     //get property list
-        public List<Property> getPropertyList(int id) {
-            List<Property> list = new ArrayList<>();
+    public List<Property> getPropertyList(int id) {
+        List<Property> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[name]\n"
                 + "      ,[room_id]\n"
                 + "  FROM [dbo].[Property]"
                 + "where 1=1 ";
-        sql+="and [room_id] ="+id ;
+        sql += "and [room_id] =" + id;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
@@ -227,53 +227,61 @@ public class ApartmentDao extends DBContext {
         }
     }
 
-    //Apartment insert
-    public void insertApartment(Apartment a) {
-        String sql = "INSERT INTO [dbo].[Apartment]\n"
-                + "           ([name],\n"
-                + "           [type_id],\n"
-                + "           [address],\n"
-                + "           [city],\n"
-                + "           [district],\n"
-                + "           [commune],\n"
-                + "           [price],\n"
-                + "           [area],\n"
-                + "           [title],\n"
-                + "           [description],\n"
-                + "           [number_of_bedroom],\n"
-                + "           [payment_type_for_post_id],\n"
-                + "           [status_apartment],\n"
-                + "           [post_start],\n"
-                + "           [post_end],\n"
-                + "           [landlord_id],\n"
-                + "           [tenant_id])\n"
-                + "     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+// Apartment insert
+public void insertApartment(Apartment a) {
+    String sql = "INSERT INTO [dbo].[Aparment]\n"
+            + "           ([name],\n"
+            + "           [type_id],\n"
+            + "           [address],\n"
+            + "           [city],\n"
+            + "           [district],\n"
+            + "           [commune],\n"
+            + "           [price],\n"
+            + "           [area],\n"
+            + "           [title],\n"
+            + "           [description],\n"
+            + "           [number_of_bedroom],\n"
+            + "           [payment_type_for_post_id],\n"
+            + "           [status_apartment],\n"
+            + "           [post_start],\n"
+            + "           [post_end],\n"
+            + "           [landlord_id],\n"
+            + "           [tenant_id])\n"
+            + "     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, a.getName());
-            st.setInt(2, a.getType_id().getId());
-            st.setString(3, a.getAddress());
-            st.setString(4, a.getCity());
-            st.setString(5, a.getDistrict());
-            st.setString(6, a.getCommune());
-            st.setDouble(7, a.getPrice());
-            st.setDouble(8, a.getArea());
-            st.setString(9, a.getTitle());
-            st.setString(10, a.getDescription());
-            st.setInt(11, a.getNumber_of_bedroom());
-            st.setInt(12, a.getPayment_type_for_post_id().getId());
-            st.setInt(13, a.getStatus_apartment());
-            st.setDate(14, a.getPost_start());
-            st.setDate(15, a.getPost_end());
-            st.setInt(16, a.getLandLord_id().getId());
-            st.setInt(17, a.getTenant_id().getId());
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setString(1, a.getName());
+        st.setInt(2, a.getType_id().getId());
+        st.setString(3, a.getAddress());
+        st.setString(4, a.getCity());
+        st.setString(5, a.getDistrict());
+        st.setString(6, a.getCommune());
+        st.setDouble(7, a.getPrice());
+        st.setDouble(8, a.getArea());
+        st.setString(9, a.getTitle());
+        st.setString(10, a.getDescription());
+        st.setInt(11, a.getNumber_of_bedroom());
+        st.setInt(12, a.getPayment_type_for_post_id().getId());
+        st.setInt(13, a.getStatus_apartment());
+        st.setDate(14, a.getPost_start());
+        st.setDate(15, a.getPost_end());
+        st.setInt(16, a.getLandLord_id().getId());
+        st.setInt(17, a.getTenant_id().getId());
 
-            st.executeUpdate();
-        } catch (SQLException e) {
-            // Log the exception (use a logger in real applications)
-            System.err.println("Error inserting apartment: " + e.getMessage());
-            // Consider rethrowing the exception or handling it according to your application's needs
-        }
+        st.executeUpdate();
+    } catch (SQLException e) {
+        System.err.println("Error inserting apartment: " + e.getMessage());
+    }
+}
+
+
+    public static void main(String[] args) {
+        ApartmentDao apartmentDao = new ApartmentDao();
+        Apartment_type at = apartmentDao.getApartment_type(1);
+        UserDao ud = new UserDao();
+
+        Apartment a = new Apartment(0, "thinh", at, "ha noi", "ha noi", "dong anh", "dai mach", 110000, 0, "none", "none", 2, apartmentDao.getPayment_method(1), 0, null, null, ud.getUser(1), ud.getUser(1));
+        apartmentDao.insertApartment(a);
     }
 
 }

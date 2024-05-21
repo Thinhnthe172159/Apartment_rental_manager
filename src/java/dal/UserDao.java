@@ -17,7 +17,8 @@ import model.Role;
  * @author thinh
  */
 public class UserDao extends DBContext {
-    private RoleDao roleDao ;
+
+    private RoleDao roleDao;
 
     // register user fuction
     Connection cnn;
@@ -59,6 +60,7 @@ public class UserDao extends DBContext {
         return false;
     }
 
+    //check email
     public boolean checkEmail(String email) {
         try {
             String strSQL = "SELECT * FROM [dbo].[User] WHERE email = ?";
@@ -86,13 +88,13 @@ public class UserDao extends DBContext {
                 + "      ,[dob]\n"
                 + "      ,[image]\n"
                 + "  FROM [dbo].[User]"
-                + " Where [email] = ? and [password] = ?" ;
-        try{
+                + " Where [email] = ? and [password] = ?";
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1,email);
+            st.setString(1, email);
             st.setString(2, password);
             ResultSet rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 User u = new User();
                 u.setId(rs.getInt("id"));
                 u.setEmail(rs.getString("email"));
@@ -107,11 +109,50 @@ public class UserDao extends DBContext {
                 u.setImage(rs.getString("image"));
                 return u;
             }
-        }catch(SQLException e){
-            
+        } catch (SQLException e) {
+
         }
         return null;
     }
+
+    // getUser
+    public User getUser(int id) {
+        String sql = "SELECT [id]\n"
+                + "      ,[email]\n"
+                + "      ,[password]\n"
+                + "      ,[role_id]\n"
+                + "      ,[status]\n"
+                + "      ,[first_name]\n"
+                + "      ,[last_name]\n"
+                + "      ,[dob]\n"
+                + "      ,[image]\n"
+                + "  FROM [dbo].[User]"
+                + " Where [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User u = new User();
+                u.setId(rs.getInt("id"));
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("password"));
+                roleDao = new RoleDao();
+                Role r = roleDao.getRole(rs.getInt("role_id"));
+                u.setRole_id(r);
+                u.setStatus(rs.getInt("status"));
+                u.setFirst_name(rs.getString("first_name"));
+                u.setLast_name(rs.getString("last_name"));
+                u.setDob(rs.getDate("dob"));
+                u.setImage(rs.getString("image"));
+                return u;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         UserDao ud = new UserDao();
         RoleDao rd = new RoleDao();
