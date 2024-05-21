@@ -49,5 +49,4 @@ public class Tenant extends User{
         this.phone = phone;
     }
     
-    
 }
