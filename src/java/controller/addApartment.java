@@ -79,8 +79,7 @@ public class addApartment extends HttpServlet {
         apartment.setAddress(address);
         apartment.setPrice((price == null)?0:Double.parseDouble(price));
         apartment.setNumber_of_bedroom((number_of_bedroom == null)?0:Integer.parseInt(number_of_bedroom));
-        apartment.setArea(());
-        
+ 
         String []property = request.getParameterValues("property");
     } 
 
