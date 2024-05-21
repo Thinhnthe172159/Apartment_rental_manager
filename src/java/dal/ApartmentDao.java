@@ -24,17 +24,19 @@ import model.Apartment_image;
 public class ApartmentDao extends DBContext {
 
     //input apartment room
-    public void input_apartApartment_room(Apartment a, Room r) {
+    public void input_apartApartment_room(Apartment a, Room r,Property p) {
         String sql = "INSERT INTO [dbo].[Apartment_room]\n"
                 + "           ([room_id]\n"
-                + "           ,[aprartment_id])\n"
-                + "     VALUES\n"
-                + "           (?,?)";
+                + "           ,[aprartment_id]\n"
+                + "           ,[property_id])\n"
+                + "     VALUES"
+                + "           (?,?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, a.getId());
             st.setInt(2, r.getId());
+            st.setInt(3, p.getId());
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -102,6 +104,29 @@ public class ApartmentDao extends DBContext {
 
         }
         return null;
+    }
+    
+    //get property list
+        public List<Property> getPropertyList(int id) {
+            List<Property> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[room_id]\n"
+                + "  FROM [dbo].[Property]"
+                + "where 1=1 ";
+        sql+="and [room_id] ="+id ;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")));
+                list.add(p);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
     }
 
     //Apartment type

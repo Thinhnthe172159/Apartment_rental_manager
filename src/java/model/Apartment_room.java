@@ -12,14 +12,16 @@ public class Apartment_room {
     private int id;
     private Room room_id;
     private int apartment_id;
+    private Property property_id;
 
     public Apartment_room() {
     }
 
-    public Apartment_room(int id, Room room_id, int apartment_id) {
+    public Apartment_room(int id, Room room_id, int apartment_id, Property property_id) {
         this.id = id;
         this.room_id = room_id;
         this.apartment_id = apartment_id;
+        this.property_id = property_id;
     }
 
     public int getId() {
@@ -45,6 +47,13 @@ public class Apartment_room {
     public void setApartment_id(int apartment_id) {
         this.apartment_id = apartment_id;
     }
-    
-    
+
+    public Property getProperty_id() {
+        return property_id;
+    }
+
+    public void setProperty_id(Property property_id) {
+        this.property_id = property_id;
+    }
+
 }
