@@ -10,5 +10,4 @@ package dal;
  */
 public class MaintainDAO {
     
-    
 }
