@@ -15,6 +15,10 @@ public class Role {
     public Role() {
     }
 
+    public Role(int id) {
+        this.id = id;
+    }
+    
     public Role(int id, String role_name) {
         this.id = id;
         this.role_name = role_name;

@@ -24,6 +24,17 @@ public class User {
 
     public User() {
     }
+    
+    public User(String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image) {
+        this.email = email;
+        this.password = password;
+        this.role_id = role_id;
+        this.status = status;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.dob = dob;
+        this.image = image;
+    }
 
     public User(int id, String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image) {
         this.id = id;
