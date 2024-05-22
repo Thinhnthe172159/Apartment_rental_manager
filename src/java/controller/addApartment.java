@@ -6,6 +6,7 @@
 package controller;
 
 import dal.ApartmentDao;
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Apartment;
 import model.Apartment_type;
+import model.Payment_method;
+import model.User;
 
 /**
  *
@@ -57,6 +60,8 @@ public class addApartment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ApartmentDao apartmentDao = new ApartmentDao();
+        UserDao userDao = new UserDao();
+        
         String name_apartment = request.getParameter("name_apartment");
         String apartment_type = request.getParameter("apartment_type");
         String tinh = request.getParameter("tinh");
@@ -69,8 +74,10 @@ public class addApartment extends HttpServlet {
         String title = request.getParameter("title");
         String describe = request.getParameter("describe");
         String image = request.getParameter("image");
+        
         Apartment_type at = apartmentDao.getApartment_type((apartment_type == null)?0:Integer.parseInt(apartment_type));
         Apartment apartment = new Apartment();
+        
         apartment.setName(name_apartment);
         apartment.setType_id(at);
         apartment.setCity(tinh);
@@ -79,9 +86,22 @@ public class addApartment extends HttpServlet {
         apartment.setAddress(address);
         apartment.setPrice((price == null)?0:Double.parseDouble(price));
         apartment.setNumber_of_bedroom((number_of_bedroom == null)?0:Integer.parseInt(number_of_bedroom));
+        apartment.setArea((area == null)?0:Double.parseDouble(area));
+        apartment.setTitle(title);
+        apartment.setDescription(describe);
+        Payment_method pm = apartmentDao.getPayment_method(1);
+        apartment.setPayment_type_for_post_id(pm);
+        User landlord = userDao.getUser(2);
+        apartment.setLandLord_id(landlord);
+        apartment.setTenant_id(landlord);
+        apartmentDao.insertApartment(apartment);
+        
+        
+        
         
         
         String []property = request.getParameterValues("property");
+            
     } 
 
     /** 
