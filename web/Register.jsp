@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Register</title>
     </head>
     <style>
         body {
@@ -145,7 +145,7 @@
                 <hr>
 
                 <label for="first-name"><b>First Name <span style="color:red;">*</span></b></label>
-                <input type="text" placeholder="First Name" name="first-name" required>
+                <input type="text" placeholder="First Name" name="first-name" value="${param['first-name']}" required>
                 <c:if test="${message1 != null}">
                     <div class="alert alert-danger" role="alert">
                         ${message1}
@@ -153,7 +153,7 @@
                 </c:if>
 
                 <label for="last-name"><b>Last Name <span style="color:red;">*</span></b></label>
-                <input type="text" placeholder="Last Name" name="last-name" required>
+                <input type="text" placeholder="Last Name" name="last-name" value="${param['last-name']}" required>
                 <c:if test="${message2 != null}">
                     <div class="alert alert-danger" role="alert">
                         ${message2}
@@ -161,7 +161,7 @@
                 </c:if>
 
                 <label for="email"><b>Email <span style="color:red;">*</span></b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
+                <input type="text" placeholder="Enter Email" name="email" value="${param.email}" required>
                 <c:if test="${message3 != null}">
                     <div class="alert alert-danger" role="alert">
                         ${message3}
@@ -185,8 +185,8 @@
                 </c:if>
 
                 <label for="dob"><b>Date of Birth <span style="color:red;">*</span></b></label>
-                <input type="date" placeholder="Enter Date of Birth" name="dob" required>
-                <c:if test="${message5 != null}">
+                <input type="date" placeholder="Enter Date of Birth" name="dob" value="${param.dob}" required>
+                <c:if test="${message6 != null}">
                     <div class="alert alert-danger" role="alert">
                         ${message6}
                     </div>

@@ -25,8 +25,7 @@ import model.Role;
  *
  * @author ASUS
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/Register"})
-public class RegisterController extends HttpServlet {
+public class Register extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +44,10 @@ public class RegisterController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterController</title>");
+            out.println("<title>Servlet Register</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Register at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -115,9 +114,9 @@ public class RegisterController extends HttpServlet {
             request.setAttribute("message5", "Repeat password does not match.");
             isValid = false;
         }
-Date dob = null;
+        Date dob = null;
         try {
-             dob = Date.valueOf(dobStr);
+            dob = Date.valueOf(dobStr);
             LocalDate dobLocal = dob.toLocalDate();
             LocalDate today = LocalDate.now();
             if (Period.between(dobLocal, today).getYears() < 18) {
@@ -132,6 +131,10 @@ Date dob = null;
         }
 
         if (!isValid) {
+            request.setAttribute("firstname", firstname);
+            request.setAttribute("lastname", lastname);
+            request.setAttribute("email", email);
+            request.setAttribute("dob", dobStr);
             doGet(request, response);
         } else {
             // All validations passed, proceed with registration
