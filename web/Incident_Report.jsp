@@ -1,95 +1,73 @@
-<%-- 
-    Document   : Incident Report
-    Created on : May 21, 2024, 3:34:45 PM
-    Author     : vumin
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Tenant Incident Report Form</title>   
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f2f2f2;
-                margin: 0;
-                padding: 20px;
-            }
-            .container {
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                max-width: 600px;
-                margin: auto;
-            }
-            h1 {
-                text-align: center;
-                color: #333;
-            }
-            label {
-                font-weight: bold;
-                margin-top: 10px;
-                display: block;
-            }
-            input, textarea, select {
-                width: 100%;
-                padding: 10px;
-                margin-top: 5px;
-                margin-bottom: 15px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            textarea {
-                resize: vertical;
-            }
-            button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 15px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Tenant Incident Report</h1>
-            <form>
-                <label for="tenantName">Tenant Name</label>
-                <input type="text" id="tenantName" name="tenantName" required>
+<head>
+    <meta charset="UTF-8">
+    <title>Incident Report Management</title>
+</head>
+<body>
+    <h1>Incident Report Management</h1>
 
-                <label for="tenantContact">Tenant Contact Information</label>
-                <input type="text" id="tenantContact" name="tenantContact" required>
+    <h2>Add Incident Report</h2>
+    <form action="addIncidentReport" method="post">
+        <label for="tenantId">Tenant ID:</label><br>
+        <input type="number" id="tenantId" name="tenantId" required><br>
 
-                <label for="incidentDate">Date of Incident</label>
-                <input type="date" id="incidentDate" name="incidentDate" required>
+        <label for="landlordId">Landlord ID:</label><br>
+        <input type="number" id="landlordId" name="landlordId" required><br>
 
-                <label for="incidentTime">Time of Incident</label>
-                <input type="time" id="incidentTime" name="incidentTime" required>
+        <label for="context">Context:</label><br>
+        <textarea id="context" name="context" required></textarea><br>
 
-                <label for="incidentLocation">Location of Incident</label>
-                <input type="text" id="incidentLocation" name="incidentLocation" required>
+        <label for="image">Image URL:</label><br>
+        <input type="text" id="image" name="image"><br>
 
-                <label for="incidentDescription">Description of Incident</label>
-                <textarea id="incidentDescription" name="incidentDescription" rows="6" required></textarea>
+        <label for="status">Status:</label><br>
+        <input type="text" id="status" name="status" required><br>
 
-                <label for="incidentSeverity">Severity of Incident</label>
-                <select id="incidentSeverity" name="incidentSeverity" required>
-                    <option value="">Select</option>
-                    <option value="minor">Minor</option>
-                    <option value="moderate">Moderate</option>
-                    <option value="severe">Severe</option>
-                </select>
+        <label for="date">Date:</label><br>
+        <input type="date" id="date" name="date" required><br><br>
 
-                <button type="submit">Submit Report</button>
-            </form>
-        </div>
-    </body>
+        <input type="submit" value="Add Incident Report">
+    </form>
+
+    <h2>Get Incident Report</h2>
+    <form action="getIncidentReport" method="get">
+        <label for="id">Incident Report ID:</label><br>
+        <input type="number" id="id" name="id" required><br><br>
+
+        <input type="submit" value="Get Incident Report">
+    </form>
+
+    <h2>Incident Report Details</h2>
+    <div>
+        <%
+            String id = request.getParameter("id");
+            if (id != null) {
+                IncidentReportDAO incidentReportDAO = new IncidentReportDAO(new DatabaseUtility());
+                try {
+                    int reportId = Integer.parseInt(id);
+                    IncidentReport report = incidentReportDAO.getIncidentReport(reportId);
+                    if (report != null) {
+        %>
+                        <p><strong>ID:</strong> <%= report.getId() %></p>
+                        <p><strong>Tenant ID:</strong> <%= report.getTenantId() %></p>
+                        <p><strong>Landlord ID:</strong> <%= report.getLandlordId() %></p>
+                        <p><strong>Context:</strong> <%= report.getContext() %></p>
+                        <p><strong>Image:</strong> <%= report.getImage() %></p>
+                        <p><strong>Status:</strong> <%= report.getStatus() %></p>
+                        <p><strong>Date:</strong> <%= report.getDate() %></p>
+        <%
+                    } else {
+        %>
+                        <p>Incident report not found!</p>
+        <%
+                    }
+                } catch (Exception e) {
+                    out.println("<p>Error retrieving incident report: " + e.getMessage() + "</p>");
+                }
+            }
+        %>
+    </div>
+</body>
 </html>

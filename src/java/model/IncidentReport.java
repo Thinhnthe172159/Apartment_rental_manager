@@ -10,7 +10,7 @@ import java.sql.Date;
  *
  * @author thinh
  */
-public class Incident {
+public class IncidentReport {
     private int id;
     private int tenant_id;
     private int landlord_id;
@@ -19,10 +19,10 @@ public class Incident {
     private String status;
     private Date date;
 
-    public Incident() {
+    public IncidentReport() {
     }
 
-    public Incident(int id, int tenant_id, int landlord_id, String context, String image, String status, Date date) {
+    public IncidentReport(int id, int tenant_id, int landlord_id, String context, String image, String status, Date date) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
