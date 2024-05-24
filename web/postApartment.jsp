@@ -13,9 +13,19 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <style>
+            .preview {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .preview img {
+                max-width: 150px;
+                margin: 10px;
+            }
+        </style>
     </head>
     <body>
-        <form action="addApartment">
+        <form action="AddApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">
                     <script src="https://esgoo.net/scripts/jquery.js"></script>
@@ -238,7 +248,9 @@
                         <p style="justify-items: center;" >Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br>
                             (Kéo thả tới vị trí đầu tiên bên trái nếu bạn muốn làm ảnh đại diện)</p>
 
-                        <input name="image" type="file">
+                        <input type="file" id="imageInput" name="images" multiple accept="image/*"><br><br>
+                        <div class="preview" id="imagePreview"></div><br>
+                        
                     </div>
                 </div>
                 <hr>
@@ -247,20 +259,20 @@
                     <h4 class="col-md-12" style="color: royalblue">Phòng Khách</h4>
                     <c:forEach items="${requestScope.propertys_List_livingroom}" var="pll">
                         <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
-                    </c:forEach>
-                    
+                        </c:forEach>
+
                     <h4 class="col-md-12" style="color: royalblue">Phòng Ngủ</h4>
                     <c:forEach items="${requestScope.propertys_List_bedroom}" var="pll">
                         <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
-                    </c:forEach>
+                        </c:forEach>
                     <h4 class="col-md-12" style="color: royalblue">Phòng Bếp</h4>
                     <c:forEach items="${requestScope.propertys_List_kitchen}" var="pll">
                         <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
-                    </c:forEach>
+                        </c:forEach>
                     <h4 class="col-md-12" style="color: royalblue">Phòng Tắm</h4>
                     <c:forEach items="${requestScope.propertys_List_bathroom}" var="pll">
                         <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
-                    </c:forEach>
+                        </c:forEach>
                 </div>
                 <hr>
 
@@ -275,5 +287,50 @@
 
 
         </form>
+        <script>
+            document.getElementById('imageInput').addEventListener('change', function (event) {
+                const files = event.target.files;
+                const previewContainer = document.getElementById('imagePreview');
+                previewContainer.innerHTML = '';
+
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            document.getElementById('uploadForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData();
+                const files = document.getElementById('imageInput').files;
+
+                Array.from(files).forEach(file => {
+                    formData.append('images', file);
+                });
+
+                fetch('image', {
+                    method: 'POST',
+                    body: formData
+                })
+                        .then(response => response.text())
+                        .then(data => {
+                            alert('Upload successful!');
+                            console.log(data);
+                            // Display the response data which contains the file paths
+                            const responseContainer = document.createElement('div');
+                            responseContainer.textContent = data;
+                            document.body.appendChild(responseContainer);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Upload failed.');
+                        });
+            });
+        </script>
     </body>
 </html>
