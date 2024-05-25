@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import model.Apartment;
+import model.Apartment_room;
 import model.Apartment_type;
 import model.Payment_method;
 import model.Property;
@@ -128,13 +129,20 @@ public class AddApartments extends HttpServlet {
         apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
         apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
 
-
         User landlord = userDao.getUser(2);
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
-        apartmentDao.insertApartment(apartment);
+//        apartmentDao.insertApartment(apartment);
 
         String[] property = request.getParameterValues("property");
+        
+        PrintWriter out = response.getWriter();
+        Apartment ap = apartmentDao.getLatedApartment();
+        out.print(ap);
+        for (String item : property) {
+            out.println(item);
+            apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
+        }
         // Get the absolute path of the web application
         String applicationPath = request.getServletContext().getRealPath("");
         // Construct the directory path to save the uploaded file

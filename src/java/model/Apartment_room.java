@@ -10,16 +10,14 @@ package model;
  */
 public class Apartment_room {
     private int id;
-    private Room room_id;
-    private int apartment_id;
+    private Apartment apartment_id;
     private Property property_id;
 
     public Apartment_room() {
     }
 
-    public Apartment_room(int id, Room room_id, int apartment_id, Property property_id) {
+    public Apartment_room(int id, Apartment apartment_id, Property property_id) {
         this.id = id;
-        this.room_id = room_id;
         this.apartment_id = apartment_id;
         this.property_id = property_id;
     }
@@ -32,19 +30,11 @@ public class Apartment_room {
         this.id = id;
     }
 
-    public Room getRoom_id() {
-        return room_id;
-    }
-
-    public void setRoom_id(Room room_id) {
-        this.room_id = room_id;
-    }
-
-    public int getApartment_id() {
+    public Apartment getApartment_id() {
         return apartment_id;
     }
 
-    public void setApartment_id(int apartment_id) {
+    public void setApartment_id(Apartment apartment_id) {
         this.apartment_id = apartment_id;
     }
 
@@ -56,4 +46,7 @@ public class Apartment_room {
         this.property_id = property_id;
     }
 
+
+    
+    
 }

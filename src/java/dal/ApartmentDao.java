@@ -16,6 +16,7 @@ import model.Payment_method;
 import model.Property;
 import model.Room;
 import model.Apartment_image;
+import model.User;
 
 /**
  *
@@ -23,20 +24,20 @@ import model.Apartment_image;
  */
 public class ApartmentDao extends DBContext {
 
+    private UserDao userDao = new UserDao();
+
     //input apartment room
-    public void input_apartApartment_room(Apartment a, Room r, Property p) {
+    public void input_ApartApartment_room(int apartment_id, int property_id) {
         String sql = "INSERT INTO [dbo].[Apartment_room]\n"
-                + "           ([room_id]\n"
-                + "           ,[aprartment_id]\n"
+                + "           ([apartment_id]\n"
                 + "           ,[property_id])\n"
-                + "     VALUES"
-                + "           (?,?,?)";
+                + "     VALUES\n"
+                + "           (?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, a.getId());
-            st.setInt(2, r.getId());
-            st.setInt(3, p.getId());
+            st.setInt(1, apartment_id);
+            st.setInt(2, property_id);
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -115,6 +116,27 @@ public class ApartmentDao extends DBContext {
                 + "  FROM [dbo].[Property]"
                 + "where 1=1 ";
         sql += "and [room_id] =" + id;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")));
+                list.add(p);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
+    public List<Property> getPropertyList() {
+        List<Property> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[room_id]\n"
+                + "  FROM [dbo].[Property]"
+                + "where 1=1 ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
@@ -228,52 +250,182 @@ public class ApartmentDao extends DBContext {
     }
 
 // Apartment insert
-public void insertApartment(Apartment a) {
-    String sql = "INSERT INTO [dbo].[Aparment]\n"
-            + "           ([name],\n"
-            + "           [type_id],\n"
-            + "           [address],\n"
-            + "           [city],\n"
-            + "           [district],\n"
-            + "           [commune],\n"
-            + "           [price],\n"
-            + "           [area],\n"
-            + "           [title],\n"
-            + "           [description],\n"
-            + "           [number_of_bedroom],\n"
-            + "           [payment_type_for_post_id],\n"
-            + "           [status_apartment],\n"
-            + "           [post_start],\n"
-            + "           [post_end],\n"
-            + "           [landlord_id],\n"
-            + "           [tenant_id])\n"
-            + "     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void insertApartment(Apartment a) {
+        String sql = "INSERT INTO [dbo].[Aparment]\n"
+                + "           ([name]\n"
+                + "           ,[type_id]\n"
+                + "           ,[address]\n"
+                + "           ,[city]\n"
+                + "           ,[district]\n"
+                + "           ,[commune]\n"
+                + "           ,[price]\n"
+                + "           ,[area]\n"
+                + "           ,[number_of_bedroom]\n"
+                + "           ,[status_apartment]\n"
+                + "           ,[landlord_id]\n"
+                + "           ,[tenant_id])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setString(1, a.getName());
-        st.setInt(2, a.getType_id().getId());
-        st.setString(3, a.getAddress());
-        st.setString(4, a.getCity());
-        st.setString(5, a.getDistrict());
-        st.setString(6, a.getCommune());
-        st.setDouble(7, a.getPrice());
-        st.setDouble(8, a.getArea());
-        st.setInt(9, a.getNumber_of_bedroom());
-        st.setInt(10, a.getStatus_apartment());
-        st.setInt(11, a.getLandLord_id().getId());
-        st.setInt(12, a.getTenant_id().getId());
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, a.getName());
+            st.setInt(2, a.getType_id().getId());
+            st.setString(3, a.getAddress());
+            st.setString(4, a.getCity());
+            st.setString(5, a.getDistrict());
+            st.setString(6, a.getCommune());
+            st.setDouble(7, a.getPrice());
+            st.setDouble(8, a.getArea());
+            st.setInt(9, a.getNumber_of_bedroom());
+            st.setInt(10, a.getStatus_apartment());
+            st.setInt(11, a.getLandLord_id().getId());
+            st.setInt(12, a.getTenant_id().getId());
 
-        st.executeUpdate();
-    } catch (SQLException e) {
-        System.err.println("Error inserting apartment: " + e.getMessage());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error inserting apartment: " + e.getMessage());
+        }
+
     }
-}
 
+    //get Apartment
+    public Apartment getApartment(int id) {
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[type_id]\n"
+                + "      ,[address]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[price]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[status_apartment]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[tenant_id]\n"
+                + "  FROM [dbo].[Aparment]"
+                + " where [id] = ? ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment a = new Apartment();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                a.setType_id(at);
+                a.setAddress(rs.getString("address"));
+                a.setCity(rs.getString("city"));
+                a.setDistrict(rs.getString("district"));
+                a.setCommune(rs.getString("commune"));
+                a.setPrice(rs.getDouble("price"));
+                a.setArea(rs.getDouble("area"));
+                a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                a.setStatus_apartment(rs.getInt("status_apartment"));
+                User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                a.setLandLord_id(landlord);
+                a.setTenant_id(tenant);
+                return a;
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return null;
+    }
+
+    //List Apartment
+    public List<Apartment> getApartment() {
+
+        List<Apartment> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[type_id]\n"
+                + "      ,[address]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[price]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[status_apartment]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[tenant_id]\n"
+                + "  FROM [dbo].[Aparment]"
+                + " where 1=1";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment a = new Apartment();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                a.setType_id(at);
+                a.setAddress(rs.getString("address"));
+                a.setCity(rs.getString("city"));
+                a.setDistrict(rs.getString("district"));
+                a.setCommune(rs.getString("commune"));
+                a.setPrice(rs.getDouble("price"));
+                a.setArea(rs.getDouble("area"));
+                a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                a.setStatus_apartment(rs.getInt("status_apartment"));
+                User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                a.setLandLord_id(landlord);
+                a.setTenant_id(tenant);
+                list.add(a);
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return list;
+    }
+
+    public Apartment getLatedApartment() {
+        String sql = "SELECT top 1 * from [dbo].[Aparment]\n"
+                + "order by [id] desc";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment a = new Apartment();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                a.setType_id(at);
+                a.setAddress(rs.getString("address"));
+                a.setCity(rs.getString("city"));
+                a.setDistrict(rs.getString("district"));
+                a.setCommune(rs.getString("commune"));
+                a.setPrice(rs.getDouble("price"));
+                a.setArea(rs.getDouble("area"));
+                a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                a.setStatus_apartment(rs.getInt("status_apartment"));
+                User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                a.setLandLord_id(landlord);
+                a.setTenant_id(tenant);
+                return a;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
-        Apartment_type at = apartmentDao.getApartment_type(1);
-        UserDao ud = new UserDao();
+        Apartment a = apartmentDao.getLatedApartment();
+        System.out.println(a);
+        List<Property> list = apartmentDao.getPropertyList();
+        for (Property i : list) {
+            System.out.println(i);
+        }
     }
 
 }

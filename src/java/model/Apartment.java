@@ -151,4 +151,9 @@ public class Apartment {
         this.tenant_id = tenant_id;
     }
 
+    @Override
+    public String toString() {
+        return "Apartment{" + "id=" + id + ", name=" + name + ", type_id=" + type_id + ", address=" + address + ", city=" + city + ", district=" + district + ", commune=" + commune + ", price=" + price + ", area=" + area + ", number_of_bedroom=" + number_of_bedroom + ", status_apartment=" + status_apartment + ", landLord_id=" + landLord_id + ", tenant_id=" + tenant_id + '}';
+    }
+
 }
