@@ -4,8 +4,16 @@
         <servlet-name>AddIncidentReportServlet</servlet-name>
         <servlet-class>controller.AddIncidentReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetIncidentReportServlet</servlet-name>
+        <servlet-class>controller.GetIncidentReportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AddIncidentReportServlet</servlet-name>
         <url-pattern>/addincidentreport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetIncidentReportServlet</servlet-name>
+        <url-pattern>/getincidentreportservlet</url-pattern>
     </servlet-mapping>
 </web-app>

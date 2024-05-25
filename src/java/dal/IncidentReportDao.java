@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class IncidentReportDao extends DBContext {
 
+    public IncidentReportDao(DBContext dbContext) {
+    }
+
     public void addIncidentReport(IncidentReport report) throws SQLException {
         String query = "INSERT INTO Incident (tenant_id, landlord_id, context, image, status, date) VALUES (?, ?, ?, ?, ?, ?)";
         try {
@@ -48,9 +51,7 @@ public class IncidentReportDao extends DBContext {
                         resultSet.getInt("landlord_id"),
                         resultSet.getString("context"),
                         resultSet.getString("image"),
-                        resultSet.getString("status"),
-                        resultSet.getDate("date")
-                );
+                        resultSet.getString("status"));
             }
         } catch (SQLException e) {
 
@@ -71,9 +72,7 @@ public class IncidentReportDao extends DBContext {
                         resultSet.getInt("landlord_id"),
                         resultSet.getString("context"),
                         resultSet.getString("image"),
-                        resultSet.getString("status"),
-                        resultSet.getDate("date")
-                );
+                        resultSet.getString("status"));
                 reports.add(report);
             }
         } catch (SQLException e) {

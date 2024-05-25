@@ -22,7 +22,7 @@ public class IncidentReport {
     public IncidentReport() {
     }
 
-    public IncidentReport(int id, int tenant_id, int landlord_id, String context, String image, String status, Date date) {
+    public IncidentReport(int id, int tenant_id, int landlord_id, String context, String image, String status) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
