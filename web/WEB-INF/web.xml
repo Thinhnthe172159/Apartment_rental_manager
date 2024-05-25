@@ -11,7 +11,7 @@
     </session-config>
     <servlet>
         <servlet-name>addApartment</servlet-name>
-        <servlet-class>controller.addApartment</servlet-class>
+        <servlet-class>controller.AddApartments</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>

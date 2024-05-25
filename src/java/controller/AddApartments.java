@@ -9,6 +9,7 @@ import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_type;
+import model.Payment_method;
 import model.Property;
 import model.User;
 
@@ -26,8 +28,10 @@ import model.User;
  *
  * @author thinh
  */
-@WebServlet(name = "AddNewApartment", urlPatterns = {"/AddNewApartment"})
-public class AddApartment extends HttpServlet {
+@MultipartConfig()
+@WebServlet(name = "addApartment", urlPatterns = {"/addApartment"})
+
+public class AddApartments extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,10 +54,10 @@ public class AddApartment extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddNewApartment</title>");
+            out.println("<title>Servlet addApartment</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddNewApartment at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet addApartment at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -123,6 +127,8 @@ public class AddApartment extends HttpServlet {
         apartment.setPrice((price == null) ? 0 : Double.parseDouble(price));
         apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
         apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
+
+
         User landlord = userDao.getUser(2);
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);

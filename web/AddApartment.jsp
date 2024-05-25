@@ -25,7 +25,7 @@
         </style>
     </head>
     <body>
-        <form action="AddApartment" method="post" enctype="multipart/form-data" >
+        <form action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">
                     <script src="https://esgoo.net/scripts/jquery.js"></script>
