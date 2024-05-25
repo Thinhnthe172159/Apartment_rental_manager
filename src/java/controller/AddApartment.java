@@ -27,7 +27,7 @@ import model.User;
  * @author thinh
  */
 @WebServlet(name = "AddNewApartment", urlPatterns = {"/AddNewApartment"})
-public class AddNewApartment extends HttpServlet {
+public class AddApartment extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
