@@ -247,7 +247,7 @@ public void insertApartment(Apartment a) {
             + "           [post_end],\n"
             + "           [landlord_id],\n"
             + "           [tenant_id])\n"
-            + "     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (PreparedStatement st = connection.prepareStatement(sql)) {
         st.setString(1, a.getName());
@@ -258,15 +258,10 @@ public void insertApartment(Apartment a) {
         st.setString(6, a.getCommune());
         st.setDouble(7, a.getPrice());
         st.setDouble(8, a.getArea());
-        st.setString(9, a.getTitle());
-        st.setString(10, a.getDescription());
-        st.setInt(11, a.getNumber_of_bedroom());
-        st.setInt(12, a.getPayment_type_for_post_id().getId());
-        st.setInt(13, a.getStatus_apartment());
-        st.setDate(14, a.getPost_start());
-        st.setDate(15, a.getPost_end());
-        st.setInt(16, a.getLandLord_id().getId());
-        st.setInt(17, a.getTenant_id().getId());
+        st.setInt(9, a.getNumber_of_bedroom());
+        st.setInt(10, a.getStatus_apartment());
+        st.setInt(11, a.getLandLord_id().getId());
+        st.setInt(12, a.getTenant_id().getId());
 
         st.executeUpdate();
     } catch (SQLException e) {
@@ -279,9 +274,6 @@ public void insertApartment(Apartment a) {
         ApartmentDao apartmentDao = new ApartmentDao();
         Apartment_type at = apartmentDao.getApartment_type(1);
         UserDao ud = new UserDao();
-
-        Apartment a = new Apartment(0, "thinh", at, "ha noi", "ha noi", "dong anh", "dai mach", 110000, 0, "none", "none", 2, apartmentDao.getPayment_method(1), 0, null, null, ud.getUser(1), ud.getUser(1));
-        apartmentDao.insertApartment(a);
     }
 
 }

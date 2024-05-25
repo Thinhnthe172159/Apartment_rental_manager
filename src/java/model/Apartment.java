@@ -13,29 +13,25 @@ import model.Payment_method;
  * @author thinh
  */
 public class Apartment {
-        private int id;
-        private String name;
-        private Apartment_type type_id;
-        private String address;
-        private String city;
-        private String district;
-        private String commune;
-        private double price;
-        private double area;
-        private String title;
-        private String description;
-        private int number_of_bedroom;
-        private Payment_method payment_type_for_post_id;
-        private int status_apartment;
-        private Date post_start;
-        private Date post_end;
-        private User landLord_id;
-        private User tenant_id;
+
+    private int id;
+    private String name;
+    private Apartment_type type_id;
+    private String address;
+    private String city;
+    private String district;
+    private String commune;
+    private double price;
+    private double area;
+    private int number_of_bedroom;
+    private int status_apartment;
+    private User landLord_id;
+    private User tenant_id;
 
     public Apartment() {
     }
 
-    public Apartment(int id, String name, Apartment_type type_id, String address, String city, String district, String commune, double price, double area, String title, String description, int number_of_bedroom, Payment_method payment_type_for_post_id, int status_apartment, Date post_start, Date post_end, User landLord_id, User tenant_id) {
+    public Apartment(int id, String name, Apartment_type type_id, String address, String city, String district, String commune, double price, double area, int number_of_bedroom, int status_apartment, User landLord_id, User tenant_id) {
         this.id = id;
         this.name = name;
         this.type_id = type_id;
@@ -45,13 +41,8 @@ public class Apartment {
         this.commune = commune;
         this.price = price;
         this.area = area;
-        this.title = title;
-        this.description = description;
         this.number_of_bedroom = number_of_bedroom;
-        this.payment_type_for_post_id = payment_type_for_post_id;
         this.status_apartment = status_apartment;
-        this.post_start = post_start;
-        this.post_end = post_end;
         this.landLord_id = landLord_id;
         this.tenant_id = tenant_id;
     }
@@ -128,22 +119,6 @@ public class Apartment {
         this.area = area;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getNumber_of_bedroom() {
         return number_of_bedroom;
     }
@@ -152,36 +127,12 @@ public class Apartment {
         this.number_of_bedroom = number_of_bedroom;
     }
 
-    public Payment_method getPayment_type_for_post_id() {
-        return payment_type_for_post_id;
-    }
-
-    public void setPayment_type_for_post_id(Payment_method payment_type_for_post_id) {
-        this.payment_type_for_post_id = payment_type_for_post_id;
-    }
-
     public int getStatus_apartment() {
         return status_apartment;
     }
 
     public void setStatus_apartment(int status_apartment) {
         this.status_apartment = status_apartment;
-    }
-
-    public Date getPost_start() {
-        return post_start;
-    }
-
-    public void setPost_start(Date post_start) {
-        this.post_start = post_start;
-    }
-
-    public Date getPost_end() {
-        return post_end;
-    }
-
-    public void setPost_end(Date post_end) {
-        this.post_end = post_end;
     }
 
     public User getLandLord_id() {
@@ -200,9 +151,4 @@ public class Apartment {
         this.tenant_id = tenant_id;
     }
 
- 
-
-    
-        
-        
 }
