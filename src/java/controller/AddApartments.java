@@ -88,7 +88,7 @@ public class AddApartments extends HttpServlet {
         request.setAttribute("propertys_List_bathroom", propertys_List_bathroom);
         request.setAttribute("propertys_List_kitchen", propertys_List_kitchen);
 
-        request.getRequestDispatcher("postApartment.jsp").forward(request, response);
+        request.getRequestDispatcher("AddApartment.jsp").forward(request, response);
     }
 
     /**
