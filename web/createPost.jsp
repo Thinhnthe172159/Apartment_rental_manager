@@ -42,19 +42,15 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Tạo bài viết mới</h1>
-        <% if (request.getAttribute("errorMessage") != null) { %>
-            <div class="alert alert-danger" role="alert">
-                <%= request.getAttribute("errorMessage") %>
-            </div>
-        <% } %>
-        <form action="CreatePostServlet" method="post" enctype="multipart/form-data">
+       
+        <form action="addCommunityPost" method="get" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Tiêu đề:</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="t" required>
             </div>
             <div class="form-group">
-                <label for="content">Nội dung:</label>
-                <textarea class="form-control" id="content" name="content" rows="4"></textarea>
+                <label for="context">Nội dung:</label>
+                <textarea class="form-control" name="c" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 300px"></textarea>
             </div>
             <div class="form-group">
                 <label for="images">Chọn ảnh:</label>
@@ -62,6 +58,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Đăng bài</button>
         </form>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

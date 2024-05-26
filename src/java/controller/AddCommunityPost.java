@@ -6,17 +6,22 @@
 package controller;
 
 import dal.CommunityPostDao;
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.CommunityPost;
+import model.User;
 
 /**
  *
  * @author DuyThai
  */
+@WebServlet(name = "addCommunityPost", urlPatterns = {"/addCommunityPost"})
 public class AddCommunityPost extends HttpServlet {
    
     /** 
@@ -28,14 +33,7 @@ public class AddCommunityPost extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         
-        String title = request.getParameter("title");
-        String context = request.getParameter("context");
-        
-        CommunityPostDao apdao = new CommunityPostDao();
-        apdao.addPost(title, context, 1);
-        response.sendRedirect("AddPostServlet");
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -49,7 +47,22 @@ public class AddCommunityPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        CommunityPostDao cpd = new CommunityPostDao();
+        UserDao ud = new UserDao();
+        
+        String title = request.getParameter("t");
+        String context = request.getParameter("c");
+
+        User user = ud.getUser(1);
+        CommunityPost communityPost = new CommunityPost();
+        communityPost.setUser_id(user);
+        communityPost.setTitle(title);
+        communityPost.setConetext(context);
+       cpd.addPost(communityPost);
+       out.print(context);
+        
+        
     } 
 
     /** 
@@ -62,7 +75,22 @@ public class AddCommunityPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
+        CommunityPostDao cpd = new CommunityPostDao();
+        UserDao ud = new UserDao();
+        
+        String title = request.getParameter("t");
+        String context = request.getParameter("c");
+
+        User user = ud.getUser(1);
+        CommunityPost communityPost = new CommunityPost();
+        communityPost.setUser_id(user);
+        communityPost.setTitle(title);
+        communityPost.setConetext(context);
+       cpd.addPost(communityPost);
+        
+        
+        
     }
 
     /** 
