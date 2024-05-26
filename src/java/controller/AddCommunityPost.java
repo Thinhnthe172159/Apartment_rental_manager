@@ -5,7 +5,7 @@
 
 package controller;
 
-import dal.AddPostDAO;
+import dal.CommunityPostDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author DuyThai
  */
-public class AddPostServlet extends HttpServlet {
+public class AddCommunityPost extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,7 +33,7 @@ public class AddPostServlet extends HttpServlet {
         String title = request.getParameter("title");
         String context = request.getParameter("context");
         
-        AddPostDAO apdao = new AddPostDAO();
+        CommunityPostDao apdao = new CommunityPostDao();
         apdao.addPost(title, context, 1);
         response.sendRedirect("AddPostServlet");
     } 

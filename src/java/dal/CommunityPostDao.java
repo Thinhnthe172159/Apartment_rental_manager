@@ -13,12 +13,12 @@ import java.sql.SQLException;
  *
  * @author DuyThai
  */
-public class AddPostDAO extends DBContext{
+public class CommunityPostDao extends DBContext{
     Connection con = null;
     PreparedStatement statement= null;
     ResultSet rs = null;
     
-    public void addPost(String title,String context, String imageUrl, int userId){
+    public void addPost(String title,String context, int userId){
         
         String sql = "insert into Community_post(tittle,context,user_id) values(?,?,?)";
         try {
