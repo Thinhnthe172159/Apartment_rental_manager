@@ -19,6 +19,7 @@ import model.Incident;
  *
  * @author vumin
  */
+
 public class AddIncidentReport extends HttpServlet {
 
     
@@ -65,7 +66,14 @@ public class AddIncidentReport extends HttpServlet {
         
         Incident report = new Incident(tenant_id, tenant_id, landlord_id, context, image);
         
-        
+        try {
+            incidentReportDao.addIncidentReport(report);
+            response.sendRedirect("IncidentReport.jsp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error Message","Database error occurred while adding the incident report");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
 
     
