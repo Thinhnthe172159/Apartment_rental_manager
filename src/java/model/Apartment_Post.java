@@ -20,11 +20,16 @@ public class Apartment_Post {
     private Payment_method payment_id;
     private User landlord_id;
     private String first_image;
+    private String city,district,commune;
+    private double area;
+    private int number_of_bedroom;
+    private String apartment_name;
+    private double price;
 
     public Apartment_Post() {
     }
 
-    public Apartment_Post(int id, String title, String description, int post_status, Date post_start, Date post_end, Apartment apartment_id, Payment_method payment_id, User landlord_id, String first_image) {
+    public Apartment_Post(int id, String title, String description, int post_status, Date post_start, Date post_end, Apartment apartment_id, Payment_method payment_id, User landlord_id, String first_image, String city, String district, String commune, double area, int number_of_bedroom, String apartment_name, double price) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,6 +40,13 @@ public class Apartment_Post {
         this.payment_id = payment_id;
         this.landlord_id = landlord_id;
         this.first_image = first_image;
+        this.city = city;
+        this.district = district;
+        this.commune = commune;
+        this.area = area;
+        this.number_of_bedroom = number_of_bedroom;
+        this.apartment_name = apartment_name;
+        this.price = price;
     }
 
     public int getId() {
@@ -117,10 +129,70 @@ public class Apartment_Post {
         this.first_image = first_image;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getCommune() {
+        return commune;
+    }
+
+    public void setCommune(String commune) {
+        this.commune = commune;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public int getNumber_of_bedroom() {
+        return number_of_bedroom;
+    }
+
+    public void setNumber_of_bedroom(int number_of_bedroom) {
+        this.number_of_bedroom = number_of_bedroom;
+    }
+
+    public String getApartment_name() {
+        return apartment_name;
+    }
+
+    public void setApartment_name(String apartment_name) {
+        this.apartment_name = apartment_name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
-        return "Apartment_Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", post_status=" + post_status + ", post_start=" + post_start + ", post_end=" + post_end + ", apartment_id=" + apartment_id + ", payment_id=" + payment_id + ", landlord_id=" + landlord_id + ", first_image=" + first_image + '}';
+        return "Apartment_Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", post_status=" + post_status + ", post_start=" + post_start + ", post_end=" + post_end + ", apartment_id=" + apartment_id + ", payment_id=" + payment_id + ", landlord_id=" + landlord_id + ", first_image=" + first_image + ", city=" + city + ", district=" + district + ", commune=" + commune + ", area=" + area + ", number_of_bedroom=" + number_of_bedroom + ", apartment_name=" + apartment_name + ", price=" + price + '}';
     }
+
+    
+
+   
 
    
     
