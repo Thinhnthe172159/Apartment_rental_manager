@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+     * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+     * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
 
@@ -197,13 +197,14 @@ public class ApartmentDao extends DBContext {
                 + "      ,[name]\n"
                 + "      ,[description]\n"
                 + "      ,[price]\n"
+                + "      ,[week]\n"
                 + "  FROM [dbo].[Payement_method] where id = ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                Payment_method pm = new Payment_method(rs.getInt("id"), rs.getString("name"), rs.getString("description"), rs.getDouble("price"));
+                Payment_method pm = new Payment_method(rs.getInt("id"), rs.getString("name"), rs.getString("description"), rs.getDouble("price"), rs.getInt("week"));
                 return pm;
             }
         } catch (SQLException e) {
@@ -218,12 +219,13 @@ public class ApartmentDao extends DBContext {
                 + "      ,[name]\n"
                 + "      ,[description]\n"
                 + "      ,[price]\n"
+                + "      ,[week]\n"
                 + "  FROM [dbo].[Payement_method] where 1=1";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Payment_method pm = new Payment_method(rs.getInt("id"), rs.getString("name"), rs.getString("description"), rs.getDouble("price"));
+                Payment_method pm = new Payment_method(rs.getInt("id"), rs.getString("name"), rs.getString("description"), rs.getDouble("price"), rs.getInt("week"));
                 list.add(pm);
             }
         } catch (SQLException e) {
@@ -249,7 +251,7 @@ public class ApartmentDao extends DBContext {
         }
     }
 
-// Apartment insert
+    // Apartment insert
     public void insertApartment(Apartment a) {
         String sql = "INSERT INTO [dbo].[Aparment]\n"
                 + "           ([name]\n"
@@ -308,6 +310,7 @@ public class ApartmentDao extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Apartment a = new Apartment();
@@ -337,7 +340,7 @@ public class ApartmentDao extends DBContext {
     }
 
     //List Apartment
-    public List<Apartment> getApartment() {
+    public List<Apartment> getApartmentList(int landlord_id) {
 
         List<Apartment> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
@@ -355,7 +358,9 @@ public class ApartmentDao extends DBContext {
                 + "      ,[tenant_id]\n"
                 + "  FROM [dbo].[Aparment]"
                 + " where 1=1";
-
+        if (landlord_id != 0) {
+            sql += "and [landlord_id] = " + landlord_id;
+        }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -422,8 +427,8 @@ public class ApartmentDao extends DBContext {
         ApartmentDao apartmentDao = new ApartmentDao();
         Apartment a = apartmentDao.getLatedApartment();
         System.out.println(a);
-        List<Property> list = apartmentDao.getPropertyList();
-        for (Property i : list) {
+        List<Apartment> list = apartmentDao.getApartmentList(0);
+        for (Apartment i : list) {
             System.out.println(i);
         }
     }

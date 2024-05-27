@@ -13,15 +13,17 @@ public class Payment_method {
     private String name;
     private String description;
     private double price;
+    private int week;
 
     public Payment_method() {
     }
 
-    public Payment_method(int id, String name, String description, double price) {
+    public Payment_method(int id, String name, String description, double price, int week) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.week = week;
     }
 
     public int getId() {
@@ -55,5 +57,15 @@ public class Payment_method {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
+    }
+
+   
   
 }

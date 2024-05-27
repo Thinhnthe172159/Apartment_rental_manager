@@ -40,7 +40,7 @@ public class ApartmentPostDao extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, ap.getTitle());
-            st.setString(2, ap.getTitle());
+            st.setString(2, ap.getDescription());
             st.setInt(3, ap.getPost_status());
             st.setDate(4, ap.getPost_start());
             st.setDate(5, ap.getPost_end());
@@ -72,7 +72,7 @@ public class ApartmentPostDao extends DBContext {
             if (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
                 ap.setTitle(rs.getString("title"));
-                ap.setDesciption(rs.getString("description"));
+                ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
                 ap.setPost_start(rs.getDate("post_start"));
                 ap.setPost_end(rs.getDate("post_end"));
@@ -110,7 +110,7 @@ public class ApartmentPostDao extends DBContext {
             while (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
                 ap.setTitle(rs.getString("title"));
-                ap.setDesciption(rs.getString("description"));
+                ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
                 ap.setPost_start(rs.getDate("post_start"));
                 ap.setPost_end(rs.getDate("post_end"));
@@ -128,4 +128,21 @@ public class ApartmentPostDao extends DBContext {
         return list;
     }
 
+    public static void main(String[] args) {
+        ApartmentDao apartmentDao = new  ApartmentDao();
+        UserDao userDao = new UserDao();
+        ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
+        Apartment_Post ap = new Apartment_Post();
+        ap.setTitle("asdsad");
+        ap.setDescription("asdasdasdsad");
+        Apartment a;
+        a = apartmentDao.getApartment(1);
+        ap.setApartment_id(a);
+        Payment_method pm = apartmentDao.getPayment_method(2);
+        ap.setPayment_id(pm);
+        User user = userDao.getUser(1);
+        ap.setLandlord_id(user);
+        apartmentPostDao.addApartmentPost(ap);
+        System.out.println(apartmentPostDao.getApartment_Post(1));
+    }
 }

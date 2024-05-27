@@ -132,7 +132,7 @@ public class AddApartments extends HttpServlet {
         User landlord = userDao.getUser(2);
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
-//        apartmentDao.insertApartment(apartment);
+        apartmentDao.insertApartment(apartment);
 
         String[] property = request.getParameterValues("property");
         

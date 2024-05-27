@@ -4,6 +4,7 @@
     Author     : thinh
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,50 +24,50 @@
         <div class="container">
             <br>
             <div class="row">
-                <div style="background-color:antiquewhite;">
+                <form action="AddApartmentPost" method="post" style="background-color:antiquewhite;">
                     <br><br>
                     <div class="col-md-12">
                         <div class="input-group flex-nowrap">
-                            <input type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
+                            <input name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
                                    aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
                         <br><br>
                     </div>
                     <div class="col-md-12">
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                            <textarea name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
                                       style="height: 300px"></textarea>
                             <label for="floatingTextarea2">Nhập nội dung bài viết</label>
                         </div>
                     </div>
                     <br><br>
                     <div class="col-md-12">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
-                            <option value="1">Phòng p02</option>
-                            <option value="2">Phòng p03</option>
-                            <option value="3">Phòng p04</option>
+                        <select name="apartment" class="form-select" aria-label="Default select example">
+                            <option  selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
+                            <c:forEach items="${requestScope.apartmentList}" var="ap">
+                                <option value="${ap.id}">${ap.name}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <br>
                     <br>
                     <div class="col-md-4">
-                        <select class="form-select" aria-label="Default select example">
+                        <select name="payment_method" class="form-select" aria-label="Default select example">
                             <option selected disabled>Chọn gói đăng tin</option>
-                            <option value="1">Basic</option>
-                            <option value="2">Silver</option>
-                            <option value="3">Gold</option>
+                            <c:forEach items="${requestScope.payment_methodsList}" var="pm">
+                                <option value="${pm.id}">${pm.name}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="col-md-4">
 
                     </div>
                     <div class="col-md-12 d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-lg">Đăng Bài</button>
-                        <button type="button" class="btn btn-secondary btn-lg ms-3">Lưu nháp</button>
+                        <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
+                        <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
                     </div>
                     <br><br>
-                </div>
+                </form>
             </div>
         </div>
     </body>
