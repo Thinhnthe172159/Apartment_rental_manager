@@ -23,7 +23,7 @@ public class Incident {
     public Incident() {
     }
 
-    public Incident(int id, int tenant_id, int landlord_id, String context, String image, String status, Date date) {
+    public Incident(int id, int tenant_id, int landlord_id, String context, String image) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
