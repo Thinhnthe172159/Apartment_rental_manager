@@ -18,8 +18,8 @@ public class Tenant extends User{
     public Tenant() {
     }
 
-    public Tenant(int tenantId, String civil_id, String phone, int id, String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image) {
-        super(id, email, password, role_id, status, first_name, last_name, dob, image);
+    public Tenant(int tenantId, String civil_id, String phone, int id, String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image, double money) {
+        super(id, email, password, role_id, status, first_name, last_name, dob, image, money);
         this.tenantId = tenantId;
         this.civil_id = civil_id;
         this.phone = phone;
