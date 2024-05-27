@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
+import model.Apartment_type;
 import model.Payment_method;
 import model.User;
 
@@ -41,9 +42,11 @@ public class ApartmentPostDao extends DBContext {
                 + "           ,[area]\n"
                 + "           ,[number_of_bedroom]\n"
                 + "           ,[apartment_name]\n"
-                + "           ,[price])\n"
+                + "           ,[price]\n"
+                + "           ,[apartment_type] \n"
+                + "           ,[total_image])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -63,6 +66,8 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(14, ap.getNumber_of_bedroom());
             st.setString(15, ap.getApartment_name());
             st.setDouble(16, ap.getPrice());
+            st.setInt(17, ap.getApartment_type().getId());
+            st.setInt(18, ap.getTotal_image());
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -88,6 +93,8 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[number_of_bedroom]\n"
                 + "      ,[apartment_name]\n"
                 + "      ,[price]\n"
+                + "      ,[apartment_type]\n"
+                + "      ,[total_image]\n"
                 + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -114,6 +121,9 @@ public class ApartmentPostDao extends DBContext {
                 ap.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
                 ap.setApartment_name(rs.getString("apartment_name"));
                 ap.setPrice(rs.getDouble("price"));
+                Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
+                ap.setApartment_type(at);
+                ap.setTotal_image(rs.getInt("total_image"));
                 return ap;
             }
         } catch (SQLException e) {
@@ -123,7 +133,17 @@ public class ApartmentPostDao extends DBContext {
     }
 
     // list apartment
-    public List<Apartment_Post> getApartment_Post_List(String name, String city, String district, String commune, double areaUp, double areaDown, double priceUp, double priceDown, int numberOfBedroom, int type) {
+    public List<Apartment_Post> getApartment_Post_List(String name,
+            String city,
+            String district,
+            String commune,
+            double areaUp,
+            double areaDown,
+            double priceUp,
+            double priceDown,
+            int numberOfBedroom,
+            int apartment_type,
+            int type) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -142,18 +162,20 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[number_of_bedroom]\n"
                 + "      ,[apartment_name]\n"
                 + "      ,[price]\n"
+                + "      ,[apartment_type]\n"
+                + "      ,[total_image]\n"
                 + "  FROM [dbo].[Apartment_Posts] where 1=1 ";
 
-        if (!name.isEmpty() || name != null) {
+        if (!name.isEmpty() && name != null) {
             sql += " and [apartment_name] LIKE '%" + name + "%' ";
         }
-        if (!city.isEmpty() || city != null) {
+        if (!city.isEmpty() && city != null) {
             sql += " and [city] LIKE '%" + city + "%' ";
         }
-        if (!district.isEmpty() || district != null) {
+        if (!district.isEmpty() && district != null) {
             sql += " and [district] LIKE '%" + district + "%' ";
         }
-        if (!commune.isEmpty() || commune != null) {
+        if (!commune.isEmpty() && commune != null) {
             sql += " and [commune] LIKE '%" + commune + "%' ";
         }
         if (areaUp != 0) {
@@ -173,6 +195,9 @@ public class ApartmentPostDao extends DBContext {
         }
         if (type != 0) {
             sql += " order by [price] desc ";
+        }
+        if (apartment_type != 0) {
+            sql += " and [apartment_type] =" + apartment_type;
         }
 
         try {
@@ -200,6 +225,9 @@ public class ApartmentPostDao extends DBContext {
                 ap.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
                 ap.setApartment_name(rs.getString("apartment_name"));
                 ap.setPrice(rs.getDouble("price"));
+                Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
+                ap.setApartment_type(at);
+                ap.setTotal_image(rs.getInt("total_image"));
                 list.add(ap);
             }
         } catch (SQLException e) {

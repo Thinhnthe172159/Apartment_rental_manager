@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.ApartmentPostDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Apartment_Post;
 
 /**
  *
@@ -48,7 +51,10 @@ public class ApartmentPostList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
+        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List("", "", "", "", 0, 0, 0, 0, 0, 0);
+        request.setAttribute("apartmentPostList", apartmentPostList);
+        request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     } 
 
   
