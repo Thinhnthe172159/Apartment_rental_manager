@@ -19,20 +19,22 @@ public class Apartment_Post {
     private Apartment apartment_id;
     private Payment_method payment_id;
     private User landlord_id;
+    private String first_image;
 
     public Apartment_Post() {
     }
 
-    public Apartment_Post(int id, String title, String desciption, int post_status, Date post_start, Date post_end, Apartment apartment_id, Payment_method payment_id, User landlord_id) {
+    public Apartment_Post(int id, String title, String description, int post_status, Date post_start, Date post_end, Apartment apartment_id, Payment_method payment_id, User landlord_id, String first_image) {
         this.id = id;
         this.title = title;
-        this.description = desciption;
+        this.description = description;
         this.post_status = post_status;
         this.post_start = post_start;
         this.post_end = post_end;
         this.apartment_id = apartment_id;
         this.payment_id = payment_id;
         this.landlord_id = landlord_id;
+        this.first_image = first_image;
     }
 
     public int getId() {
@@ -55,8 +57,8 @@ public class Apartment_Post {
         return description;
     }
 
-    public void setDescription(String desciption) {
-        this.description = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getPost_status() {
@@ -107,10 +109,19 @@ public class Apartment_Post {
         this.landlord_id = landlord_id;
     }
 
+    public String getFirst_image() {
+        return first_image;
+    }
+
+    public void setFirst_image(String first_image) {
+        this.first_image = first_image;
+    }
+
     @Override
     public String toString() {
-        return "Apartment_Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", post_status=" + post_status + ", post_start=" + post_start + ", post_end=" + post_end + ", apartment_id=" + apartment_id + ", payment_id=" + payment_id + ", landlord_id=" + landlord_id + '}';
+        return "Apartment_Post{" + "id=" + id + ", title=" + title + ", description=" + description + ", post_status=" + post_status + ", post_start=" + post_start + ", post_end=" + post_end + ", apartment_id=" + apartment_id + ", payment_id=" + payment_id + ", landlord_id=" + landlord_id + ", first_image=" + first_image + '}';
     }
-    
+
+   
     
 }

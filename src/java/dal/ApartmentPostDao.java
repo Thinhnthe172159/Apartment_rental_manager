@@ -33,9 +33,10 @@ public class ApartmentPostDao extends DBContext {
                 + "           ,[post_end]\n"
                 + "           ,[apartment_id]\n"
                 + "           ,[payment_id]\n"
-                + "           ,[landlord_id])\n"
+                + "           ,[landlord_id]\n"
+                + "            ,[first_image])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -47,6 +48,7 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(6, ap.getApartment_id().getId());
             st.setInt(7, ap.getPayment_id().getId());
             st.setInt(8, ap.getLandlord_id().getId());
+            st.setString(9,ap.getFirst_image());
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -64,6 +66,7 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[apartment_id]\n"
                 + "      ,[payment_id]\n"
                 + "      ,[landlord_id]\n"
+                + "      ,[first_image]\n"
                 + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -82,6 +85,7 @@ public class ApartmentPostDao extends DBContext {
                 ap.setPayment_id(pm);
                 User u = userDao.getUser(rs.getInt("landlord_id"));
                 ap.setLandlord_id(u);
+                ap.setFirst_image(rs.getString("first_image"));
                 return ap;
             }
         } catch (SQLException e) {
@@ -102,6 +106,7 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[apartment_id]\n"
                 + "      ,[payment_id]\n"
                 + "      ,[landlord_id]\n"
+                + "      ,[first_image]\n"
                 + "  FROM [dbo].[Apartment_Posts] where 1=1";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -120,6 +125,7 @@ public class ApartmentPostDao extends DBContext {
                 ap.setPayment_id(pm);
                 User u = userDao.getUser(rs.getInt("landlord_id"));
                 ap.setLandlord_id(u);
+                ap.setFirst_image(rs.getString("first_image"));
                 list.add(ap);
             }
         } catch (SQLException e) {
