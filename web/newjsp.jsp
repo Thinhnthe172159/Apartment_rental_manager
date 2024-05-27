@@ -19,7 +19,7 @@
 <body>
     <h1>Upload Multiple Images</h1>
     <form id="uploadForm" action="image" method="post" enctype="multipart/form-data">
-        <input type="file" id="imageInput" name="images" multiple accept="image/*"><br><br>
+        <input type="file" id="imageInput" name="images" multiple accept="image/*" ><br><br>
         <div class="preview" id="imagePreview"></div><br>
         <button type="submit">Upload</button>
     </form>

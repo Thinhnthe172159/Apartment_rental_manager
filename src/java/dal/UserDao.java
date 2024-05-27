@@ -77,6 +77,22 @@ public class UserDao extends DBContext {
     }
 
     //login function
+    public boolean checkLogin(String email, String password) {
+        try {
+            String strSQL = "SELECT * FROM [dbo].[User] WHERE [email] = ? and [password] = ?";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, email);
+            pstm.setString(2, password);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("checkLogin:" + e.getMessage());
+        }
+        return false;
+    }
+    
     public User loginUser(String email, String password) {
         String sql = "SELECT [id]\n"
                 + "      ,[email]\n"

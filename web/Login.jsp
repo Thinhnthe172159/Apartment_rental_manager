@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,6 +20,16 @@
             body {
                 background: linear-gradient(to left, #272838, #2b2d41, #393549, #433545);
                 font-family: 'Raleway', sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .container {
+                text-align: center;
             }
 
             form#login-form {
@@ -187,6 +198,27 @@
                 background: rgba(233, 84, 79, 0.8);
             }
 
+            .alert {
+                width: 40em;
+                margin-bottom: 1em;
+                padding: 1em;
+                border-radius: 0.3em;
+                box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.2);
+                font-size: 1.1em;
+            }
+
+            .alert-success {
+                background-color: #d4edda;
+                border: 1px solid #c3e6cb;
+                color: #155724;
+            }
+
+            .alert-danger {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                color: #721c24;
+            }
+
         </style>
         <script>
             function redirectToRegister() {
@@ -195,31 +227,38 @@
         </script>
     </head>
     <body>
-        <form action="login" method="post" id="login-form">
-            <div class="heading">Login to </div>
-            <div class="left">
-                <label for="email">Email</label> <br />
-                <input type="email" name="email" id="email" /> <br />
-                <label for="password">Password</label> <br />
-                <input type="password" name="password" id="pass" /> <br />
-                <input type="submit" value="Login" />
-                <input type="button" class="btn-register" value="Register" onclick="redirectToRegister()">
-            </div>
-            <div class="right">
-                <div class="connect">Connect with</div>
-                <!--                <a href="" class="facebook">
-                                           <span class="fontawesome-facebook"></span> 
-                                    <i class="fa fa-facebook" aria-hidden="true"></i>
-                                </a> <br />
-                                <a href="" class="twitter">
-                                           <span class="fontawesome-twitter"></span> 
-                                    <i class="fa fa-twitter" aria-hidden="true"></i>
-                                </a> <br />-->
-                <a href="" class="google-plus">
-                    <!--       <span class="fontawesome-google-plus"></span> -->
-                    <i class="fa fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </div>
-        </form>
+        <div class="container">
+            <c:if test="${message != null}">
+                <div class="alert alert-success" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+            <form action="Login" method="post" id="login-form">
+                <div class="heading">Login to </div>
+                <div class="left">
+                    <label for="email">Email</label> <br />
+                    <input type="email" name="email" id="email" /> <br />
+                    <label for="password">Password</label> <br />
+                    <input type="password" name="password" id="pass" /> <br />
+                    <input type="submit" value="Login" />
+                    <input type="button" class="btn-register" value="Register" onclick="redirectToRegister()">
+                </div>
+                <div class="right">
+                    <div class="connect">Connect with</div>
+                    <!--                <a href="" class="facebook">
+                                               <span class="fontawesome-facebook"></span> 
+                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </a> <br />
+                                    <a href="" class="twitter">
+                                               <span class="fontawesome-twitter"></span> 
+                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                    </a> <br />-->
+                    <a href="" class="google-plus">
+                        <!--       <span class="fontawesome-google-plus"></span> -->
+                        <i class="fa fa-google" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

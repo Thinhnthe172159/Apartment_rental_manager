@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Apartment;
+import model.Apartment_Post;
 import model.Apartment_room;
 import model.Apartment_type;
 import model.Payment_method;
@@ -249,6 +250,56 @@ public class ApartmentDao extends DBContext {
         } catch (SQLException e) {
 
         }
+    }
+
+    // get first image
+    public Apartment_image get_First_Apartment_Post(int id) {
+        String sql = "SELECT top 1 [id]\n"
+                + "      ,[image]\n"
+                + "      ,[Apartment_id]\n"
+                + "  FROM [dbo].[Apartment_image]\n"
+                + "    where [Apartment_id] = ? order by [id]";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment_image ai = new Apartment_image();
+                ai.setId(rs.getInt("id"));
+                ai.setImage(rs.getString("image"));
+                Apartment a = getApartment(rs.getInt("Apartment_id"));
+                ai.setApartment_id(a);
+                return ai;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
+    //get all image each apartment
+    public List<Apartment_image> getAllApartmentList(int id) {
+        List<Apartment_image> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[image]\n"
+                + "      ,[Apartment_id]\n"
+                + "  FROM [dbo].[Apartment_image] where [id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_image ai = new Apartment_image();
+                ai.setId(rs.getInt("id"));
+                ai.setImage(rs.getString("image"));
+                Apartment a = getApartment(rs.getInt("Apartment_id"));
+                ai.setApartment_id(a);
+                list.add(ai);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
     }
 
     // Apartment insert

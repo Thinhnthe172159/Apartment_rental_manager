@@ -120,7 +120,7 @@
             content: "";
             clear: both;
             display: table;
-            
+
         }
 
         /* Change styles for cancel button and signup button on extra small screens */
@@ -193,11 +193,16 @@
                 </c:if>
 
                 <div class="clearfix">
-                    <button type="button" class="cancelbtn">Cancel</button>
+                    <button type="button" class="cancelbtn" onclick="redirectToLogin()">Cancel</button>
                     <button type="submit" class="signupbtn">Sign Up</button>
                 </div>
             </div>
         </form>
-
     </body>
+
+    <script>
+        function redirectToLogin() {
+            window.location.href = "Login";
+        }
+    </script>
 </html>

@@ -27,7 +27,7 @@
     <body>
         <form action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
-                <div class="row">
+                <div class="row" >
                     <script src="https://esgoo.net/scripts/jquery.js"></script>
                     <style type="text/css">
                         .css_select_div{
@@ -216,29 +216,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table border="0" class="col-md-12">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-3">Tiêu đề*</td>
-                                <td> 
-                                    <div class="input-group mb-9">
-                                        <input type="text" name="title" class="form-control" aria-label="Text input with checkbox">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-3">Mô tả*</td>
-                                <td> 
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="describe" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 300px"></textarea>
-                                        <label for="floatingTextarea2">Mô tả bài viết của bạn</label>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-
                 </div>
                 <hr>
                 <br>
@@ -250,7 +227,7 @@
 
                         <input type="file" id="imageInput" name="images" multiple accept="image/*"><br><br>
                         <div class="preview" id="imagePreview"></div><br>
-                        
+
                     </div>
                 </div>
                 <hr>
@@ -258,28 +235,45 @@
                     <h2 class="col-md-12" style="color: royalblue">IV. Thông tin bổ sung</h2>
                     <h4 class="col-md-12" style="color: royalblue">Phòng Khách</h4>
                     <c:forEach items="${requestScope.propertys_List_livingroom}" var="pll">
-                        <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
+                        <span class="col-md-2">           <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${pll.name}
+                                </label>
+                            </div></span>
                         </c:forEach>
 
                     <h4 class="col-md-12" style="color: royalblue">Phòng Ngủ</h4>
                     <c:forEach items="${requestScope.propertys_List_bedroom}" var="pll">
-                        <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
+                        <span class="col-md-2">           <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${pll.name}
+                                </label>
+                            </div></span>
                         </c:forEach>
                     <h4 class="col-md-12" style="color: royalblue">Phòng Bếp</h4>
                     <c:forEach items="${requestScope.propertys_List_kitchen}" var="pll">
-                        <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
+                        <span class="col-md-2">           <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${pll.name}
+                                </label>
+                            </div></span>
                         </c:forEach>
                     <h4 class="col-md-12" style="color: royalblue">Phòng Tắm</h4>
                     <c:forEach items="${requestScope.propertys_List_bathroom}" var="pll">
-                        <span class="col-md-2"><input type="checkbox" name="property" value="${pll.id}">${pll.name}</span>
+                        <span class="col-md-2">           <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    ${pll.name}
+                                </label>
+                            </div></span>
                         </c:forEach>
                 </div>
                 <hr>
 
-                <div class="row">
-                    <h2 class="col-md-12" style="color: royalblue">V. Chọn gói tin - Thanh toán</h2>
 
-                </div>
             </div>
             <div style="display: flex; justify-content: center;">
                 <input type="submit" value="Đăng tin">  
