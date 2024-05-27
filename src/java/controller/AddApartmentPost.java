@@ -22,6 +22,7 @@ import model.Payment_method;
 import model.User;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import model.Apartment_image;
 
 /**
  *
@@ -83,17 +84,19 @@ public class AddApartmentPost extends HttpServlet {
         Apartment_Post ap = new Apartment_Post();
         ap.setTitle(title);
         ap.setDescription(description);
-        Apartment a = apartmentDao.getApartment((apartment_id == null)?0:Integer.parseInt(apartment_id));
+        Apartment a = apartmentDao.getApartment((apartment_id == null) ? 0 : Integer.parseInt(apartment_id));
         ap.setApartment_id(a);
         Payment_method pm = apartmentDao.getPayment_method((payment_id == null) ? 0 : Integer.parseInt(payment_id));
         ap.setPayment_id(pm);
-        User user = userDao.getUser(1);
+        User user = userDao.getUser(a.getLandLord_id().getId());
         ap.setLandlord_id(user);
+        Apartment_image ai = apartmentDao.get_First_Apartment_Post((apartment_id == null) ? 0 : Integer.parseInt(apartment_id));
+        if (ai != null) {
+            ap.setFirst_image(ai.getImage());
+        }
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(1);
             LocalDate currentDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = currentDate.format(formatter);
             Date sqlDate = Date.valueOf(currentDate);
             ap.setPost_start(sqlDate);
             currentDate = currentDate.plusWeeks(pm.getWeek());
@@ -101,6 +104,7 @@ public class AddApartmentPost extends HttpServlet {
             ap.setPost_end(sqlDate1);
         }
         apartmentPostDao.addApartmentPost(ap);
+
     }
 
     @Override

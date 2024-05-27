@@ -28,26 +28,29 @@
                     <br><br>
                     <div class="col-md-12">
                         <div class="input-group flex-nowrap">
-                            <input name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
-                                   aria-label="Username" aria-describedby="addon-wrapping">
+                            <select name="apartment" class="form-select" aria-label="Default select example">
+                                <option  selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
+                                <c:forEach items="${requestScope.apartmentList}" var="ap">
+                                    <option value="${ap.id}">${ap.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
-                        <br><br>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-floating">
-                            <textarea name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                      style="height: 300px"></textarea>
-                            <label for="floatingTextarea2">Nhập nội dung bài viết</label>
-                        </div>
+                        <br>
+                        <a class="btn btn-primary btn-lg" href="addApartment">Thêm căn hộ mới</a>
                     </div>
                     <br><br>
                     <div class="col-md-12">
-                        <select name="apartment" class="form-select" aria-label="Default select example">
-                            <option  selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
-                            <c:forEach items="${requestScope.apartmentList}" var="ap">
-                                <option value="${ap.id}">${ap.name}</option>
-                            </c:forEach>
-                        </select>
+                        <input required="" name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
+                               aria-label="Username" aria-describedby="addon-wrapping">
+
+                    </div>
+                    <br><br>
+                    <div class="col-md-12">
+                        <div class="form-floating">
+                            <textarea required="" name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                      style="height: 300px"></textarea>
+                            <label for="floatingTextarea2">Nhập nội dung bài viết</label>
+                        </div>
                     </div>
                     <br>
                     <br>
