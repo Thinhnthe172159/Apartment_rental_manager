@@ -5,6 +5,7 @@
 package dal;
 
 import java.sql.Connection;
+import java.sql.Date;
 import model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,8 +42,8 @@ public class UserDao extends DBContext {
 
     public boolean registerUser(User user) {
         try {
-            String strSQL = "INSERT INTO [User](email, password, role_id, status, first_name, last_name, dob, image) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+            String strSQL = "INSERT INTO [User](email, password, role_id, status, first_name, last_name, dob, image, money) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
             pstm = cnn.prepareStatement(strSQL);
             pstm.setString(1, user.getEmail());
             pstm.setString(2, user.getPassword());
@@ -52,6 +53,7 @@ public class UserDao extends DBContext {
             pstm.setString(6, user.getLast_name());
             pstm.setDate(7, user.getDob());
             pstm.setString(8, user.getImage());
+            pstm.setDouble(9, user.getMoney());
             pstm.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -92,7 +94,7 @@ public class UserDao extends DBContext {
         }
         return false;
     }
-    
+
     public User loginUser(String email, String password) {
         String sql = "SELECT [id]\n"
                 + "      ,[email]\n"
@@ -103,6 +105,7 @@ public class UserDao extends DBContext {
                 + "      ,[last_name]\n"
                 + "      ,[dob]\n"
                 + "      ,[image]\n"
+                + "      ,[money]\n"
                 + "  FROM [dbo].[User]"
                 + " Where [email] = ? and [password] = ?";
         try {
@@ -123,6 +126,7 @@ public class UserDao extends DBContext {
                 u.setLast_name(rs.getString("last_name"));
                 u.setDob(rs.getDate("dob"));
                 u.setImage(rs.getString("image"));
+                u.setMoney(rs.getDouble("money"));
                 return u;
             }
         } catch (SQLException e) {
@@ -142,6 +146,7 @@ public class UserDao extends DBContext {
                 + "      ,[last_name]\n"
                 + "      ,[dob]\n"
                 + "      ,[image]\n"
+                + "      ,[money]\n"
                 + "  FROM [dbo].[User]"
                 + " Where [id] = ? ";
         try {
@@ -161,6 +166,7 @@ public class UserDao extends DBContext {
                 u.setLast_name(rs.getString("last_name"));
                 u.setDob(rs.getDate("dob"));
                 u.setImage(rs.getString("image"));
+                u.setMoney(rs.getDouble("money"));
                 return u;
             }
         } catch (SQLException e) {
@@ -168,6 +174,31 @@ public class UserDao extends DBContext {
         }
         return null;
     }
+
+    public boolean UpdateGeneralProfile(String email, String first_name, String last_name, Date dob, String image, int id) {
+    try {
+        String strSQL = "UPDATE [dbo].[User]\n"
+                + "   SET [email] = ?\n"
+                + "      ,[first_name] = ?\n"
+                + "      ,[last_name] = ?\n"
+                + "      ,[dob] = ?\n"
+                + "      ,[image] = ?\n"
+                + " WHERE [id] = ?;";
+        pstm = cnn.prepareStatement(strSQL);
+        pstm.setString(1, email);
+        pstm.setString(2, first_name);
+        pstm.setString(3, last_name);
+        pstm.setDate(4, new java.sql.Date(dob.getTime())); // Convert java.util.Date to java.sql.Date
+        pstm.setString(5, image);
+        pstm.setInt(6, id);
+        pstm.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        System.out.println("UpdateGeneralProfile:" + e.getMessage());
+    }
+    return false;
+}
+
 
     public static void main(String[] args) {
         UserDao ud = new UserDao();
