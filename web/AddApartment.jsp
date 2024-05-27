@@ -276,7 +276,7 @@
 
             </div>
             <div style="display: flex; justify-content: center;">
-                <input type="submit" value="Đăng tin">  
+                <input class="btn btn-primary btn-lg" type="submit" value="Lưu thông tin căn hộ">  
             </div>
 
 
@@ -326,5 +326,7 @@
                         });
             });
         </script>
+        <br><br>
+        <jsp:include page="Footer.jsp"/>
     </body>
 </html>
