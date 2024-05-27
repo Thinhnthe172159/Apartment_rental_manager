@@ -19,6 +19,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import model.Apartment;
+import model.Apartment_image;
 import model.Apartment_room;
 import model.Apartment_type;
 import model.Payment_method;
@@ -132,43 +133,35 @@ public class AddApartments extends HttpServlet {
         User landlord = userDao.getUser(2);
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
-        apartmentDao.insertApartment(apartment);
+        // apartmentDao.insertApartment(apartment);
 
         String[] property = request.getParameterValues("property");
-        
-        PrintWriter out = response.getWriter();
-        Apartment ap = apartmentDao.getLatedApartment();
-        out.print(ap);
-        for (String item : property) {
-            out.println(item);
-            apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
-        }
-        // Get the absolute path of the web application
-        String applicationPath = request.getServletContext().getRealPath("");
-        // Construct the directory path to save the uploaded file
-        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
 
-        // Create the directory if it does not exist
+        Apartment ap = apartmentDao.getLatedApartment();
+        if (property !=null) {
+            for (String item : property) {
+                // apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
+            }
+        }
+
+        String applicationPath = request.getServletContext().getRealPath("");
+        String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
         File uploadDir = new File(uploadFilePath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
-
         StringBuilder fileNames = new StringBuilder();
-
-        // Get all parts from the request (images)
         Collection<Part> parts = request.getParts();
+        Apartment_image ai;
         for (Part part : parts) {
-            // Get the submitted file name
             String fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.isEmpty()) {
-                // Save the file to the specified directory
                 part.write(uploadFilePath + File.separator + fileName);
-                fileNames.append(fileName).append(" ");
+                ai = new Apartment_image(0, fileName, ap);
+                apartmentDao.insertApartmentImage(ai);
             }
         }
 
-        // Respond with the names of the uploaded files
         response.setContentType("text/plain");
         response.getWriter().write("Files uploaded successfully: " + fileNames.toString());
 
