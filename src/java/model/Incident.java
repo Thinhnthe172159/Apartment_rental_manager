@@ -13,8 +13,8 @@ import java.sql.Date;
  */
 public class Incident {
     private int id;
-    private int tenant_id;
-    private int landlord_id;
+    private User tenant_id;
+    private User landlord_id;
     private String context;
     private String image;
     private String status;
@@ -23,7 +23,7 @@ public class Incident {
     public Incident() {
     }
 
-    public Incident(int id, int tenant_id, int landlord_id, String context, String image) {
+    public Incident(int id, User tenant_id, User landlord_id, String context, String image, String status, Date date) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
@@ -41,19 +41,19 @@ public class Incident {
         this.id = id;
     }
 
-    public int getTenant_id() {
+    public User getTenant_id() {
         return tenant_id;
     }
 
-    public void setTenant_id(int tenant_id) {
+    public void setTenant_id(User tenant_id) {
         this.tenant_id = tenant_id;
     }
 
-    public int getLandlord_id() {
+    public User getLandlord_id() {
         return landlord_id;
     }
 
-    public void setLandlord_id(int landlord_id) {
+    public void setLandlord_id(User landlord_id) {
         this.landlord_id = landlord_id;
     }
 
@@ -93,4 +93,6 @@ public class Incident {
     public String toString() {
         return "Incident{" + "id=" + id + ", tenant_id=" + tenant_id + ", landlord_id=" + landlord_id + ", context=" + context + ", image=" + image + ", status=" + status + ", date=" + date + '}';
     }
+
+    
 }
