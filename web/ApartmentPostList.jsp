@@ -76,6 +76,7 @@
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
+
                             <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
@@ -88,24 +89,24 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <span class="breadcrumb"><a href="#">Apartment</a> / Rent</span>
-                        <h3>Properties</h3>
+                        <div class="search">
+                            <i class="fa fa-search"></i>
+                            <input name="name" type="text" class="form-control" placeholder="Find apartment name">
+                            <button class="btn btn-primary" id="submit">Search</button>
+                        </div>
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Apartment</a></span>
+                        <h3>For you</h3>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section properties">
+
             <div class="container">
                 <div>
                     <style>
-
-
-
-
-
-
-
                         .search{
                             position: relative;
                             box-shadow: 0 0 40px rgba(51, 51, 51, .1);
@@ -163,119 +164,77 @@
                             border-radius: 5px;
                         }
                     </style>
-                    <script>
-                        $(document).ready(function () {
-                            // Fetch provinces
-                            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
-                                if (data_tinh.error == 0) {
-                                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
-                                    });
-                                    $("#tinh").change(function (e) {
-                                        var idtinh = $(this).val();
-                                        $("#hidden_tinh").val($("#tinh option:selected").text());
-                                        // Fetch districts
-                                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
-                                            if (data_quan.error == 0) {
-                                                $("#quan").html('<option value="0">Quận Huyện</option>');
-                                                $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                $.each(data_quan.data, function (key_quan, val_quan) {
-                                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-                                                });
-                                                // Fetch wards
-                                                $("#quan").change(function (e) {
-                                                    var idquan = $(this).val();
-                                                    $("#hidden_quan").val($("#quan option:selected").text());
-                                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
-                                                        if (data_phuong.error == 0) {
-                                                            $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                                                            });
-                                                            $("#phuong").change(function (e) {
-                                                                $("#hidden_phuong").val($("#phuong option:selected").text());
-                                                            });
-                                                        }
-                                                    });
-                                                });
-                                            }
-                                        });
-                                    });
-                                }
-                            });
-                        });
-                    </script> 
-                    <form action="ApartmentPostList" class="row height d-flex justify-content-center align-items-center">
 
-                        <div class="col-md-9">
-
-                            <div class="search">
-                                <i class="fa fa-search"></i>
-                                <input name="name" type="text" class="form-control" placeholder="Find apartment name">
-                                <button class="btn btn-primary" id="submit">Search</button>
-                            </div>
-
+                    <form  action="ApartmentPostList" method="get" name class="row height d-flex justify-content-center align-items-center">
+                        
+                        <div class="col-md-3">
+                            <select style="background: darkslategray;color: white" name="apartmentType"  class="form-select"  aria-label="Default select example">
+                                <option>Loại căn hộ</option>
+                                <c:forEach items="${requestScope.apartment_types_list}" var="atl">
+                                    <option value="${atl.id}">${atl.name}</option>
+                                </c:forEach>
+                            </select>
                         </div>
-                        <div><br></div>
-                        <div class="col-md-4">
-                            <select  required class="form-select" id="tinh" aria-label="Default select example">
-                                <option value="0">Chọn Tỉnh Thành</option>
+                        <div class="col-md-3">
+                            <select style="background: darkslategray;color: white" class="form-select" id="tinh" aria-label="Default select example">
+                                <option value="0">Tỉnh Thành</option>
                             </select>
                         </div>
 
-                        <div class="col-md-4">
-                            <select  required class="form-select" id="quan" aria-label="Default select example">
-                                <option value="0">Chọn Quận huyện</option>
+                        <div class="col-md-2">
+                            <select style="background: darkslategray;color: white" class="form-select" id="quan" aria-label="Default select example">
+                                <option value="0">Quận huyện</option>
                             </select>
                         </div>
 
-                        <div class="col-md-4">
-                            <select style=""  required class="form-select " id="phuong" aria-label="Default select example">
-                                <option value="0">Chọn Xã Phường</option>
+                        <div class="col-md-2">
+                            <select style="background: darkslategray;color: white"   class="form-select " id="phuong" aria-label="Default select example">
+                                <option value="0">Xã Phường</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select style="background: darkslategray;color: white"  name="type"  required class="form-select"  aria-label="Default select example">
+                                <option disabled="" >Sắp xếp theo giá</option>
+                                <option value="1" >tăng theo giá</option>
+                                <option value="2" >giảm theo giá</option>
                             </select>
                         </div>
                         <div><br></div>
                         <input type="hidden" name="tinh" id="hidden_tinh">
                         <input type="hidden" name="quan" id="hidden_quan">
                         <input type="hidden" name="phuong" id="hidden_phuong">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <span name="moneyUp" class="input-group-text">$</span>
-                                <span class="input-group-text">⬆</span>
-                                <input type="text" name="moneyUp" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                                <input style="background: #d6d4d4;color: black" type="text" name="moneyUp" class="form-control" placeholder="Nhập số tiền trên khoảng" aria-label="Dollar amount (with dot and two decimal places)">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input name="moneyUp" type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
-                                <span class="input-group-text">$</span>
-                                <span class="input-group-text">⬇</span>
+                                <input style="background: #d6d4d4;color: black" name="moneyUp" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
+                         
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
-                                <input name="bedroom" type="text" class="form-control" placeholder="Số lượng phòng ngủ" aria-label="Dollar amount (with dot and two decimal places)"> 
+                                <input style="background: #d6d4d4;color: black" name="bedroom" type="text" class="form-control" placeholder="Số lượng phòng ngủ" aria-label="Dollar amount (with dot and two decimal places)"> 
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
-                                <input name="areaUp" type="text" class="form-control" placeholder="Diện tích lớn hơn khoảng " aria-label="Dollar amount (with dot and two decimal places)"> 
+                                <input style="background: #d6d4d4;color: black" name="areaUp" type="text" class="form-control" placeholder="Diện tích lớn hơn" aria-label="Dollar amount (with dot and two decimal places)"> 
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
-                                <input name="areaDown" type="text" class="form-control" placeholder="Diện tích nhỏ hơn khoảng " aria-label="Dollar amount (with dot and two decimal places)"> 
+                                <input style="background: #d6d4d4;color: black" name="areaDown" type="text" class="form-control" placeholder="Diện tích nhỏ hơn" aria-label="Dollar amount (with dot and two decimal places)"> 
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <select name="type"  required class="form-select"  aria-label="Default select example">
-                                <option disabled="" >Sắp xếp theo giá</option>
-                                <option value="1" >Sắp xếp tăng theo giá</option>
-                                <option value="2" >Sắp xếp giảm theo giá</option>
-                            </select>
-                        </div>
+                        
+                        <input class="btn-outline-danger" type="submit" value="Search">
+
                     </form>
                 </div>
+                <div><br></div>
                 <div class="row properties-box">
                     <c:forEach items="${requestScope.apartmentPostList}" var="ap"> 
                         <div class="col-lg-6 col-md-6 align-self-center mb-30 properties-items col-md-6 adv" >
@@ -296,7 +255,7 @@
                                 <c:if test="${ap.payment_id.id == 4}" >
                                     <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
                                 </c:if>
-                                    <hr>
+                                <hr>
                                 <ul>
                                     <li>Bedrooms: <span>${ap.number_of_bedroom}</span></li>
                                     <li>Area: <span>${ap.area}</span></li>
@@ -342,6 +301,47 @@
         <script src="assets/js/owl-carousel.js"></script>
         <script src="assets/js/counter.js"></script>
         <script src="assets/js/custom.js"></script>
-
+        <script>
+            $(document).ready(function () {
+                // Fetch provinces
+                $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                    if (data_tinh.error == 0) {
+                        $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                            $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                        });
+                        $("#tinh").change(function (e) {
+                            var idtinh = $(this).val();
+                            $("#hidden_tinh").val($("#tinh option:selected").text());
+                            // Fetch districts
+                            $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                if (data_quan.error == 0) {
+                                    $("#quan").html('<option value="0">Quận Huyện</option>');
+                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                    $.each(data_quan.data, function (key_quan, val_quan) {
+                                        $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                    });
+                                    // Fetch wards
+                                    $("#quan").change(function (e) {
+                                        var idquan = $(this).val();
+                                        $("#hidden_quan").val($("#quan option:selected").text());
+                                        $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                            if (data_phuong.error == 0) {
+                                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                    $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                });
+                                                $("#phuong").change(function (e) {
+                                                    $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                });
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+        </script> 
     </body>
 </html>
