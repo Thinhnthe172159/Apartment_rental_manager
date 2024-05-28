@@ -93,7 +93,7 @@ public class Register extends HttpServlet {
         UserDao user_DAO = new UserDao();
         boolean isValid = true;
 
-        String nameRegex = "^[A-Za-z]+([-'][A-Za-z]+)*$";
+        String nameRegex = "^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$";
         if (!firstname.matches(nameRegex)) {
             request.setAttribute("message1", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
             isValid = false;
@@ -138,9 +138,9 @@ public class Register extends HttpServlet {
             doGet(request, response);
         } else {
             // All validations passed, proceed with registration
-            User user = new User(email, password, role, 0, firstname, lastname, dob, image);
+            User user = new User(email, password, role, 0, firstname, lastname, dob, image, 0);
             if (user_DAO.registerUser(user)) {
-                request.getRequestDispatcher("Success.jsp").forward(request, response);
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("Fail.jsp").forward(request, response);
             }

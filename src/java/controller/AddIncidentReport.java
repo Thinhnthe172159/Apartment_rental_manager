@@ -6,14 +6,16 @@ package controller;
 
 import dal.DBContext;
 import dal.IncidentReportDao;
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
 import model.Incident;
-
+import model.User;
 
 /**
  *
@@ -21,12 +23,14 @@ import model.Incident;
  */
 public class AddIncidentReport extends HttpServlet {
 
-    
     private IncidentReportDao incidentReportDao;
+
+    private UserDao userDao;
 
     public void init() throws ServletException {
         DBContext dbContext = new DBContext();
         this.incidentReportDao = new IncidentReportDao(dbContext);
+        this.userDao = new UserDao();
 
     }
 
@@ -47,14 +51,12 @@ public class AddIncidentReport extends HttpServlet {
         }
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,13 +64,31 @@ public class AddIncidentReport extends HttpServlet {
         int landlord_id = Integer.parseInt(request.getParameter("landlordId"));
         String context = request.getParameter("context");
         String image = request.getParameter("image");
-        
-        Incident report = new Incident(tenant_id, tenant_id, landlord_id, context, image);
-        
-        
+        String status = request.getParameter("status");
+        java.util.Date date = java.sql.Date.valueOf(request.getParameter("date"));
+
+        try {
+            User tenant = userDao.getUser(tenant_id);
+            User landlord = userDao.getUser(landlord_id);
+
+            if (tenant == null || landlord == null) {
+                request.setAttribute("Error Message", "Invalid tenant or landlord ID");
+                request.getRequestDispatcher("Error.jsp").forward(request, response);
+                return;
+            }
+            Incident report = new Incident(0, tenant, landlord, context, image, status, (Date) date);
+
+            incidentReportDao.addIncidentReport(report);
+            response.sendRedirect("IncidentReport.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("Error Message","Database error ocurred while adding the incident report");
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
+        }
+
     }
 
-    
     @Override
     public String getServletInfo() {
         return "Short description";

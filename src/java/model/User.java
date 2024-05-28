@@ -21,11 +21,12 @@ public class User {
     private String last_name;
     private Date dob;
     private String image;
+    private double money;
 
     public User() {
     }
     
-    public User(String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image) {
+    public User(String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image, double money) {
         this.email = email;
         this.password = password;
         this.role_id = role_id;
@@ -34,9 +35,10 @@ public class User {
         this.last_name = last_name;
         this.dob = dob;
         this.image = image;
+        this.money = money;
     }
 
-    public User(int id, String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image) {
+    public User(int id, String email, String password, Role role_id, int status, String first_name, String last_name, Date dob, String image, double money) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -46,6 +48,7 @@ public class User {
         this.last_name = last_name;
         this.dob = dob;
         this.image = image;
+        this.money = money;
     }
 
     public int getId() {
@@ -119,6 +122,15 @@ public class User {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        this.money = money;
+    }
+    
 
     @Override
     public String toString() {
