@@ -236,8 +236,8 @@
                     <h4 class="col-md-12" style="color: royalblue">Phòng Khách</h4>
                     <c:forEach items="${requestScope.propertys_List_livingroom}" var="pll">
                         <span class="col-md-2">           <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
+                                <input name="property" class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <label  class="form-check-label" for="flexCheckDefault">
                                     ${pll.name}
                                 </label>
                             </div></span>
@@ -246,7 +246,7 @@
                     <h4 class="col-md-12" style="color: royalblue">Phòng Ngủ</h4>
                     <c:forEach items="${requestScope.propertys_List_bedroom}" var="pll">
                         <span class="col-md-2">           <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <input name="property" class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     ${pll.name}
                                 </label>
@@ -255,7 +255,7 @@
                     <h4 class="col-md-12" style="color: royalblue">Phòng Bếp</h4>
                     <c:forEach items="${requestScope.propertys_List_kitchen}" var="pll">
                         <span class="col-md-2">           <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <input name="property" class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     ${pll.name}
                                 </label>
@@ -264,7 +264,7 @@
                     <h4 class="col-md-12" style="color: royalblue">Phòng Tắm</h4>
                     <c:forEach items="${requestScope.propertys_List_bathroom}" var="pll">
                         <span class="col-md-2">           <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
+                                <input name="property" class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     ${pll.name}
                                 </label>

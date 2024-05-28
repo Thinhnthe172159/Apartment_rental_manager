@@ -133,14 +133,15 @@ public class AddApartments extends HttpServlet {
         User landlord = userDao.getUser(2);
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
-        // apartmentDao.insertApartment(apartment);
+         apartmentDao.insertApartment(apartment);
 
         String[] property = request.getParameterValues("property");
-
+        PrintWriter out = response.getWriter();
         Apartment ap = apartmentDao.getLatedApartment();
         if (property !=null) {
             for (String item : property) {
-                // apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
+                 out.print(item);
+                 apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
             }
         }
 

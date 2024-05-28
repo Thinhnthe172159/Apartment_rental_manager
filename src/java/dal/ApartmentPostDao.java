@@ -25,7 +25,7 @@ public class ApartmentPostDao extends DBContext {
     private ApartmentDao apartmentDao = new ApartmentDao();
     private UserDao userDao = new UserDao();
 
-    public void addApartmentPost(Apartment_Post ap) {
+   public void addApartmentPost(Apartment_Post ap) {
         String sql = "INSERT INTO [dbo].[Apartment_Posts]\n"
                 + "           ([title]\n"
                 + "           ,[description]\n"
@@ -48,8 +48,7 @@ public class ApartmentPostDao extends DBContext {
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, ap.getTitle());
             st.setString(2, ap.getDescription());
             st.setInt(3, ap.getPost_status());
@@ -70,7 +69,7 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(18, ap.getTotal_image());
             st.executeUpdate();
         } catch (SQLException e) {
-
+           
         }
     }
 
