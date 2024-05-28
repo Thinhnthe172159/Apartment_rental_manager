@@ -25,7 +25,7 @@ public class ApartmentPostDao extends DBContext {
     private ApartmentDao apartmentDao = new ApartmentDao();
     private UserDao userDao = new UserDao();
 
-   public void addApartmentPost(Apartment_Post ap) {
+    public void addApartmentPost(Apartment_Post ap) {
         String sql = "INSERT INTO [dbo].[Apartment_Posts]\n"
                 + "           ([title]\n"
                 + "           ,[description]\n"
@@ -69,7 +69,7 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(18, ap.getTotal_image());
             st.executeUpdate();
         } catch (SQLException e) {
-           
+
         }
     }
 
@@ -142,7 +142,8 @@ public class ApartmentPostDao extends DBContext {
             double priceDown,
             int numberOfBedroom,
             int apartment_type,
-            int type) {
+            int type,
+            int status) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -163,7 +164,8 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[price]\n"
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
-                + "  FROM [dbo].[Apartment_Posts] where 1=1 ";
+                + "  FROM [dbo].[Apartment_Posts] where 1=1  ";
+        
 
         if (!name.isEmpty() && name != null) {
             sql += " and [apartment_name] LIKE '%" + name + "%' ";
@@ -192,12 +194,21 @@ public class ApartmentPostDao extends DBContext {
         if (numberOfBedroom != 0) {
             sql += " and [number_of_bedroom] " + numberOfBedroom;
         }
+        
+        if (apartment_type != 0) {
+            sql += " and [apartment_type] =" + apartment_type ;
+        }
+        
+        sql += " and [post_status] = " + status + " Order by [post_start] desc";
+        
         if (type != 0) {
             sql += " order by [price] desc ";
         }
-        if (apartment_type != 0) {
-            sql += " and [apartment_type] =" + apartment_type;
+        if (type == 1) {
+            sql += " order by [price]";
         }
+            
+        
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
