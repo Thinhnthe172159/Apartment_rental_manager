@@ -52,7 +52,7 @@ public class ApartmentPostList extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List("", "", "", "", 0, 0, 0, 0, 0, 0,0);
+        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List("", "", "", "", 0, 0, 0, 0, 0, 0,0,1);
         request.setAttribute("apartmentPostList", apartmentPostList);
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     } 
