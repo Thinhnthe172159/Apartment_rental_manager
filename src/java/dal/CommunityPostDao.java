@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.CommunityPost;
 import model.User;
 
@@ -54,5 +56,31 @@ public class CommunityPostDao extends DBContext{
         CommunityPost communityPost = new CommunityPost(1, "toi la", "thinnh", user);
         cpd.addPost(communityPost);
         
+    }
+
+   public List<CommunityPost> getAllPosts() {
+        List<CommunityPost> posts = new ArrayList<>();
+        String sql = "SELECT * FROM Community_post";
+        try {
+            statement = connection.prepareStatement(sql);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                int postId = rs.getInt("id");
+                String title = rs.getString("tittle");
+                String context = rs.getString("context");
+                int userId = rs.getInt("user_id");
+                User user = userDao.getUser(userId);
+                CommunityPost post = new CommunityPost(postId, title, context, user);
+                posts.add(post);
+            }
+        } catch (SQLException e) {
+           
+        }
+        return posts;
+    }
+  
+
+    public void updatePost(CommunityPost post) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
