@@ -63,15 +63,21 @@ public class ViewIncidentReport extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int incidentId = Integer.parseInt(request.getParameter("id"));
         try {
-            Incident report = (Incident) incidentReportDao.getIncidentReport(id);
-            if (report != null){
-                request.setAttribute("report",report);
+            Incident incident = incidentReportDao.getIncidentReport(incidentId);
+            if (incident != null){
+                request.setAttribute("incident",incident);
+                request.getRequestDispatcher("Incident.jsp").forward(request, response);
+            }else{
+                request.setAttribute("Error Message","Incident not found");
+                request.getRequestDispatcher("Error.jsp").forward(request, response);
             }
-            request.getRequestDispatcher("IncidentReport.jsp").forward(request, response);
+            
         } catch (Exception e) {
-            throw new ServletException("Database error", e);
+            e.printStackTrace();
+            request.setAttribute("Error Message","Database error occurred while retrieving the incident report" );
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
         }
     } 
 
