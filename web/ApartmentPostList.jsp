@@ -26,20 +26,12 @@
         <link rel="stylesheet" href="assets/css/owl.css">
         <link rel="stylesheet" href="assets/css/animate.css">
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-        <!--
-        
-        TemplateMo 591 villa agency
-        
-        https://templatemo.com/tm-591-villa-agency
-        
-        -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     </head>
 
     <body>
-
-        <!-- ***** Preloader Start ***** -->
-
-        <!-- ***** Preloader End ***** -->
 
         <div class="sub-header">
             <div class="container">
@@ -107,7 +99,7 @@
             <div class="container">
                 <div>
                     <style>
-                        @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
 
 
 
@@ -157,9 +149,65 @@
 
                         }
                     </style>
-                    <form action="" class="row height d-flex justify-content-center align-items-center">
+                    <script src="https://esgoo.net/scripts/jquery.js"></script>
+                    <style type="text/css">
+                        .css_select_div {
+                            text-align: center;
+                        }
+                        .css_select {
+                            display: inline-table;
+                            width: 25%;
+                            padding: 5px;
+                            margin: 5px 2%;
+                            border: solid 1px #686868;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <script>
+                        $(document).ready(function () {
+                            // Fetch provinces
+                            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                                if (data_tinh.error == 0) {
+                                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                                    });
+                                    $("#tinh").change(function (e) {
+                                        var idtinh = $(this).val();
+                                        $("#hidden_tinh").val($("#tinh option:selected").text());
+                                        // Fetch districts
+                                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                            if (data_quan.error == 0) {
+                                                $("#quan").html('<option value="0">Quận Huyện</option>');
+                                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                $.each(data_quan.data, function (key_quan, val_quan) {
+                                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                                });
+                                                // Fetch wards
+                                                $("#quan").change(function (e) {
+                                                    var idquan = $(this).val();
+                                                    $("#hidden_quan").val($("#quan option:selected").text());
+                                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                                        if (data_phuong.error == 0) {
+                                                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                            });
+                                                            $("#phuong").change(function (e) {
+                                                                $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                    </script> 
+                    <form action="ApartmentPostList" class="row height d-flex justify-content-center align-items-center">
 
-                        <div class="col-md-8">
+                        <div class="col-md-9">
 
                             <div class="search">
                                 <i class="fa fa-search"></i>
@@ -168,7 +216,64 @@
                             </div>
 
                         </div>
+                        <div><br></div>
+                        <div class="col-md-4">
+                            <select  required class="form-select" id="tinh" aria-label="Default select example">
+                                <option value="0">Chọn Tỉnh Thành</option>
+                            </select>
+                        </div>
 
+                        <div class="col-md-4">
+                            <select  required class="form-select" id="quan" aria-label="Default select example">
+                                <option value="0">Chọn Quận huyện</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <select style=""  required class="form-select " id="phuong" aria-label="Default select example">
+                                <option value="0">Chọn Xã Phường</option>
+                            </select>
+                        </div>
+                        <div><br></div>
+                        <input type="hidden" name="tinh" id="hidden_tinh">
+                        <input type="hidden" name="quan" id="hidden_quan">
+                        <input type="hidden" name="phuong" id="hidden_phuong">
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <span name="moneyUp" class="input-group-text">$</span>
+                                <span class="input-group-text">⬆</span>
+                                <input type="text" name="moneyUp" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input name="moneyUp" type="text" class="form-control" aria-label="Dollar amount (with dot and two decimal places)">
+                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">⬇</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input name="bedroom" type="text" class="form-control" placeholder="Số lượng phòng ngủ" aria-label="Dollar amount (with dot and two decimal places)"> 
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input name="areaUp" type="text" class="form-control" placeholder="Diện tích lớn hơn khoảng " aria-label="Dollar amount (with dot and two decimal places)"> 
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input name="areaDown" type="text" class="form-control" placeholder="Diện tích nhỏ hơn khoảng " aria-label="Dollar amount (with dot and two decimal places)"> 
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="type"  required class="form-select"  aria-label="Default select example">
+                                <option disabled="" >Sắp xếp theo giá</option>
+                                <option value="1" >Sắp xếp tăng theo giá</option>
+                                <option value="2" >Sắp xếp giảm theo giá</option>
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <div class="row properties-box">
@@ -180,7 +285,7 @@
                                 <h6>${ap.price}</h6>
                                 <h4><a href="property-details.html">${ap.apartment_name}</a></h4><hr>
                                     <c:if test="${ap.payment_id.id == 1}" >
-                                    <h5 style="">${ap.title}</h5>
+                                    <h4 style="">${ap.title}</h4>
                                 </c:if>
                                 <c:if test="${ap.payment_id.id == 2}" >
                                     <h4 style="color: blue;font-style: italic">${ap.title}</h4>
@@ -191,6 +296,7 @@
                                 <c:if test="${ap.payment_id.id == 4}" >
                                     <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
                                 </c:if>
+                                    <hr>
                                 <ul>
                                     <li>Bedrooms: <span>${ap.number_of_bedroom}</span></li>
                                     <li>Area: <span>${ap.area}</span></li>
@@ -218,7 +324,7 @@
             </div>
         </div>
 
-        <footer>
+        <footer><jsp:include page="Footer.jsp"/>
             <div class="container">
                 <div class="col-lg-12">
                     <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 

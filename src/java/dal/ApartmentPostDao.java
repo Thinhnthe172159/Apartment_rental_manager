@@ -201,11 +201,11 @@ public class ApartmentPostDao extends DBContext {
         
         sql += " and [post_status] = " + status + " Order by [post_start] desc";
         
-        if (type != 0) {
-            sql += " order by [price] desc ";
-        }
         if (type == 1) {
-            sql += " order by [price]";
+            sql += "  order by [price] desc ";
+        }
+        if (type == 2) {
+            sql += "  order by [price]";
         }
             
         
