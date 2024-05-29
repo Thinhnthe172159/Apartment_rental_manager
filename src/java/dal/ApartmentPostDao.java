@@ -4,7 +4,7 @@
  */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ import model.User;
  *
  * @author thinh
  */
-public class ApartmentPostDao extends DBContext {
+public class ApartmentPostDao extends DBContext{
 
     private ApartmentDao apartmentDao = new ApartmentDao();
     private UserDao userDao = new UserDao();
@@ -48,8 +48,7 @@ public class ApartmentPostDao extends DBContext {
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, ap.getTitle());
             st.setString(2, ap.getDescription());
             st.setInt(3, ap.getPost_status());
@@ -143,7 +142,8 @@ public class ApartmentPostDao extends DBContext {
             double priceDown,
             int numberOfBedroom,
             int apartment_type,
-            int type) {
+            int type,
+            int status) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -164,18 +164,19 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[price]\n"
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
-                + "  FROM [dbo].[Apartment_Posts] where 1=1 ";
+                + "  FROM [dbo].[Apartment_Posts] where 1=1  ";
+        
 
-        if (!name.isEmpty() && name != null) {
+        if ( name != null) {
             sql += " and [apartment_name] LIKE '%" + name + "%' ";
         }
-        if (!city.isEmpty() && city != null) {
+        if ( city != null) {
             sql += " and [city] LIKE '%" + city + "%' ";
         }
-        if (!district.isEmpty() && district != null) {
+        if ( district != null) {
             sql += " and [district] LIKE '%" + district + "%' ";
         }
-        if (!commune.isEmpty() && commune != null) {
+        if ( commune != null) {
             sql += " and [commune] LIKE '%" + commune + "%' ";
         }
         if (areaUp != 0) {
@@ -193,12 +194,24 @@ public class ApartmentPostDao extends DBContext {
         if (numberOfBedroom != 0) {
             sql += " and [number_of_bedroom] " + numberOfBedroom;
         }
-        if (type != 0) {
-            sql += " order by [price] desc ";
-        }
+        
         if (apartment_type != 0) {
-            sql += " and [apartment_type] =" + apartment_type;
+            sql += " and [apartment_type] =" + apartment_type ;
         }
+        
+        sql += " and [post_status] = " + status;
+        
+        if (type == 1) {
+            sql += "  order by [price] desc ";
+        }
+        if (type == 2) {
+            sql += "  order by [price]";
+        }
+        if(type!=1 && type!=2){
+            sql+= " Order by [post_start] desc";
+        }
+            
+        
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);

@@ -6,7 +6,6 @@
 package controller;
 
 import dal.CommunityPostDao;
-import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,14 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.CommunityPost;
-import model.User;
 
 /**
  *
  * @author DuyThai
  */
-@WebServlet(name = "addCommunityPost", urlPatterns = {"/addCommunityPost"})
-public class AddCommunityPost extends HttpServlet {
+@WebServlet(name = "EditCommunityPost", urlPatterns = {"/editPost"})
+public class EditCommunityPost extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,7 +31,19 @@ public class AddCommunityPost extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet EditCommunityPost</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet EditCommunityPost at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,23 +57,7 @@ public class AddCommunityPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        CommunityPostDao cpd = new CommunityPostDao();
-        UserDao ud = new UserDao();
-        
-        String title = request.getParameter("t");
-        String context = request.getParameter("c");
-
-        User user = ud.getUser(1);
-        CommunityPost communityPost = new CommunityPost();
-        communityPost.setUser_id(user);
-        communityPost.setTitle(title);
-        communityPost.setConetext(context);
-       cpd.addPost(communityPost);
-       out.print(context);
-                request.getRequestDispatcher("createPost.jsp").forward(request, response);
-
-        
+        processRequest(request, response);
     } 
 
     /** 
@@ -76,22 +70,25 @@ public class AddCommunityPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+
         CommunityPostDao cpd = new CommunityPostDao();
-        UserDao ud = new UserDao();
-        
+
+        int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("t");
         String context = request.getParameter("c");
 
-        User user = ud.getUser(1);
-        CommunityPost communityPost = new CommunityPost();
-        communityPost.setUser_id(user);
-        communityPost.setTitle(title);
-        communityPost.setConetext(context);
-       cpd.addPost(communityPost);
-        
-        
-        
+        CommunityPost post = new CommunityPost();
+       // post.setPostId(id);
+        post.setTitle(title);
+        post.setConetext(context);
+
+        try {
+            cpd.updatePost(post);
+            response.sendRedirect("listPost"); 
+        } catch (IOException e) {
+            // Xử lý lỗi
+        }
     }
 
     /** 

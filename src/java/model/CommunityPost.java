@@ -12,7 +12,7 @@ public class CommunityPost {
 
     private int id;
     private String title;
-    private String conetext;
+    private String context;
     private User user_id;
 
     public CommunityPost() {
@@ -21,7 +21,7 @@ public class CommunityPost {
     public CommunityPost(int id, String title, String conetext, User user_id) {
         this.id = id;
         this.title = title;
-        this.conetext = conetext;
+        this.context = conetext;
         this.user_id = user_id;
     }
 
@@ -42,11 +42,11 @@ public class CommunityPost {
     }
 
     public String getConetext() {
-        return conetext;
+        return context;
     }
 
     public void setConetext(String conetext) {
-        this.conetext = conetext;
+        this.context = conetext;
     }
 
     public User getUser_id() {
@@ -59,8 +59,11 @@ public class CommunityPost {
 
     @Override
     public String toString() {
-        return "CommunityPost{" + "id=" + id + ", title=" + title + ", conetext=" + conetext + ", user_id=" + user_id + '}';
+        return "CommunityPost{" + "id=" + id + ", title=" + title + ", conetext=" + context + ", user_id=" + user_id + '}';
     }
+
+   
+ 
 
     
     
