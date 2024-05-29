@@ -87,8 +87,8 @@ public class Login extends HttpServlet {
             int user_ID = user_Data.getId();
             session.setAttribute("user_ID", user_ID);
             // Redirect to the home page
-//            response.sendRedirect("home");
-            request.getRequestDispatcher("Success.jsp").forward(request, response);
+            response.sendRedirect("UserProfile");
+//            request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
 
         } else {
             // Login fail --> Di chuyen ve login
