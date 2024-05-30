@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import model.Apartment_Post;
 import model.Apartment_type;
@@ -53,9 +54,12 @@ public class ApartmentPostList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        String apartment_name = request.getParameter("name");
+
+        String title_name = request.getParameter("name");
+        String apartment_type = request.getParameter("apartmentType");
         String tinh = request.getParameter("tinh");
         String quan = request.getParameter("quan");
         String phuong = request.getParameter("phuong");
@@ -65,34 +69,41 @@ public class ApartmentPostList extends HttpServlet {
         String areaUp = request.getParameter("areaUp");
         String areaDown = request.getParameter("areaDown");
         String type_raw = request.getParameter("type");
-        String apartment_type = request.getParameter("apartmentType");
+
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         request.setAttribute("apartment_types_list", apartment_types_list);
+
+        int Apartment_type, bedroom, type_sort;
+        double priceUp, priceDown, area_up, area_down;
+        List<Apartment_Post> apartmentPostList = new ArrayList<>();
+
         try {
-
-            List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List(apartment_name,
-                     tinh,
-                     quan,
-                     phuong,
-                     (areaUp == null) ? 0 : Double.parseDouble(areaUp),
-                     (areaDown == null) ? 0 : Double.parseDouble(areaDown),
-                     (moneyUp == null) ? 0 : Double.parseDouble(moneyUp),
-                     (moneyDown == null) ? 0 : Double.parseDouble(moneyDown),
-                     (numberOfBedroom == null) ? 0 : Integer.parseInt(numberOfBedroom),
-                     (apartment_type == null) ? 0 : Integer.parseInt(apartment_type),
-                     (type_raw == null) ? 0 : Integer.parseInt(type_raw), 1);
+            Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
+            bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
+            type_sort = (type_raw == null || type_raw.isEmpty()) ? 0 : Integer.parseInt(type_raw);
+            priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp);
+            priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown);
+            area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
+            area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
+            apartmentPostList = apartmentPostDao.getApartment_Post_List((title_name == null||title_name.isEmpty())?null:title_name,
+                    (tinh == null||tinh.isEmpty())?null:tinh,
+                    (quan == null||quan.isEmpty())?null:quan,
+                    (phuong == null||phuong.isEmpty())?null:phuong,
+                    area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1);
             request.setAttribute("apartmentPostList", apartmentPostList);
-            
-        } catch (NumberFormatException e) {
 
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
+        int page = 2;
+        request.setAttribute("page", page);
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
 
     @Override

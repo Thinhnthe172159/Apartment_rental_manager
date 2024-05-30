@@ -21,6 +21,7 @@
     </head>
 
     <body>
+        <jsp:include page="Navbar.jsp"/>
         <div class="container">
             <br>
             <div class="row">

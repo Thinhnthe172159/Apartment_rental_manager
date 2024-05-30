@@ -23,6 +23,7 @@
         </style>
     </head>
     <body>
+        <jsp:include page="Navbar.jsp"/>
         <form id="apartmentForm" action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">
