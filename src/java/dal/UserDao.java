@@ -198,6 +198,59 @@ public class UserDao extends DBContext {
     }
     return false;
 }
+    public User getUserByEmail(String Email) {
+        String sql = "SELECT [id]\n"
+                + "      ,[email]\n"
+                + "      ,[password]\n"
+                + "      ,[role_id]\n"
+                + "      ,[status]\n"
+                + "      ,[first_name]\n"
+                + "      ,[last_name]\n"
+                + "      ,[dob]\n"
+                + "      ,[image]\n"
+                + "      ,[money]\n"
+                + "  FROM [dbo].[User]"
+                + " Where [email] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, Email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                User u = new User();
+                u.setId(rs.getInt("id"));
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("password"));
+                roleDao = new RoleDao();
+                Role r = roleDao.getRole(rs.getInt("role_id"));
+                u.setRole_id(r);
+                u.setStatus(rs.getInt("status"));
+                u.setFirst_name(rs.getString("first_name"));
+                u.setLast_name(rs.getString("last_name"));
+                u.setDob(rs.getDate("dob"));
+                u.setImage(rs.getString("image"));
+                u.setMoney(rs.getDouble("money"));
+                return u;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+    
+    public void updateUser(User user) {
+        String sql = "UPDATE [dbo].[User] SET [first_name] = ?, [last_name] = ?, [dob] = ?, [image] = ? WHERE [email] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, user.getFirst_name());
+            st.setString(2, user.getLast_name());
+            st.setDate(3, user.getDob());
+            st.setString(4, user.getImage());
+            st.setString(5, user.getEmail());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void main(String[] args) {
