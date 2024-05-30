@@ -158,15 +158,19 @@
                             <div class="tab-pane fade active show" id="account-general">
                                 <!--Avatar-->
                                 <form action="UserProfile" method="post" enctype="multipart/form-data">
-                                    <input name="userid" type="hidden" value="${user_Data.getId()}">                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
+                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
                                     <c:if test="${message != null}">
                                         <div style="width: 500px" class="alert alert-danger" role="alert">
                                             ${message}
                                         </div>
                                     </c:if>
                                     <div class="card-body media align-items-center">
-                                        <img src="img/User/${user_Data.getImage()}" alt="Error"
-                                             class="d-block ui-w-80" id="previewImage">
+                                        <img src="img/User/${user_Data.getImage()}" 
+                                             alt="Error" 
+                                             class="d-block ui-w-80" 
+                                             id="previewImage"
+                                             onerror="this.onerror=null; this.src='${user_Data.getImage()}';">
+
                                         <div class="media-body ml-4">
                                             <label class="btn btn-outline-primary">
                                                 Upload new photo
