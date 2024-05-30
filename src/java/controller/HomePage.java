@@ -5,6 +5,7 @@
 
 package controller;
 
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
@@ -55,6 +58,13 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user_ID") != null) {
+            UserDao user_DAO = new UserDao();
+            User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
+
+            request.setAttribute("user_Data", user_Data);
+        }
         int page = 1;
         request.setAttribute("page",page);
         request.getRequestDispatcher("HomePage.jsp").forward(request, response);

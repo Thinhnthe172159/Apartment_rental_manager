@@ -63,6 +63,15 @@
                             <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
                             <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <c:choose>
+                                <c:when test="${user_Data == null}">
+                                    <li><a href="Login"><i class="fa fa-sign-in"></i></a></li>
+                                </c:when>
+                                <c:otherwise>
+                                    <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>
+                                    <li><a href="Logout"><i class="fa fa-sign-out"></i></a></li>
+                                </c:otherwise>
+                            </c:choose>
                         </ul>
                     </div>
                 </div>
