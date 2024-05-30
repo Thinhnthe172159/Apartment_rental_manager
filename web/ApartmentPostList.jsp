@@ -165,11 +165,11 @@
                         }
                     </style>
 
-                    <form  action="ApartmentPostList" method="get" name class="row height d-flex justify-content-center align-items-center">
+                    <form  action="ApartmentPostList" method="get"  class="row height d-flex justify-content-center align-items-center">
                         
                         <div class="col-md-3">
                             <select style="background: darkslategray;color: white" name="apartmentType"  class="form-select"  aria-label="Default select example">
-                                <option>Loại căn hộ</option>
+                                <option value="0">Loại căn hộ</option>
                                 <c:forEach items="${requestScope.apartment_types_list}" var="atl">
                                     <option value="${atl.id}">${atl.name}</option>
                                 </c:forEach>
@@ -194,7 +194,7 @@
                         </div>
                         <div class="col-md-2">
                             <select style="background: darkslategray;color: white"  name="type"  required class="form-select"  aria-label="Default select example">
-                                <option disabled="" >Sắp xếp theo giá</option>
+                                <option value="0" >Sắp xếp theo giá</option>
                                 <option value="1" >tăng theo giá</option>
                                 <option value="2" >giảm theo giá</option>
                             </select>

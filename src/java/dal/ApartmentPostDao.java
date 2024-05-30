@@ -4,7 +4,6 @@
  */
 package dal;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ import model.User;
  *
  * @author thinh
  */
-public class ApartmentPostDao extends DBContext{
+public class ApartmentPostDao extends DBContext {
 
     private ApartmentDao apartmentDao = new ApartmentDao();
     private UserDao userDao = new UserDao();
@@ -164,26 +163,26 @@ public class ApartmentPostDao extends DBContext{
                 + "      ,[price]\n"
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
-                + "  FROM [dbo].[Apartment_Posts] where 1=1  ";
-        
+                + "  FROM [dbo].[Apartment_Posts]\n"
+                + "	where 1=1 ";
 
-        if ( name != null) {
-            sql += " and [apartment_name] LIKE '%" + name + "%' ";
+        if (name != null) {
+            sql += " and [title] LIKE N'%" + name + "%' ";
         }
-        if ( city != null) {
-            sql += " and [city] LIKE '%" + city + "%' ";
+        if (city != null) {
+            sql += " and [city] LIKE N'%" + city + "%' ";
         }
-        if ( district != null) {
-            sql += " and [district] LIKE '%" + district + "%' ";
+        if (district != null) {
+            sql += " and [district] LIKE N'%" + district + "%' ";
         }
-        if ( commune != null) {
-            sql += " and [commune] LIKE '%" + commune + "%' ";
+        if (commune != null) {
+            sql += " and [commune] LIKE N'%" + commune + "%' ";
         }
         if (areaUp != 0) {
-            sql += " and [area] =>" + areaUp;
+            sql += " and [area] >= " + areaUp;
         }
         if (areaDown != 0) {
-            sql += " and [area] <=" + areaDown;
+            sql += " and [area] <= " + areaDown;
         }
         if (priceUp != 0) {
             sql += " and [price] >= " + priceUp;
@@ -192,26 +191,26 @@ public class ApartmentPostDao extends DBContext{
             sql += " and [price] <= " + priceDown;
         }
         if (numberOfBedroom != 0) {
-            sql += " and [number_of_bedroom] " + numberOfBedroom;
+            sql += " and [number_of_bedroom] =" + numberOfBedroom;
         }
-        
+
         if (apartment_type != 0) {
-            sql += " and [apartment_type] =" + apartment_type ;
+            sql += " And [apartment_type] =" + apartment_type;
         }
-        
-        sql += " and [post_status] = " + status;
-        
+
+        if (status != 0) {
+            sql += " and [post_status] = " + status;
+        }
+
         if (type == 1) {
             sql += "  order by [price] desc ";
-        }
+        } 
         if (type == 2) {
             sql += "  order by [price]";
         }
-        if(type!=1 && type!=2){
-            sql+= " Order by [post_start] desc";
+        if (type == 0) {
+            sql += " Order by [post_start] desc";
         }
-            
-        
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -219,6 +218,7 @@ public class ApartmentPostDao extends DBContext{
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
                 ap.setTitle(rs.getString("title"));
                 ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
@@ -253,17 +253,9 @@ public class ApartmentPostDao extends DBContext{
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        Apartment_Post ap = new Apartment_Post();
-        ap.setTitle("asdsad");
-        ap.setDescription("asdasdasdsad");
-        Apartment a;
-        a = apartmentDao.getApartment(1);
-        ap.setApartment_id(a);
-        Payment_method pm = apartmentDao.getPayment_method(2);
-        ap.setPayment_id(pm);
-        User user = userDao.getUser(1);
-        ap.setLandlord_id(user);
-        apartmentPostDao.addApartmentPost(ap);
-        System.out.println(apartmentPostDao.getApartment_Post(1));
+        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1);
+        for (Apartment_Post iApartment_PostL : list) {
+            System.out.println(iApartment_PostL);
+        }
     }
 }

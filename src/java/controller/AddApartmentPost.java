@@ -102,6 +102,8 @@ public class AddApartmentPost extends HttpServlet {
         ap.setNumber_of_bedroom(a.getNumber_of_bedroom());
         ap.setApartment_type(a.getType_id());
         ap.setApartment_name(a.getName());
+        List<Apartment_image> imageList = apartmentDao.getAllApartmentList(a.getId());
+        ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(1);
             LocalDate currentDate = LocalDate.now();
