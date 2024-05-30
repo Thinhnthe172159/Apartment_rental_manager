@@ -253,7 +253,7 @@
                                                <span class="fontawesome-twitter"></span> 
                                         <i class="fa fa-twitter" aria-hidden="true"></i>
                                     </a> <br />-->
-                    <a href="" class="google-plus">
+                    <a href="https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=http://localhost:9999/SWP391_Apartment_rental_management_system/LoginByGoogle&response_type=code&client_id=369413613183-srjd8p76m1hr9b21s70gjl8ooebf0t1f.apps.googleusercontent.com&approval_prompt=force" class="google-plus">
                         <!--       <span class="fontawesome-google-plus"></span> -->
                         <i class="fa fa-google" aria-hidden="true"></i>
                     </a>

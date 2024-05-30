@@ -133,22 +133,23 @@
             </h4>
             <div class="card overflow-hidden">
                 <div class="row no-gutters row-bordered row-border-light">
-                    <div class="col-md-3 pt-0">
-                        <div class="list-group list-group-flush account-settings-links">
-                            <a class="list-group-item list-group-item-action active" data-toggle="list"
-                               href="#account-general">General</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list"
-                               href="#account-change-password">Change password</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list"
-                               href="#account-info">Info</a>
-                            <!--                            <a class="list-group-item list-group-item-action" data-toggle="list"
-                                                           href="#account-social-links">Social links</a>
-                                                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                                                           href="#account-connections">Connections</a>
-                                                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                                                           href="#account-notifications">Notifications</a>-->
+                    <div class="col-md-3 pt-0 d-flex flex-column">
+                        <!-- List group -->
+                        <div class="list-group list-group-flush account-settings-links flex-grow-1">
+                            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">General</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Info</a>
+                            <!-- <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-social-links">Social links</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-connections">Connections</a>
+                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications">Notifications</a> -->
+                        </div>
+
+                        <!-- Back to Home button -->
+                        <div class="mt-auto" style="margin: 10px">
+                            <a href="HomePage" class="btn btn-primary btn-block">Back to Home</a>
                         </div>
                     </div>
+
                     <div class="col-md-9">
                         <div class="tab-content">
 
@@ -157,15 +158,19 @@
                             <div class="tab-pane fade active show" id="account-general">
                                 <!--Avatar-->
                                 <form action="UserProfile" method="post" enctype="multipart/form-data">
-                                    <input name="userid" type="hidden" value="${user_Data.getId()}">                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
+                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
                                     <c:if test="${message != null}">
                                         <div style="width: 500px" class="alert alert-danger" role="alert">
                                             ${message}
                                         </div>
                                     </c:if>
                                     <div class="card-body media align-items-center">
-                                        <img src="img/User/${user_Data.getImage()}" alt="Error"
-                                             class="d-block ui-w-80" id="previewImage">
+                                        <img src="img/User/${user_Data.getImage()}" 
+                                             alt="Error" 
+                                             class="d-block ui-w-80" 
+                                             id="previewImage"
+                                             onerror="this.onerror=null; this.src='${user_Data.getImage()}';">
+
                                         <div class="media-body ml-4">
                                             <label class="btn btn-outline-primary">
                                                 Upload new photo
@@ -277,20 +282,20 @@
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            function previewAvatar() {
-                const imageInput = document.getElementById('imageInput');
-                const previewImage = document.getElementById('previewImage');
+                                                    function previewAvatar() {
+                                                        const imageInput = document.getElementById('imageInput');
+                                                        const previewImage = document.getElementById('previewImage');
 
-                if (imageInput.files && imageInput.files[0]) {
-                    const reader = new FileReader();
+                                                        if (imageInput.files && imageInput.files[0]) {
+                                                            const reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        previewImage.src = e.target.result;
-                    }
+                                                            reader.onload = function (e) {
+                                                                previewImage.src = e.target.result;
+                                                            }
 
-                    reader.readAsDataURL(imageInput.files[0]);
-                }
-            }
+                                                            reader.readAsDataURL(imageInput.files[0]);
+                                                        }
+                                                    }
         </script>
     </body>
 </html>

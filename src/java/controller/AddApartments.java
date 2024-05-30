@@ -67,6 +67,9 @@ public class AddApartments extends HttpServlet {
         request.setAttribute("propertys_List_bedroom", propertys_List_bedroom);
         request.setAttribute("propertys_List_bathroom", propertys_List_bathroom);
         request.setAttribute("propertys_List_kitchen", propertys_List_kitchen);
+        
+        int page = 3;
+        request.setAttribute("page", page);
 
         request.getRequestDispatcher("AddApartment.jsp").forward(request, response);
     }
@@ -132,9 +135,7 @@ public class AddApartments extends HttpServlet {
                 apartmentDao.insertApartmentImage(ai);
             }
         }
-
-        response.setContentType("text/plain");
-        response.getWriter().write("Files uploaded successfully: " + fileNames.toString());
+        response.sendRedirect("HomePage");
 
     }
 

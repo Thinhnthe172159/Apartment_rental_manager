@@ -65,6 +65,8 @@ public class AddApartmentPost extends HttpServlet {
         List<Payment_method> payment_methodsList = apartmentDao.getPayment_method_list();
         request.setAttribute("apartmentList", apartmentList);
         request.setAttribute("payment_methodsList", payment_methodsList);
+        int page = 3;
+        request.setAttribute("page", page);
         request.getRequestDispatcher("AddApartmentPost.jsp").forward(request, response);
     }
 
@@ -102,6 +104,8 @@ public class AddApartmentPost extends HttpServlet {
         ap.setNumber_of_bedroom(a.getNumber_of_bedroom());
         ap.setApartment_type(a.getType_id());
         ap.setApartment_name(a.getName());
+        List<Apartment_image> imageList = apartmentDao.getAllApartmentList(a.getId());
+        ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(1);
             LocalDate currentDate = LocalDate.now();
@@ -112,6 +116,7 @@ public class AddApartmentPost extends HttpServlet {
             ap.setPost_end(sqlDate1);
         }
         apartmentPostDao.addApartmentPost(ap);
+        response.sendRedirect("HomePage");
 
     }
 
