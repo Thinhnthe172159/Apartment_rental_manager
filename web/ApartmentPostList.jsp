@@ -32,66 +32,14 @@
     </head>
 
     <body>
-
-        <div class="sub-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-8">
-                        <ul class="info">
-                            <li><i class="fa fa-envelope"></i> info@company.com</li>
-                            <li><i class="fa fa-map"></i> Sunny Isles Beach, FL 33160</li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-4">
-                        <ul class="social-links">
-                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="index.html" class="logo">
-                                <h1>Easy_Rentals</h1>
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li><a href="HomePage.jsp">Home</a></li>
-                                <li><a href="ApartmentPostList" class="active">Tìm Căn hộ</a></li>
-                                <li><a href="property-details.html">Blogs</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
-                                <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
-                            </ul>   
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-
+        <jsp:include page="Navbar.jsp"/>
         <div class="page-heading header-text">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="search">
                             <i class="fa fa-search"></i>
-                            <input name="name" type="text" class="form-control" placeholder="Find apartment name">
+                            <input name="name" type="text" class="form-control" placeholder="Find apartment post title">
                             <button class="btn btn-primary" id="submit">Search</button>
                         </div>
                         <div><br></div>
@@ -166,7 +114,7 @@
                     </style>
 
                     <form  action="ApartmentPostList" method="get"  class="row height d-flex justify-content-center align-items-center">
-                        
+
                         <div class="col-md-3">
                             <select style="background: darkslategray;color: white" name="apartmentType"  class="form-select"  aria-label="Default select example">
                                 <option value="0">Loại căn hộ</option>
@@ -211,7 +159,7 @@
                         <div class="col-md-3">
                             <div class="input-group mb-3">
                                 <input style="background: #d6d4d4;color: black" name="moneyUp" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
-                         
+
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -229,7 +177,7 @@
                                 <input style="background: #d6d4d4;color: black" name="areaDown" type="text" class="form-control" placeholder="Diện tích nhỏ hơn" aria-label="Dollar amount (with dot and two decimal places)"> 
                             </div>
                         </div>
-                        
+
                         <input class="btn-outline-danger" type="submit" value="Search">
 
                     </form>

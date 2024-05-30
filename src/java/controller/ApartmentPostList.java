@@ -85,13 +85,18 @@ public class ApartmentPostList extends HttpServlet {
             priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown);
             area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
             area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
-            apartmentPostList = apartmentPostDao.getApartment_Post_List(title_name, tinh, quan, phuong, area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1);
+            apartmentPostList = apartmentPostDao.getApartment_Post_List((title_name == null||title_name.isEmpty())?null:title_name,
+                    (tinh == null||tinh.isEmpty())?null:tinh,
+                    (quan == null||quan.isEmpty())?null:quan,
+                    (phuong == null||phuong.isEmpty())?null:phuong,
+                    area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1);
             request.setAttribute("apartmentPostList", apartmentPostList);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
+        int page = 2;
+        request.setAttribute("page", page);
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     }
 
