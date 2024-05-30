@@ -4,7 +4,7 @@
  */
 package dal;
 
-import com.sun.jdi.connect.spi.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ import model.User;
  *
  * @author thinh
  */
-public class ApartmentPostDao extends DBContext {
+public class ApartmentPostDao extends DBContext{
 
     private ApartmentDao apartmentDao = new ApartmentDao();
     private UserDao userDao = new UserDao();
@@ -167,16 +167,16 @@ public class ApartmentPostDao extends DBContext {
                 + "  FROM [dbo].[Apartment_Posts] where 1=1  ";
         
 
-        if (!name.isEmpty() && name != null) {
+        if ( name != null) {
             sql += " and [apartment_name] LIKE '%" + name + "%' ";
         }
-        if (!city.isEmpty() && city != null) {
+        if ( city != null) {
             sql += " and [city] LIKE '%" + city + "%' ";
         }
-        if (!district.isEmpty() && district != null) {
+        if ( district != null) {
             sql += " and [district] LIKE '%" + district + "%' ";
         }
-        if (!commune.isEmpty() && commune != null) {
+        if ( commune != null) {
             sql += " and [commune] LIKE '%" + commune + "%' ";
         }
         if (areaUp != 0) {
@@ -199,13 +199,16 @@ public class ApartmentPostDao extends DBContext {
             sql += " and [apartment_type] =" + apartment_type ;
         }
         
-        sql += " and [post_status] = " + status + " Order by [post_start] desc";
+        sql += " and [post_status] = " + status;
         
-        if (type != 0) {
-            sql += " order by [price] desc ";
-        }
         if (type == 1) {
-            sql += " order by [price]";
+            sql += "  order by [price] desc ";
+        }
+        if (type == 2) {
+            sql += "  order by [price]";
+        }
+        if(type!=1 && type!=2){
+            sql+= " Order by [post_start] desc";
         }
             
         
