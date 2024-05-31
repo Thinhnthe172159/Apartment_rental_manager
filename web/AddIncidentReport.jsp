@@ -10,7 +10,7 @@
         }
         .container {
             max-width: 700px;
-            margin-top: 50px;
+            margin-top: 70px;
             padding: 30px;
             background-color: #ffffff;
             border-radius: 10px;
@@ -47,6 +47,7 @@
     </style>
 </head>
 <body>
+    <jsp:include page="Navbar.jsp"/>
     <div class="container">
         <h2 class="text-center">Add New Incident Report</h2>
         <form action="AddIncidentReportServlet" method="post">

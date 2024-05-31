@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.Incident;
+import java.sql.SQLException;
 
 /**
  *
@@ -53,11 +54,20 @@ public class EditIncident extends HttpServlet {
         int incidentId = Integer.parseInt(request.getParameter("id"));
         try {
             Incident incident = incidentReportDao.getIncidentReport(incidentId);
-            request.setAttribute("incident", incident);
-            request.getRequestDispatcher("EditIncident.jsp").forward(request, response);
-        } catch (Exception e) {
+            if (incident != null) {
+                request.setAttribute("incident", incident);
+                request.getRequestDispatcher("EditIncident.jsp").forward(request, response);
+            } else {
+                request.setAttribute("Error Message", "Incident not found.");
+                request.getRequestDispatcher("Error.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("Error Message", "An error occurred while retrieving the incident report");
+            request.setAttribute("Error Message", "Database error occurred while retrieving the incident.");
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.setAttribute("Error Message", "Invalid incident ID.");
             request.getRequestDispatcher("Error.jsp").forward(request, response);
         }
     }
@@ -65,24 +75,35 @@ public class EditIncident extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String context = request.getParameter("context");
-            String status = request.getParameter("status");
-            String dateStr = request.getParameter("date");
+        int incidentId = Integer.parseInt(request.getParameter("id"));
+        String context = request.getParameter("context");
+        String image = request.getParameter("image");
+        String status = request.getParameter("status");
+        String dateStr = request.getParameter("date");
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
-            Incident incident = incidentReportDao.getIncidentReport(id);
-            incident.setContext(context);
-            incident.setStatus(status);
-            incident.setDate((java.sql.Date) date);
-            incidentReportDao.updateIncidentReport(incident);
-            request.setAttribute("Success Message", "Incident Report update successfully !!");
-            response.sendRedirect("listincident");
+        try {
+            Incident incident = incidentReportDao.getIncidentReport(incidentId);
+            if (incident != null) {
+                incident.setContext(context);
+                incident.setImage(image);
+                incident.setStatus(status);
+                incident.setDate(new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(dateStr).getTime()));
+                incidentReportDao.updateIncidentReport(incident);
+
+                request.setAttribute("Success Message", "Incident report updated successfully!");
+                response.sendRedirect("listincident");
+            } else {
+                request.setAttribute("Error Message", "Incident not found.");
+                request.getRequestDispatcher("Error.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("Error Message", "Database error occurred while updating the incident.");
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred while updating the incident report.");
-            request.getRequestDispatcher("EditIncident.jsp").forward(request, response);
+            request.setAttribute("Error Message", "An error occurred. Please try again.");
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
         }
     }
 

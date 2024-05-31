@@ -20,11 +20,11 @@ import model.User;
  */
 public class IncidentReportDao extends DBContext {
 
-    private DBContext dBContext;
+    private DBContext dbContext;
     private UserDao userDao;
 
     public IncidentReportDao(DBContext dbContext) {
-        this.dBContext = dbContext;
+        this.dbContext = dbContext;
         this.userDao = new UserDao();
     }
 
@@ -115,6 +115,34 @@ public class IncidentReportDao extends DBContext {
             }
         }
         return incidents;
+    }
+
+    public List<Incident> getPaginatedIncidentReports(int pageNo, int pageSize) throws SQLException {
+        List<Incident> incidents = new ArrayList<>();
+        String query = "SELECT * FROM Incident LIMIT ? OFFSET ?";
+        int offset = (pageNo - 1) * pageSize;
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, pageSize);
+            statement.setInt(2, offset);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Incident incident = new Incident();
+                    // Lấy thông tin về sự cố từ ResultSet và thêm vào danh sách
+                    incidents.add(incident);
+                }
+            }
+        }
+        return incidents;
+    }
+
+    public int getTotalIncidentCount() throws SQLException {
+        String query = "SELECT COUNT(*) FROM Incident";
+        try (PreparedStatement statement = connection.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        }
+        return 0;
     }
 
     public static void main(String[] args) {

@@ -13,34 +13,22 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Incident;
 import java.sql.SQLException;
+
 
 /**
  *
  * @author vumin
  */
-@WebServlet(name = "ListIncidentReport", urlPatterns = {"/listincidentreport"})
-public class ListIncidentReport extends HttpServlet {
+@WebServlet(name = "DeleteIncident", urlPatterns = {"/deleteincident"})
+public class DeleteIncident extends HttpServlet {
 
     private IncidentReportDao incidentReportDao;
 
-    public ListIncidentReport() {
-        // Initialize the IncidentReportDao with a DBContext instance
-        DBContext dbContext = new DBContext();
-        incidentReportDao = new IncidentReportDao(dbContext);
+    public void init() throws ServletException {
+        incidentReportDao = new IncidentReportDao(new DBContext());
     }
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,10 +37,10 @@ public class ListIncidentReport extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetIncidentReportServlet</title>");
+            out.println("<title>Servlet DeleteIncident</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetIncidentReportServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteIncident at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,38 +58,7 @@ public class ListIncidentReport extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Set default pageNo and pageSize if not provided
-        int pageNo = 1;
-        int pageSize = 5; // Change this to the desired page size
-
-        // Parse pageNo and pageSize from request parameters if provided
-        if (request.getParameter("pageNo") != null) {
-            pageNo = Integer.parseInt(request.getParameter("pageNo"));
-        }
-        if (request.getParameter("pageSize") != null) {
-            pageSize = Integer.parseInt(request.getParameter("pageSize"));
-        }
-
-        try {
-            // Get the paginated incident reports
-            List<Incident> incidentList = incidentReportDao.getPaginatedIncidentReports(pageNo, pageSize);
-            int totalIncidents = incidentReportDao.getTotalIncidentCount();
-            int totalPages = (int) Math.ceil((double) totalIncidents / pageSize);
-
-            // Set the incidents and pagination details in request attributes
-            request.setAttribute("incidentList", incidentList);
-            request.setAttribute("currentPage", pageNo);
-            request.setAttribute("totalPages", totalPages);
-            request.setAttribute("pageSize", pageSize);
-
-            // Forward to the JSP page to display the incidents
-            request.getRequestDispatcher("ListIncident.jsp").forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred while retrieving the incident reports.");
-            request.getRequestDispatcher("Error.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -115,7 +72,16 @@ public class ListIncidentReport extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int incidentId = Integer.parseInt(request.getParameter("id"));
+
+        try {
+            incidentReportDao.deleteIncidentReport(incidentId);
+            response.sendRedirect("ListIncident.jsp?successMessage=Incident deleted successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("Error Message", "An error occurred while deleting the incident report.");
+            request.getRequestDispatcher("Error.jsp").forward(request, response);
+        }
     }
 
     /**
