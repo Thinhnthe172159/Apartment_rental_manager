@@ -130,8 +130,8 @@ public class ApartmentPostDao extends DBContext {
         return null;
     }
 
-    // list apartment
-    public List<Apartment_Post> getApartment_Post_List(String name,
+    // list apartment size
+    public int getApartmentPostSize(String name,
             String city,
             String district,
             String commune,
@@ -141,30 +141,11 @@ public class ApartmentPostDao extends DBContext {
             double priceDown,
             int numberOfBedroom,
             int apartment_type,
-            int type,
             int status) {
-        List<Apartment_Post> list = new ArrayList<>();
-        String sql = "SELECT [id]\n"
-                + "      ,[title]\n"
-                + "      ,[description]\n"
-                + "      ,[post_status]\n"
-                + "      ,[post_start]\n"
-                + "      ,[post_end]\n"
-                + "      ,[apartment_id]\n"
-                + "      ,[payment_id]\n"
-                + "      ,[landlord_id]\n"
-                + "      ,[first_image]\n"
-                + "      ,[city]\n"
-                + "      ,[district]\n"
-                + "      ,[commune]\n"
-                + "      ,[area]\n"
-                + "      ,[number_of_bedroom]\n"
-                + "      ,[apartment_name]\n"
-                + "      ,[price]\n"
-                + "      ,[apartment_type]\n"
-                + "      ,[total_image]\n"
-                + "  FROM [dbo].[Apartment_Posts]\n"
-                + "	where 1=1 ";
+        int result = 0;
+        String sql = "SELECT COUNT([id]) AS list_size\n"
+                + "FROM [ams].[dbo].[Apartment_Posts]\n"
+                + "where 1=1 ";
 
         if (name != null) {
             sql += " and [title] LIKE N'%" + name + "%' ";
@@ -202,19 +183,88 @@ public class ApartmentPostDao extends DBContext {
             sql += " and [post_status] = " + status;
         }
 
-        if (type == 1) {
-            sql += "  order by [price] desc ";
-        } 
-        if (type == 2) {
-            sql += "  order by [price]";
-        }
-        if (type == 0) {
-            sql += " Order by [post_start] desc";
-        }
-
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("list_size");
+                return result;
+            }
+        } catch (SQLException e) {
+
+        }
+        return 0;
+    }
+
+    public List<Apartment_Post> getApartment_Post_List(String name,
+            String city,
+            String district,
+            String commune,
+            double areaUp,
+            double areaDown,
+            double priceUp,
+            double priceDown,
+            int numberOfBedroom,
+            int apartment_type,
+            int type,
+            int status,
+            int pageNumber,
+            int pageSize) {
+        List<Apartment_Post> list = new ArrayList<>();
+        String sql = "SELECT [id], [title], [description], [post_status], [post_start], [post_end], [apartment_id], [payment_id], [landlord_id], [first_image], [city], [district], [commune], [area], [number_of_bedroom], [apartment_name], [price], [apartment_type], [total_image] ";
+        sql += "FROM [dbo].[Apartment_Posts] ";
+        sql += "WHERE 1=1 ";
+
+        if (name != null) {
+            sql += "AND [title] LIKE N'%" + name + "%' ";
+        }
+        if (city != null) {
+            sql += "AND [city] LIKE N'%" + city + "%' ";
+        }
+        if (district != null) {
+            sql += "AND [district] LIKE N'%" + district + "%' ";
+        }
+        if (commune != null) {
+            sql += "AND [commune] LIKE N'%" + commune + "%' ";
+        }
+        if (areaUp != 0) {
+            sql += "AND [area] >= " + areaUp;
+        }
+        if (areaDown != 0) {
+            sql += "AND [area] <= " + areaDown;
+        }
+        if (priceUp != 0) {
+            sql += "AND [price] >= " + priceUp;
+        }
+        if (priceDown != 0) {
+            sql += "AND [price] <= " + priceDown;
+        }
+        if (numberOfBedroom != 0) {
+            sql += "AND [number_of_bedroom] =" + numberOfBedroom;
+        }
+        if (apartment_type != 0) {
+            sql += "AND [apartment_type] =" + apartment_type;
+        }
+        if (status != 0) {
+            sql += "AND [post_status] = " + status;
+        }
+
+        if (type == 1) {
+            sql += "ORDER BY [price] DESC ";
+        } else if (type == 2) {
+            sql += "ORDER BY [price] ";
+        } else {
+            sql += "ORDER BY [post_start] DESC ";
+        }
+
+        int offset = (pageNumber - 1) * pageSize;
+
+        sql += "OFFSET " + offset + " ROWS ";
+        sql += "FETCH NEXT " + pageSize + " ROWS ONLY ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
@@ -246,6 +296,7 @@ public class ApartmentPostDao extends DBContext {
         } catch (SQLException e) {
 
         }
+        System.out.println(sql);
         return list;
     }
 
@@ -253,9 +304,12 @@ public class ApartmentPostDao extends DBContext {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1);
+        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9);
         for (Apartment_Post iApartment_PostL : list) {
             System.out.println(iApartment_PostL);
         }
+        int n = apartmentPostDao.getApartmentPostSize(null, "Hải Dương", null, null, 0, 0, 0, 0, 0, 0, 0);
+        System.out.println(n);
+
     }
 }

@@ -158,7 +158,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="moneyUp" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
+                                <input style="background: #d6d4d4;color: black" name="moneyDown" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
 
                             </div>
                         </div>
@@ -221,13 +221,19 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="pagination">
-                            <li><a href="#">1</a></li>
-                            <li><a class="is_active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
+                            <c:forEach items="${pageList}" var="i">
+                                <li>
+                                    <a href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="${i == page_index ? 'is_active' : ''}">
+                                        ${i}
+                                    </a>
+                                </li>
+                            </c:forEach>
                             <li><a href="#">>></a></li>
                         </ul>
                     </div>
                 </div>
+
+
             </div>
         </div>
 
