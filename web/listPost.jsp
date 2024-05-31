@@ -19,7 +19,7 @@
 
         <a href="createPost.jsp" class="btn btn-primary">Tạo bài viết mới</a>
 
-        <form action="ListCommunityPost" method="get">
+        <form action="listpost" method="get">
             
         <table class="table">
             <thead>
@@ -35,9 +35,9 @@
                 <c:forEach items="${requestScope.postList}" var="p">
                     <tr>
                         <td>${p.title}</td>
-                        <td>${p.getConetext()}</td>
+                        <td>${p.getContext()}</td>
                         <td>${p.getUser_id().id}</td> 
-                        <td></td> 
+                        
                         <td>
                             <a href="editPost.jsp?id=${post.postId}" class="btn btn-warning">Chỉnh sửa</a>
                             <a href="deletePost?id=${post.postId}" class="btn btn-danger">Xóa</a>

@@ -54,10 +54,56 @@
             </div>
             <div class="form-group">
                 <label for="images">Chọn ảnh:</label>
-                <input type="file" class="form-control-file" id="images" name="images" multiple>
+                <input type="file" id="imageInput" name="images" multiple accept="image/*" >
             </div>
             <button type="submit" class="btn btn-primary">Đăng bài</button>
         </form>
+        
+        <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            const files = document.getElementById('imageInput').files;
+
+            Array.from(files).forEach(file => {
+                formData.append('images', file);
+            });
+
+            fetch('image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert('Upload successful!');
+                console.log(data);
+                // Display the response data which contains the file paths
+                const responseContainer = document.createElement('div');
+                responseContainer.textContent = data;
+                document.body.appendChild(responseContainer);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Upload failed.');
+            });
+        });
+    </script>
 
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
