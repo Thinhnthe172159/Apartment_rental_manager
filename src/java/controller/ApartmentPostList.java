@@ -119,6 +119,8 @@ public class ApartmentPostList extends HttpServlet {
         request.setAttribute("areaUp", areaUp);
         request.setAttribute("areaDown", areaDown);
         request.setAttribute("type", type_raw);
+        int page =2;
+        request.setAttribute("page", page);
 
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     }
