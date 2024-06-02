@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
-import model.Apartment_room;
+import model.Apartment_properties;
 import model.Apartment_type;
 import model.Payment_method;
 import model.Property;
@@ -27,8 +27,8 @@ public class ApartmentDao extends DBContext {
 
     private UserDao userDao = new UserDao();
 
-    //input apartment room
-    public void input_ApartApartment_room(int apartment_id, int property_id) {
+    //input apartment property
+    public void input_ApartApartment_properties(int apartment_id, int property_id) {
         String sql = "INSERT INTO [dbo].[Apartment_room]\n"
                 + "           ([apartment_id]\n"
                 + "           ,[property_id])\n"
@@ -44,6 +44,32 @@ public class ApartmentDao extends DBContext {
 
         }
 
+    }
+
+    // get list apartment property 
+    public List<Apartment_properties> get_apartment_properties_list_by_id(int id) {
+        List<Apartment_properties> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[apartment_id]\n"
+                + "      ,[property_id]\n"
+                + "  FROM [dbo].[Apartment_room] where [apartment_id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_properties apartment_properties = new Apartment_properties();
+                Apartment a = getApartment(rs.getInt("apartment_id"));
+                Property p = getProperty(rs.getInt("property_id"));
+                apartment_properties.setApartment_id(a);
+                apartment_properties.setProperty_id(p);
+                list.add(apartment_properties);
+            }
+
+        } catch (SQLException e) {
+
+        }
+        return list;
     }
 
     //select room  
@@ -253,7 +279,7 @@ public class ApartmentDao extends DBContext {
     }
 
     // get first image
-    public Apartment_image get_First_Apartment_Post(int id) {
+    public Apartment_image get_First_Apartment_Image(int id) {
         String sql = "SELECT top 1 [id]\n"
                 + "      ,[image]\n"
                 + "      ,[Apartment_id]\n"
@@ -278,12 +304,12 @@ public class ApartmentDao extends DBContext {
     }
 
     //get all image each apartment
-    public List<Apartment_image> getAllApartmentList(int id) {
+    public List<Apartment_image> getAllApartmentImageList(int id) {
         List<Apartment_image> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[image]\n"
                 + "      ,[Apartment_id]\n"
-                + "  FROM [dbo].[Apartment_image] where [id] = ?";
+                + "  FROM [dbo].[Apartment_image] where [Apartment_id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -477,11 +503,13 @@ public class ApartmentDao extends DBContext {
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
         Apartment a = apartmentDao.getLatedApartment();
-        System.out.println(a);
-        List<Apartment> list = apartmentDao.getApartmentList(0);
-        for (Apartment i : list) {
-            System.out.println(i);
-        }
+
+        Apartment_image ai = apartmentDao.get_First_Apartment_Image(11);
+        System.out.println(ai.getImage());
+        
+//        for (Apartment_image i : list) {
+//            System.out.println(i.toString());
+//        }
     }
 
 }

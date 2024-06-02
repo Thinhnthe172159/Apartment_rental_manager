@@ -27,6 +27,11 @@ public class Apartment_image extends Image {
     public void setApartment_id(Apartment Apartment_id) {
         this.Apartment_id = Apartment_id;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Apartment_image{" + "Apartment_id=" + Apartment_id.getId() + '}';
+    }
     
     
 

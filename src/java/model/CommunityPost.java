@@ -4,6 +4,8 @@
  */
 package model;
 
+import java.sql.Date;
+
 /**
  *
  * @author thinh
@@ -14,15 +16,17 @@ public class CommunityPost {
     private String title;
     private String context;
     private User user_id;
+    private Date time;
 
     public CommunityPost() {
     }
 
-    public CommunityPost(int id, String title, String conetext, User user_id) {
+    public CommunityPost(int id, String title, String context, User user_id, Date time) {
         this.id = id;
         this.title = title;
-        this.context = conetext;
+        this.context = context;
         this.user_id = user_id;
+        this.time = time;
     }
 
     public int getId() {
@@ -41,12 +45,12 @@ public class CommunityPost {
         this.title = title;
     }
 
-    public String getConetext() {
+    public String getContext() {
         return context;
     }
 
-    public void setConetext(String conetext) {
-        this.context = conetext;
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public User getUser_id() {
@@ -57,11 +61,20 @@ public class CommunityPost {
         this.user_id = user_id;
     }
 
-    @Override
-    public String toString() {
-        return "CommunityPost{" + "id=" + id + ", title=" + title + ", conetext=" + context + ", user_id=" + user_id + '}';
+    public Date getTime() {
+        return time;
     }
 
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + '}';
+    }
+
+    
    
  
 

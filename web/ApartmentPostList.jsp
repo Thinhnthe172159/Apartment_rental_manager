@@ -37,11 +37,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="search">
+                        <form class="search" method="get" action="ApartmentPostList">
                             <i class="fa fa-search"></i>
                             <input name="name" type="text" class="form-control" placeholder="Find apartment post title">
-                            <button class="btn btn-primary" id="submit">Search</button>
-                        </div>
+                            <button class="btn btn-primary" type="submit" id="submit">Search</button>
+                        </form>
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Apartment</a></span>
                         <h3>For you</h3>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="moneyUp" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
+                                <input style="background: #d6d4d4;color: black" name="moneyDown" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
 
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                     <c:forEach items="${requestScope.apartmentPostList}" var="ap"> 
                         <div class="col-lg-6 col-md-6 align-self-center mb-30 properties-items col-md-6 adv" >
                             <div class="item" style="background:whitesmoke">
-                                <a href="property-details.html"><img src="uploads/${ap.first_image}" alt="" style="height: 400px; width: 580px;"></a>
+                                <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}"><img src="uploads/${ap.first_image}" alt="" style="height: 400px; width: 580px;"></a>
                                 <span class="category">${ap.apartment_type.name}</span>
                                 <h6>${ap.price}</h6>
                                 <h4><a href="property-details.html">${ap.apartment_name}</a></h4><hr>
@@ -221,13 +221,19 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="pagination">
-                            <li><a href="#">1</a></li>
-                            <li><a class="is_active" href="#">2</a></li>
-                            <li><a href="#">3</a></li>
+                            <c:forEach items="${pageList}" var="i">
+                                <li>
+                                    <a href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="${i == page_index ? 'is_active' : ''}">
+                                        ${i}
+                                    </a>
+                                </li>
+                            </c:forEach>
                             <li><a href="#">>></a></li>
                         </ul>
                     </div>
                 </div>
+
+
             </div>
         </div>
 

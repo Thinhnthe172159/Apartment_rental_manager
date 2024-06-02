@@ -92,7 +92,7 @@ public class AddApartmentPost extends HttpServlet {
         ap.setPayment_id(pm);
         User user = userDao.getUser(a.getLandLord_id().getId());
         ap.setLandlord_id(user);
-        Apartment_image ai = apartmentDao.get_First_Apartment_Post(a.getId());
+        Apartment_image ai = apartmentDao.get_First_Apartment_Image(a.getId());
         if (ai != null) {
             ap.setFirst_image(ai.getImage());
         }
@@ -104,7 +104,7 @@ public class AddApartmentPost extends HttpServlet {
         ap.setNumber_of_bedroom(a.getNumber_of_bedroom());
         ap.setApartment_type(a.getType_id());
         ap.setApartment_name(a.getName());
-        List<Apartment_image> imageList = apartmentDao.getAllApartmentList(a.getId());
+        List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
         ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(1);

@@ -114,7 +114,7 @@ public class AddApartments extends HttpServlet {
         if (property !=null) {
             for (String item : property) {
                  out.print(item);
-                 apartmentDao.input_ApartApartment_room(ap.getId(),Integer.parseInt(item));
+                 apartmentDao.input_ApartApartment_properties(ap.getId(),Integer.parseInt(item));
             }
         }
 
