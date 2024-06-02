@@ -50,13 +50,11 @@
 
         <body>
 
-            <!-- ***** Preloader Start ***** -->
-
-            <!-- ***** Preloader End ***** -->
             <jsp:include page="Navbar.jsp"/>
 
             <!-- ***** Header Area End ***** -->
-
+            <c:set var="Apartment" value="${requestScope.Apartment}"/>
+            <c:set value="${requestScope.apartment_Post}" var="apartment_Post"/>
             <div class="page-heading header-text">
                 <div class="container">
                     <div class="row">
@@ -73,12 +71,13 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="main-image">
-                                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                                    <div class="carousel-inner">
 
-                                        <c:forEach items="${requestScope.apartment_images_list}" var="image">
-                                            <div class="carousel-item active ratio-16x9">
-                                                <img  src="uploads/${image.image}" class="d-block w-100" alt="...">
+
+                                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                                    <div class="carousel-inner">
+                                        <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
+                                            <div class="carousel-item ${status.index == 0 ? 'active' : ''} ratio-16x9">
+                                                <img src="uploads/${image.image}" class="d-block w-100" alt="...">
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -91,92 +90,113 @@
                                         <span class="visually-hidden">Next</span>
                                     </button>
                                 </div>
+
+                                <!-- Thumbnails -->
+                                <div class="carousel-thumbnails mt-3">
+                                    <div class="thumbnail-row">
+                                        <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
+                                            <div class="thumbnail-item">
+                                                <img src="uploads/${image.image}" class="img-thumbnail ${status.index == 0 ? 'active-thumb' : ''}" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="${status.index}" alt="...">
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+
+                                <style>
+                                    .carousel-thumbnails {
+                                        overflow-x: auto;
+                                        white-space: nowrap;
+                                    }
+                                    .thumbnail-row {
+                                        display: flex;
+                                        flex-wrap: nowrap;
+                                    }
+                                    .thumbnail-item {
+                                        flex: 0 0 auto;
+                                        margin-right: 10px;
+                                    }
+                                    .carousel-thumbnails img {
+                                        cursor: pointer;
+                                        width: 150px;
+                                    }
+                                    .active-thumb {
+                                        border: 2px solid #007bff;
+                                    }
+                                </style>
+
+
+
+
+
                             </div>
                             <div class="main-content">
                                 <span class="category">${requestScope.Apartment.type_id.name}</span><span>  <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="40px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg> ${requestScope.Apartment.city}, ${requestScope.Apartment.district}, ${requestScope.Apartment.commune}, ${requestScope.Apartment.address} </span>
                                 <hr>
-                                <c:if test="${requestScope.apartment_Post.payment_id.id == 1}" >
-                                    <h3 style="">${requestScope.apartment_Post.title}</h3>
+                                <c:if test="${apartment_Post.payment_id.id == 1}" >
+                                    <h3 style="">${apartment_Post.title}</h3>
                                 </c:if>
                                 <c:if test="${requestScope.apartment_Post.payment_id.id == 2}" >
                                     <h3 style="color: blue;
-                                        font-style: italic">${requestScope.apartment_Post.title}</h3>
+                                        font-style: italic">${apartment_Post.title}</h3>
                                     </c:if>
-                                    <c:if test="${requestScope.apartment_Post.payment_id.id == 3}" >
+                                    <c:if test="${apartment_Post.payment_id.id == 3}" >
                                         <h3 style="color: yellowgreen;
                                         font-family: cursive;
-                                        font-size: large;" >${requestScope.apartment_Post.title.toUpperCase()}</h3>
+                                        font-size: large;" >${apartment_Post.title.toUpperCase()}</h3>
                                 </c:if>
-                                <c:if test="${requestScope.apartment_Post.payment_id.id == 4}" >
+                                <c:if test="${apartment_Post.payment_id.id == 4}" >
                                     <h3 style="color: red;
                                         font-style: italic;
-                                        font-family: serif">${requestScope.apartment_Post.title.toUpperCase()}</h3>
+                                        font-family: serif">${apartment_Post.title.toUpperCase()}</h3>
                                     </c:if>
-                                    <h4>${requestScope.Apartment.name}</h4>
+                                    <h4>${Apartment.name}</h4>
                                     <h5>Thông tin mô tả:</h5><br>
                                     <div style="border: 1px solid #004085">
                                         <br>
-                                        <p style="padding-left: 1%;">${requestScope.apartment_Post.description}</p>
-                                    </div>
-                                   
-                                </div> 
-                                <div class="accordion" id="accordionExample">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                Best useful links ?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologist incididunt ut labore consectetur <code>adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        <p style="padding-left: 1%;">${apartment_Post.description}</p>
+                                </div>
+
+                            </div> 
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Nội Thất
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="row accordion-body">
+                                            <c:forEach items="${requestScope.apartment_propertieses_list}" var="p"> 
+                                                <span class="col-md-4"><img style="width: 35px" src="${p.property_id.image}" alt="alt"/>  ${p.property_id.name} </span>  
+                                                    </c:forEach>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingTwo">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                How does this work ?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologist incididunt ut labore consectetur <code>adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingThree">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                Why is Villa the best ?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologist incididunt ut labore consectetur <code>adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                            </div>
-                                        </div>
-                                    </div>
+
+
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="info-table">
                                     <ul>
                                         <li>
+                                            <img src="uploads/${Apartment}" alt="" style="max-width: 52px;">
+                                        </li>
+                                        <li>
                                             <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
-                                        <h4>${requestScope.Apartment.area}<br><span>m2</span></h4>
+                                        <h4>${Apartment.area}<br><span>m2</span></h4>
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-02.png" alt="" style="max-width: 52px;">
-                                        <h4><c:if test="${requestScope.Apartment.status_apartment == 1}">Available<br><span>Contract Ready</span></c:if><c:if test="${requestScope.Apartment.status_apartment == 0}">Not Available</c:if><br><span>Contract is not Ready</span></h4>
+                                        <h4><c:if test="${Apartment.status_apartment == 1}">Available<br><span>Contract Ready</span></c:if><c:if test="${Apartment.status_apartment == 0}">Not Available</c:if><br><span>Contract is not Ready</span></h4>
                                         </li>
                                         <li>
                                             <img src="assets/images/info-icon-03.png" alt="" style="max-width: 52px;">
-                                                <h4><fmt:formatNumber value="${requestScope.Apartment.price}" pattern="#,###"/>vnd/m<br><span>Payment Process</span></h4>
+                                                <h4><fmt:formatNumber value="${Apartment.price}" pattern="#,###"/>vnd/m<br><span>Payment Process</span></h4>
                                     </li>
                                     <li>
                                         <img src="https://thumbs.dreamstime.com/b/bed-sleep-bedroom-icon-orange-vector-sketch-well-organized-simple-use-commercial-purposes-web-printing-any-type-design-241213928.jpg" alt="" style="max-width: 60px;">
-                                        <h4>${requestScope.Apartment.number_of_bedroom}<br><span>Bedroom</span></h4>
+                                        <h4>${Apartment.number_of_bedroom}<br><span>Bedroom</span></h4>
                                     </li>
                                 </ul>
                             </div>
@@ -312,22 +332,35 @@
             <script src="assets/js/owl-carousel.js"></script>
             <script src="assets/js/counter.js"></script>
             <script src="assets/js/custom.js"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
             <script>
-                const imageContainer = document.getElementById('image-container');
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+                    var carousel = new bootstrap.Carousel(myCarousel, {
+                        interval: 5000,
+                        wrap: true
+                    });
 
-                let currentIndex = 0;
+                    myCarousel.addEventListener('slide.bs.carousel', function (event) {
 
-                function nextImage() {
-                    currentIndex = (currentIndex + 1) % imageContainer.childElementCount;
-                    updateSlider();
-                }
-
-                function updateSlider() {
-                    const transformValue = -currentIndex * 100 + '%';
-                    imageContainer.style.transform = `translateX(${transformValue})`;
-                }
-
-                setInterval(nextImage, 2500);
+                        document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
+                            thumbnail.classList.remove('active-thumb');
+                        });
+                        var nextIndex = event.to;
+                        document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
+                    });
+                    document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
+                        thumbnail.addEventListener('click', function () {
+                            carousel.to(index);
+                        });
+                    });
+                });
             </script>
+
+
+
+
+
         </body>
     </html>

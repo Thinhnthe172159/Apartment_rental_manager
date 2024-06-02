@@ -117,6 +117,7 @@ public class ApartmentDao extends DBContext {
         String sql = "SELECT [id]\n"
                 + "      ,[name]\n"
                 + "      ,[room_id]\n"
+                + "      ,[image]\n"
                 + "  FROM [dbo].[Property]"
                 + "where [id] = ? ";
 
@@ -125,7 +126,7 @@ public class ApartmentDao extends DBContext {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")));
+                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")),rs.getString("image"));
                 return p;
             }
         } catch (SQLException e) {
@@ -140,6 +141,7 @@ public class ApartmentDao extends DBContext {
         String sql = "SELECT [id]\n"
                 + "      ,[name]\n"
                 + "      ,[room_id]\n"
+                + "      ,[image]\n"
                 + "  FROM [dbo].[Property]"
                 + "where 1=1 ";
         sql += "and [room_id] =" + id;
@@ -148,7 +150,7 @@ public class ApartmentDao extends DBContext {
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")));
+                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")),rs.getString("image"));
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -159,17 +161,14 @@ public class ApartmentDao extends DBContext {
 
     public List<Property> getPropertyList() {
         List<Property> list = new ArrayList<>();
-        String sql = "SELECT [id]\n"
-                + "      ,[name]\n"
-                + "      ,[room_id]\n"
-                + "  FROM [dbo].[Property]"
+        String sql = "SELECT * FROM [dbo].[Property]"
                 + "where 1=1 ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")));
+                Property p = new Property(rs.getInt("id"), rs.getString("name"), getRoom(rs.getInt("room_id")),rs.getString("image"));
                 list.add(p);
             }
         } catch (SQLException e) {

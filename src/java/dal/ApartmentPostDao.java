@@ -251,11 +251,11 @@ public class ApartmentPostDao extends DBContext {
         }
 
         if (type == 1) {
-            sql += "ORDER BY [price] DESC ";
+            sql += "ORDER BY [price] DESC ,[payment_id] desc " ;
         } else if (type == 2) {
-            sql += "ORDER BY [price] ";
+            sql += "ORDER BY [price] ,[payment_id] desc";
         } else {
-            sql += "ORDER BY [post_start] DESC ";
+            sql += " order by [payment_id] desc, [post_start] DESC  ";
         }
 
         int offset = (pageNumber - 1) * pageSize;
