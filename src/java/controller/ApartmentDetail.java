@@ -72,6 +72,7 @@ public class ApartmentDetail extends HttpServlet {
         String apartment_post_id = request.getParameter("apartment_post_id");
         List<Apartment_image> apartment_images_list = new ArrayList<>();
         List<Apartment_properties> apartment_propertieses_list = new ArrayList<>();
+        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10,4);
 
         int apartment_id;
         int apartmentPost_id;
@@ -87,6 +88,7 @@ public class ApartmentDetail extends HttpServlet {
             request.setAttribute("page", page);
             request.setAttribute("Apartment", a);
             request.setAttribute("apartment_Post", apartment_Post);
+            request.setAttribute("apartment_Posts_popular", apartment_Posts_popular);
             request.setAttribute("apartment_propertieses_list", apartment_propertieses_list);
             request.setAttribute("apartment_images_list", apartment_images_list);
             request.getRequestDispatcher("ApartmentDetail.jsp").forward(request, response);

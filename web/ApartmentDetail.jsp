@@ -5,6 +5,7 @@
 --%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +18,7 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
         <title>Villa Agency - Property Detail Page</title>
 
         <!-- Bootstrap core CSS -->
@@ -70,6 +71,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-8">
+                            <div>Bài đăng ngày : ${apartment_Post.post_start}</div>
                             <div class="main-image">
 
 
@@ -122,6 +124,11 @@
                                     .active-thumb {
                                         border: 2px solid #007bff;
                                     }
+
+                                    #map {
+                                        width: 100%;
+                                        height: 500px;
+                                    }
                                 </style>
 
 
@@ -130,7 +137,10 @@
 
                             </div>
                             <div class="main-content">
-                                <span class="category">${requestScope.Apartment.type_id.name}</span><span>  <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="40px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg> ${requestScope.Apartment.city}, ${requestScope.Apartment.district}, ${requestScope.Apartment.commune}, ${requestScope.Apartment.address} </span>
+                                <span class="category">${requestScope.Apartment.type_id.name}</span><span>  <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="40px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg>
+                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}">${requestScope.Apartment.city}</a>,
+                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}">${requestScope.Apartment.district}</a>,
+                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}&phuong=${requestScope.Apartment.commune}">${requestScope.Apartment.commune}</a>,${requestScope.Apartment.address} </span>
                                 <hr>
                                 <c:if test="${apartment_Post.payment_id.id == 1}" >
                                     <h3 style="">${apartment_Post.title}</h3>
@@ -172,18 +182,32 @@
                                             </div>
                                         </div>
                                     </div>
-
-
+                                </div>
+                                <div class="accordion" id="accordionExample">
+                                    <div>
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Xem Trên Bản Đồ
+                                            </button>
+                                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="row accordion-body">
+                                                    
+                                                    <div id="map"></div>
+                                                </div>
+                                            </div>
+                                        </h2>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="info-table">
                                     <ul>
                                         <li>
-                                            <img src="uploads/${Apartment}" alt="" style="max-width: 52px;">
-                                        </li>
-                                        <li>
-                                            <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
+                                            <img src="uploads/${Apartment.landLord_id.image}" alt="ảnh landlord" style="max-width: 52px;">
+                                        <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span>Phone --> 0987654321</span></h4>
+                                    </li>
+                                    <li>
+                                        <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
                                         <h4>${Apartment.area}<br><span>m2</span></h4>
                                     </li>
                                     <li>
@@ -200,108 +224,127 @@
                                     </li>
                                 </ul>
                             </div>
+                            <br>
+                            <div class="info-table">
+                                <h4 style="font-family: initial">Căn hộ nổi bật</h4>
+                                    <c:forEach items="${requestScope.apartment_Posts_popular}" var="app">
+                                        <c:choose>
+                                            <c:when test="${fn:length(app.title) > 30}"><br>
+                                                *<a style="color: red" href="ApartmentDetail?Apartment_id=${app.apartment_id.id}&apartment_post_id=${app.id}">
+                                                    ${fn:substring(app.title, 0, 30)}...
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise><br>
+                                                *<a style="color: red" href="ApartmentDetail?Apartment_id=${app.apartment_id.id}&apartment_post_id=${app.id}">
+                                                    ${app.title}
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>      
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="section best-deal">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="section-heading">
-                                <h6>| Best Deal</h6>
-                                <h2>Find Your Best Deal Right Now!</h2>
+                <div class="section best-deal">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="section-heading">
+                                    <h6>| Best Deal</h6>
+                                    <h2>Find Your Best Deal Right Now!</h2>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="tabs-content">
-                                <div class="row">
-                                    <div class="nav-wrapper">
-                                        <ul class="nav nav-tabs" role="tablist">
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link active" id="appartment-tab" data-bs-toggle="tab" data-bs-target="#appartment" type="button" role="tab" aria-controls="appartment" aria-selected="true">Appartment</button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villa House</button>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="penthouse-tab" data-bs-toggle="tab" data-bs-target="#penthouse" type="button" role="tab" aria-controls="penthouse" aria-selected="false">Penthouse</button>
-                                            </li>
-                                        </ul>
-                                    </div>              
-                                    <div class="tab-content" id="myTabContent">
-                                        <div class="tab-pane fade show active" id="appartment" role="tabpanel" aria-labelledby="appartment-tab">
-                                            <div class="row">
-                                                <div class="col-lg-3">
-                                                    <div class="info-table">
-                                                        <ul>
-                                                            <li>Total Flat Space <span>540 m2</span></li>
-                                                            <li>Floor number <span>3</span></li>
-                                                            <li>Number of rooms <span>8</span></li>
-                                                            <li>Parking Available <span>Yes</span></li>
-                                                            <li>Payment Process <span>Bank</span></li>
-                                                        </ul>
+                            <div class="col-lg-12">
+                                <div class="tabs-content">
+                                    <div class="row">
+                                        <div class="nav-wrapper">
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="appartment-tab" data-bs-toggle="tab" data-bs-target="#appartment" type="button" role="tab" aria-controls="appartment" aria-selected="true">Appartment</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Villa House</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="penthouse-tab" data-bs-toggle="tab" data-bs-target="#penthouse" type="button" role="tab" aria-controls="penthouse" aria-selected="false">Penthouse</button>
+                                                </li>
+                                            </ul>
+                                        </div>              
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="appartment" role="tabpanel" aria-labelledby="appartment-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="info-table">
+                                                            <ul>
+                                                                <li>Total Flat Space <span>540 m2</span></li>
+                                                                <li>Floor number <span>3</span></li>
+                                                                <li>Number of rooms <span>8</span></li>
+                                                                <li>Parking Available <span>Yes</span></li>
+                                                                <li>Payment Process <span>Bank</span></li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <img src="assets/images/deal-01.jpg" alt="">
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <h4>All Info About Apartment</h4>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
-                                                    <div class="icon-button">
-                                                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                                    <div class="col-lg-6">
+                                                        <img src="assets/images/deal-01.jpg" alt="">
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="villa" role="tabpanel" aria-labelledby="villa-tab">
-                                            <div class="row">
-                                                <div class="col-lg-3">
-                                                    <div class="info-table">
-                                                        <ul>
-                                                            <li>Total Flat Space <span>250 m2</span></li>
-                                                            <li>Floor number <span>26th</span></li>
-                                                            <li>Number of rooms <span>5</span></li>
-                                                            <li>Parking Available <span>Yes</span></li>
-                                                            <li>Payment Process <span>Bank</span></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <img src="assets/images/deal-02.jpg" alt="">
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <h4>Detail Info About New Villa</h4>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
-                                                    <div class="icon-button">
-                                                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                                    <div class="col-lg-3">
+                                                        <h4>All Info About Apartment</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                                                        <div class="icon-button">
+                                                            <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="penthouse" role="tabpanel" aria-labelledby="penthouse-tab">
-                                            <div class="row">
-                                                <div class="col-lg-3">
-                                                    <div class="info-table">
-                                                        <ul>
-                                                            <li>Total Flat Space <span>320 m2</span></li>
-                                                            <li>Floor number <span>34th</span></li>
-                                                            <li>Number of rooms <span>6</span></li>
-                                                            <li>Parking Available <span>Yes</span></li>
-                                                            <li>Payment Process <span>Bank</span></li>
-                                                        </ul>
+                                            <div class="tab-pane fade" id="villa" role="tabpanel" aria-labelledby="villa-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="info-table">
+                                                            <ul>
+                                                                <li>Total Flat Space <span>250 m2</span></li>
+                                                                <li>Floor number <span>26th</span></li>
+                                                                <li>Number of rooms <span>5</span></li>
+                                                                <li>Parking Available <span>Yes</span></li>
+                                                                <li>Payment Process <span>Bank</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <img src="assets/images/deal-02.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <h4>Detail Info About New Villa</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                                                        <div class="icon-button">
+                                                            <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <img src="assets/images/deal-03.jpg" alt="">
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <h4>Extra Info About Penthouse</h4>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut Kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologistlabore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
-                                                    <div class="icon-button">
-                                                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                            </div>
+                                            <div class="tab-pane fade" id="penthouse" role="tabpanel" aria-labelledby="penthouse-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="info-table">
+                                                            <ul>
+                                                                <li>Total Flat Space <span>320 m2</span></li>
+                                                                <li>Floor number <span>34th</span></li>
+                                                                <li>Number of rooms <span>6</span></li>
+                                                                <li>Parking Available <span>Yes</span></li>
+                                                                <li>Payment Process <span>Bank</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <img src="assets/images/deal-03.jpg" alt="">
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <h4>Extra Info About Penthouse</h4>
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut Kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologistlabore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                                                        <div class="icon-button">
+                                                            <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -312,55 +355,76 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <footer class="footer-no-gap">
-                <div class="container">
-                    <div class="col-lg-12">
-                        <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+                <footer class="footer-no-gap">
+                    <div class="container">
+                        <div class="col-lg-12">
+                            <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
 
-                            Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+                                Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </footer>
 
-            <!-- Scripts -->
-            <!-- Bootstrap core JavaScript -->
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-            <script src="assets/js/isotope.min.js"></script>
-            <script src="assets/js/owl-carousel.js"></script>
-            <script src="assets/js/counter.js"></script>
-            <script src="assets/js/custom.js"></script>
+                <!-- Scripts -->
+                <!-- Bootstrap core JavaScript -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+                <script src="assets/js/isotope.min.js"></script>
+                <script src="assets/js/owl-carousel.js"></script>
+                <script src="assets/js/counter.js"></script>
+                <script src="assets/js/custom.js"></script>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-            <script>
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    var myCarousel = document.querySelector('#carouselExampleAutoplaying');
-                    var carousel = new bootstrap.Carousel(myCarousel, {
-                        interval: 5000,
-                        wrap: true
-                    });
-
-                    myCarousel.addEventListener('slide.bs.carousel', function (event) {
-
-                        document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
-                            thumbnail.classList.remove('active-thumb');
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', (event) => {
+                        var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+                        var carousel = new bootstrap.Carousel(myCarousel, {
+                            interval: 5000,
+                            wrap: true
                         });
-                        var nextIndex = event.to;
-                        document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
-                    });
-                    document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
-                        thumbnail.addEventListener('click', function () {
-                            carousel.to(index);
+
+                        myCarousel.addEventListener('slide.bs.carousel', function (event) {
+
+                            document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
+                                thumbnail.classList.remove('active-thumb');
+                            });
+                            var nextIndex = event.to;
+                            document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
+                        });
+                        document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
+                            thumbnail.addEventListener('click', function () {
+                                carousel.to(index);
+                            });
                         });
                     });
-                });
-            </script>
+                </script>
+
+                <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                <script>
+
+                    var map = L.map('map');
+
+        
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    var address = '${Apartment.city} .${Apartment.district}. ${Apartment.commune}';
+                    var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+
+                    fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                var lat = parseFloat(data[0].lat);
+                                var lon = parseFloat(data[0].lon);
+                                map.setView([lat, lon], 14); 
+                                L.marker([lat, lon]).addTo(map).bindPopup(address).openPopup(); 
+                            })
+                            .catch(error => console.error('Error:', error));
+                </script>
 
 
 
-
-
-        </body>
-    </html>
+            </body>
+        </html>
