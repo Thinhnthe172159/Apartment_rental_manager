@@ -29,7 +29,14 @@ public class IncidentReportDao extends DBContext {
     }
 
     public void addIncidentReport(Incident report) throws SQLException {
-        String query = "INSERT INTO Incident (tenant_id, landlord_id, context, image, status, date) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO [dbo].[Incident]\n"
+                + "           ([tenant_id]\n"
+                + "           ,[landlord_id]\n"
+                + "           ,[context]\n"
+                + "           ,[image]\n"
+                + "           ,[status]\n"
+                + "           ,[date])\n"
+                + "     VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -152,14 +159,8 @@ public class IncidentReportDao extends DBContext {
         try {
             List<Incident> incidentList = incidentReportDao.getAllIncidentReports();
             for (Incident incident : incidentList) {
-                System.out.println("Incident ID: " + incident.getId());
-                System.out.println("Tenant: " + incident.getTenant_id().getFirst_name() + " " + incident.getTenant_id().getLast_name());
-                System.out.println("Landlord: " + incident.getLandlord_id().getFirst_name() + " " + incident.getLandlord_id().getLast_name());
-                System.out.println("Context: " + incident.getContext());
-                System.out.println("Image: " + incident.getImage());
-                System.out.println("Status: " + incident.getStatus());
-                System.out.println("Date: " + incident.getDate());
-                System.out.println("---------------------------------");
+                System.out.println(incident);
+                      
             }
         } catch (SQLException e) {
             e.printStackTrace();

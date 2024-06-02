@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -104,7 +107,7 @@
                         <td>${incident.tenant_id.email}</td>
                         <td>${incident.landlord_id.email}</td>
                         <td>${incident.context}</td>
-                        <td><img src="${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
+                        <td><img src="Incident_image/${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
                         <td>${incident.status}</td>
                         <td>${incident.date}</td>
                         <td>

@@ -24,12 +24,11 @@ import java.sql.SQLException;
 @WebServlet(name = "ListIncidentReport", urlPatterns = {"/listincidentreport"})
 public class ListIncidentReport extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private IncidentReportDao incidentReportDao;
 
-    public ListIncidentReport() {
-        // Initialize the IncidentReportDao with a DBContext instance
-        DBContext dbContext = new DBContext();
-        incidentReportDao = new IncidentReportDao(dbContext);
+    public void init() throws ServletException {
+        incidentReportDao = new IncidentReportDao(new DBContext());
     }
 
     /**
@@ -72,34 +71,18 @@ public class ListIncidentReport extends HttpServlet {
             throws ServletException, IOException {
 
         // Set default pageNo and pageSize if not provided
-        int pageNo = 1;
-        int pageSize = 5; // Change this to the desired page size
-
-        // Parse pageNo and pageSize from request parameters if provided
-        if (request.getParameter("pageNo") != null) {
-            pageNo = Integer.parseInt(request.getParameter("pageNo"));
-        }
-        if (request.getParameter("pageSize") != null) {
-            pageSize = Integer.parseInt(request.getParameter("pageSize"));
-        }
-
         try {
-            // Get the paginated incident reports
-            List<Incident> incidentList = incidentReportDao.getPaginatedIncidentReports(pageNo, pageSize);
-            int totalIncidents = incidentReportDao.getTotalIncidentCount();
-            int totalPages = (int) Math.ceil((double) totalIncidents / pageSize);
-
-            // Set the incidents and pagination details in request attributes
+            // Retrieve all incident reports from the database
+            List<Incident> incidentList = incidentReportDao.getAllIncidentReports();
+            // Set the incidentList attribute for the request
             request.setAttribute("incidentList", incidentList);
-            request.setAttribute("currentPage", pageNo);
-            request.setAttribute("totalPages", totalPages);
-            request.setAttribute("pageSize", pageSize);
-
-            // Forward to the JSP page to display the incidents
+            // Forward the request to the JSP page for rendering
             request.getRequestDispatcher("ListIncident.jsp").forward(request, response);
         } catch (SQLException e) {
+            // Log the exception and set an error message
             e.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred while retrieving the incident reports.");
+            request.setAttribute("errorMessage", "Database error occurred while retrieving the incident reports");
+            // Forward the request to the error JSP page
             request.getRequestDispatcher("Error.jsp").forward(request, response);
         }
     }
