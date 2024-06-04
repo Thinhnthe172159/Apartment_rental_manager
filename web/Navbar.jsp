@@ -13,7 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-       
+
 
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +32,16 @@
                 display: block;
                 margin-top: 0; /* Adjust margin as needed */
             }
+
+            .header-area {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                background-color: #ffffff; /* Đảm bảo navbar có màu nền nếu cần thiết */
+                z-index: 1000;
+            }
+
+
         </style>
     </head>
     <body>
@@ -63,15 +73,15 @@
                             <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
                             <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                            <c:choose>
-                                <c:when test="${user_Data == null}">
+                                    <c:choose>
+                                        <c:when test="${user_Data == null}">
                                     <li><a href="Login"><i class="fa fa-sign-in"></i></a></li>
-                                </c:when>
-                                <c:otherwise>
+                                        </c:when>
+                                        <c:otherwise>
                                     <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>
                                     <li><a href="Logout"><i class="fa fa-sign-out"></i></a></li>
-                                </c:otherwise>
-                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
                         </ul>
                     </div>
                 </div>

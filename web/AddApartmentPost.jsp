@@ -18,6 +18,8 @@
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
         <title>Document</title>
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
     </head>
 
     <body>
@@ -46,12 +48,28 @@
 
                     </div>
                     <br><br>
+                    <style>
+                        #editor {
+                            width: 100%;
+                            min-height: 400px; 
+                        }
+
+                    </style>
                     <div class="col-md-12">
-                        <div class="form-floating">
-                            <textarea required="" name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                      style="height: 300px"></textarea>
-                            <label for="floatingTextarea2">Nhập nội dung bài viết</label>
-                        </div>
+                        
+                           
+                        <textarea id="editor" required="" name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"  cols="300" rows="10">
+                                <br><br><br><br>
+                        </textarea>
+                            
+                            <script>
+                                ClassicEditor
+                                        .create(document.querySelector('#editor'))
+                                        .catch(error => {
+                                            console.error(error);
+                                        });
+                            </script>
+                        
                     </div>
                     <br>
                     <br>

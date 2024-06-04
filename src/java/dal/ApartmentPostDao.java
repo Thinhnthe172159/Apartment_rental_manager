@@ -310,7 +310,7 @@ public class ApartmentPostDao extends DBContext {
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
         List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9,4);
         for (Apartment_Post iApartment_PostL : list) {
-            System.out.println(iApartment_PostL.getPayment_id().getId());
+            System.out.println(iApartment_PostL);
         }
         int n = apartmentPostDao.getApartmentPostSize(null, "Hải Dương", null, null, 0, 0, 0, 0, 0, 0, 0);
         System.out.println(n);
