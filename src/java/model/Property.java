@@ -12,11 +12,16 @@ public class Property {
     private int id;
     private String name;
     private Room room_id;
+    private String image;
 
-    public Property(int id, String name, Room room_id) {
+    public Property() {
+    }
+
+    public Property(int id, String name, Room room_id, String image) {
         this.id = id;
         this.name = name;
         this.room_id = room_id;
+        this.image = image;
     }
 
     public int getId() {
@@ -42,6 +47,16 @@ public class Property {
     public void setRoom_id(Room room_id) {
         this.room_id = room_id;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+  
     
     
 }

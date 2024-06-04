@@ -1,73 +1,101 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Incident Report Management</title>
+    <title>Add Incident Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .container {
+            max-width: 700px;
+            margin-top: 70px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            height: 45px;
+        }
+        .btn-primary {
+            width: 100%;
+            height: 45px;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .form-check-label {
+            padding-left: 10px;
+        }
+        .text-center {
+            color: #007bff;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Incident Report Management</h1>
-
-    <h2>Add Incident Report</h2>
-    <form action="addincidentreport" method="post">
-        <label for="tenantId">Tenant ID:</label><br>
-        <input type="number" id="tenantId" name="tenantId" required><br>
-
-        <label for="landlordId">Landlord ID:</label><br>
-        <input type="number" id="landlordId" name="landlordId" required><br>
-
-        <label for="context">Context:</label><br>
-        <textarea id="context" name="context" required></textarea><br>
-
-        <label for="image">Image URL:</label><br>
-        <input type="text" id="image" name="image"><br>
-
-        <label for="status">Status:</label><br>
-        <input type="text" id="status" name="status" required><br>
-
-        <label for="date">Date:</label><br>
-        <input type="date" id="date" name="date" required><br><br>
-
-        <input type="submit" value="Add Incident Report">
-    </form>
-
-    <h2>Get Incident Report</h2>
-    <form action="viewincidentreport" method="get">
-        <label for="id">Incident Report ID:</label><br>
-        <input type="number" id="id" name="id" required><br><br>
-
-        <input type="submit" value="Get Incident Report">
-    </form>
-
-    <h2>Incident Report Details</h2>
-    <div>
-        <%
-            String id = request.getParameter("id");
-            if (id != null) {
-                IncidentReportDAO incidentReportDAO = new IncidentReportDAO(new DatabaseUtility());
-                try {
-                    int reportId = Integer.parseInt(id);
-                    IncidentReport report = incidentReportDAO.getIncidentReport(reportId);
-                    if (report != null) {
-        %>
-                        <p><strong>ID:</strong> <%= report.getId() %></p>
-                        <p><strong>Tenant ID:</strong> <%= report.getTenantId() %></p>
-                        <p><strong>Landlord ID:</strong> <%= report.getLandlordId() %></p>
-                        <p><strong>Context:</strong> <%= report.getContext() %></p>
-                        <p><strong>Image:</strong> <%= report.getImage() %></p>
-                        <p><strong>Status:</strong> <%= report.getStatus() %></p>
-                        <p><strong>Date:</strong> <%= report.getDate() %></p>
-        <%
-                    } else {
-        %>
-                        <p>Incident report not found!</p>
-        <%
-                    }
-                } catch (Exception e) {
-                    out.println("<p>Error retrieving incident report: " + e.getMessage() + "</p>");
-                }
-            }
-        %>
+    <jsp:include page="Navbar.jsp"/>
+    <div class="container">
+        <h2 class="text-center">Add New Incident Report</h2>
+        <form action="AddIncidentReportServlet" method="post">
+            <div class="form-group">
+                <label for="tenantId">Tenant ID:</label>
+                <input type="number" class="form-control" id="tenantId" name="tenantId" required>
+            </div>
+            <div class="form-group">
+                <label for="landlordId">Landlord ID:</label>
+                <input type="number" class="form-control" id="landlordId" name="landlordId" required>
+            </div>
+            <div class="form-group">
+                <label for="context">Context:</label>
+                <textarea class="form-control" id="context" name="context" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">Image URL:</label>
+                <input type="text" class="form-control" id="image" name="image">
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger" role="alert">
+                ${errorMessage}
+            </div>
+        </c:if>
+        <c:if test="${not empty successMessage}">
+            <div class="alert alert-success" role="alert">
+                ${successMessage}
+            </div>
+        </c:if>
     </div>
+            <jsp:include page="Footer.jsp"/>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

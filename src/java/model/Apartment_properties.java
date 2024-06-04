@@ -8,15 +8,15 @@ package model;
  *
  * @author thinh
  */
-public class Apartment_room {
+public class Apartment_properties {
     private int id;
     private Apartment apartment_id;
     private Property property_id;
 
-    public Apartment_room() {
+    public Apartment_properties() {
     }
 
-    public Apartment_room(int id, Apartment apartment_id, Property property_id) {
+    public Apartment_properties(int id, Apartment apartment_id, Property property_id) {
         this.id = id;
         this.apartment_id = apartment_id;
         this.property_id = property_id;
@@ -44,9 +44,6 @@ public class Apartment_room {
 
     public void setProperty_id(Property property_id) {
         this.property_id = property_id;
-    }
-
-
-    
+    }  
     
 }

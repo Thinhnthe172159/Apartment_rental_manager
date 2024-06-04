@@ -54,7 +54,6 @@ public class ApartmentPostList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
 
@@ -69,34 +68,60 @@ public class ApartmentPostList extends HttpServlet {
         String areaUp = request.getParameter("areaUp");
         String areaDown = request.getParameter("areaDown");
         String type_raw = request.getParameter("type");
+        String page_index = request.getParameter("page_index");
+
+        int Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
+        int bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
+        int type_sort = (type_raw == null || type_raw.isEmpty()) ? 0 : Integer.parseInt(type_raw);
+        double priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp);
+        double priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown);
+        double area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
+        double area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
+        int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
 
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         request.setAttribute("apartment_types_list", apartment_types_list);
 
-        int Apartment_type, bedroom, type_sort;
-        double priceUp, priceDown, area_up, area_down;
-        List<Apartment_Post> apartmentPostList = new ArrayList<>();
-
-        try {
-            Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
-            bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
-            type_sort = (type_raw == null || type_raw.isEmpty()) ? 0 : Integer.parseInt(type_raw);
-            priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp);
-            priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown);
-            area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
-            area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
-            apartmentPostList = apartmentPostDao.getApartment_Post_List((title_name == null||title_name.isEmpty())?null:title_name,
-                    (tinh == null||tinh.isEmpty())?null:tinh,
-                    (quan == null||quan.isEmpty())?null:quan,
-                    (phuong == null||phuong.isEmpty())?null:phuong,
-                    area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1);
-            request.setAttribute("apartmentPostList", apartmentPostList);
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        int totalSize = apartmentPostDao.getApartmentPostSize(
+                (title_name == null || title_name.isEmpty()) ? null : title_name,
+                (tinh == null || tinh.isEmpty()) ? null : tinh,
+                (quan == null || quan.isEmpty()) ? null : quan,
+                (phuong == null || phuong.isEmpty()) ? null : phuong,
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 1
+        );
+        int pageSize = 4;
+        int totalPages = (int) Math.ceil((double) totalSize / pageSize);
+        List<Integer> pagelist = new ArrayList<>();
+        for (int i = 1; i <= totalPages; i++) {
+            pagelist.add(i);
         }
-        int page = 2;
+
+        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List(
+                (title_name == null || title_name.isEmpty()) ? null : title_name,
+                (tinh == null || tinh.isEmpty()) ? null : tinh,
+                (quan == null || quan.isEmpty()) ? null : quan,
+                (phuong == null || phuong.isEmpty()) ? null : phuong,
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1, pageIndex, pageSize,0
+        );
+
+        request.setAttribute("pageList", pagelist);
+        request.setAttribute("apartmentPostList", apartmentPostList);
+        request.setAttribute("page_index", pageIndex);
+
+        request.setAttribute("name", title_name);
+        request.setAttribute("apartmentType", apartment_type);
+        request.setAttribute("tinh", tinh);
+        request.setAttribute("quan", quan);
+        request.setAttribute("phuong", phuong);
+        request.setAttribute("moneyUp", moneyUp);
+        request.setAttribute("moneyDown", moneyDown);
+        request.setAttribute("bedroom", numberOfBedroom);
+        request.setAttribute("areaUp", areaUp);
+        request.setAttribute("areaDown", areaDown);
+        request.setAttribute("type", type_raw);
+        int page =2;
         request.setAttribute("page", page);
+
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);
     }
 
