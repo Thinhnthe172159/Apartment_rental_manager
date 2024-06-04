@@ -129,7 +129,7 @@ public class AddIncidentReport extends HttpServlet {
             // Respond with the names of the uploaded files
             response.setContentType("text/plain");
             response.getWriter().write("Files uploaded successfully: " + fileNames.toString());
-            //response.sendRedirect("ListIncidentServlet?successMessage=Incident added successfully");
+            //response.sendRedirect("listincidentreport");
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Database error occurred while adding the incident report");

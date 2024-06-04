@@ -73,7 +73,7 @@
                 <p><strong>Date:</strong> ${incident.date}</p>
                 <div class="image-container">
                     <p><strong>Image:</strong></p>
-                    <a href="#"><img src="${incident.id}" alt="Incident Image"> </a>
+                    <a href="#"><img src="Incident_image/${incident.image}" alt="Incident Image"> </a>
                 </div>
                 <!-- Add more incident details here if needed -->
             </div>

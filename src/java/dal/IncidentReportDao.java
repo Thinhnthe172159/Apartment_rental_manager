@@ -89,6 +89,9 @@ public class IncidentReportDao extends DBContext {
             statement.setInt(5, report.getId());
             statement.executeUpdate();
         }
+        catch (SQLException e) {
+            System.out.println("updateIncidentReport: " + e.getMessage());
+        }
     }
 
     public void deleteIncidentReport(int id) throws SQLException {

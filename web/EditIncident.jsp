@@ -49,41 +49,42 @@
 
             <%-- Display the incident details in a form --%>
             <form action="EditIncident" method="post">
-                <input type="hidden" name="id" value="${incident.id}">
+                <input type="hidden" name="id" value="${requestScope.incident.id}">
 
                 <div class="form-group">
                     <label for="tenantEmail">Tenant Email:</label>
-                    <input type="text" id="tenantEmail" name="tenantEmail" class="form-control" value="${incident.tenant.email}" >
+                    <input type="text" id="tenantEmail" name="tenantEmail" class="form-control" value="${requestScope.incident.tenant_id.email}" >
                 </div>
 
                 <div class="form-group">
                     <label for="landlordEmail">Landlord Email:</label>
-                    <input type="text" id="landlordEmail" name="landlordEmail" class="form-control" value="${incident.landlord.email}">
+                    <input type="text" id="landlordEmail" name="landlordEmail" class="form-control" value="${requestScope.incident.landlord_id.email}">
                 </div>
 
                 <div class="form-group">
                     <label for="context">Context:</label>
-                    <textarea id="context" name="context" class="form-control">${incident.context}</textarea>
+                    <textarea id="context" name="context" class="form-control">${requestScope.incident.context}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="status">Status:</label>
                     <select id="status" name="status" class="form-control">
-                        <option value="Open" ${incident.status == 'Open' ? 'selected' : ''}>Open</option>
-                        <option value="In Progress" ${incident.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
-                        <option value="Closed" ${incident.status == 'Closed' ? 'selected' : ''}>Closed</option>
+                        <option value="Open" ${requestScope.incident.status == 'Open' ? 'selected' : ''}>Open</option>
+                        <option value="In Progress" ${requestScope.incident.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
+                        <option value="Closed" ${requestScope.incident.status == 'Closed' ? 'selected' : ''}>Closed</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" class="form-control" value="${incident.date}">
+                    <input type="date" id="date" name="date" class="form-control" value="${requestScope.incident.date}">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="listincidentreport?id"=${incident.id} class="btn btn-primary">Update</a>
+                
             </form>
             <br>
-            <a href="ListIncident.jsp" class="btn btn-secondary">Back to List</a>
+            <a href="listincidentreport?id"=${incident.id} class="btn btn-secondary">Back to List</a>
         </div>
 
         <!-- Include Bootstrap JS and dependencies -->
