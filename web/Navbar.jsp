@@ -33,13 +33,13 @@
                 margin-top: 0; /* Adjust margin as needed */
             }
 
-            .header-area {
+/*            .header-area {
                 position: fixed;
                 top: 0;
                 width: 100%;
-                background-color: #ffffff; /* Đảm bảo navbar có màu nền nếu cần thiết */
+                background-color: #ffffff;  Đảm bảo navbar có màu nền nếu cần thiết 
                 z-index: 1000;
-            }
+            }*/
 
 
         </style>
