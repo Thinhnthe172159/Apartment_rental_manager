@@ -111,7 +111,7 @@
                         <td>${incident.status}</td>
                         <td>${incident.date}</td>
                         <td>
-                            <a href="ViewIncident.jsp?id=${incident.id}" class="btn btn-info btn-sm">View</a>
+                            <a href="viewincident?id=${incident.id}" class="btn btn-info btn-sm">View</a>
                             <a href="EditIncident.jsp?id=${incident.id}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="DeleteIncident?id=${incident.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this incident?')">Delete</a>
                         </td>

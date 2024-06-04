@@ -53,7 +53,8 @@ public class IncidentReportDao extends DBContext {
     }
 
     public Incident getIncidentReport(int id) throws SQLException {
-        String query = "SELECT * FROM Incident WHERE id = ?";
+        String query = "SELECT * FROM Incident\n"
+                      + " WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -160,7 +161,7 @@ public class IncidentReportDao extends DBContext {
             List<Incident> incidentList = incidentReportDao.getAllIncidentReports();
             for (Incident incident : incidentList) {
                 System.out.println(incident);
-                      
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
