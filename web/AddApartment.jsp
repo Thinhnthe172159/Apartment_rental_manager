@@ -4,7 +4,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Thêm thông tin căn hộ</title>
+        <link rel="icon" href="img/logoWeb.png" type="image/x-icon">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
@@ -229,7 +230,7 @@
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">III. Thông tin hình ảnh</h2>
                     <div class="col-md-12" style="border: 1px solid #686868;">
-                        <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br></p>
+                        <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br>Lưu ý bức ảnh đầu tiên bạn chọn sẽ là thumbnail của bài đăng cho căn hộ của bạn</p>
 
                         <input type="file" id="imageInput" name="images" multiple accept="image/*"><br><br>
                         <div class="preview" id="imagePreview"></div><br>
@@ -313,7 +314,7 @@
                 const form = event.target;
                 let isValid = true;
 
-                // Custom validation messages
+                
                 if (!form.name_apartment.value) {
                     isValid = false;
                     document.getElementById('name_apartment_error').textContent = 'Vui lòng điền tên căn hộ';
