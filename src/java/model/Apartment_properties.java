@@ -44,9 +44,6 @@ public class Apartment_properties {
 
     public void setProperty_id(Property property_id) {
         this.property_id = property_id;
-    }
-
-
-    
+    }  
     
 }

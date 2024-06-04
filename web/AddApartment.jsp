@@ -7,6 +7,12 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <link rel="stylesheet" href="assets/css/fontawesome.css">
+        <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
+        <link rel="stylesheet" href="assets/css/owl.css">
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <style>
             .preview {
                 display: flex;
@@ -20,10 +26,23 @@
                 color: red;
                 font-size: 0.9em;
             }
+            .navbar {
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
+            }
+
+            #map{
+                z-index: 2;
+            }
+
         </style>
     </head>
     <body>
+
         <jsp:include page="Navbar.jsp"/>
+        <br><br>
         <form id="apartmentForm" action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">
@@ -84,7 +103,7 @@
                         });
                     </script> 
 
-                    <table class="col-md-8">
+                    <table class="col-md-7">
                         <thead>
                             <tr>
                                 <th class="col-md-4"><h2 style="color: royalblue">I. Thông tin cơ bản</h2></th>
@@ -151,7 +170,16 @@
                             </tr>
                         </tbody>
                     </table>
-                    <input type="hidden" name="tinh" id="hidden_tinh">
+                    <div class="col-md-5">
+                        <style>
+                            #map {
+                                width: 100%;
+                                height: 500px;
+                            }
+                        </style>
+                        <div id="map"></div>
+                    </div>
+                    <input type="hidden" name="tinh" id="hidden_tinh" >
                     <input type="hidden" name="quan" id="hidden_quan">
                     <input type="hidden" name="phuong" id="hidden_phuong">
                 </div>
@@ -354,6 +382,80 @@
                 }
             });
         </script>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            var map = L.map('map').setView([21.0285, 105.8542], 10); // Default to Hanoi
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var marker;
+
+            function updateMap(address) {
+                var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+
+                fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                var lat = parseFloat(data[0].lat);
+                                var longitude = parseFloat(data[0].lon);
+                                map.setView([lat, longitude], 14);
+
+                                if (marker) {
+                                    map.removeLayer(marker);
+                                }
+                                marker = L.marker([lat, longitude]).addTo(map).bindPopup(address).openPopup();
+                            } else {
+                                console.error('No results found for the address');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+            }
+
+            document.getElementById('tinh').addEventListener('change', function () {
+                var tinh = this.options[this.selectedIndex].text;
+                document.getElementById('hidden_tinh').value = tinh;
+
+         
+                document.getElementById('quan').innerHTML = '<option value="0">Quận huyện</option>';
+                document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
+                document.getElementById('hidden_quan').value = '';
+                document.getElementById('hidden_phuong').value = '';
+
+                updateMap(tinh);
+            });
+
+            document.getElementById('quan').addEventListener('change', function () {
+                var tinh = document.getElementById('hidden_tinh').value;
+                var quan = this.options[this.selectedIndex].text;
+                document.getElementById('hidden_quan').value = quan;
+
+             
+                document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
+                document.getElementById('hidden_phuong').value = '';
+
+                updateMap(tinh + ' ' + quan);
+            });
+
+            document.getElementById('phuong').addEventListener('change', function () {
+                var tinh = document.getElementById('hidden_tinh').value;
+                var quan = document.getElementById('hidden_quan').value;
+                var phuong = this.options[this.selectedIndex].text;
+                document.getElementById('hidden_phuong').value = phuong;
+
+                updateMap(tinh + ' ' + quan + ' ' + phuong);
+            });
+        </script>
+
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/isotope.min.js"></script>
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/counter.js"></script>
+        <script src="assets/js/custom.js"></script>
+
         <br><br>
         <jsp:include page="Footer.jsp"/>
     </body>

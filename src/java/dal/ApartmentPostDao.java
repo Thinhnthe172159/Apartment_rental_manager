@@ -210,7 +210,7 @@ public class ApartmentPostDao extends DBContext {
             int type,
             int status,
             int pageNumber,
-            int pageSize) {
+            int pageSize,int payment_id) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT [id], [title], [description], [post_status], [post_start], [post_end], [apartment_id], [payment_id], [landlord_id], [first_image], [city], [district], [commune], [area], [number_of_bedroom], [apartment_name], [price], [apartment_type], [total_image] ";
         sql += "FROM [dbo].[Apartment_Posts] ";
@@ -249,13 +249,16 @@ public class ApartmentPostDao extends DBContext {
         if (status != 0) {
             sql += "AND [post_status] = " + status;
         }
+        if(payment_id!=0){
+            sql += " and [payment_id] = " + payment_id ;
+        }
 
         if (type == 1) {
-            sql += "ORDER BY [price] DESC ";
+            sql += "ORDER BY [price] DESC ,[payment_id] desc " ;
         } else if (type == 2) {
-            sql += "ORDER BY [price] ";
+            sql += "ORDER BY [price] ,[payment_id] desc";
         } else {
-            sql += "ORDER BY [post_start] DESC ";
+            sql += " order by [payment_id] desc, [post_start] DESC  ";
         }
 
         int offset = (pageNumber - 1) * pageSize;
@@ -292,6 +295,7 @@ public class ApartmentPostDao extends DBContext {
                 ap.setApartment_type(at);
                 ap.setTotal_image(rs.getInt("total_image"));
                 list.add(ap);
+                
             }
         } catch (SQLException e) {
 
@@ -304,7 +308,7 @@ public class ApartmentPostDao extends DBContext {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9);
+        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9,4);
         for (Apartment_Post iApartment_PostL : list) {
             System.out.println(iApartment_PostL);
         }
