@@ -54,7 +54,6 @@
         <link rel="stylesheet" href="assets/css/fontawesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
         <link rel="stylesheet" href="assets/css/owl.css">
-        <link rel="stylesheet" href="assets/css/animate.css">
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -269,78 +268,168 @@
 
                                     </div>
                                 </div>
+                                <style>
+                                    .range-slider {
+                                        margin: 20px 0;
+                                    }
+
+                                    .ui-slider {
+                                        width: 100%;
+                                    }
+
+                                    .clearfix::after {
+                                        content: "";
+                                        display: table;
+                                        clear: both;
+                                    }
+                                </style>
 
                                 <div class="range-slider">
-                                    <label>Area</label>
-                                    <div data-min="0" data-max="1000" data-unit="m2" data-min-name="areaUp" data-max-name="areaDown" class="range-slider-ui ui-slider" aria-disabled="false"></div>
+                                    <label>Diện tích</label>
+                                    <div id="ArearangeSlider" data-min="0" data-max="500" data-unit="m2" class="range-slider-ui ui-slider"></div>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-
-                                        <input id="areaUp" class="search-fields"  type="number" name="areaUp"  placeholder="${requestScope.areaUp}">
-
+                                        <input id="areaUp" class="selectpicker search-fields" type="number" name="areaUp" placeholder="0">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <input id="areaDown" class="search-fields"  type="number" name="areaDown"  placeholder="${requestScope.areaDown}">
+                                        <input id="areaDown" class="selectpicker search-fields" type="number" name="areaDown" placeholder="100">
                                     </div>
                                 </div>
-                                <script>
-            document.getElementById('areaUp').addEventListener('input', function () {
-                var value = parseInt(this.value, 10);
-                if (value > 1000) {
-                    this.value = 1000;
-                } else if (value < 0) {
-                    this.value = 0;
-                }
-            });
 
-            document.getElementById('areaDown').addEventListener('input', function () {
-                var value = parseInt(this.value, 10);
-                if (value > 1000) {
-                    this.value = 1000;
-                } else if (value < 0) {
-                    this.value = 0;
+                                <!-- Include jQuery and jQuery UI -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+                                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+                                <script>
+            $(document).ready(function () {
+                var $slider = $("#ArearangeSlider");
+                var $minInput = $("#areaUp");
+                var $maxInput = $("#areaDown");
+
+                $slider.slider({
+                    range: true,
+                    min: 0,
+                    max: 500,
+                    values: [0, 500],
+                    slide: function (event, ui) {
+                        $minInput.val(ui.values[0]);
+                        $maxInput.val(ui.values[1]);
+                    }
+                });
+
+                $minInput.val($slider.slider("values", 0));
+                $maxInput.val($slider.slider("values", 1));
+
+                function updateSlider() {
+                    var min = parseInt($minInput.val(), 10);
+                    var max = parseInt($maxInput.val(), 10);
+
+                    if (min > max) {
+                        min = max;
+                        $minInput.val(min);
+                    }
+                    if (max < min) {
+                        max = min;
+                        $maxInput.val(max);
+                    }
+
+                    $slider.slider("values", 0, min);
+                    $slider.slider("values", 1, max);
                 }
+
+                $minInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+
+                $maxInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
             });
                                 </script>
+
+
+
                                 <div class="range-slider">
-                                    <label>Price</label>
-                                    <div data-min="0" data-max="100" data-unit="vnd" data-min-name="moneyUp" data-max-name="moneyDown" class="range-slider-ui ui-slider" aria-disabled="false" ></div>
+                                    <label>Giá tiền khoảng</label>
+                                    <div id="rangeSlider" data-min="0" data-max="100" data-unit="triệu vnd" class="range-slider-ui ui-slider"></div>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-
-                                        <input id="priceUp" class="selectpicker search-fields"  type="number" name="moneyUp"  placeholder="${requestScope.moneyUp}">
-
+                                        <input id="priceUp" class="selectpicker search-fields" type="number" name="moneyUp" placeholder="0">
                                     </div>
                                     <div class="col-md-6 form-group">
-
-                                        <input id="priceDown" class="selectpicker search-fields"  type="number" name="moneyDown"  placeholder="${requestScope.moneyDown}">
-
+                                        <input id="priceDown" class="selectpicker search-fields" type="number" name="moneyDown" placeholder="100">
                                     </div>
                                 </div>
+                                <!-- Include jQuery and jQuery UI -->
+                                <!-- Include jQuery and jQuery UI -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+                                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
                                 <script>
-                                    document.getElementById('priceUp').addEventListener('input', function () {
-                                        var value = parseInt(this.value, 10);
-                                        if (value > 100) {
-                                            this.value = 100;
-                                        } else if (value < 0) {
-                                            this.value = 0;
-                                        }
-                                    });
+            $(document).ready(function () {
+                var $slider = $("#rangeSlider");
+                var $minInput = $("#priceUp");
+                var $maxInput = $("#priceDown");
 
-                                    document.getElementById('priceDown').addEventListener('input', function () {
-                                        var value = parseInt(this.value, 10);
-                                        if (value > 100) {
-                                            this.value = 100;
-                                        } else if (value < 0) {
-                                            this.value = 0;
-                                        }
-                                    });
+                $slider.slider({
+                    range: true,
+                    min: 0,
+                    max: 100,
+                    values: [0, 100],
+                    slide: function (event, ui) {
+                        $minInput.val(ui.values[0]);
+                        $maxInput.val(ui.values[1]);
+                    }
+                });
+
+                $minInput.val($slider.slider("values", 0));
+                $maxInput.val($slider.slider("values", 1));
+
+                function updateSlider() {
+                    var min = parseInt($minInput.val(), 10);
+                    var max = parseInt($maxInput.val(), 10);
+
+                    if (min > max) {
+                        min = max;
+                        $minInput.val(min);
+                    }
+                    if (max < min) {
+                        max = min;
+                        $maxInput.val(max);
+                    }
+
+                    $slider.slider("values", 0, min);
+                    $slider.slider("values", 1, max);
+                }
+
+                $minInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+
+                $maxInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+            });
                                 </script>
+
 
 
                                 <div class="form-group mb-0">
@@ -490,46 +579,46 @@
         <script src="js/sidebar.js"></script>
         <script src="js/app.js"></script>
         <script>
-                                    $(document).ready(function () {
-                                        // Fetch provinces
-                                        $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
-                                            if (data_tinh.error == 0) {
-                                                $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                                                    $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+            $(document).ready(function () {
+                // Fetch provinces
+                $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                    if (data_tinh.error == 0) {
+                        $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                            $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                        });
+                        $("#tinh").change(function (e) {
+                            var idtinh = $(this).val();
+                            $("#hidden_tinh").val($("#tinh option:selected").text());
+                            // Fetch districts
+                            $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                if (data_quan.error == 0) {
+                                    $("#quan").html('<option value="0">Quận Huyện</option>');
+                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                    $.each(data_quan.data, function (key_quan, val_quan) {
+                                        $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                    });
+                                    // Fetch wards
+                                    $("#quan").change(function (e) {
+                                        var idquan = $(this).val();
+                                        $("#hidden_quan").val($("#quan option:selected").text());
+                                        $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                            if (data_phuong.error == 0) {
+                                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                    $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
                                                 });
-                                                $("#tinh").change(function (e) {
-                                                    var idtinh = $(this).val();
-                                                    $("#hidden_tinh").val($("#tinh option:selected").text());
-                                                    // Fetch districts
-                                                    $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
-                                                        if (data_quan.error == 0) {
-                                                            $("#quan").html('<option value="0">Quận Huyện</option>');
-                                                            $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                            $.each(data_quan.data, function (key_quan, val_quan) {
-                                                                $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-                                                            });
-                                                            // Fetch wards
-                                                            $("#quan").change(function (e) {
-                                                                var idquan = $(this).val();
-                                                                $("#hidden_quan").val($("#quan option:selected").text());
-                                                                $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
-                                                                    if (data_phuong.error == 0) {
-                                                                        $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                                        $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                                                            $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                                                                        });
-                                                                        $("#phuong").change(function (e) {
-                                                                            $("#hidden_phuong").val($("#phuong option:selected").text());
-                                                                        });
-                                                                    }
-                                                                });
-                                                            });
-                                                        }
-                                                    });
+                                                $("#phuong").change(function (e) {
+                                                    $("#hidden_phuong").val($("#phuong option:selected").text());
                                                 });
                                             }
                                         });
                                     });
+                                }
+                            });
+                        });
+                    }
+                });
+            });
         </script> 
 
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
