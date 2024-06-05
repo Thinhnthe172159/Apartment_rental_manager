@@ -31,15 +31,22 @@
             .dropdown:hover .dropdown-menu {
                 display: block;
                 margin-top: 0; /* Adjust margin as needed */
+
             }
 
-/*            .header-area {
+            .sub-header {
                 position: fixed;
-                top: 0;
                 width: 100%;
-                background-color: #ffffff;  Đảm bảo navbar có màu nền nếu cần thiết 
                 z-index: 1000;
-            }*/
+            }
+
+            .header-area {
+                position: fixed;
+                top: 50px;
+                width: 100%;
+                background-color: #ffffff;
+                z-index: 1000;
+            }
 
 
         </style>
@@ -108,8 +115,8 @@
                                         Đăng bài
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="AddApartmentPost">Đăng bài cho thuê căn hộ</a>
-                                        <a class="dropdown-item" href="#">Đăng bài cộng dồng</a>
+                                        <a class="dropdown-item" href="AddApartmentPost">cho thuê căn hộ</a>
+                                        <a class="dropdown-item" href="#">Post cộng đồng</a>
                                     </div>
                                 </li>
                                 <li><a href="property-details.html">Blogs</a></li>

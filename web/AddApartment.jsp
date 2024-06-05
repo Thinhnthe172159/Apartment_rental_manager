@@ -43,7 +43,19 @@
     <body>
 
         <jsp:include page="Navbar.jsp"/>
-        <br><br>
+        <br><br><br><br><br><br>
+                <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Apartment</a></span>
+                        <h3>ADD PROPERTIES</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
         <form id="apartmentForm" action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">

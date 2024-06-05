@@ -73,8 +73,8 @@ public class ApartmentPostList extends HttpServlet {
         int Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
         int bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
         int type_sort = (type_raw == null || type_raw.isEmpty()) ? 0 : Integer.parseInt(type_raw);
-        double priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp);
-        double priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown);
+        double priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp)*1000000;
+        double priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown)*1000000;
         double area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
         double area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
@@ -89,7 +89,7 @@ public class ApartmentPostList extends HttpServlet {
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
                 area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 1
         );
-        int pageSize = 4;
+        int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
