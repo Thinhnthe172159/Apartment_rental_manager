@@ -1,38 +1,67 @@
 <%-- 
-    Document   : ApartmentPostList
-    Created on : May 28, 2024, 1:05:29 AM
+    Document   : apartmentPostLists
+    Created on : Jun 4, 2024, 10:33:18 PM
     Author     : thinh
 --%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
+
 
     <head>
 
+        <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({'gtm.start':
+                            new Date().getTime(), event: 'gtm.js'});
+                var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                        '../../../../../../www.googletagmanager.com/gtm5445.html?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-TNL8QV6');</script>
+        <!-- End Google Tag Manager -->
+        <title>The Nest - Real Estate HTML Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-        <title>Villa Agency - Property Listing by TemplateMo</title>
-
-        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="css/leaflet.css" type="text/css">
+        <link rel="stylesheet" href="css/map.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
+        <link type="text/css" rel="stylesheet" href="fonts/bootstrap-icons/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
+        <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
+        <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
+        <link rel="stylesheet" type="text/css"  href="css/magnific-popup.css">
+        <link rel="stylesheet" type="text/css"  href="css/slick.css">
+        <link rel="stylesheet" type="text/css" href="css/initial.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;900&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
+        <script src="js/ie-emulation-modes-warning.js"></script>
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Additional CSS Files -->
         <link rel="stylesheet" href="assets/css/fontawesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
         <link rel="stylesheet" href="assets/css/owl.css">
-        <link rel="stylesheet" href="assets/css/animate.css">
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     </head>
-
     <body>
         <jsp:include page="Navbar.jsp"/>
+        <br><br><br><br>
         <div class="page-heading header-text">
             <div class="container">
                 <div class="row">
@@ -49,212 +78,506 @@
                 </div>
             </div>
         </div>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNL8QV6"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <div class="page_loader"></div>
 
-        <div class="section properties">
 
+        <!-- Properties section body start -->
+        <div class="properties-section-body content-area">
             <div class="container">
-                <div>
-                    <style>
-                        .search{
-                            position: relative;
-                            box-shadow: 0 0 40px rgba(51, 51, 51, .1);
-
-                        }
-
-                        .search input{
-
-                            height: 60px;
-                            text-indent: 25px;
-                            border: 2px solid #d6d4d4;
-
-
-                        }
-
-
-                        .search input:focus{
-
-                            box-shadow: none;
-                            border: 2px solid blue;
-
-
-                        }
-
-                        .search .fa-search{
-
-                            position: absolute;
-                            top: 20px;
-                            left: 16px;
-
-                        }
-
-                        .search button{
-
-                            position: absolute;
-                            top: 5px;
-                            right: 5px;
-                            height: 50px;
-                            width: 110px;
-                            background: blue;
-
-                        }
-                    </style>
-                    <script src="https://esgoo.net/scripts/jquery.js"></script>
-                    <style type="text/css">
-                        .css_select_div {
-                            text-align: center;
-                        }
-                        .css_select {
-                            display: inline-table;
-                            width: 25%;
-                            padding: 5px;
-                            margin: 5px 2%;
-                            border: solid 1px #686868;
-                            border-radius: 5px;
-                        }
-                    </style>
-
-                    <form  action="ApartmentPostList" method="get"  class="row height d-flex justify-content-center align-items-center">
-
-                        <div class="col-md-3">
-                            <select style="background: darkslategray;color: white" name="apartmentType"  class="form-select"  aria-label="Default select example">
-                                <option value="0">Loại căn hộ</option>
-                                <c:forEach items="${requestScope.apartment_types_list}" var="atl">
-                                    <option value="${atl.id}">${atl.name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select style="background: darkslategray;color: white" class="form-select" id="tinh" aria-label="Default select example">
-                                <option value="0">Tỉnh Thành</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2">
-                            <select style="background: darkslategray;color: white" class="form-select" id="quan" aria-label="Default select example">
-                                <option value="0">Quận huyện</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-2">
-                            <select style="background: darkslategray;color: white"   class="form-select " id="phuong" aria-label="Default select example">
-                                <option value="0">Xã Phường</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <select style="background: darkslategray;color: white"  name="type"  required class="form-select"  aria-label="Default select example">
-                                <option value="0" >Sắp xếp theo giá</option>
-                                <option value="1" >tăng theo giá</option>
-                                <option value="2" >giảm theo giá</option>
-                            </select>
-                        </div>
-                        <div><br></div>
-                        <input type="hidden" name="tinh" id="hidden_tinh">
-                        <input type="hidden" name="quan" id="hidden_quan">
-                        <input type="hidden" name="phuong" id="hidden_phuong">
-                        <div class="col-md-3">
-                            <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" type="text" name="moneyUp" class="form-control" placeholder="Nhập số tiền trên khoảng" aria-label="Dollar amount (with dot and two decimal places)">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="moneyDown" type="text" class="form-control"placeholder="Nhập số tiền dưới khoảng" aria-label="Dollar amount (with dot and two decimal places)">
-
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="bedroom" type="text" class="form-control" placeholder="Số lượng phòng ngủ" aria-label="Dollar amount (with dot and two decimal places)"> 
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="areaUp" type="text" class="form-control" placeholder="Diện tích lớn hơn" aria-label="Dollar amount (with dot and two decimal places)"> 
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="input-group mb-3">
-                                <input style="background: #d6d4d4;color: black" name="areaDown" type="text" class="form-control" placeholder="Diện tích nhỏ hơn" aria-label="Dollar amount (with dot and two decimal places)"> 
-                            </div>
-                        </div>
-
-                        <input class="btn-outline-danger" type="submit" value="Search">
-
-                    </form>
-                </div>
-                <div><br></div>
-                <div class="row properties-box">
-                    <c:forEach items="${requestScope.apartmentPostList}" var="ap"> 
-                        <div class="col-lg-6 col-md-6 align-self-center mb-30 properties-items col-md-6 adv" >
-                            <div class="item" style="background:whitesmoke">
-                                <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}"><img src="uploads/${ap.first_image}" alt="" style="height: 400px; width: 580px;"></a>
-                                <span class="category">${ap.apartment_type.name}</span>
-                                <h6>${ap.price}</h6>
-                                <h4><a href="property-details.html">${ap.apartment_name}</a></h4><hr>
-                                    <c:if test="${ap.payment_id.id == 1}" >
-                                    <h4 style="">${ap.title}</h4>
-                                </c:if>
-                                <c:if test="${ap.payment_id.id == 2}" >
-                                    <h4 style="color: blue;font-style: italic">${ap.title}</h4>
-                                </c:if>
-                                <c:if test="${ap.payment_id.id == 3}" >
-                                    <h4 style="color: yellowgreen; font-family: cursive;font-size: large;" >${ap.title.toUpperCase()}</h4>
-                                </c:if>
-                                <c:if test="${ap.payment_id.id == 4}" >
-                                    <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
-                                </c:if>
-                                <hr>
-                                <ul>
-                                    <li>Bedrooms: <span>${ap.number_of_bedroom}</span></li>
-                                    <li>Area: <span>${ap.area}</span></li>
-                                    <li>Address: <span>${ap.city}</span><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="20px" height="30px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg></li>
-                                    <hr>
-                                    <li>${ap.post_start}</li>
-                                </ul>
-                                <div class="main-button">
-                                    <a href="property-details.html">Schedule a visit</a>
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 col-xs-12">
+                        <!-- Option bar start -->
+                        <div class="option-bar">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <h4>
+                                        <span class="heading-icon">
+                                            <i class="fa fa-th-list"></i>
+                                        </span>
+                                        <span class="title">Properties List</span>
+                                    </h4>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7">
+                                    <div class="sorting-options advanced-search">
+                                        <select class="selectpicker search-fields sorting" name="new-to-old">
+                                            <option>New To Old</option>
+                                            <option>Old To New</option>
+                                            <option>Properties (High To Low)</option>
+                                            <option>Properties (Low To High)</option>
+                                        </select>
+                                        <a href="properties-list-rightside.html" class="change-view-btn active-view-btn"><i class="fa fa-th-list"></i></a>
+                                        <a href="properties-grid-rightside.html" class="change-view-btn"><i class="fa fa-th-large"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </c:forEach>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="pagination">
-                            <c:forEach items="${pageList}" var="i">
-                                <li>
-                                    <a href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="${i == page_index ? 'is_active' : ''}">
-                                        ${i}
-                                    </a>
-                                </li>
-                            </c:forEach>
-                            <li><a href="#">>></a></li>
-                        </ul>
+                        <!-- Option bar end -->
+
+                        <!-- Property start -->
+
+                        <c:forEach items="${requestScope.apartmentPostList}" var="ap">
+                            <div class="property row g-0 fp2 clearfix wow fadeInUp delay-03s">
+                                <div class="col-lg-5 col-md-5 col-sm-12">
+                                    <!-- Property img -->
+                                    <div class="property-img">
+                                        <div class="property-tag button alt featured">Vip ${ap.payment_id.name}</div>
+                                        <div class="property-tag button sale">${ap.apartment_type.name}</div>
+                                        <div class="property-price"><fmt:formatNumber value="${ap.price}" pattern="#,###"/>vnd</div>
+                                        <img src="uploads/${ap.first_image}" alt="fp-list" class="img-responsive hp-1">
+                                        <div class="property-overlay">
+                                            <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}" class="overlay-link">
+                                                <i class="fa fa-link"></i>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-12 property-content">
+                                    <div class="info">
+                                        <!-- title -->
+                                        <h1 class="title">
+                                            <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}">     <c:if test="${ap.payment_id.id == 1}" >
+                                                    <h4 style="">${ap.title}</h4>
+                                                </c:if>
+                                                <c:if test="${ap.payment_id.id == 2}" >
+                                                    <h4 style="color: blue;font-style: italic">${ap.title}</h4>
+                                                </c:if>
+                                                <c:if test="${ap.payment_id.id == 3}" >
+                                                    <h4 style="color: yellowgreen; font-family: cursive;font-size: large;" >${ap.title.toUpperCase()}</h4>
+                                                </c:if>
+                                                <c:if test="${ap.payment_id.id == 4}" >
+                                                    <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
+                                                </c:if></a>
+                                        </h1>
+                                        <!-- Property address -->
+                                        <h3 class="property-address">
+                                            <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}">
+                                                <i class="fa fa-map-marker"></i>${ap.city},${ap.district},${ap.commune}
+                                            </a>
+                                        </h3>
+                                        <!-- Facilities List -->
+                                        <ul class="facilities-list clearfix">
+                                            <li>
+                                                <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>
+                                                <span>${ap.area} m2</span>
+                                            </li>
+                                            <li>
+                                                <i class="flaticon-bed"></i>
+                                                <span>${ap.number_of_bedroom} bedroom</span>
+                                            </li>
+
+                                        </ul>
+                                        <!-- Property footer -->
+                                    </div>
+                                    <div class="property-footer">
+                                        <span class="left">
+                                            <a href="#"><i class="fa fa-user"></i>${ap.landlord_id.first_name} ${ap.landlord_id.last_name}</a>
+                                        </span>
+                                        <span class="right">
+                                            <i class="fa fa-calendar"></i>${ap.post_start}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+
+                        <!-- Property end -->
+
+                        <!-- Pagination box start -->
+                        <div class="pagination-box text-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <c:if test="${page_index > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}">Prev</a>
+                                        </li>
+                                    </c:if>
+                                    <c:forEach items="${pageList}" var="i">
+                                        <li class="page-item">
+                                            <a href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <c:if test="${page_index < pageList.size()}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+
+
+                            </nav>
+                        </div>
+                        <!-- Pagination box end -->
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-xs-12">
+                        <!-- Advanced search start -->
+                        <div class="sidebar-widget advanced-search">
+                            <div class="main-title-4">
+                                <h1>Advanced  Search</h1>
+                            </div>
+                            <form action="ApartmentPostList" method="GET">
+                                <div class="form-group">
+                                    <select class="form-select" name="apartmentType" aria-label="Default select example">
+                                        <option value="0">Loại căn hộ</option>
+                                        <c:forEach items="${requestScope.apartment_types_list}" var="atl">
+                                            <option value="${atl.id}">${atl.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select  class="form-select" id="tinh" aria-label="Default select example">
+                                        <option value="0">Tỉnh Thành</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select  class="form-select" id="quan" aria-label="Default select example">
+                                        <option value="0">Quận huyện</option><hr>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select    class="form-select " id="phuong" aria-label="Default select example">
+                                        <option value="0">Xã Phường</option>
+                                        <hr>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="tinh" id="hidden_tinh">
+                                <input type="hidden" name="quan" id="hidden_quan">
+                                <input type="hidden" name="phuong" id="hidden_phuong">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="form-group">
+                                            <select class="form-select" name="bedroom">
+                                                <option value="0">Số phòng ngủ</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+
+                                    </div>
+                                </div>
+                                <style>
+                                    .range-slider {
+                                        margin: 20px 0;
+                                    }
+
+                                    .ui-slider {
+                                        width: 100%;
+                                    }
+
+                                    .clearfix::after {
+                                        content: "";
+                                        display: table;
+                                        clear: both;
+                                    }
+                                </style>
+
+                                <div class="range-slider">
+                                    <label>Diện tích</label>
+                                    <div id="ArearangeSlider" data-min="0" data-max="500" data-unit="m2" class="range-slider-ui ui-slider"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <input id="areaUp" class="selectpicker search-fields" type="number" name="areaUp" placeholder="0">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input id="areaDown" class="selectpicker search-fields" type="number" name="areaDown" placeholder="100">
+                                    </div>
+                                </div>
+
+                                <!-- Include jQuery and jQuery UI -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+                                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+                                <script>
+            $(document).ready(function () {
+                var $slider = $("#ArearangeSlider");
+                var $minInput = $("#areaUp");
+                var $maxInput = $("#areaDown");
+
+                $slider.slider({
+                    range: true,
+                    min: 0,
+                    max: 500,
+                    values: [0, 500],
+                    slide: function (event, ui) {
+                        $minInput.val(ui.values[0]);
+                        $maxInput.val(ui.values[1]);
+                    }
+                });
+
+                $minInput.val($slider.slider("values", 0));
+                $maxInput.val($slider.slider("values", 1));
+
+                function updateSlider() {
+                    var min = parseInt($minInput.val(), 10);
+                    var max = parseInt($maxInput.val(), 10);
+
+                    if (min > max) {
+                        min = max;
+                        $minInput.val(min);
+                    }
+                    if (max < min) {
+                        max = min;
+                        $maxInput.val(max);
+                    }
+
+                    $slider.slider("values", 0, min);
+                    $slider.slider("values", 1, max);
+                }
+
+                $minInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+
+                $maxInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+            });
+                                </script>
+
+
+
+                                <div class="range-slider">
+                                    <label>Giá tiền khoảng</label>
+                                    <div id="rangeSlider" data-min="0" data-max="100" data-unit="triệu vnd" class="range-slider-ui ui-slider"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <input id="priceUp" class="selectpicker search-fields" type="number" name="moneyUp" placeholder="0">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input id="priceDown" class="selectpicker search-fields" type="number" name="moneyDown" placeholder="100">
+                                    </div>
+                                </div>
+                                <!-- Include jQuery and jQuery UI -->
+                                <!-- Include jQuery and jQuery UI -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+                                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+                                <script>
+            $(document).ready(function () {
+                var $slider = $("#rangeSlider");
+                var $minInput = $("#priceUp");
+                var $maxInput = $("#priceDown");
+
+                $slider.slider({
+                    range: true,
+                    min: 0,
+                    max: 100,
+                    values: [0, 100],
+                    slide: function (event, ui) {
+                        $minInput.val(ui.values[0]);
+                        $maxInput.val(ui.values[1]);
+                    }
+                });
+
+                $minInput.val($slider.slider("values", 0));
+                $maxInput.val($slider.slider("values", 1));
+
+                function updateSlider() {
+                    var min = parseInt($minInput.val(), 10);
+                    var max = parseInt($maxInput.val(), 10);
+
+                    if (min > max) {
+                        min = max;
+                        $minInput.val(min);
+                    }
+                    if (max < min) {
+                        max = min;
+                        $maxInput.val(max);
+                    }
+
+                    $slider.slider("values", 0, min);
+                    $slider.slider("values", 1, max);
+                }
+
+                $minInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+
+                $maxInput.on("input", function () {
+                    clearTimeout(this.delay);
+                    this.delay = setTimeout(function () {
+                        updateSlider();
+                    }.bind(this), 10000);
+                });
+            });
+                                </script>
+
+
+
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="button-md button-theme btn-3 w-100">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Advanced search end -->
+
+                        <!-- Category posts start -->
+                        <div class="sidebar-widget category-posts">
+                            <div class="main-title-4">
+                                <h1>Popular Category</h1>
+                            </div>
+                            <ul class="list-unstyled list-cat">
+                                <li><a href="#">Single Family </a> <span>(45)  </span></li>
+                                <li><a href="#">Apartment  </a> <span>(21)  </span></li>
+                                <li><a href="#">Condo </a> <span>(23)  </span></li>
+                                <li><a href="#">Multi Family </a> <span>(19)  </span></li>
+                                <li><a href="#">Villa </a> <span>(19)  </span></li>
+                                <li><a href="#">Other  </a> <span>(22)  </span></li>
+                            </ul>
+                        </div>
+                        <!-- Category posts end -->
+
+                        <!-- Popular posts start -->
+                        <div class="sidebar-widget popular-posts">
+                            <div class="main-title-4">
+                                <h1>Recent Properties</h1>
+                            </div>
+                            <div class="d-flex mb-3 popular-posts-box">
+                                <a class="pr-3" href="properties-details.html">
+                                    <img src="img/properties/small-properties-2.jpg" alt="small-photo" class="flex-shrink-0 me-3">
+                                </a>
+                                <div class="detail align-self-center">
+                                    <h4>
+                                        <a href="properties-details.html">Modern Family Home</a>
+                                    </h4>
+                                    <div class="listing-post-meta">
+                                        Sep 18, 2021 | <a href="#">$470,00</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex mb-3 popular-posts-box">
+                                <a class="pr-3" href="properties-details.html">
+                                    <img src="img/properties/small-properties-1.jpg" alt="small-photo" class="flex-shrink-0 me-3">
+                                </a>
+                                <div class="detail align-self-center">
+                                    <h4>
+                                        <a href="properties-details.html">Sweet Family Home</a>
+                                    </h4>
+                                    <div class="listing-post-meta">
+                                        Aug 18, 2020 | <a href="#">$485,00</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex popular-posts-box">
+                                <a class="pr-3" href="properties-details.html">
+                                    <img src="img/properties/small-properties-3.jpg" alt="small-photo" class="flex-shrink-0 me-3">
+                                </a>
+                                <div class="detail align-self-center">
+                                    <h4>
+                                        <a href="properties-details.html">Beautful Single Home</a>
+                                    </h4>
+                                    <div class="listing-post-meta">
+                                        Aug Feb, 2021 | <a href="#">$850,00</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Popular posts end -->
+
+                        <!-- Helping box Start -->
+                        <div class="sidebar-widget helping-box clearfix">
+                            <div class="main-title-4">
+                                <h1>Helping Center</h1>
+                            </div>
+                            <div class="helping-center">
+                                <div class="icon"><i class="fa fa-map-marker"></i></div>
+                                <h4>Address</h4>
+                                <p>123 Kathal St. Tampa City,</p>
+                            </div>
+                            <div class="helping-center">
+                                <div class="icon"><i class="fa fa-phone"></i></div>
+                                <h4>Phone</h4>
+                                <p><a href="tel:+55-417-634-7071">+55 417 634 7071</a> </p>
+                            </div>
+                        </div>
+                        <!-- Helping box end -->
+
+                        <!-- Latest reviews start -->
+                        <div class="sidebar-widget latest-reviews mb-30">
+                            <div class="main-title-4">
+                                <h1>Latest  Reviews</h1>
+                            </div>
+                            <div class="latest-reviews-box d-flex mb-4">
+                                <a class="pr-3" href="#">
+                                    <img src="img/avatar/avatar-1.jpg" alt="avatar" class="flex-shrink-0 me-3">
+                                </a>
+                                <div class="detail">
+                                    <h3><a href="#">John Antony</a></h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
+                                </div>
+                            </div>
+                            <div class="latest-reviews-box d-flex">
+                                <a class="pr-3" href="#">
+                                    <img src="img/avatar/avatar-2.jpg" alt="avatar" class="flex-shrink-0 me-3">
+                                </a>
+                                <div class="detail">
+                                    <h3><a href="#">Karen Paran</a></h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Latest reviews end -->
                     </div>
                 </div>
-
-
             </div>
         </div>
+        <!-- Properties section body end -->
+        <jsp:include page="Footer.jsp"/>
+        <!-- Partners strat -->
 
-        <footer><jsp:include page="Footer.jsp"/>
-            <div class="container">
-                <div class="col-lg-12">
-                    <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+        <!-- Footer end -->
 
-                        Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
-                </div>
-            </div>
-        </footer>
 
-        <!-- Scripts -->
-        <!-- Bootstrap core JavaScript -->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-        <script src="assets/js/isotope.min.js"></script>
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/counter.js"></script>
-        <script src="assets/js/custom.js"></script>
+
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script  src="js/bootstrap-submenu.js"></script>
+        <script src="js/rangeslider.js"></script>
+        <script src="js/jquery.mb.YTPlayer.js"></script>
+        <script src="js/wow.min.js"></script>
+        <script src="js/bootstrap-select.min.js"></script>
+        <script src="js/jquery.easing.1.3.js"></script>
+        <script src="js/jquery.scrollUp.js"></script>
+        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-providers.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/dropzone.js"></script>
+        <script src="js/jquery.filterizr.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/slick.min.js"></script>
+        <script src="js/maps.js"></script>
+        <script src="js/sidebar.js"></script>
+        <script src="js/app.js"></script>
         <script>
             $(document).ready(function () {
                 // Fetch provinces
@@ -297,5 +620,14 @@
                 });
             });
         </script> 
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="js/ie10-viewport-bug-workaround.js"></script>
+        <!-- Custom javascript -->
+        <script src="js/ie10-viewport-bug-workaround.js"></script>
+
     </body>
+
+    <!-- Mirrored from storage.googleapis.com/theme-vessel-items/checking-sites/nest-2-html/HTML/main/properties-list-rightside.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 04 Jun 2024 15:11:30 GMT -->
 </html>
+
