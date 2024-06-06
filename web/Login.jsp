@@ -229,7 +229,7 @@
     <body>
         <div class="container">
             <c:if test="${message != null}">
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-danger" role="alert">
                     ${message}
                 </div>
             </c:if>
