@@ -53,30 +53,30 @@
             </style>
         </head>
 
-        <body>
+        <body style=" background: whitesmoke">
 
-            <jsp:include page="Navbar.jsp"/>
-
-            <!-- ***** Header Area End ***** -->
-            <c:set var="Apartment" value="${requestScope.Apartment}"/>
-            <c:set value="${requestScope.apartment_Post}" var="apartment_Post"/>
-            <div class="page-heading header-text">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <span class="breadcrumb"><a href="#">Apartment</a>  /  Detail</span>
-                            <h3>Single Property</h3>
+                <jsp:include page="Navbar.jsp"/>
+                <br><br><br><br><br><br>
+                <!-- ***** Header Area End ***** -->
+                <c:set var="Apartment" value="${requestScope.Apartment}"/>
+                <c:set value="${requestScope.apartment_Post}" var="apartment_Post"/>
+                <div class="page-heading header-text">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <span class="breadcrumb"><a href="#">Apartment</a>  /  Detail</span>
+                                <h3>Single Property</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="single-property section">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-8" style="background">
-                            <div style="position: absolute;
-                                 z-index: 1">:
+                <div class="single-property section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8" style="background">
+                                <div style="position: absolute;
+                                z-index: 1">:
                                     <c:if test="${apartment_Post.payment_id.id == 1}" >
                                         <h4 style="">&nbsp;  ${apartment_Post.payment_id.name}</h4>
                                     </c:if>
@@ -112,41 +112,41 @@
 
 
 
-                                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-                                        <div class="carousel-inner">
-                                            <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
-                                                <div class="carousel-item ${status.index == 0 ? 'active' : ''} ratio-16x9">
-                                                    <img src="uploads/${image.image}" class="d-block w-100" alt="..." data-bs-toggle="modal" data-bs-target="#imageModal" data-src="uploads/${image.image}">
-                                                </div>
-                                            </c:forEach>
-                                        </div>
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
+                                    <div style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                                    <div class="carousel-inner">
+                                        <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
+                                            <div class="carousel-item ${status.index == 0 ? 'active' : ''} ratio-16x9">
+                                                <img src="uploads/${image.image}" class="d-block w-100" alt="..." data-bs-toggle="modal" data-bs-target="#imageModal" data-src="uploads/${image.image}">
+                                            </div>
+                                        </c:forEach>
                                     </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
 
 
-                                    <!-- Thumbnails -->
-                                    <div class="carousel-thumbnails mt-3">
-                                        <div class="thumbnail-row">
-                                            <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
-                                                <div class="thumbnail-item">
-                                                    <a href="uploads/${image.image}" data-lightbox="apartment-gallery">
-                                                        <img src="uploads/${image.image}" class="img-thumbnail ${status.index == 0 ? 'active-thumb' : ''}" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="${status.index}" alt="...">
-                                                    </a>
-                                                </div>
-                                            </c:forEach>
-                                        </div>
+                                <!-- Thumbnails -->
+                                <div style="" class="carousel-thumbnails mt-3">
+                                    <div class="thumbnail-row">
+                                        <c:forEach items="${requestScope.apartment_images_list}" var="image" varStatus="status">
+                                            <div class="thumbnail-item">
+                                                <a href="uploads/${image.image}" data-lightbox="apartment-gallery">
+                                                    <img src="uploads/${image.image}" class="img-thumbnail ${status.index == 0 ? 'active-thumb' : ''}" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="${status.index}" alt="...">
+                                                </a>
+                                            </div>
+                                        </c:forEach>
                                     </div>
+                                </div>
 
 
-                                    <style>
-                                        .carousel-thumbnails {
+                                <style>
+                                    .carousel-thumbnails {
                                         overflow-x: auto;
                                         white-space: nowrap;
                                     }
@@ -176,38 +176,54 @@
 
 
                             </div>
-                            <div class="main-content">
-                                <span class="category">${requestScope.Apartment.type_id.name}</span><span>  <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="40px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg>
-                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}">${requestScope.Apartment.city}</a>,
-                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}">${requestScope.Apartment.district}</a>,
-                                    <a href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}&phuong=${requestScope.Apartment.commune}">${requestScope.Apartment.commune}</a>,${requestScope.Apartment.address} </span>
-                                <hr>
-                                <c:if test="${apartment_Post.payment_id.id == 1}" >
-                                    <h3 style="">${apartment_Post.title}</h3>
-                                </c:if>
-                                <c:if test="${requestScope.apartment_Post.payment_id.id == 2}" >
-                                    <h3 style="color: blue;
-                                        font-style: italic">${apartment_Post.title}</h3>
-                                    </c:if>
-                                    <c:if test="${apartment_Post.payment_id.id == 3}" >
-                                        <h3 style="color: yellowgreen;
-                                        font-family: cursive;
-                                        font-size: large;" >${apartment_Post.title.toUpperCase()}</h3>
-                                </c:if>
-                                <c:if test="${apartment_Post.payment_id.id == 4}" >
-                                    <h3 style="color: red;
-                                        font-style: italic;
-                                        font-family: serif">${apartment_Post.title.toUpperCase()}</h3>
-                                    </c:if>
-                                    <h4>${Apartment.name}</h4>
-                                    <h5>Thông tin mô tả:</h5><br>
-                                    <div>
-                                        <br>
-                                        <p style="padding-left: 1%;">${apartment_Post.description}</p>
-                                </div>
+                            <div  class="main-content">
+                                <span style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" class="category">${requestScope.Apartment.type_id.name}</span><span>  <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="30px" height="40px" viewBox="0 0 100 100"><path d="M49,18.92A23.74,23.74,0,0,0,25.27,42.77c0,16.48,17,31.59,22.23,35.59a2.45,2.45,0,0,0,3.12,0c5.24-4.12,22.1-19.11,22.1-35.59A23.74,23.74,0,0,0,49,18.92Zm0,33.71a10,10,0,1,1,10-10A10,10,0,0,1,49,52.63Z"/></svg>
+                                    <a style="color: black" href="ApartmentPostList?tinh=${requestScope.Apartment.city}">${requestScope.Apartment.city}</a>,
+                                        <a style="color: black" href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}">${requestScope.Apartment.district}</a>,
+                                        <a style="color: black" href="ApartmentPostList?tinh=${requestScope.Apartment.city}&quan=${requestScope.Apartment.district}&phuong=${requestScope.Apartment.commune}">${requestScope.Apartment.commune}</a>,${requestScope.Apartment.address} </span>
+                                    <hr>
+                                    <div style="background: #FFFFFF;
+                                    border-radius: 15px;
+                                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                    <div style="background: #FFFFFF;
+                                         padding: 3% 3% 3% 3%;
+                                         border-radius: 15px;">
+                                        <c:if test="${apartment_Post.payment_id.id == 1}" >
+                                            <h3 style="">${apartment_Post.title}</h3>
+                                        </c:if>
+                                        <c:if test="${requestScope.apartment_Post.payment_id.id == 2}" >
+                                            <h3 style="color: blue;
+                                                font-style: italic">${apartment_Post.title}</h3>
+                                            </c:if>
+                                            <c:if test="${apartment_Post.payment_id.id == 3}" >
+                                                <h3 style="color: yellowgreen;
+                                                font-family: cursive;
+                                                font-size: large;" >${apartment_Post.title.toUpperCase()}</h3>
+                                        </c:if>
+                                        <c:if test="${apartment_Post.payment_id.id == 4}" >
+                                            <h3 style="color: red;
+                                                font-style: italic;
+                                                font-family: serif">${apartment_Post.title.toUpperCase()}</h3>
+                                            </c:if>
+                                            <h4 style="font-family: initial">${Apartment.name}</h4>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <br>
+                                    <div style="background: #FFFFFF;
+                                    border-radius: 15px;
+                                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 
-                            </div> 
-                            <div class="accordion" id="accordionExample">
+                                    <div style="background: #FFFFFF;
+                                         border-radius: 15px;
+                                         padding: 3% 3% 3% 3%"><br><h5>Thông tin mô tả:</h5><br>
+                                             <p style="font-family: initial">${apartment_Post.description}</p>
+                                         </div>
+                                    </div>
+
+                                </div> 
+                                <div class="accordion" id="accordionExample" style="border-radius: 15px;
+                                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -223,15 +239,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="accordion" id="accordionExample">
-                                    <div>
-                                        <h2 class="accordion-header" id="headingOne">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                Xem Trên Bản Đồ
-                                            </button>
-                                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                                <style>
-                                                    #map {
+                                <div class="accordion" id="accordionExample" style="border-radius: 15px;
+                                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                <div>
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Xem Trên Bản Đồ
+                                        </button>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <style>
+                                                #map {
                                                     width: 100%;
                                                     height: 350px;
                                                     z-index: 2;
@@ -242,8 +259,9 @@
                                     </h2>
                                 </div>
                             </div>
-                            <div class="accordion" id="accordionExample">
-                                <div class="accordion-item">
+                            <div class="accordion" id="accordionExample" style="border-radius: 15%;
+                                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                <div class="accordion-item" style="padding: 3% 3% 3% 3%;">
                                     <table  border="0">
                                         <thead>
                                             <tr>
@@ -264,14 +282,16 @@
                             </div>
                         </div>         
                         <div class="col-lg-4">
-                            <div class="info-table">
+                            <div class="info-table"  style="background: #FFFFFF">
                                 <ul>
                                     <li>
-                                        <img src="uploads/${Apartment.landLord_id.image}" alt="ảnh landlord" style="max-width: 52px;">
-                                        <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span>Phone --> 0987654321</span></h4>
-                                    </li>
-                                    <li>
-                                        <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
+                                        <img src="${Apartment.landLord_id.image}" alt="ảnh landlord" style="width: 100px;
+                                        height: 100px;
+                                        border-radius: 50%">
+                                            <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span>Phone --> 0987654321</span></h4>
+                                        </li>
+                                        <li>
+                                            <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
                                         <h4>${Apartment.area}<br><span>m2</span></h4>
                                     </li>
                                     <li>
@@ -289,13 +309,13 @@
                                 </ul>
                             </div>
                             <br>
-                            <div class="info-table">
+                            <div class="info-table"  style="background: #FFFFFF">
                                 <h4 style="font-family: initial">Căn hộ nổi bật</h4>
                                     <c:forEach items="${requestScope.apartment_Posts_popular}" var="app">
 
 
                                         <br>
-                                        *<a style="color: red" href="ApartmentDetail?Apartment_id=${app.apartment_id.id}&apartment_post_id=${app.id}">
+                                        *<a style="color: blue" href="ApartmentDetail?Apartment_id=${app.apartment_id.id}&apartment_post_id=${app.id}">
                                             ${app.title}
                                         </a>
                                         <br>
@@ -308,11 +328,16 @@
                     </div>
                 </div>
                 <br><br>
-                <div class="row">
+                <div class="row" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                background: #F5DEC9">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <div class="container">
                             <div class="row">
+
+                                <div>
+                                    <br>
+                                </div>
                                 <div class="col-md-12">
                                     <h3>Căn hộ cùng khu vực</h3><br>
                                 </div>
@@ -320,7 +345,7 @@
                                     .scroll-container {
                                     width: 100%;
                                     overflow-x: auto;
-                                    border: 2px solid #007bff;
+
                                     border-radius: 15px;
                                     white-space: nowrap;
                                     padding: 10px 0;
@@ -369,6 +394,9 @@
                                             </div>
                                         </c:forEach>
                                     </div>
+                                </div>
+                                <div>
+                                    <br>
                                 </div>
                             </div>
                         </div>
