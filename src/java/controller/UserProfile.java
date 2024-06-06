@@ -38,6 +38,8 @@ public class UserProfile extends HttpServlet {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
             request.setAttribute("user_Data", user_Data);
+            String activeTab = "account-general"; // Default active tab
+            request.setAttribute("activeTab", activeTab);
             request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
         } else {
             response.sendRedirect("Login");
@@ -48,16 +50,13 @@ public class UserProfile extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("doPost called " + request.getParameter("userid"));
+        String activeTab = "account-general"; // Default active tab
 
         String firstname = request.getParameter("first-name");
         String lastname = request.getParameter("last-name");
         String email = request.getParameter("email");
         String dobStr = request.getParameter("dob");
-
-        String currentpassword = request.getParameter("current-password");
-        String newpassword = request.getParameter("new-password");
-        String repassword = request.getParameter("re-password");
+        
         int user_ID = Integer.parseInt(request.getParameter("userid"));
 
         UserDao userdao = new UserDao();
@@ -85,13 +84,11 @@ public class UserProfile extends HttpServlet {
         }
         //get part from request
         Part part = request.getPart("avatar");
-        String fileName = getFileName(part);
-        //write file to upload folder
+        String fileName = "";
+        if (part != null && part.getSize() > 0) {
+        fileName = getFileName(part);
         String filePath = path + File.separator + fileName;
-        //if avatar not change
-        boolean isFileUploaded = (part != null && part.getSize() > 0);
-        if (isFileUploaded) {
-            part.write(filePath);
+        part.write(filePath);
         } else {
             User existingUser = userdao.getUser(user_ID);
             fileName = existingUser.getImage(); // Use existing image if no new file is uploaded
@@ -101,7 +98,8 @@ public class UserProfile extends HttpServlet {
             userdao.UpdateGeneralProfile(email, firstname, lastname, dob, fileName, user_ID);
 //            part.write(filePath);
         }
-
+        
+        request.setAttribute("activeTab", activeTab); // Set the active tab attribute
         response.sendRedirect("UserProfile");
     }
 
