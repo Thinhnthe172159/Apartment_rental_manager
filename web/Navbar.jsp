@@ -102,7 +102,7 @@
                     <div class="col-12">
                         <nav class="main-nav">
                             <!-- ***** Logo Start ***** -->
-                            <span style="font-size:30px;cursor:pointer;padding-top: 27px;" onclick="openNav()">&#9776;.</span>
+                            <span style="font-size:50px;cursor:pointer;padding-top: 5px;" onclick="openNav()">&#9776;.</span>
                             <a href="HomePage" class="logo">
                                 <h1>Easy_Rentals</h1>
                             </a>
