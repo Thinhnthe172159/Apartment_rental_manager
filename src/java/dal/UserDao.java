@@ -250,6 +250,20 @@ public class UserDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        }
+    
+    public boolean changePassword(String password, int user_ID) {
+        try {
+            String strSQL = "UPDATE [dbo].[User] SET [password] = ? WHERE [id] = ?;";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, password);
+            pstm.setInt(2, user_ID);
+            pstm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("changePassword:" + e.getMessage());
+        }
+        return false;
     }
 
 
