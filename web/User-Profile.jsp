@@ -155,15 +155,10 @@
 
                             <!--General-->
 
-                            <div class="tab-pane fade active show" id="account-general">
+                            <div class="tab-pane fade ${requestScope.activeTab == 'account-general' ? 'show active' : ''}" id="account-general">
                                 <!--Avatar-->
                                 <form action="UserProfile" method="post" enctype="multipart/form-data">
                                     <input name="userid" type="hidden" value="${user_Data.getId()}">
-                                    <c:if test="${message != null}">
-                                        <div style="width: 500px" class="alert alert-danger" role="alert">
-                                            ${message}
-                                        </div>
-                                    </c:if>
                                     <div class="card-body media align-items-center">
                                         <img src="img/User/${user_Data.getImage()}" 
                                              alt="Error" 
@@ -187,19 +182,49 @@
                                             <label class="form-label">First Name</label>
                                             <input type="text" class="form-control mb-1" name="first-name" value="${user_Data.getFirst_name()}">
                                         </div>
+                                        <c:if test="${message1 != null}">
+                                            <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                ${message1}
+                                            </div>
+                                        </c:if>
                                         <div class="form-group">
                                             <label class="form-label">Last Name</label>
                                             <input type="text" class="form-control" name="last-name" value="${user_Data.getLast_name()}">
                                         </div>
+                                        <c:if test="${message2 != null}">
+                                            <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                ${message2}
+                                            </div>
+                                        </c:if>
                                         <div class="form-group">
                                             <label class="form-label">E-mail</label>
                                             <input type="text" class="form-control mb-1" name="email" value="${user_Data.getEmail()}">
                                         </div>
+                                        <c:if test="${message3 != null}">
+                                            <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                ${message3}
+                                            </div>
+                                        </c:if>
                                         <div class="form-group">
                                             <label class="form-label" for="dob">Date of Birth</label>
                                             <input type="date" class="form-control" name="dob" value="${user_Data.getDob()}" required>
                                         </div>
+                                        <c:if test="${message4 != null}">
+                                            <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                ${message4}
+                                            </div>
+                                        </c:if>
                                     </div>
+                                    <c:if test="${messagesuccess != null}">
+                                        <div style="width: 100%" class="alert alert-success" role="alert">
+                                            ${messagesuccess}
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${messagedanger != null}">
+                                        <div style="width: 100%" class="alert alert-danger" role="alert">
+                                            ${messagedanger}
+                                        </div>
+                                    </c:if>
                                     <div style="margin: 0 10px 10px" class="text-right mt-3">
                                         <button type="submit" name="button" value="general" class="btn btn-primary">Save changes</button>&nbsp;
                                         <button type="button" class="btn btn-default">Cancel</button>
@@ -209,8 +234,8 @@
 
                             <!--Change Password-->
 
-                            <div class="tab-pane fade" id="account-change-password">
-                                <form action="UserProfile" method="post">
+                            <div class="tab-pane fade ${requestScope.activeTab == 'account-change-password' ? 'show active' : ''}" id="account-change-password">
+                                <form action="ChangePassword" method="post">
                                     <input name="userid" type="hidden" value="${user_Data.getId()}">
                                     <div class="card-body pb-2">
                                         <div class="form-group">
