@@ -344,14 +344,14 @@
                     clearTimeout(this.delay);
                     this.delay = setTimeout(function () {
                         updateSlider();
-                    }.bind(this), 10000);
+                    }.bind(this), 1500);
                 });
 
                 $maxInput.on("input", function () {
                     clearTimeout(this.delay);
                     this.delay = setTimeout(function () {
                         updateSlider();
-                    }.bind(this), 10000);
+                    }.bind(this), 1500);
                 });
             });
                                 </script>
@@ -418,14 +418,14 @@
                     clearTimeout(this.delay);
                     this.delay = setTimeout(function () {
                         updateSlider();
-                    }.bind(this), 10000);
+                    }.bind(this), 1500);
                 });
 
                 $maxInput.on("input", function () {
                     clearTimeout(this.delay);
                     this.delay = setTimeout(function () {
                         updateSlider();
-                    }.bind(this), 10000);
+                    }.bind(this), 1500);
                 });
             });
                                 </script>
