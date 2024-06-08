@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Apartment;
+import model.Apartment_image;
 
 /**
  *
@@ -60,7 +61,10 @@ public class AparmentListForLandlord extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ApartmentDao apartmentDao = new ApartmentDao();
+        List<Apartment> apartmentList = apartmentDao.getApartmentList(0);
+        request.setAttribute("apartmentList", apartmentList);
+        request.getRequestDispatcher("ApartmentListForLandlord.jsp").forward(request, response);
     }
 
     /**
@@ -74,10 +78,7 @@ public class AparmentListForLandlord extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ApartmentDao apartmentDao = new ApartmentDao();
-        List<Apartment> apartmentList = apartmentDao.getApartmentList(0);
-        request.setAttribute("apartmentList", apartmentList);
-        request.getRequestDispatcher("ApartmentListForLandlord.jsp").forward(request, response);
+
     }
 
     /**

@@ -115,7 +115,29 @@
                             </div>
                         </div>
                         <!-- Option bar end -->
+                        <div class="pagination-box text-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <c:if test="${page_index > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}">Prev</a>
+                                        </li>
+                                    </c:if>
+                                    <c:forEach items="${pageList}" var="i">
+                                        <li class="page-item">
+                                            <a href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+                                    <c:if test="${page_index < pageList.size()}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ApartmentPostList?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
 
+
+                            </nav>
+                        </div>
                         <!-- Property start -->
 
                         <c:forEach items="${requestScope.apartmentPostList}" var="ap">

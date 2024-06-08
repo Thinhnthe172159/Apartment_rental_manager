@@ -283,7 +283,7 @@ public class ApartmentDao extends DBContext {
                 + "      ,[image]\n"
                 + "      ,[Apartment_id]\n"
                 + "  FROM [dbo].[Apartment_image]\n"
-                + "    where [Apartment_id] = ? order by [id]";
+                + "    where [Apartment_id] = ? order by [id] desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -312,6 +312,29 @@ public class ApartmentDao extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_image ai = new Apartment_image();
+                ai.setId(rs.getInt("id"));
+                ai.setImage(rs.getString("image"));
+                Apartment a = getApartment(rs.getInt("Apartment_id"));
+                ai.setApartment_id(a);
+                list.add(ai);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+    //get all image
+    public List<Apartment_image> getAllApartmentImageList() {
+        List<Apartment_image> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[image]\n"
+                + "      ,[Apartment_id]\n"
+                + "  FROM [dbo].[Apartment_image] where 1=1 ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Apartment_image ai = new Apartment_image();

@@ -283,11 +283,11 @@
                         </div>         
                         <div class="col-lg-4">
                             <div class="info-table"  style="background: #FFFFFF">
-                                <ul>
-                                    <li>
-                                        <img src="${Apartment.landLord_id.image}" alt="ảnh landlord" style="width: 100px;
-                                        height: 100px;
-                                        border-radius: 50%">
+                                    <ul>
+                                        <li>
+                                            <img src="${Apartment.landLord_id.image}" alt="ảnh landlord" style="width: 100px;
+                                            height: 100px;
+                                            border-radius: 50%">
                                             <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span>Phone --> 0987654321</span></h4>
                                         </li>
                                         <li>
@@ -310,7 +310,7 @@
                             </div>
                             <br>
                             <div class="info-table"  style="background: #FFFFFF">
-                                <h4 style="font-family: initial">Căn hộ nổi bật</h4>
+                                    <h4 style="font-family: initial">Căn hộ nổi bật</h4>
                                     <c:forEach items="${requestScope.apartment_Posts_popular}" var="app">
 
 
@@ -602,11 +602,26 @@
                                 .then(response => response.json())
                                 .then(data => {
                                     var lat = parseFloat(data[0].lat);
-                                    var lon = parseFloat(data[0].lon);
-                                    map.setView([lat, lon], 14);
-                                    L.marker([lat, lon]).addTo(map).bindPopup(address).openPopup();
+                                    var long = parseFloat(data[0].lon);
+                                    map.setView([lat, long], 15);
+                                    L.marker([lat, long]).addTo(map).bindPopup(address).openPopup();
                                 })
                                 .catch(error => console.error('Error:', error));
+
+                        var schoolMarker = L.marker([schoolLat, schoolLng]).bindPopup('School Name');
+                        schoolsLayer.addLayer(schoolMarker);
+
+                        var hospitalMarker = L.marker([hospitalLat, hospitalLng]).bindPopup('Hospital Name');
+                        hospitalsLayer.addLayer(hospitalMarker);
+
+                        schoolsLayer.addTo(map);
+                        hospitalsLayer.addTo(map);
+
+                        L.control.layers(null, {
+                            'Schools': schoolsLayer,
+                            'Hospitals': hospitalsLayer,
+                            // ... add other layers here
+                        }).addTo(map);
 
                 </script>
 
