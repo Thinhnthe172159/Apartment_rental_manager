@@ -4,7 +4,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Thêm thông tin căn hộ</title>
+        <link rel="icon" href="img/logoWeb.png" type="image/x-icon">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
@@ -42,7 +43,19 @@
     <body>
 
         <jsp:include page="Navbar.jsp"/>
-        <br><br>
+        <br><br><br><br><br><br>
+        <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Apartment</a></span>
+                        <h3>ADD PROPERTIES</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
         <form id="apartmentForm" action="addApartment" method="post" enctype="multipart/form-data" >
             <div class="container">
                 <div class="row">
@@ -229,10 +242,10 @@
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">III. Thông tin hình ảnh</h2>
                     <div class="col-md-12" style="border: 1px solid #686868;">
-                        <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br></p>
-
-                        <input type="file" id="imageInput" name="images" multiple accept="image/*"><br><br>
-                        <div class="preview" id="imagePreview"></div><br>
+                        <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br>Lưu ý bức ảnh đầu tiên bạn chọn sẽ là thumbnail của bài đăng cho căn hộ của bạn</p>
+                        <label for="files">Thêm hình ảnh:</label>
+                        <input type="file" id="files" name="files" accept="image/*" multiple class="form-control">
+                        <div class="preview" id="preview"></div>
                     </div>
                 </div>
                 <hr>
@@ -292,20 +305,74 @@
         </form>
 
         <script>
-            document.getElementById('imageInput').addEventListener('change', function (event) {
-                const files = event.target.files;
-                const previewContainer = document.getElementById('imagePreview');
-                previewContainer.innerHTML = '';
+            function handleFiles(files) {
+                const preview = document.getElementById('preview');
+                preview.innerHTML = ''; // Clear the preview container
 
-                Array.from(files).forEach(file => {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
                     const reader = new FileReader();
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.className = 'img-wrapper';
+
                     reader.onload = function (e) {
                         const img = document.createElement('img');
                         img.src = e.target.result;
-                        previewContainer.appendChild(img);
+                        imgWrapper.appendChild(img);
+
+                        const removeBtn = document.createElement('button');
+                        removeBtn.innerHTML = '×';
+                        removeBtn.className = 'remove-btn';
+                        removeBtn.onclick = function () {
+                            preview.removeChild(imgWrapper);
+                            if (preview.children.length === 0) {
+                                const newInput = document.createElement('input');
+                                newInput.type = 'file';
+                                newInput.id = 'files';
+                                newInput.name = 'files';
+                                newInput.accept = 'image/*';
+                                newInput.multiple = true;
+                                newInput.className = 'form-control';
+                                newInput.addEventListener('change', handleInputChange);
+                                document.getElementById('files').replaceWith(newInput);
+                            }
+                        };
+                        imgWrapper.appendChild(removeBtn);
+
+                        preview.appendChild(imgWrapper);
                     };
+
                     reader.readAsDataURL(file);
-                });
+                }
+            }
+
+            function handleInputChange(event) {
+                const files = event.target.files;
+                handleFiles(files);
+            }
+
+            document.getElementById('files').addEventListener('change', handleInputChange);
+
+            const dropZone = document.getElementById('drop-zone');
+
+            dropZone.addEventListener('dragover', function (event) {
+                event.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', function (event) {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', function (event) {
+                event.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = event.dataTransfer.files;
+                handleFiles(files);
+            });
+
+            dropZone.addEventListener('click', function (event) {
+                document.getElementById('files').click();
             });
 
             document.getElementById('apartmentForm').addEventListener('submit', function (event) {
@@ -313,7 +380,7 @@
                 const form = event.target;
                 let isValid = true;
 
-                // Custom validation messages
+
                 if (!form.name_apartment.value) {
                     isValid = false;
                     document.getElementById('name_apartment_error').textContent = 'Vui lòng điền tên căn hộ';
@@ -418,7 +485,7 @@
                 var tinh = this.options[this.selectedIndex].text;
                 document.getElementById('hidden_tinh').value = tinh;
 
-         
+
                 document.getElementById('quan').innerHTML = '<option value="0">Quận huyện</option>';
                 document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
                 document.getElementById('hidden_quan').value = '';
@@ -432,7 +499,7 @@
                 var quan = this.options[this.selectedIndex].text;
                 document.getElementById('hidden_quan').value = quan;
 
-             
+
                 document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
                 document.getElementById('hidden_phuong').value = '';
 

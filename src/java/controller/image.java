@@ -75,7 +75,7 @@ public class image extends HttpServlet {
             String fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.isEmpty()) {
                 // Save the file to the specified directory
-                part.write(uploadFilePath + File.separator + fileName);
+                part.write(uploadFilePath + File.separator +"thinh"+ fileName);
                 fileNames.append(fileName).append(" ");
             }
         }

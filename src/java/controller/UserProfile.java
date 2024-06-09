@@ -38,6 +38,8 @@ public class UserProfile extends HttpServlet {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
             request.setAttribute("user_Data", user_Data);
+            String activeTab = "account-general"; // Default active tab
+            request.setAttribute("activeTab", activeTab);
             request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
         } else {
             response.sendRedirect("Login");
@@ -48,19 +50,33 @@ public class UserProfile extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("doPost called " + request.getParameter("userid"));
+        HttpSession session = request.getSession();
+        String activeTab = "account-general"; // Default active tab
 
         String firstname = request.getParameter("first-name");
         String lastname = request.getParameter("last-name");
         String email = request.getParameter("email");
         String dobStr = request.getParameter("dob");
 
-        String currentpassword = request.getParameter("current-password");
-        String newpassword = request.getParameter("new-password");
-        String repassword = request.getParameter("re-password");
         int user_ID = Integer.parseInt(request.getParameter("userid"));
 
         UserDao userdao = new UserDao();
+        User user_Data = userdao.getUser((int) session.getAttribute("user_ID"));
+
+        boolean isValid = true;
+        String nameRegex = "^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$";
+        if (!firstname.matches(nameRegex)) {
+            request.setAttribute("message1", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
+            isValid = false;
+        }
+        if (!lastname.matches(nameRegex)) {
+            request.setAttribute("message2", "Invalid last name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
+            isValid = false;
+        }
+        if (!email.equals(user_Data.getEmail()) && userdao.checkEmail(email)) {
+            request.setAttribute("message3", "Email address already exists. Please use a different email.");
+            isValid = false;
+        }
 
         Date dob = null;
         try {
@@ -69,11 +85,13 @@ public class UserProfile extends HttpServlet {
             LocalDate today = LocalDate.now();
             if (Period.between(dobLocal, today).getYears() < 18) {
                 // User is less than 18 years old
-                request.setAttribute("message6", "You must be at least 18 years old to register.");
+                request.setAttribute("message4", "You must be at least 18 years old to register.");
+                isValid = false;
             }
         } catch (DateTimeParseException | IllegalArgumentException e) {
             // Invalid date format or null value
-            request.setAttribute("message6", "Invalid date of birth format.");
+            request.setAttribute("message4", "Invalid date of birth format.");
+            isValid = false;
         }
 
         //path to upload folder
@@ -85,12 +103,10 @@ public class UserProfile extends HttpServlet {
         }
         //get part from request
         Part part = request.getPart("avatar");
-        String fileName = getFileName(part);
-        //write file to upload folder
-        String filePath = path + File.separator + fileName;
-        //if avatar not change
-        boolean isFileUploaded = (part != null && part.getSize() > 0);
-        if (isFileUploaded) {
+        String fileName = "";
+        if (part != null && part.getSize() > 0) {
+            fileName = getFileName(part);
+            String filePath = path + File.separator + fileName;
             part.write(filePath);
         } else {
             User existingUser = userdao.getUser(user_ID);
@@ -98,11 +114,18 @@ public class UserProfile extends HttpServlet {
         }
 
         if (request.getParameter("button").equals("general")) {
-            userdao.UpdateGeneralProfile(email, firstname, lastname, dob, fileName, user_ID);
+            if (!isValid) {
+                doGet(request, response);
+            } else {
+                request.setAttribute("messagesuccess", "Change your profile successfully!");
+                userdao.UpdateGeneralProfile(email, firstname, lastname, dob, fileName, user_ID);
+            }
 //            part.write(filePath);
         }
 
-        response.sendRedirect("UserProfile");
+        request.setAttribute("activeTab", activeTab); // Set the active tab attribute
+//        response.sendRedirect("UserProfile");
+        doGet(request, response);
     }
 
     private String getFileName(Part part) {

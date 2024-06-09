@@ -210,7 +210,7 @@ public class ApartmentPostDao extends DBContext {
             int type,
             int status,
             int pageNumber,
-            int pageSize,int payment_id) {
+            int pageSize, int payment_id) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT [id], [title], [description], [post_status], [post_start], [post_end], [apartment_id], [payment_id], [landlord_id], [first_image], [city], [district], [commune], [area], [number_of_bedroom], [apartment_name], [price], [apartment_type], [total_image] ";
         sql += "FROM [dbo].[Apartment_Posts] ";
@@ -249,12 +249,12 @@ public class ApartmentPostDao extends DBContext {
         if (status != 0) {
             sql += "AND [post_status] = " + status;
         }
-        if(payment_id!=0){
-            sql += " and [payment_id] = " + payment_id ;
+        if (payment_id != 0) {
+            sql += " and [payment_id] = " + payment_id;
         }
 
         if (type == 1) {
-            sql += "ORDER BY [price] DESC ,[payment_id] desc " ;
+            sql += "ORDER BY [price] DESC ,[payment_id] desc ";
         } else if (type == 2) {
             sql += "ORDER BY [price] ,[payment_id] desc";
         } else {
@@ -295,7 +295,7 @@ public class ApartmentPostDao extends DBContext {
                 ap.setApartment_type(at);
                 ap.setTotal_image(rs.getInt("total_image"));
                 list.add(ap);
-                
+
             }
         } catch (SQLException e) {
 
@@ -304,16 +304,64 @@ public class ApartmentPostDao extends DBContext {
         return list;
     }
 
+    // update Apartment post
+    public void updateApartmentPost(Apartment_Post ap,int id) {
+        String sql = "UPDATE [dbo].[Apartment_Posts]\n"
+                + "   SET [title] = ?\n"
+                + "      ,[description] = ?\n"
+                + "      ,[post_status] = ?\n"
+                + "      ,[post_start] = ?\n"
+                + "      ,[post_end] = ?\n"
+                + "      ,[apartment_id] = ?\n"
+                + "      ,[payment_id] = ?\n"
+                + "      ,[landlord_id] = ?\n"
+                + "      ,[first_image] = ?\n"
+                + "      ,[city] = ?\n"
+                + "      ,[district] = ?\n"
+                + "      ,[commune] = ?\n"
+                + "      ,[area] = ?\n"
+                + "      ,[number_of_bedroom] = ?\n"
+                + "      ,[apartment_name] = ?\n"
+                + "      ,[price] = ?\n"
+                + "      ,[apartment_type] = ?\n"
+                + "      ,[total_image] = ?\n"
+                + " WHERE [id]= ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, ap.getTitle());
+            st.setString(2, ap.getDescription());
+            st.setInt(3, ap.getPost_status());
+            st.setDate(4, ap.getPost_start());
+            st.setDate(5, ap.getPost_end());
+            st.setInt(6, ap.getApartment_id().getId());
+            st.setInt(7, ap.getPayment_id().getId());
+            st.setInt(8, ap.getLandlord_id().getId());
+            st.setString(9, ap.getFirst_image());
+            st.setString(10, ap.getCity());
+            st.setString(11, ap.getDistrict());
+            st.setString(12, ap.getCommune());
+            st.setDouble(13, ap.getArea());
+            st.setInt(14, ap.getNumber_of_bedroom());
+            st.setString(15, ap.getApartment_name());
+            st.setDouble(16, ap.getPrice());
+            st.setInt(17, ap.getApartment_type().getId());
+            st.setInt(18, ap.getTotal_image());
+            st.setInt(19, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        List<Apartment_Post> list = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 9,4);
-        for (Apartment_Post iApartment_PostL : list) {
-            System.out.println(iApartment_PostL);
-        }
-        int n = apartmentPostDao.getApartmentPostSize(null, "Hải Dương", null, null, 0, 0, 0, 0, 0, 0, 0);
-        System.out.println(n);
+       Apartment_Post ap = apartmentPostDao.getApartment_Post(7);
+       ap.setCity("HO Chi Minh city");
+       ap.setDistrict("Quan 7");
+       ap.setFirst_image("quan.jpg");
+       apartmentPostDao.updateApartmentPost(ap,7);
 
     }
 }
