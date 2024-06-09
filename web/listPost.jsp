@@ -17,7 +17,7 @@
     <div class="container">
         <h1>Danh sách bài đăng</h1>
 
-        <a href="createPost.jsp" class="btn btn-primary">Tạo bài viết mới</a>
+        <a href="addCommunityPost" class="btn btn-primary">Tạo bài viết mới</a>
 
         <form action="listpost" method="get">
             
@@ -27,7 +27,6 @@
                     <th>Tiêu đề</th>
                     <th>Nội dung</th>
                     <th>Tác giả</th>
-                    <th>Ngày đăng</th>
                     <th>Hành động</th>
                 </tr>
             </thead>

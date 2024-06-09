@@ -42,6 +42,7 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Tạo bài viết mới</h1>
+        
        
         <form action="addCommunityPost" method="get" enctype="multipart/form-data">
             <div class="form-group">
@@ -57,6 +58,7 @@
                 <input type="file" id="imageInput" name="images" multiple accept="image/*" >
             </div>
             <button type="submit" class="btn btn-primary">Đăng bài</button>
+            <a href="listpost" class="btn btn-primary">Danh sách bài viết</a>
         </form>
         
         <script>
