@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,11 +17,12 @@
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <style>
             .preview {
+                
                 display: flex;
                 flex-wrap: wrap;
             }
             .preview img {
-                max-width: 150px;
+                max-width: 550px;
                 margin: 10px;
             }
             .error {
@@ -97,9 +99,9 @@
                                 <td>Loại căn hộ</td>
                                 <td>
                                     <select required class="form-select" name="apartment_type" aria-label="Default select example">
-                                        <option value="">Chọn loại hình căn hộ</option>
+                                   
 
-                                        <option value="">${ap.type_id}</option>
+                                        <option value="">${ap.type_id.name}</option>
 
                                     </select>
                                     <div class="error" id="apartment_type_error"></div>
@@ -171,14 +173,14 @@
                                 <td>Giá tiền (VNĐ)</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" value="${ap.price} vnd" name="price" class="form-control" aria-label="Text input with checkbox">
+                                        <input required type="text" value="<fmt:formatNumber value="${ap.price}" pattern="#,###"/>vnd" name="price" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="price_error"></div>
                                     </div>
                                 </td>
                                 <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Diện tích (m2)*</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" value="${ap.area} m2" name="area" class="form-control" aria-label="Text input with checkbox">
+                                        <input required type="text" value="<fmt:formatNumber value="${ap.area}" pattern="#,###"/> m2" name="area" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="area_error"></div>
                                     </div>
                                 </td>
@@ -203,7 +205,7 @@
 
                         <div class="preview" id="preview">
                             <c:forEach items="${requestScope.apartment_images}" var="image">
-                                <img  style="object-fit: contain;background: #000" height="100px;" width="130px"  src="uploads/${image.image}" alt="alt"/>
+                                <img  style="object-fit: contain;background: #000" height="300px;"  src="uploads/${image.image}" alt="alt"/>
                             </c:forEach>
                         </div>
                     </div>
@@ -224,149 +226,7 @@
         </form>
 
         <script>
-            function handleFiles(files) {
-                const preview = document.getElementById('preview');
-                preview.innerHTML = ''; // Clear the preview container
-
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.className = 'img-wrapper';
-
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        imgWrapper.appendChild(img);
-
-                        const removeBtn = document.createElement('button');
-                        removeBtn.innerHTML = '×';
-                        removeBtn.className = 'remove-btn';
-                        removeBtn.onclick = function () {
-                            preview.removeChild(imgWrapper);
-                            if (preview.children.length === 0) {
-                                const newInput = document.createElement('input');
-                                newInput.type = 'file';
-                                newInput.id = 'files';
-                                newInput.name = 'files';
-                                newInput.accept = 'image/*';
-                                newInput.multiple = true;
-                                newInput.className = 'form-control';
-                                newInput.addEventListener('change', handleInputChange);
-                                document.getElementById('files').replaceWith(newInput);
-                            }
-                        };
-                        imgWrapper.appendChild(removeBtn);
-
-                        preview.appendChild(imgWrapper);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            function handleInputChange(event) {
-                const files = event.target.files;
-                handleFiles(files);
-            }
-
-            document.getElementById('files').addEventListener('change', handleInputChange);
-
-            const dropZone = document.getElementById('drop-zone');
-
-            dropZone.addEventListener('dragover', function (event) {
-                event.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-
-            dropZone.addEventListener('dragleave', function (event) {
-                dropZone.classList.remove('dragover');
-            });
-
-            dropZone.addEventListener('drop', function (event) {
-                event.preventDefault();
-                dropZone.classList.remove('dragover');
-                const files = event.dataTransfer.files;
-                handleFiles(files);
-            });
-
-            dropZone.addEventListener('click', function (event) {
-                document.getElementById('files').click();
-            });
-
-            document.getElementById('apartmentForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const form = event.target;
-                let isValid = true;
-
-
-                if (!form.name_apartment.value) {
-                    isValid = false;
-                    document.getElementById('name_apartment_error').textContent = 'Vui lòng điền tên căn hộ';
-                } else {
-                    document.getElementById('name_apartment_error').textContent = '';
-                }
-
-                if (!form.apartment_type.value) {
-                    isValid = false;
-                    document.getElementById('apartment_type_error').textContent = 'Vui lòng chọn loại căn hộ';
-                } else {
-                    document.getElementById('apartment_type_error').textContent = '';
-                }
-
-                if (form.tinh.value == "0") {
-                    isValid = false;
-                    document.getElementById('tinh_error').textContent = 'Vui lòng chọn tỉnh/thành phố';
-                } else {
-                    document.getElementById('tinh_error').textContent = '';
-                }
-
-                if (form.quan.value == "0") {
-                    isValid = false;
-                    document.getElementById('quan_error').textContent = 'Vui lòng chọn quận/huyện';
-                } else {
-                    document.getElementById('quan_error').textContent = '';
-                }
-
-                if (form.phuong.value == "0") {
-                    isValid = false;
-                    document.getElementById('phuong_error').textContent = 'Vui lòng chọn xã/phường';
-                } else {
-                    document.getElementById('phuong_error').textContent = '';
-                }
-
-                if (!form.address.value) {
-                    isValid = false;
-                    document.getElementById('address_error').textContent = 'Vui lòng điền địa chỉ cụ thể';
-                } else {
-                    document.getElementById('address_error').textContent = '';
-                }
-
-                if (!form.price.value) {
-                    isValid = false;
-                    document.getElementById('price_error').textContent = 'Vui lòng điền giá tiền';
-                } else {
-                    document.getElementById('price_error').textContent = '';
-                }
-
-                if (!form.area.value) {
-                    isValid = false;
-                    document.getElementById('area_error').textContent = 'Vui lòng điền diện tích';
-                } else {
-                    document.getElementById('area_error').textContent = '';
-                }
-
-                if (!form.number_of_bedroom.value) {
-                    isValid = false;
-                    document.getElementById('number_of_bedroom_error').textContent = 'Vui lòng điền số lượng phòng ngủ';
-                } else {
-                    document.getElementById('number_of_bedroom_error').textContent = '';
-                }
-
-                if (isValid) {
-                    form.submit();
-                }
-            });
+           
         </script>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script>

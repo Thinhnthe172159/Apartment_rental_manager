@@ -296,7 +296,7 @@
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-02.png" alt="" style="max-width: 52px;">
-                                        <h4><c:if test="${Apartment.status_apartment == 1}">Available<br><span>Contract Ready</span></c:if><c:if test="${Apartment.status_apartment == 0}">Not Available</c:if><br><span>Contract is not Ready</span></h4>
+                                        <h4><c:if test="${Apartment.status_apartment == 0}">Available<br><span>Contract is Ready</span></c:if><c:if test="${Apartment.status_apartment == 1}">Not Available</c:if><br></h4>
                                         </li>
                                         <li>
                                             <img src="assets/images/info-icon-03.png" alt="" style="max-width: 52px;">
