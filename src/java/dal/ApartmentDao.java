@@ -326,6 +326,7 @@ public class ApartmentDao extends DBContext {
         }
         return list;
     }
+
     //get all image
     public List<Apartment_image> getAllApartmentImageList() {
         List<Apartment_image> list = new ArrayList<>();
@@ -438,7 +439,7 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
-    //List Apartment
+    //List Apartment search
     public List<Apartment> getApartmentList(int landlord_id) {
 
         List<Apartment> list = new ArrayList<>();
@@ -458,7 +459,7 @@ public class ApartmentDao extends DBContext {
                 + "  FROM [dbo].[Aparment]"
                 + " where 1=1";
         if (landlord_id != 0) {
-            sql += "and [landlord_id] = " + landlord_id;
+            sql += " and [landlord_id] = " + landlord_id;
         }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -489,8 +490,148 @@ public class ApartmentDao extends DBContext {
 
         return list;
     }
-    // get newest apartment
 
+    //
+    public List<Apartment> getApartmentList(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int pageNumber, int pageSize) {
+
+        List<Apartment> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[type_id]\n"
+                + "      ,[address]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[price]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[status_apartment]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[tenant_id]\n"
+                + "  FROM [dbo].[Aparment]"
+                + " where 1=1";
+        if (landlord_id != 0) {
+            sql += " and [landlord_id] = " + landlord_id;
+        }
+        if (name != null) {
+            sql += " and [name] like '%" + name + "%' ";
+        }
+        if (apartment_type_id != 0) {
+            sql += " and [type_id] =" + apartment_type_id;
+        }
+        if (city != null) {
+            sql += " and [coty] like '%" + city + "%' ";
+        }
+        if (district != null) {
+            sql += " and [coty] like '%" + district + "%' ";
+        }
+        if (commune != null) {
+            sql += " and [coty] like '%" + commune + "%' ";
+        }
+        sql += " order by [id] desc";
+
+        int offset = (pageNumber - 1) * pageSize;
+
+        sql += "OFFSET " + offset + " ROWS ";
+        sql += "FETCH NEXT " + pageSize + " ROWS ONLY ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment a = new Apartment();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                a.setType_id(at);
+                a.setAddress(rs.getString("address"));
+                a.setCity(rs.getString("city"));
+                a.setDistrict(rs.getString("district"));
+                a.setCommune(rs.getString("commune"));
+                a.setPrice(rs.getDouble("price"));
+                a.setArea(rs.getDouble("area"));
+                a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                a.setStatus_apartment(rs.getInt("status_apartment"));
+                User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                a.setLandLord_id(landlord);
+                a.setTenant_id(tenant);
+                list.add(a);
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return list;
+    }
+
+    //list size paging
+    public int getApartmentListSize(int landlord_id, String name, int apartment_type_id, String city, String district, String commune) {
+
+        List<Apartment> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[type_id]\n"
+                + "      ,[address]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[price]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[status_apartment]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[tenant_id]\n"
+                + "  FROM [dbo].[Aparment]"
+                + " where 1=1";
+        if (landlord_id != 0) {
+            sql += " and [landlord_id] = " + landlord_id;
+        }
+        if (name != null) {
+            sql += " and [name] like '%" + name + "%' ";
+        }
+        if (apartment_type_id != 0) {
+            sql += " and [type_id] =" + apartment_type_id;
+        }
+        if (city != null) {
+            sql += " and [coty] like '%" + city + "%' ";
+        }
+        if (district != null) {
+            sql += " and [coty] like '%" + district + "%' ";
+        }
+        if (commune != null) {
+            sql += " and [coty] like '%" + commune + "%' ";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment a = new Apartment();
+                a.setId(rs.getInt("id"));
+                a.setName(rs.getString("name"));
+                Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                a.setType_id(at);
+                a.setAddress(rs.getString("address"));
+                a.setCity(rs.getString("city"));
+                a.setDistrict(rs.getString("district"));
+                a.setCommune(rs.getString("commune"));
+                a.setPrice(rs.getDouble("price"));
+                a.setArea(rs.getDouble("area"));
+                a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                a.setStatus_apartment(rs.getInt("status_apartment"));
+                User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                a.setLandLord_id(landlord);
+                a.setTenant_id(tenant);
+                list.add(a);
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return list.size();
+    }
+
+    // get newest apartment
     public Apartment getLatedApartment() {
         String sql = "SELECT top 1 * from [dbo].[Aparment]\n"
                 + "order by [id] desc";
