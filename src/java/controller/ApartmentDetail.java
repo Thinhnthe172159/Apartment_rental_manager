@@ -92,7 +92,7 @@ public class ApartmentDetail extends HttpServlet {
             request.setAttribute("apartment_propertieses_list", apartment_propertieses_list);
             request.setAttribute("apartment_images_list", apartment_images_list);
             request.setAttribute("apartment_Post_nearby_list", apartment_Post_nearby_list);
-            request.getRequestDispatcher("ApartmentDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("ApartmentPostDetail.jsp").forward(request, response);
         } catch (NumberFormatException e) {
         
         }

@@ -1,33 +1,64 @@
 <%-- 
-    Document   : ApartmentListForLandlord
-    Created on : Jun 7, 2024, 1:47:07 PM
+    Document   : apartmentPostLists
+    Created on : Jun 4, 2024, 10:33:18 PM
     Author     : thinh
 --%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <title>JSP Page</title>
+<html lang="zxx">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="icon" href="img/logoWeb.png" type="image/x-icon">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+
+    <head>
+
+        <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({'gtm.start':
+                            new Date().getTime(), event: 'gtm.js'});
+                var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                        '../../../../../../www.googletagmanager.com/gtm5445.html?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-TNL8QV6');</script>
+        <!-- End Google Tag Manager -->
+        <title>The Nest - Real Estate HTML Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="css/leaflet.css" type="text/css">
+        <link rel="stylesheet" href="css/map.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
+        <link type="text/css" rel="stylesheet" href="fonts/bootstrap-icons/bootstrap-icons.css">
+        <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
+        <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
+        <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
+        <link rel="stylesheet" type="text/css"  href="css/magnific-popup.css">
+        <link rel="stylesheet" type="text/css"  href="css/slick.css">
+        <link rel="stylesheet" type="text/css" href="css/initial.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700;900&amp;family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="css/ie10-viewport-bug-workaround.css">
+        <script src="js/ie-emulation-modes-warning.js"></script>
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/fontawesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
         <link rel="stylesheet" href="assets/css/owl.css">
-        <link rel="stylesheet" href="assets/css/animate.css">
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <style>
-           
+
 
             /* ===== Career ===== */
             .career-form {
@@ -152,125 +183,132 @@
 
         </style>
 
-
     </head>
+    <body>
+        <jsp:include page="Navbar.jsp"/>
+        <br><br><br><br><br><br><br>
+        <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Apartment manager</a></span>
 
-    <body> 
-        <jsp:include page="Navbar.jsp"/><br><br><br>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto mb-4">
-                    <div class="section-title text-center ">
-                        <h3 class="top-c-sep">Grow your career with us</h3>
-                        <p>Lorem ipsum dolor sit detudzdae amet, rcquisc adipiscing elit. Aenean socada commodo
-                            ligaui egets dolor. Nullam quis ante tiam sit ame orci eget erovtiu faucid.</p>
                     </div>
                 </div>
             </div>
+        </div>
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNL8QV6"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <div class="page_loader"></div>
+        <br><br><br>
 
-            <div class="row">
-                <div class="col-lg-10 mx-auto">
-                    <div class="career-search mb-60">
+        <!-- Properties section body start -->
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="career-search mb-60">
 
-                        <form action="#" class="career-form mb-60">
-                            <div class="row">
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <div class="input-group position-relative">
-                                        <input type="text" class="form-control" placeholder="Enter Your Keywords" id="keywords">
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <div class="select-container">
-                                        <select class="custom-select">
-                                            <option selected="">Location</option>
-                                            <option value="1">Jaipur</option>
-                                            <option value="2">Pune</option>
-                                            <option value="3">Bangalore</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <div class="select-container">
-                                        <select class="custom-select">
-                                            <option selected="">Select Job Type</option>
-                                            <option value="1">Ui designer</option>
-                                            <option value="2">JS developer</option>
-                                            <option value="3">Web developer</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-3 my-3">
-                                    <button type="button" class="btn btn-lg btn-block btn-light btn-custom" id="contact-submit">
-                                        Search
-                                    </button>
+                    <form action="#" class="career-form mb-60">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-3 my-3">
+                                <div class="input-group position-relative">
+                                    <input type="text" class="form-control" placeholder="Enter Your Keywords" id="keywords">
                                 </div>
                             </div>
-                        </form>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-xl-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row align-items-center">
-                                                    <div class="table-responsive px-3">
-                                                        <table class="table table-striped align-middle table-nowrap">
-                                                            <tbody>
-                                                                <c:set var="index" value="0" />
-                                                                <c:forEach items="${requestScope.apartmentList}" var="ap">
-                                                                    <c:set var="index" value="${index + 1}" />
-                                                                    <tr>
+                            <div class="col-md-6 col-lg-3 my-3">
+                                <div class="select-container">
+                                    <select class="custom-select">
+                                        <option selected="">Location</option>
+                                        <option value="1">Jaipur</option>
+                                        <option value="2">Pune</option>
+                                        <option value="3">Bangalore</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3 my-3">
+                                <div class="select-container">
+                                    <select class="custom-select">
+                                        <option selected="">Select Job Type</option>
+                                        <option value="1">Ui designer</option>
+                                        <option value="2">JS developer</option>
+                                        <option value="3">Web developer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3 my-3">
+                                <button type="button" class="btn btn-lg btn-block btn-light btn-custom" id="contact-submit">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="table-responsive px-3">
+                                                    <table class="table table-striped align-middle table-nowrap">
+                                                        <tbody>
+                                                            <c:set var="index" value="0" />
+                                                            <c:forEach items="${requestScope.apartmentList}" var="ap">
+                                                                <c:set var="index" value="${index + 1}" />
+                                                                <tr>
 
 
-                                                                        <td>
-                                                                            <div>
-                                                                                <h5 class="font-size-18"><a href="ecommerce-product-detail.html" class="text-dark">${index}</a></h5>
+                                                                    <td>
+                                                                        <div>
+                                                                            <h5 class="font-size-18"><a href="ecommerce-product-detail.html" class="text-dark">${index}</a></h5>
 
-                                                                            </div>
-                                                                        </td>
+                                                                        </div>
+                                                                    </td>
 
-                                                                        <td>
-                                                                            <ul class="list-unstyled ps-0 mb-0">
-                                                                                <li><i class=""></i> Apartment: ${ap.name}</li>
-                                                                                <li><i class=""></i> Address : ${ap.city},${ap.district}.${ap.commune}</li>
-                                                                                <li><i class=""></i> ${ap.address}| Area: ${ap.area}m2</li>
+                                                                    <td>
+                                                                        <ul class="list-unstyled ps-0 mb-0">
+                                                                            <li><i class=""></i> Apartment: ${ap.name}</li>
+                                                                            <li><i class=""></i> Address : ${ap.city},${ap.district}.${ap.commune}</li>
+                                                                            <li><i class=""></i> ${ap.address}| Area: ${ap.area}m2</li>
+                                                                        </ul>
+                                                                    </td>
+
+                                                                    <td style="width: 180px;">
+                                                                        <p>Status :</p>
+                                                                        <c:if test="${ap.status_apartment == 0}">
+                                                                            <p>chưa có người</p>
+                                                                        </c:if>
+                                                                        <c:if test="${ap.status_apartment == 1}">
+                                                                            <p>Đã có người thuê</p>
+                                                                        </c:if>
+                                                                    </td>
+
+                                                                    <td style="width: 220px;">
+                                                                        <b>${ap.price}</b>
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-secondary " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                Action .
+                                                                            </button>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li><button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}">View detail</a></button></li>
+                                                                                <li><button class="dropdown-item" type="button">Edit</button></li>
+                                                                                <li><button class="dropdown-item" type="button">Remove</button></li>
                                                                             </ul>
-                                                                        </td>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>.</td>
 
-                                                                        <td style="width: 180px;">
-                                                                            <p>Status :</p>
-                                                                            <c:if test="${ap.status_apartment == 0}">
-                                                                                <p>chưa có người</p>
-                                                                            </c:if>
-                                                                            <c:if test="${ap.status_apartment == 1}">
-                                                                                <p>Đã có người thuê</p>
-                                                                            </c:if>
-                                                                        </td>
 
-                                                                        <td style="width: 220px;">
-                                                                            <b>${ap.price}</b>
-                                                                        </td>
+                                                                </tr> 
+                                                            </c:forEach> 
 
-                                                                        <td>
-                                                                            <button type="button" class="btn btn-primary waves-effect waves-light"><i class="bx bx-eye me-2 font-size-15 align-middle"></i> view</button>
-                                                                        </td>
-
-                                                                        <td>
-                                                                            <div class="dropdown float-end">
-                                                                                <a class="text-muted dropdown-toggle font-size-20" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                                                    <i class="bx bx-dots-horizontal-rounded"></i>
-                                                                                </a>
-                                                                                <div class="dropdown-menu dropdown-menu-end">
-                                                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                                                    <a class="dropdown-item" href="#">Remove</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr> 
-                                                                </c:forEach> 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                        </tbody>
+                                                        <br><br><br>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -278,39 +316,71 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <!-- START Pagination -->
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-reset justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                        <i class="zmdi zmdi-long-arrow-left"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link" href="#">8</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">
-                                        <i class="zmdi zmdi-long-arrow-right"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- END Pagination -->
                     </div>
-                </div>
 
+
+                    <!-- START Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-reset justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                    <i class="zmdi zmdi-long-arrow-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">8</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">
+                                    <i class="zmdi zmdi-long-arrow-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- END Pagination -->
+                </div>
             </div>
-            <jsp:include page="Footer.jsp"/>
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-            <script src="assets/js/isotope.min.js"></script>
-            <script src="assets/js/owl-carousel.js"></script>
-            <script src="assets/js/counter.js"></script>
-            <script src="assets/js/custom.js"></script>
+
+        </div>
+        <!-- Properties section body end -->
+        <jsp:include page="Footer.jsp"/>
+        <!-- Partners strat -->
+
+        <!-- Footer end -->
+
+
+
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script  src="js/bootstrap-submenu.js"></script>
+        <script src="js/rangeslider.js"></script>
+        <script src="js/jquery.mb.YTPlayer.js"></script>
+        <script src="js/wow.min.js"></script>
+        <script src="js/bootstrap-select.min.js"></script>
+        <script src="js/jquery.easing.1.3.js"></script>
+        <script src="js/jquery.scrollUp.js"></script>
+        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-providers.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/dropzone.js"></script>
+        <script src="js/jquery.filterizr.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/slick.min.js"></script>
+        <script src="js/maps.js"></script>
+        <script src="js/sidebar.js"></script>
+        <script src="js/app.js"></script>
+
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="js/ie10-viewport-bug-workaround.js"></script>
+        <!-- Custom javascript -->
+        <script src="js/ie10-viewport-bug-workaround.js"></script>
+
     </body>
+
+    <!-- Mirrored from storage.googleapis.com/theme-vessel-items/checking-sites/nest-2-html/HTML/main/properties-list-rightside.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 04 Jun 2024 15:11:30 GMT -->
 </html>
+

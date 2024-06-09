@@ -1,103 +1,56 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package controller;
-
 import dal.CommunityPostDao;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.CommunityPost;
-
 /**
  *
  * @author DuyThai
  */
-@WebServlet(name = "EditCommunityPost", urlPatterns = {"/editPost"})
+@WebServlet(name = "EditCommunityPost", urlPatterns = {"/editpost"})
 public class EditCommunityPost extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EditCommunityPost</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EditCommunityPost at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    } 
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
-     * Handles the HTTP <code>GET</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
-
-    /** 
-     * Handles the HTTP <code>POST</code> method.
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-        CommunityPostDao cpd = new CommunityPostDao();
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        String title = request.getParameter("t");
-        String context = request.getParameter("c");
-
-        CommunityPost post = new CommunityPost();
-       // post.setPostId(id);
-        post.setTitle(title);
-        post.setConetext(context);
-
-        try {
-            cpd.updatePost(post);
-            response.sendRedirect("listPost"); 
-        } catch (IOException e) {
-            // Xử lý lỗi
-        }
     }
 
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int postId = Integer.parseInt(request.getParameter("id")); 
+        CommunityPostDao cpd = new CommunityPostDao();
+        CommunityPost post; 
+        post = cpd.getPostId(postId);
+        request.setAttribute("post", post); 
+        request.getRequestDispatcher("editPost.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        int postId = Integer.parseInt(request.getParameter("postId"));
+        String title = request.getParameter("title");
+        String context = request.getParameter("context");
+
+        CommunityPostDao cpd = new CommunityPostDao();
+        CommunityPost post = new CommunityPost(postId, title, context, null); 
+        cpd.updatePost(post); 
+
+        request.setAttribute("success", "Bài viết đã được cập nhật!");
+        request.getRequestDispatcher("editPost.jsp").forward(request, response);
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }
