@@ -176,11 +176,6 @@
             .font-size-15 {
                 font-size: 15px!important;
             }
-
-
-
-
-
         </style>
 
     </head>
@@ -294,7 +289,7 @@
                                                                             </button>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}">View detail</a></button></li>
-                                                                                <li><button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}"></a></button></li>
+                                                                                <li><button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}">Update</a></button></li>
                                                                                 <li> <form id="deleteForm-${ap.id}" action="AparmentListForLandlord?remove_id=${ap.id}" method="post">
                                                                                         <button class="dropdown-item" type="button" onclick="confirmDeletion('deleteForm-${ap.id}')">Remove</button>
                                                                                     </form></li>

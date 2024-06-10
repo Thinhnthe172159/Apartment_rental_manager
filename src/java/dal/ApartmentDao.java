@@ -284,7 +284,7 @@ public class ApartmentDao extends DBContext {
                 + "      ,[image]\n"
                 + "      ,[Apartment_id]\n"
                 + "  FROM [dbo].[Apartment_image]\n"
-                + "    where [Apartment_id] = ? order by [id] desc";
+                + "    where [Apartment_id] = ? order by [id]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
