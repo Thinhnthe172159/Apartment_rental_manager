@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -714,10 +715,31 @@ public class ApartmentDao extends DBContext {
         }
     }
 
+    //delete apartment
+    public void removeApartment(int id_apartment) {
+        String sql = "DELETE FROM [dbo].[Apartment_room]\n"
+                + "where apartment_id = ? ;\n"
+                + "DELETE FROM [dbo].[Apartment_Posts]\n"
+                + "where [apartment_id] = ? ;\n"
+                + "Delete FROM [dbo].[Apartment_image]\n"
+                + "where [Apartment_id] = ? ;\n"
+                + "DELETE FROM [dbo].[Aparment]\n"
+                + "      WHERE [id] = ? ;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id_apartment);
+            st.setInt(2, id_apartment);
+            st.setInt(3, id_apartment);
+            st.setInt(4, id_apartment);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
+    }
+
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
-        int list = apartmentDao.getApartmentListSize(2, null, 0, null, null, null);
-        System.out.println(list);
 
     }
 
