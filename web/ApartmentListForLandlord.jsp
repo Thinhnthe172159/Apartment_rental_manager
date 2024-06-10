@@ -218,11 +218,11 @@
                             </div>
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="select-container">
-                                    <select class="custom-select">
-                                        <option selected="">Location</option>
-                                        <option value="1">Jaipur</option>
-                                        <option value="2">Pune</option>
-                                        <option value="3">Bangalore</option>
+                                    <select class="custom-select" >
+                                        <option style="color: black" selected="">Location</option>
+                                        <option style="color: black" value="1">Jaipur</option>
+                                        <option style="color: black" value="2">Pune</option>
+                                        <option style="color: black" value="3">Bangalore</option>
                                     </select>
                                 </div>
                             </div>
@@ -322,20 +322,24 @@
                     <!-- START Pagination -->
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-reset justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <i class="zmdi zmdi-long-arrow-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">8</a></li>
+                            <c:if test="${pageIndex > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
+                                        <i class="">next</i>
+                                    </a>
+                                </li>
+                            </c:if>
+                            <c:forEach items="${requestScope.pagelist}" var="i">
+                                <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}">${i}</a></li>
+                                </c:forEach>
                             <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="zmdi zmdi-long-arrow-right"></i>
-                                </a>
+                                <c:if test="${pageIndex < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}">
+                                        <i class="">next</i>
+                                    </a>
+                                </li>
+                            </c:if>
                             </li>
                         </ul>
                     </nav>

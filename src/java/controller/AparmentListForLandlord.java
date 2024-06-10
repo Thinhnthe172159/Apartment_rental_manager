@@ -66,15 +66,17 @@ public class AparmentListForLandlord extends HttpServlet {
         String page_index = request.getParameter("page_index");
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
         int pageSize = 6;
-        int totalSize = apartmentDao.getApartmentListSize(0, null, 0, null, null, null);
+        int totalSize = apartmentDao.getApartmentListSize(2, null, 0, null, null, null);
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             pagelist.add(i);
         }
-        List<Apartment> apartmentList = apartmentDao.getApartmentList(0, null, 0, null, null, null, pageIndex, pageSize);
+        List<Apartment> apartmentList = apartmentDao.getApartmentList(2, null, 0, null, null, null, pageIndex, pageSize);
         request.setAttribute("apartmentList", apartmentList);
         request.setAttribute("pagelist", pagelist);
+        request.setAttribute("pageIndex", pageIndex);
+        request.setAttribute("totalPages", totalPages);
         request.getRequestDispatcher("ApartmentListForLandlord.jsp").forward(request, response);
     }
 
