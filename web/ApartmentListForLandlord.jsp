@@ -284,7 +284,7 @@
                                                                     </td>
 
                                                                     <td style="width: 220px;">
-                                                                        <b>${ap.price}</b>
+                                                                        <b><fmt:formatNumber value="${ap.price}" pattern="#,###"/> vnd</b>
                                                                     </td>
 
                                                                     <td>
@@ -323,7 +323,7 @@
                             <c:if test="${pageIndex > 1}">
                                 <li class="page-item">
                                     <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
-                                        <i class="">next</i>
+                                        <i class="">previous</i>
                                     </a>
                                 </li>
                             </c:if>
