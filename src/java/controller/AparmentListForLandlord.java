@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_image;
+import model.Apartment_type;
 
 /**
  *
@@ -68,6 +69,7 @@ public class AparmentListForLandlord extends HttpServlet {
         int pageSize = 6;
         int totalSize = apartmentDao.getApartmentListSize(2, null, 0, null, null, null);
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
+        List<Apartment_type>apartment_types_list = apartmentDao.getApartment_type_list();
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             pagelist.add(i);
@@ -77,6 +79,7 @@ public class AparmentListForLandlord extends HttpServlet {
         request.setAttribute("pagelist", pagelist);
         request.setAttribute("pageIndex", pageIndex);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("apartment_types_list", apartment_types_list);
         request.getRequestDispatcher("ApartmentListForLandlord.jsp").forward(request, response);
     }
 

@@ -213,26 +213,25 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="input-group position-relative">
-                                    <input type="text" class="form-control" placeholder="Enter Your Keywords" id="keywords">
+                                    <input type="text" class="form-control" placeholder="Nhập tên căn hộ" id="keywords">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="select-container">
                                     <select class="custom-select" >
-                                        <option style="color: black" selected="">Location</option>
-                                        <option style="color: black" value="1">Jaipur</option>
-                                        <option style="color: black" value="2">Pune</option>
-                                        <option style="color: black" value="3">Bangalore</option>
+                                        <option style="color: black" value="0" >Loại hình căn hộ</option>
+                                        <c:forEach items="${requestScope.apartment_types_list}" var="atl">
+                                            <option style="color: black" value="${atl.id}" >${atl.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="select-container">
                                     <select class="custom-select">
-                                        <option selected="">Select Job Type</option>
-                                        <option value="1">Ui designer</option>
-                                        <option value="2">JS developer</option>
-                                        <option value="3">Web developer</option>
+                                        <option style="color: black"selected="0">Trạng Thái</option>
+                                        <option style="color: black"value="1">Đã có người thuê</option>
+                                        <option style="color: black"value="2">Chưa có người thuê</option>
                                     </select>
                                 </div>
                             </div>
@@ -316,7 +315,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
                     <!-- START Pagination -->
