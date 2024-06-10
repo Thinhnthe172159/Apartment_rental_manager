@@ -41,7 +41,7 @@
         </style>
     </head>
     <body>
-
+        <c:set var="apartment" value="${requestScope.apartment}"/>
         <jsp:include page="Navbar.jsp"/>
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
@@ -50,7 +50,7 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Apartment</a></span>
-                        <h3>ADD PROPERTIES</h3>
+                        <h3>UPDATE PROPERTIES</h3>
                     </div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                                 <td>Tên căn hộ</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required placeholder="Điền tên căn hộ" type="text" name="name_apartment" class="form-control" aria-label="Text input with checkbox">
+                                        <input required placeholder="Điền tên căn hộ" type="text" name="name_apartment" class="form-control" aria-label="Text input with checkbox" value="${apartment.name}">
                                         <div class="error" id="name_apartment_error"></div>
                                     </div>
                                 </td>
