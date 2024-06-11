@@ -76,6 +76,9 @@
                     </div>
                     <div class="col-lg-4 col-md-4">
                         <ul class="social-links">
+                            <c:if test="${user_Data.getRole_id().getId() == 1}">
+                                <li><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>
+                            </c:if>
                             <li><a href="#"><i class="fab fa-facebook"></i></a></li>
                             <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
