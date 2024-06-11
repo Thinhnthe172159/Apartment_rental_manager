@@ -176,11 +176,6 @@
             .font-size-15 {
                 font-size: 15px!important;
             }
-
-
-
-
-
         </style>
 
     </head>
@@ -213,26 +208,25 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="input-group position-relative">
-                                    <input type="text" class="form-control" placeholder="Enter Your Keywords" id="keywords">
+                                    <input type="text" class="form-control" placeholder="Nhập tên căn hộ" id="keywords">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="select-container">
-                                    <select class="custom-select">
-                                        <option selected="">Location</option>
-                                        <option value="1">Jaipur</option>
-                                        <option value="2">Pune</option>
-                                        <option value="3">Bangalore</option>
+                                    <select class="custom-select" >
+                                        <option style="color: black" value="0" >Loại hình căn hộ</option>
+                                        <c:forEach items="${requestScope.apartment_types_list}" var="atl">
+                                            <option style="color: black" value="${atl.id}" >${atl.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-3 my-3">
                                 <div class="select-container">
                                     <select class="custom-select">
-                                        <option selected="">Select Job Type</option>
-                                        <option value="1">Ui designer</option>
-                                        <option value="2">JS developer</option>
-                                        <option value="3">Web developer</option>
+                                        <option style="color: black"selected="0">Trạng Thái</option>
+                                        <option style="color: black"value="1">Đã có người thuê</option>
+                                        <option style="color: black"value="2">Chưa có người thuê</option>
                                     </select>
                                 </div>
                             </div>
@@ -285,7 +279,7 @@
                                                                     </td>
 
                                                                     <td style="width: 220px;">
-                                                                        <b>${ap.price}</b>
+                                                                        <b><fmt:formatNumber value="${ap.price}" pattern="#,###"/> vnd</b>
                                                                     </td>
 
                                                                     <td>
@@ -295,8 +289,10 @@
                                                                             </button>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}">View detail</a></button></li>
-                                                                                <li><button class="dropdown-item" type="button">Edit</button></li>
-                                                                                <li><button class="dropdown-item" type="button">Remove</button></li>
+                                                                                <li><button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}">Update</a></button></li>
+                                                                                <li> <form id="deleteForm-${ap.id}" action="AparmentListForLandlord?remove_id=${ap.id}" method="post">
+                                                                                        <button class="dropdown-item" type="button" onclick="confirmDeletion('deleteForm-${ap.id}')">Remove</button>
+                                                                                    </form></li>
                                                                             </ul>
                                                                         </div>
                                                                     </td>
@@ -316,68 +312,77 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        <!-- START Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-reset justify-content-center">
+                                <c:if test="${pageIndex > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
+                                            <i class="">previous</i>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:forEach items="${requestScope.pagelist}" var="i">
+                                    <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}">${i}</a></li>
+                                    </c:forEach>
+                                <li class="page-item">
+                                    <c:if test="${pageIndex < totalPages}">
+                                    <li class="page-item">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}">
+                                            <i class="">next</i>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END Pagination -->
                     </div>
-
-
-                    <!-- START Pagination -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-reset justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <i class="zmdi zmdi-long-arrow-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item d-none d-md-inline-block"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">8</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    <i class="zmdi zmdi-long-arrow-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <!-- END Pagination -->
                 </div>
+
             </div>
+            <!-- Properties section body end -->
+            <jsp:include page="Footer.jsp"/>
+            <!-- Partners strat -->
 
-        </div>
-        <!-- Properties section body end -->
-        <jsp:include page="Footer.jsp"/>
-        <!-- Partners strat -->
-
-        <!-- Footer end -->
+            <!-- Footer end -->
 
 
+            <script>
+                function confirmDeletion(formId) {
+                    if (confirm("Bạn có chắc muốn xóa căn hộ này!Nếu như bạn xóa căn hộ này thì bài đăng liên quan đến căn hộ này sẽ bị xóa và bạn sẽ được hoàn lại tiền vào ví nếu như bài đăng của bạn chưa hết hạn")) {
+                        document.getElementById(formId).submit();
+                    }
+                }
+            </script>
 
+            <script src="js/jquery.min.js"></script>
+            <script src="js/bootstrap.bundle.min.js"></script>
+            <script  src="js/bootstrap-submenu.js"></script>
+            <script src="js/rangeslider.js"></script>
+            <script src="js/jquery.mb.YTPlayer.js"></script>
+            <script src="js/wow.min.js"></script>
+            <script src="js/bootstrap-select.min.js"></script>
+            <script src="js/jquery.easing.1.3.js"></script>
+            <script src="js/jquery.scrollUp.js"></script>
+            <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+            <script src="js/leaflet.js"></script>
+            <script src="js/leaflet-providers.js"></script>
+            <script src="js/leaflet.markercluster.js"></script>
+            <script src="js/dropzone.js"></script>
+            <script src="js/jquery.filterizr.js"></script>
+            <script src="js/jquery.magnific-popup.min.js"></script>
+            <script src="js/slick.min.js"></script>
+            <script src="js/maps.js"></script>
+            <script src="js/sidebar.js"></script>
+            <script src="js/app.js"></script>
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script  src="js/bootstrap-submenu.js"></script>
-        <script src="js/rangeslider.js"></script>
-        <script src="js/jquery.mb.YTPlayer.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/bootstrap-select.min.js"></script>
-        <script src="js/jquery.easing.1.3.js"></script>
-        <script src="js/jquery.scrollUp.js"></script>
-        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet-providers.js"></script>
-        <script src="js/leaflet.markercluster.js"></script>
-        <script src="js/dropzone.js"></script>
-        <script src="js/jquery.filterizr.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/slick.min.js"></script>
-        <script src="js/maps.js"></script>
-        <script src="js/sidebar.js"></script>
-        <script src="js/app.js"></script>
-
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
-        <!-- Custom javascript -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="js/ie10-viewport-bug-workaround.js"></script>
+            <!-- Custom javascript -->
+            <script src="js/ie10-viewport-bug-workaround.js"></script>
 
     </body>
 

@@ -124,12 +124,12 @@ public class AddApartments extends HttpServlet {
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
-        StringBuilder fileNames = new StringBuilder();
         Collection<Part> parts = request.getParts();
         Apartment_image ai;
         for (Part part : parts) {
             String fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.isEmpty()) {
+                fileName = ap.getId()+"_"+ap.getLandLord_id().getId()+"_"+fileName;
                 part.write(uploadFilePath + File.separator + fileName);
                 ai = new Apartment_image(0, fileName, ap);
                 apartmentDao.insertApartmentImage(ai);

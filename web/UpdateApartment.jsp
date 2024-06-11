@@ -1,3 +1,7 @@
+
+
+
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -41,7 +45,7 @@
         </style>
     </head>
     <body>
-        <c:set var="apartment" value="${requestScope.apartment}"/>
+        <c:set var="ap" value="${requestScope.apartment}"/>
         <jsp:include page="Navbar.jsp"/>
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
@@ -139,7 +143,7 @@
                                     <select required class="form-select" name="apartment_type" aria-label="Default select example">
                                         <option value="">Chọn loại hình căn hộ</option>
                                         <c:forEach items="${requestScope.apartment_types_list}" var="at">
-                                            <option value="${at.id}">${at.name}</option>
+                                            <option <c:if test="${at.id == ap.type_id.id}">selected</c:if>  value="${at.id}">${at.name}</option>
                                         </c:forEach>
                                     </select>
                                     <div class="error" id="apartment_type_error"></div>
@@ -150,6 +154,8 @@
                                 <td>      
                                     <select required class="form-select" id="tinh" aria-label="Default select example">
                                         <option value="0">Tỉnh Thành</option>
+                                        <option value="0" selected="">${ap.city}</option>
+                                        <hr>
                                     </select>
                                     <div class="error" id="tinh_error"></div>
                                 </td>
@@ -159,6 +165,8 @@
                                 <td>
                                     <select required class="form-select" id="quan" aria-label="Default select example">
                                         <option value="0">Quận huyện</option>
+                                        <option value="0" selected="">${ap.district}</option>
+                                        <hr>
                                     </select>
                                     <div class="error" id="quan_error"></div>
                                 </td>
@@ -168,6 +176,8 @@
                                 <td>
                                     <select required class="form-select" id="phuong" aria-label="Default select example">
                                         <option value="0">Phường xã</option>
+                                        <option value="0" selected="">${ap.commune}</option>
+                                        <hr>
                                     </select>
                                     <div class="error" id="phuong_error"></div>
                                 </td>
@@ -176,7 +186,7 @@
                                 <td>Địa chỉ cụ thể</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required placeholder="Điền địa chỉ cụ thể như số nhà, ngõ, đường,..." type="text" name="address" class="form-control" aria-label="Text input with checkbox">
+                                        <input required placeholder="Điền địa chỉ cụ thể như số nhà, ngõ, đường,..." type="text" name="address" class="form-control" aria-label="Text input with checkbox" value="${ap.address}">
                                         <div class="error" id="address_error"></div>
                                     </div>
                                 </td>
@@ -192,9 +202,9 @@
                         </style>
                         <div id="map"></div>
                     </div>
-                    <input type="hidden" name="tinh" id="hidden_tinh" >
-                    <input type="hidden" name="quan" id="hidden_quan">
-                    <input type="hidden" name="phuong" id="hidden_phuong">
+                    <input type="hidden" name="tinh" id="hidden_tinh" value="${ap.city}" >
+                    <input type="hidden" name="quan" id="hidden_quan" value="${ap.district}">
+                    <input type="hidden" name="phuong" id="hidden_phuong" value="${ap.commune}">
                 </div>
                 <hr>
                 <br>
@@ -213,14 +223,14 @@
                                 <td>Giá tiền (VNĐ)</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="price" class="form-control" aria-label="Text input with checkbox">
+                                        <input required type="text" name="price" value="<fmt:formatNumber value="${ap.price}" pattern="####"/>" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="price_error"></div>
                                     </div>
                                 </td>
                                 <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Diện tích (m2)*</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="area" class="form-control" aria-label="Text input with checkbox">
+                                        <input required type="text" name="area" value="<fmt:formatNumber value="${ap.area}" pattern="####"/>" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="area_error"></div>
                                     </div>
                                 </td>
@@ -229,7 +239,7 @@
                                 <td>Số lượng phòng ngủ</td>
                                 <td> 
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="number_of_bedroom" class="form-control" aria-label="Text input with checkbox">
+                                        <input required type="text" name="number_of_bedroom" value="${ap.number_of_bedroom}" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="number_of_bedroom_error"></div>
                                     </div>
                                 </td>

@@ -15,14 +15,7 @@
         <link rel="stylesheet" href="assets/css/animate.css">
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <style>
-            .preview {
-                display: flex;
-                flex-wrap: wrap;
-            }
-            .preview img {
-                max-width: 150px;
-                margin: 10px;
-            }
+
             .error {
                 color: red;
                 font-size: 0.9em;
@@ -38,6 +31,41 @@
                 z-index: 2;
             }
 
+            .preview {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .preview img {
+                border-radius: 15px;
+                border-color: black;
+                height: auto;
+                max-width: 350px;
+                max-height: 284px; 
+                margin: 10px;
+                object-fit: contain;
+                background: black;
+            }
+
+            .img-wrapper {
+                position: relative;
+                display: inline-block;
+            }
+
+            .remove-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: red;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 1em;
+                padding: 5px 10px;
+                border-radius: 15%; 
+                transform: translate(50%, -50%); 
+                display: inline;
+            }
         </style>
     </head>
     <body>
@@ -241,11 +269,63 @@
                 <br>
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">III. Thông tin hình ảnh</h2>
-                    <div class="col-md-12" style="border: 1px solid #686868;">
+                    <div class="row" style="border: 1px solid #686868;">
                         <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng không có hình ảnh.<br>Lưu ý bức ảnh đầu tiên bạn chọn sẽ là thumbnail của bài đăng cho căn hộ của bạn</p>
                         <label for="files">Thêm hình ảnh:</label>
-                        <input type="file" id="files" name="files" accept="image/*" multiple class="form-control">
-                        <div class="preview" id="preview"></div>
+                        <div class="col-md-4">
+                            1<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            2<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            3<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            4<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            5<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            6<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            7<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            8<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            9<input type="file" id="files" name="files" accept="image/" class="form-control">
+                            <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -299,81 +379,76 @@
                 </div>
                 <hr>
             </div>
-            <div style="display: flex; justify-content: center;">
+            <div style="display: flex;
+                 justify-content: center;">
                 <input class="btn btn-primary btn-lg" type="submit" value="Lưu thông tin căn hộ">  
             </div>
         </form>
 
         <script>
-            function handleFiles(files) {
-                const preview = document.getElementById('preview');
-                preview.innerHTML = ''; // Clear the preview container
 
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const reader = new FileReader();
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.className = 'img-wrapper';
+            function handleFileSelect(event) {
+                const input = event.target;
+                const preview = input.nextElementSibling; 
+                const files = input.files;
 
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        imgWrapper.appendChild(img);
+                if (!files || files.length === 0) {
+                    return;
+                }
 
-                        const removeBtn = document.createElement('button');
-                        removeBtn.innerHTML = '×';
-                        removeBtn.className = 'remove-btn';
-                        removeBtn.onclick = function () {
-                            preview.removeChild(imgWrapper);
-                            if (preview.children.length === 0) {
-                                const newInput = document.createElement('input');
-                                newInput.type = 'file';
-                                newInput.id = 'files';
-                                newInput.name = 'files';
-                                newInput.accept = 'image/*';
-                                newInput.multiple = true;
-                                newInput.className = 'form-control';
-                                newInput.addEventListener('change', handleInputChange);
-                                document.getElementById('files').replaceWith(newInput);
-                            }
-                        };
-                        imgWrapper.appendChild(removeBtn);
+                const file = files[0]; 
 
-                        preview.appendChild(imgWrapper);
+             
+                if (!file.type.startsWith('image/')) {
+                    return;
+                }
+
+              
+                const reader = new FileReader();
+
+          
+                reader.onload = function (e) {
+                    const imgSrc = e.target.result;
+
+              
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+
+              
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = 'X';
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.onclick = function () {
+                   
+                        preview.innerHTML = '';
+                        input.value = '';
                     };
 
-                    reader.readAsDataURL(file);
-                }
+               
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.className = 'img-wrapper';
+                    imageWrapper.appendChild(img);
+                    imageWrapper.appendChild(removeBtn);
+
+               
+                    while (preview.firstChild) {
+                        preview.removeChild(preview.firstChild);
+                    }
+
+                 
+                    preview.appendChild(imageWrapper);
+                };
+
+               
+                reader.readAsDataURL(file);
             }
 
-            function handleInputChange(event) {
-                const files = event.target.files;
-                handleFiles(files);
-            }
 
-            document.getElementById('files').addEventListener('change', handleInputChange);
-
-            const dropZone = document.getElementById('drop-zone');
-
-            dropZone.addEventListener('dragover', function (event) {
-                event.preventDefault();
-                dropZone.classList.add('dragover');
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach(function (input) {
+                input.addEventListener('change', handleFileSelect);
             });
-
-            dropZone.addEventListener('dragleave', function (event) {
-                dropZone.classList.remove('dragover');
-            });
-
-            dropZone.addEventListener('drop', function (event) {
-                event.preventDefault();
-                dropZone.classList.remove('dragover');
-                const files = event.dataTransfer.files;
-                handleFiles(files);
-            });
-
-            dropZone.addEventListener('click', function (event) {
-                document.getElementById('files').click();
-            });
+            //---------------------------------
 
             document.getElementById('apartmentForm').addEventListener('submit', function (event) {
                 event.preventDefault();
