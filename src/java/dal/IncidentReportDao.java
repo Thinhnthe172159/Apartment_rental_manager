@@ -44,7 +44,7 @@ public class IncidentReportDao extends DBContext {
             statement.setInt(2, report.getLandlord_id().getId());
             statement.setString(3, report.getContext());
             statement.setString(4, report.getImage());
-            statement.setString(5, report.getStatus());
+            statement.setInt(5, report.getStatus());
             statement.setDate(6, report.getDate());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -68,7 +68,7 @@ public class IncidentReportDao extends DBContext {
                     incident.setLandlord_id(landlord);
                     incident.setContext(resultSet.getString("context"));
                     incident.setImage(resultSet.getString("image"));
-                    incident.setStatus(resultSet.getString("status"));
+                    incident.setStatus(resultSet.getInt("status"));
                     incident.setDate(resultSet.getDate("date"));
                     return incident;
                 }
@@ -84,7 +84,7 @@ public class IncidentReportDao extends DBContext {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, report.getContext());
             statement.setString(2, report.getImage());
-            statement.setString(3, report.getStatus());
+            statement.setInt(3, report.getStatus());
             statement.setDate(4, new java.sql.Date(report.getDate().getTime()));
             statement.setInt(5, report.getId());
             statement.executeUpdate();
@@ -120,7 +120,7 @@ public class IncidentReportDao extends DBContext {
                 incident.setLandlord_id(landlord);
                 incident.setContext(resultSet.getString("context"));
                 incident.setImage(resultSet.getString("image"));
-                incident.setStatus(resultSet.getString("status"));
+                incident.setStatus(resultSet.getInt("status"));
                 incident.setDate(resultSet.getDate("date"));
                 incidents.add(incident);
             }

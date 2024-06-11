@@ -74,25 +74,19 @@ public class AddIncidentReport extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int tenantId = Integer.parseInt(request.getParameter("tenantId"));
-        int landlordId = Integer.parseInt(request.getParameter("landlordId"));
         String context = request.getParameter("context");
-
-        String status = request.getParameter("status");
         try {
-            User tenant = userDao.getUser(tenantId);
-            User landlord = userDao.getUser(landlordId);
+            User tenant = userDao.getUser(2);
+            User landlord = userDao.getUser(2);
 
-            if (tenant == null || landlord == null) {
-                throw new SQLException("User not found");
-            }
+           
 
             Incident incident = new Incident();
             incident.setTenant_id(tenant);
             incident.setLandlord_id(landlord);
             incident.setContext(context);
 
-            incident.setStatus(status);
+            incident.setStatus(0);
             LocalDate localDate = LocalDate.now();
             Date datesql = Date.valueOf(localDate);
             incident.setDate(datesql);

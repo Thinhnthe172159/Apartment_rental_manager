@@ -1,20 +1,29 @@
+<%-- 
+    Document   : AddApartmentPost
+    Created on : May 27, 2024, 12:38:22 AM
+    Author     : thinh
+--%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
     <head>
         <meta charset="UTF-8">
-        <title>List of Incidents</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="icon" href="img/logoWeb.png" type="image/x-icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <title>Tạo bài đăng căn hộ</title>
+        <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
         <style>
-            body {
-                background-color: #f8f9fa;
-            }
-            .container {
-                margin-top: 50px;
-            }
+          
             .table th, .table td {
+                
                 vertical-align: middle;
             }
             .table thead th {
@@ -29,9 +38,8 @@
                 background-color: #0056b3;
                 color: white;
             }
-            .text-center {
-                color: #007bff;
-            }
+            
+            
             .pagination {
                 display: flex;
                 justify-content: center;
@@ -69,11 +77,24 @@
             }
         </style>
     </head>
+
     <body>
         <jsp:include page="Navbar.jsp"/>
-
+        <br><br><br><br><br><br>
+        <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Apartment</a></span>
+                        <h3>ADD POST</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br><br><br>
         <div class="container">
-            <h2 class="text-center mb-4">List of Incidents</h2>
+
             <div class="text-right mb-3">
                 <a href="AddIncidentReport.jsp" class="btn btn-custom">Add New Incident</a>
             </div>
@@ -100,22 +121,24 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                <c:forEach var="incident" items="${incidentList}">
-                    <tr>
-                        <td>${incident.id}</td>
-                        <td>${incident.tenant_id.email}</td>
-                        <td>${incident.landlord_id.email}</td>
-                        <td>${incident.context}</td>
-                        <td><img src="Incident_image/${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
-                        <td>${incident.status}</td>
-                        <td>${incident.date}</td>
-                        <td>
-                            <a href="viewincident?id=${incident.id}" class="btn btn-info btn-sm">View</a>
-                            <a href="editincident?id=${incident.id}" class="btn btn-warning btn-sm">Edit</a>
-                        </td>
-                    </tr>
-                </c:forEach>
+                <tbody><c:set var="index"  value="0"/>
+                    <c:forEach var="incident" items="${incidentList}">
+                        <c:set var="index" value="${index + 1}"/>
+                        <tr>
+                            <td>${index}</td>
+                            <td>${incident.tenant_id.email}</td>
+                            <td>${incident.landlord_id.email}</td>
+                            <td>${incident.context}</td>
+                            <td><img src="Incident_image/${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
+                            <td>${incident.status}</td>
+                            <td>${incident.date}</td>
+                            <td>
+                                <a href="viewincident?id=${incident.id}" class="btn btn-info btn-sm">View</a>
+                                <a href="editincident?id=${incident.id}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="deleteincident?id=${incident.id}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this incident?')">Delete</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <nav aria-label="Page navigation">
@@ -130,7 +153,9 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
+                    
                     <c:forEach begin="1" end="${totalPages}" var="i">
+                        
                         <li class="page-item ${i == currentPage ? 'active' : ''}">
                             <a class="page-link" href="ListIncidentReport?pageNo=${i}&pageSize=${pageSize}">${i}</a>
                         </li>
@@ -151,8 +176,6 @@
 
         </div>
         <jsp:include page="Footer.jsp"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
+
 </html>
