@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import model.Apartment;
+import model.Apartment_type;
 
 /**
  *
@@ -58,9 +60,11 @@ public class UpdateApartment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ApartmentDao ad = new ApartmentDao();
+        List<Apartment_type>apartment_types_list = ad.getApartment_type_list();
         String ap_id = request.getParameter("apartment_id");
         Apartment ap = ad.getApartment((ap_id == null || ap_id.isEmpty())?0:Integer.parseInt(ap_id));
         request.setAttribute("apartment", ap);
+        request.setAttribute("apartment_types_list", apartment_types_list);
         request.getRequestDispatcher("UpdateApartment.jsp").forward(request, response);
     } 
 

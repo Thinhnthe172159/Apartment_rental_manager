@@ -176,11 +176,6 @@
             .font-size-15 {
                 font-size: 15px!important;
             }
-
-
-
-
-
         </style>
 
     </head>
@@ -284,7 +279,7 @@
                                                                     </td>
 
                                                                     <td style="width: 220px;">
-                                                                        <b>${ap.price}</b>
+                                                                        <b><fmt:formatNumber value="${ap.price}" pattern="#,###"/> vnd</b>
                                                                     </td>
 
                                                                     <td>
@@ -294,8 +289,10 @@
                                                                             </button>
                                                                             <ul class="dropdown-menu">
                                                                                 <li><button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}">View detail</a></button></li>
-                                                                                <li><button class="dropdown-item" type="button">Edit</button></li>
-                                                                                <li><button class="dropdown-item" type="button">Remove</button></li>
+                                                                                <li><button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}">Update</a></button></li>
+                                                                                <li> <form id="deleteForm-${ap.id}" action="AparmentListForLandlord?remove_id=${ap.id}" method="post">
+                                                                                        <button class="dropdown-item" type="button" onclick="confirmDeletion('deleteForm-${ap.id}')">Remove</button>
+                                                                                    </form></li>
                                                                             </ul>
                                                                         </div>
                                                                     </td>
@@ -317,69 +314,75 @@
                         </div>
 
 
-                    <!-- START Pagination -->
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-reset justify-content-center">
-                            <c:if test="${pageIndex > 1}">
+                        <!-- START Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-reset justify-content-center">
+                                <c:if test="${pageIndex > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
+                                            <i class="">previous</i>
+                                        </a>
+                                    </li>
+                                </c:if>
+                                <c:forEach items="${requestScope.pagelist}" var="i">
+                                    <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}">${i}</a></li>
+                                    </c:forEach>
                                 <li class="page-item">
-                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
-                                        <i class="">next</i>
-                                    </a>
+                                    <c:if test="${pageIndex < totalPages}">
+                                    <li class="page-item">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}">
+                                            <i class="">next</i>
+                                        </a>
+                                    </li>
+                                </c:if>
                                 </li>
-                            </c:if>
-                            <c:forEach items="${requestScope.pagelist}" var="i">
-                                <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}">${i}</a></li>
-                                </c:forEach>
-                            <li class="page-item">
-                                <c:if test="${pageIndex < totalPages}">
-                                <li class="page-item">
-                                    <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}">
-                                        <i class="">next</i>
-                                    </a>
-                                </li>
-                            </c:if>
-                            </li>
-                        </ul>
-                    </nav>
-                    <!-- END Pagination -->
+                            </ul>
+                        </nav>
+                        <!-- END Pagination -->
+                    </div>
                 </div>
+
             </div>
+            <!-- Properties section body end -->
+            <jsp:include page="Footer.jsp"/>
+            <!-- Partners strat -->
 
-        </div>
-        <!-- Properties section body end -->
-        <jsp:include page="Footer.jsp"/>
-        <!-- Partners strat -->
-
-        <!-- Footer end -->
+            <!-- Footer end -->
 
 
+            <script>
+                function confirmDeletion(formId) {
+                    if (confirm("Bạn có chắc muốn xóa căn hộ này!Nếu như bạn xóa căn hộ này thì bài đăng liên quan đến căn hộ này sẽ bị xóa và bạn sẽ được hoàn lại tiền vào ví nếu như bài đăng của bạn chưa hết hạn")) {
+                        document.getElementById(formId).submit();
+                    }
+                }
+            </script>
 
+            <script src="js/jquery.min.js"></script>
+            <script src="js/bootstrap.bundle.min.js"></script>
+            <script  src="js/bootstrap-submenu.js"></script>
+            <script src="js/rangeslider.js"></script>
+            <script src="js/jquery.mb.YTPlayer.js"></script>
+            <script src="js/wow.min.js"></script>
+            <script src="js/bootstrap-select.min.js"></script>
+            <script src="js/jquery.easing.1.3.js"></script>
+            <script src="js/jquery.scrollUp.js"></script>
+            <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+            <script src="js/leaflet.js"></script>
+            <script src="js/leaflet-providers.js"></script>
+            <script src="js/leaflet.markercluster.js"></script>
+            <script src="js/dropzone.js"></script>
+            <script src="js/jquery.filterizr.js"></script>
+            <script src="js/jquery.magnific-popup.min.js"></script>
+            <script src="js/slick.min.js"></script>
+            <script src="js/maps.js"></script>
+            <script src="js/sidebar.js"></script>
+            <script src="js/app.js"></script>
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script  src="js/bootstrap-submenu.js"></script>
-        <script src="js/rangeslider.js"></script>
-        <script src="js/jquery.mb.YTPlayer.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/bootstrap-select.min.js"></script>
-        <script src="js/jquery.easing.1.3.js"></script>
-        <script src="js/jquery.scrollUp.js"></script>
-        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet-providers.js"></script>
-        <script src="js/leaflet.markercluster.js"></script>
-        <script src="js/dropzone.js"></script>
-        <script src="js/jquery.filterizr.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/slick.min.js"></script>
-        <script src="js/maps.js"></script>
-        <script src="js/sidebar.js"></script>
-        <script src="js/app.js"></script>
-
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
-        <!-- Custom javascript -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="js/ie10-viewport-bug-workaround.js"></script>
+            <!-- Custom javascript -->
+            <script src="js/ie10-viewport-bug-workaround.js"></script>
 
     </body>
 
