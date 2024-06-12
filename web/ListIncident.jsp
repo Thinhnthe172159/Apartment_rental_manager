@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -104,13 +107,12 @@
                         <td>${incident.tenant_id.email}</td>
                         <td>${incident.landlord_id.email}</td>
                         <td>${incident.context}</td>
-                        <td><img src="${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
+                        <td><img src="Incident_image/${incident.image}" alt="Image" style="width: 100px; height: auto;"></td>
                         <td>${incident.status}</td>
                         <td>${incident.date}</td>
                         <td>
-                            <a href="ViewIncident.jsp?id=${incident.id}" class="btn btn-info btn-sm">View</a>
-                            <a href="EditIncident.jsp?id=${incident.id}" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="DeleteIncident?id=${incident.id}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this incident?')">Delete</a>
+                            <a href="viewincident?id=${incident.id}" class="btn btn-info btn-sm">View</a>
+                            <a href="editincident?id=${incident.id}" class="btn btn-warning btn-sm">Edit</a>
                         </td>
                     </tr>
                 </c:forEach>

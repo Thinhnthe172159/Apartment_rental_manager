@@ -84,6 +84,7 @@ public class EditIncident extends HttpServlet {
         try {
             Incident incident = incidentReportDao.getIncidentReport(incidentId);
             if (incident != null) {
+                incident.setId(incidentId);
                 incident.setContext(context);
                 incident.setImage(image);
                 incident.setStatus(status);
