@@ -5,22 +5,32 @@
 package controller;
 
 import dal.ApartmentDao;
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_image;
+import model.Apartment_properties;
 import model.Apartment_type;
+import model.Property;
+import model.User;
 
 /**
  *
  * @author thinh
  */
+@MultipartConfig()
 @WebServlet(name = "UpdateApartment", urlPatterns = {"/UpdateApartment"})
 public class UpdateApartment extends HttpServlet {
 
@@ -68,12 +78,18 @@ public class UpdateApartment extends HttpServlet {
         int ap_Id = (ap_id == null || ap_id.isEmpty()) ? 0 : Integer.parseInt(ap_id);
         Apartment ap = ad.getApartment(ap_Id);
         List<Apartment_image> apartment_images_list = ad.getAllApartmentImageList(ap_Id);
-        int index = 0;
-        for (Apartment_image image : apartment_images_list) {
-            request.setAttribute("image" + (index++), image);
-        }
+        List<Apartment_properties> apartment_propertieses_list = ad.get_apartment_properties_list_by_id(ap_Id);
+        List<Property> propertys_List_livingroom = ad.getPropertyList(1);
+        List<Property> propertys_List_bedroom = ad.getPropertyList(2);
+        List<Property> propertys_List_bathroom = ad.getPropertyList(3);
+        List<Property> propertys_List_kitchen = ad.getPropertyList(4);
+        request.setAttribute("propertys_List_livingroom", propertys_List_livingroom);
+        request.setAttribute("propertys_List_bedroom", propertys_List_bedroom);
+        request.setAttribute("propertys_List_bathroom", propertys_List_bathroom);
+        request.setAttribute("propertys_List_kitchen", propertys_List_kitchen);
         request.setAttribute("apartment_images_list", apartment_images_list);
         request.setAttribute("apartment", ap);
+        request.setAttribute("apartment_propertieses_list", apartment_propertieses_list);
         request.setAttribute("apartment_types_list", apartment_types_list);
         request.getRequestDispatcher("UpdateApartment.jsp").forward(request, response);
     }
@@ -89,7 +105,89 @@ public class UpdateApartment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        ApartmentDao apartmentDao = new ApartmentDao();
+        UserDao userDao = new UserDao();
+        String apartment_id_raw = request.getParameter("apartment_id");
+        String name_apartment = request.getParameter("name_apartment");
+        String apartment_type = request.getParameter("apartment_type");
+        String tinh = request.getParameter("tinh");
+        String quan = request.getParameter("quan");
+        String phuong = request.getParameter("phuong");
+        String address = request.getParameter("address");
+        String price = request.getParameter("price");
+        String area = request.getParameter("area");
+        String number_of_bedroom = request.getParameter("number_of_bedroom");
+
+        Apartment_type at = apartmentDao.getApartment_type((apartment_type == null) ? 0 : Integer.parseInt(apartment_type));
+        Apartment apartment = new Apartment();
+
+        apartment.setName(name_apartment);
+        apartment.setType_id(at);
+        apartment.setCity(tinh);
+        apartment.setDistrict(quan);
+        apartment.setCommune(phuong);
+        apartment.setAddress(address);
+        apartment.setPrice((price == null) ? 0 : Double.parseDouble(price));
+        apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
+        apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
+
+        User landlord = userDao.getUser(2);
+        apartment.setLandLord_id(landlord);
+        apartment.setTenant_id(landlord);
+        apartmentDao.updateApartment(apartment, (apartment_id_raw == null || apartment_id_raw.isEmpty()) ? 0 : Integer.parseInt(apartment_id_raw));
+
+        String[] image_remove = request.getParameterValues("delete_image");
+
+        List<Apartment_image> imageToDelete = new ArrayList<>();
+        if (image_remove != null) {
+            for (String imageDelete : image_remove) {
+                Apartment_image apartment_image = apartmentDao.getApartmentImage(Integer.parseInt(imageDelete));
+                imageToDelete.add(apartment_image);
+
+            }
+        }
+
+        String applicationPath = request.getServletContext().getRealPath("");
+        String uploadFilePath = applicationPath + File.separator + "uploads";
+        for (Apartment_image image : imageToDelete) {
+            File file = new File(uploadFilePath + File.separator + image.getImage());
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        if (image_remove != null) {
+            for (String imageDelete : image_remove) {
+                apartmentDao.deleteImageById(Integer.parseInt(imageDelete));
+
+            }
+        }
+
+        String[] property = request.getParameterValues("property");
+        apartmentDao.deleteApartmentProperties(Integer.parseInt(apartment_id_raw));
+        if (property != null) {
+            for (String item : property) {
+                apartmentDao.input_ApartApartment_properties(Integer.parseInt(apartment_id_raw), Integer.parseInt(item));
+            }
+        }
+
+        File uploadDir = new File(uploadFilePath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        Apartment ap = apartmentDao.getApartment(Integer.parseInt(apartment_id_raw));
+        Collection<Part> parts = request.getParts();
+        Apartment_image ai;
+        for (Part part : parts) {
+            String fileName = part.getSubmittedFileName();
+            if (fileName != null && !fileName.isEmpty()) {
+                fileName = ap.getId() + "_" + ap.getLandLord_id().getId() + "_" + fileName;
+                part.write(uploadFilePath + File.separator + fileName);
+                ai = new Apartment_image(0, fileName, ap);
+                apartmentDao.insertApartmentImage(ai);
+            }
+        }
+        response.sendRedirect("AparmentListForLandlord");
     }
 
     /**

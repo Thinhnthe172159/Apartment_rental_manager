@@ -19,6 +19,7 @@ import model.Property;
 import model.Room;
 import model.Apartment_image;
 import model.User;
+import org.apache.tomcat.util.http.fileupload.ParameterParser;
 
 /**
  *
@@ -47,7 +48,7 @@ public class ApartmentDao extends DBContext {
 
     }
 
-    // get list apartment property 
+    // get list property 
     public List<Apartment_properties> get_apartment_properties_list_by_id(int id) {
         List<Apartment_properties> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
@@ -73,6 +74,33 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    // get Apartment property
+    public Apartment_properties get_apartment_properties_by_id(int id) {
+        List<Apartment_properties> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[apartment_id]\n"
+                + "      ,[property_id]\n"
+                + "  FROM [dbo].[Apartment_room] where [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment_properties apartment_properties = new Apartment_properties();
+                Apartment a = getApartment(rs.getInt("apartment_id"));
+                Property p = getProperty(rs.getInt("property_id"));
+                apartment_properties.setApartment_id(a);
+                apartment_properties.setProperty_id(p);
+                return apartment_properties;
+            }
+
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
+    //get all apartment properties
     //select room  
     public Room getRoom(int id) {
         String sql = "SELECT [id]\n"
@@ -160,6 +188,7 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    // get all properties list 
     public List<Property> getPropertyList() {
         List<Property> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Property]"
@@ -176,6 +205,19 @@ public class ApartmentDao extends DBContext {
 
         }
         return list;
+    }
+
+    //delete properties
+    public void deleteApartmentProperties(int apartment_id) {
+        String sql = "DELETE FROM [dbo].[Apartment_room]\n"
+                + "      WHERE [apartment_id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, apartment_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
     }
 
     //Apartment type
@@ -303,6 +345,28 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
+    // get image by id
+    public Apartment_image getApartmentImage(int id) {
+        String sql = "SELECT [id]\n"
+                + "      ,[image]\n"
+                + "      ,[Apartment_id]\n"
+                + "  FROM [dbo].[Apartment_image]\n"
+                + "    where [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment a = getApartment(rs.getInt("Apartment_id"));
+                Apartment_image ai = new Apartment_image(rs.getInt("id"), rs.getString("image"), a);
+                return ai;
+            }
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
     //get all image each apartment
     public List<Apartment_image> getAllApartmentImageList(int id) {
         List<Apartment_image> list = new ArrayList<>();
@@ -350,6 +414,18 @@ public class ApartmentDao extends DBContext {
 
         }
         return list;
+    }
+
+    // delete image 
+    public void deleteImageById(int id) {
+        String sql = "Delete FROM [dbo].[Apartment_image]\n"
+                + "where [id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 
     // Apartment insert
@@ -708,7 +784,7 @@ public class ApartmentDao extends DBContext {
             st.setInt(10, a.getStatus_apartment());
             st.setInt(11, a.getLandLord_id().getId());
             st.setInt(12, a.getTenant_id().getId());
-            st.setInt(13, a.getId());
+            st.setInt(13, id);
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -740,7 +816,8 @@ public class ApartmentDao extends DBContext {
 
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
-
+        Apartment_image a = apartmentDao.getApartmentImage(172);
+        System.out.println(a.getImage());
     }
 
 }

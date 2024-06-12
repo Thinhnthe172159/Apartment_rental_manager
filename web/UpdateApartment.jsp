@@ -25,16 +25,14 @@
                 color: red;
                 font-size: 0.9em;
             }
-
             .navbar {
                 position: fixed;
                 top: 0;
                 width: 100%;
-                z-index: 1000;
-                /* Đảm bảo navbar hiển thị trên cùng */
+                z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
             }
 
-            #map {
+            #map{
                 z-index: 2;
             }
 
@@ -79,7 +77,11 @@
     <body>
         <c:set var="ap" value="${requestScope.apartment}" />
         <jsp:include page="Navbar.jsp" />
+        
         <br><br><br><br><br><br>
+        <form id="apartmentForm" action="UpdateApartment" method="post" enctype="multipart/form-data">
+            <input type="text" value="${ap.id}" hidden="" name="apartment_id">
+        <div class="container">
         <div class="page-heading header-text">
             <div class="container">
                 <div class="row">
@@ -92,7 +94,7 @@
             </div>
         </div>
         <br><br><br><br><br><br>
-        <form id="apartmentForm" action="addApartment" method="post" enctype="multipart/form-data">
+        
             <div class="container">
                 <div class="row">
                     <script src="https://esgoo.net/scripts/jquery.js"></script>
@@ -310,7 +312,7 @@
                             cho căn hộ của bạn</p>
                             <c:forEach items="${requestScope.apartment_images_list}" var="image">
                             <div class="col-md-4" style="position: relative;">
-                                <input type="checkbox" id="image_${image.id}" class="image-checkbox">
+                                <input type="checkbox" id="image_${image.id}" name="delete_image" value="${image.id}" class="image-checkbox">
                                 <label for="image_${image.id}"
                                        style="position: absolute; top: 5px; right: 5px; cursor: pointer;">Ẩn
                                     ảnh</label>
@@ -321,308 +323,318 @@
                                 </div>
                             </div>
                         </c:forEach>
-                    </div><div class="col-md-9">
-                        <label class="col-md-12" for="files">Thêm hình ảnh:</label>
-                        <div id="imageInputs" class="col-md-12">
-                            <!-- Dynamic input fields will be appended here -->
-                        </div>
                     </div>
 
                 </div>
-
-                <hr>
-                <p hidden="" id="selectedCount">Số lượng ảnh đã chọn: 0</p>
-                <p hidden="" id="remainingCount">Số lượng ảnh chưa chọn:
-                    ${requestScope.apartment_images_list.size()}</p>
-                <p hidden="" id="requiredCount">Số lượng ảnh cần nhập: ${9 -
-                                                                         requestScope.apartment_images_list.size()}</p>
-                <p hidden=""> Tổng số lượng ảnh ban đầu ${requestScope.apartment_images_list.size()}</p>
-                <p hidden="">Số lượng ảnh giới hạn cho phép: 9</p>
                 <div class="row">
-                    <h2 class="col-md-12" style="color: royalblue">IV. Thông tin bổ sung</h2>
-                    <h4 class="col-md-12" style="color: royalblue">Phòng Khách</h4>
-                    <c:forEach items="${requestScope.propertys_List_livingroom}" var="pll">
-                        <span class="col-md-2">
-                            <div class="form-check">
-                                <input name="property" class="form-check-input" type="checkbox"
-                                       value="${pll.id}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    ${pll.name}
-                                </label>
-                            </div>
-                        </span>
-                    </c:forEach>
+                    <label class="col-md-12" for="files">Thêm hình ảnh:</label>
+                    <div id="imageInputs" class="col-md-12">
 
-                    <h4 class="col-md-12" style="color: royalblue">Phòng Ngủ</h4>
-                    <c:forEach items="${requestScope.propertys_List_bedroom}" var="pll">
-                        <span class="col-md-2">
-                            <div class="form-check">
-                                <input name="property" class="form-check-input" type="checkbox"
-                                       value="${pll.id}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    ${pll.name}
-                                </label>
-                            </div>
-                        </span>
-                    </c:forEach>
-                    <h4 class="col-md-12" style="color: royalblue">Phòng Bếp</h4>
-                    <c:forEach items="${requestScope.propertys_List_kitchen}" var="pll">
-                        <span class="col-md-2">
-                            <div class="form-check">
-                                <input name="property" class="form-check-input" type="checkbox"
-                                       value="${pll.id}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    ${pll.name}
-                                </label>
-                            </div>
-                        </span>
-                    </c:forEach>
-                    <h4 class="col-md-12" style="color: royalblue">Phòng Tắm</h4>
-                    <c:forEach items="${requestScope.propertys_List_bathroom}" var="pll">
-                        <span class="col-md-2">
-                            <div class="form-check">
-                                <input name="property" class="form-check-input" type="checkbox"
-                                       value="${pll.id}" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    ${pll.name}
-                                </label>
-                            </div>
-                        </span>
-                    </c:forEach>
+                    </div>
                 </div>
-                <hr>
             </div>
+
+            <hr>
+            <p hidden="" id="selectedCount">Số lượng ảnh đã chọn: 0</p>
+            <p hidden="" id="remainingCount">Số lượng ảnh chưa chọn:
+                ${requestScope.apartment_images_list.size()}</p>
+            <p hidden="" id="requiredCount">Số lượng ảnh cần nhập: ${9 -
+                                                                     requestScope.apartment_images_list.size()}</p>
+            <p hidden=""> Tổng số lượng ảnh ban đầu ${requestScope.apartment_images_list.size()}</p>
+            <p hidden="">Số lượng ảnh giới hạn cho phép: 9</p>
+            <div class="row">
+                <h2 class="col-md-12" style="color: royalblue">IV. Thông tin bổ sung</h2>
+                <h4 class="col-md-12" style="color: royalblue">Phòng Khách</h4>
+                <c:forEach items="${requestScope.propertys_List_livingroom}" var="pll">
+                    <span class="col-md-2">
+                        <div class="form-check">
+                            <input name="property" class="form-check-input" type="checkbox" value="${pll.id}" id="flexCheckDefault" <c:forEach items="${requestScope.apartment_propertieses_list}" var="apl"><c:if test="${apl.property_id.id == pll.id}">checked=""</c:if></c:forEach>>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ${pll.name}
+                            </label>
+                        </div>
+                    </span>
+                </c:forEach>
+
+                <h4 class="col-md-12" style="color: royalblue">Phòng Ngủ</h4>
+                <c:forEach items="${requestScope.propertys_List_bedroom}" var="pll">
+                    <span class="col-md-2">
+                        <div class="form-check">
+                            <input name="property" class="form-check-input" type="checkbox"
+                                   value="${pll.id}" id="flexCheckDefault" <c:forEach items="${requestScope.apartment_propertieses_list}" var="apl"><c:if test="${apl.property_id.id == pll.id}">checked=""</c:if></c:forEach>>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ${pll.name}
+                            </label>
+                        </div>
+                    </span>
+                </c:forEach>
+                <h4 class="col-md-12" style="color: royalblue">Phòng Bếp</h4>
+                <c:forEach items="${requestScope.propertys_List_kitchen}" var="pll">
+                    <span class="col-md-2">
+                        <div class="form-check">
+                            <input name="property" class="form-check-input" type="checkbox"
+                                   value="${pll.id}" id="flexCheckDefault" <c:forEach items="${requestScope.apartment_propertieses_list}" var="apl"><c:if test="${apl.property_id.id == pll.id}">checked=""</c:if></c:forEach>>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ${pll.name}
+                            </label>
+                        </div>
+                    </span>
+                </c:forEach>
+                <h4 class="col-md-12" style="color: royalblue">Phòng Tắm</h4>
+                <c:forEach items="${requestScope.propertys_List_bathroom}" var="pll">
+                    <span class="col-md-2">
+                        <div class="form-check">
+                            <input name="property" class="form-check-input" type="checkbox"
+                                   value="${pll.id}" id="flexCheckDefault" <c:forEach items="${requestScope.apartment_propertieses_list}" var="apl"><c:if test="${apl.property_id.id == pll.id}">checked=""</c:if></c:forEach>>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ${pll.name}
+                            </label>
+                        </div>
+                    </span>
+                </c:forEach>
+            </div>
+            <hr>
+            </div>
+            
             <div style="display: flex;
                  justify-content: center;">
                 <input class="btn btn-primary btn-lg" type="submit" value="Lưu thông tin căn hộ">
             </div>
         </form>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var checkboxes = document.querySelectorAll('.image-checkbox');
-                var selectedCount = document.getElementById('selectedCount');
-                var remainingCount = document.getElementById('remainingCount');
-                var requiredCount = document.getElementById('requiredCount');
-                var imageInputs = document.getElementById('imageInputs');
-                var initialTotalImages = ${requestScope.apartment_images_list.size()};
-                var maxImages = 9;
+                                document.addEventListener("DOMContentLoaded", function () {
+                                var checkboxes = document.querySelectorAll('.image-checkbox');
+                                        var selectedCount = document.getElementById('selectedCount');
+                                        var remainingCount = document.getElementById('remainingCount');
+                                        var requiredCount = document.getElementById('requiredCount');
+                                        var imageInputs = document.getElementById('imageInputs');
+                                        var initialTotalImages = ${requestScope.apartment_images_list.size()};
+                                        var maxImages = 9;
+                                        function updateCounts() {
+                                        var selectedCheckboxes = document.querySelectorAll('.image-checkbox:checked').length;
+                                                var remainingCheckboxCount = initialTotalImages - selectedCheckboxes;
+                                                selectedCount.textContent = "Số lượng ảnh đã chọn: " + selectedCheckboxes;
+                                                remainingCount.textContent = "Số lượng ảnh chưa chọn: " + remainingCheckboxCount;
+                                                requiredCount.textContent = "Số lượng ảnh cần nhập: " + (maxImages - initialTotalImages + selectedCheckboxes);
+                                        }
 
-                function updateCounts() {
-                    var selectedCheckboxes = document.querySelectorAll('.image-checkbox:checked').length;
-                    var remainingCheckboxCount = initialTotalImages - selectedCheckboxes;
-                    selectedCount.textContent = "Số lượng ảnh đã chọn: " + selectedCheckboxes;
-                    remainingCount.textContent = "Số lượng ảnh chưa chọn: " + remainingCheckboxCount;
-                    requiredCount.textContent = "Số lượng ảnh cần nhập: " + (maxImages - initialTotalImages + selectedCheckboxes);
+                                function updateImageInputs() {
+                                var selectedCheckboxes = document.querySelectorAll('.image-checkbox:checked').length;
+                                        var remainingCheckboxCount = initialTotalImages - selectedCheckboxes;
+                                        var neededImages = maxImages - initialTotalImages + selectedCheckboxes;
+                                        imageInputs.innerHTML = '';
+                                        for (var i = 0; i < neededImages; i++) {
+                                var inputDiv = document.createElement('div');
+                                        inputDiv.classList.add('col-md-4');
+                                        inputDiv.innerHTML = `
+                                        <input type="file" id="files" name="files" accept="image/*" class="form-control">
+                                        <div class="preview" id="preview">
+                                <button class="remove-btn">X</button> <!-- Nút bỏ chọn -->
+                            </div>
+                                `;
+                                    imageInputs.appendChild(inputDiv);
+                                        }
+                                            setupFileInputListeners(); // Add event listeners to new file inputs
+                                        }
+                                
+                                    function setupFileInputListeners() {
+                                        var fileInputs = document.querySelectorAll('input[type="file"]');
+                                        fileInputs.forEach(function (input) {
+                                        input.addEventListener('change', handleFileSelect);
+                                        });
+                                                }
+                                               
+                                                       function handleFileSelect(event) {
+                                        const input = event.target;
+                                        const preview = input.nextElementSibling;
+                                        const files = input.files;
+
+                if (!files || files.length === 0) {
+                    return;
                 }
 
-                function updateImageInputs() {
-                    var selectedCheckboxes = document.querySelectorAll('.image-checkbox:checked').length;
-                    var remainingCheckboxCount = initialTotalImages - selectedCheckboxes;
-                    var neededImages = maxImages - initialTotalImages + selectedCheckboxes;
+                const file = files[0];
 
-                    imageInputs.innerHTML = '';
-                    for (var i = 0; i < neededImages; i++) {
-                        var inputDiv = document.createElement('div');
-                        inputDiv.classList.add('col-md-4');
-                        inputDiv.innerHTML = `
-                <div class="img-wrapper">
-                    <input type="file" name="files" accept="image/*" class="form-control" onchange="previewImage(event, ${i})">
-                    <div class="preview" id="preview${i}"></div>
-                </div>
-            `;
-                        imageInputs.appendChild(inputDiv);
-                    }
+                if (!file.type.startsWith('image/')) {
+                    return;
                 }
 
-                checkboxes.forEach(function (checkbox) {
-                    checkbox.addEventListener('change', function () {
-                        var imageWrapper = this.parentElement.querySelector('div');
-                        imageWrapper.style.display = this.checked ? 'none' : 'block';
-                        var label = this.nextElementSibling;
-                        label.style.visibility = this.checked ? 'hidden' : 'visible';
-                        updateCounts();
-                        updateImageInputs();
-                    });
-                });
+                const reader = new FileReader();
 
-                updateCounts();
-                updateImageInputs();
-            });
+                reader.onload = function (e) {
+                    const imgSrc = e.target.result;
 
-            function previewImage(event, index) {
-                var input = event.target;
-                var preview = document.getElementById('preview' + index);
-                preview.innerHTML = ''; // Clear any existing preview
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.style.maxWidth = '100%';
-                        img.style.maxHeight = '100%';
-                        var removeBtn = document.createElement('button');
-                        removeBtn.textContent = 'X';
-                        removeBtn.classList.add('remove-btn');
-                        removeBtn.onclick = function () {
-                            input.value = ''; // Clear the input value
-                            preview.innerHTML = ''; // Clear the preview
-                            updateImageInputs(); // Recompute the input fields
-                        };
-                        preview.appendChild(img);
-                        preview.appendChild(removeBtn);
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = 'X';
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.onclick = function () {
+                        preview.innerHTML = '';
+                        input.value = '';
                     };
-                    reader.readAsDataURL(input.files[0]);
-                }
+
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.className = 'img-wrapper';
+                    imageWrapper.appendChild(img);
+                    imageWrapper.appendChild(removeBtn);
+
+                    while (preview.firstChild) {
+                        preview.removeChild(preview.firstChild);
+                    }
+
+                    preview.appendChild(imageWrapper);
+                };
+
+                reader.readAsDataURL(file);
             }
 
-        </script>
-        <script>
-
-        </script>
-        <script>
-
-
-            document.getElementById('apartmentForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const form = event.target;
-                let isValid = true;
-
-
-                if (!form.name_apartment.value) {
-                    isValid = false;
-                    document.getElementById('name_apartment_error').textContent = 'Vui lòng điền tên căn hộ';
-                } else {
-                    document.getElementById('name_apartment_error').textContent = '';
-                }
-
-                if (!form.apartment_type.value) {
-                    isValid = false;
-                    document.getElementById('apartment_type_error').textContent = 'Vui lòng chọn loại căn hộ';
-                } else {
-                    document.getElementById('apartment_type_error').textContent = '';
-                }
-
-                if (form.tinh.value == "0") {
-                    isValid = false;
-                    document.getElementById('tinh_error').textContent = 'Vui lòng chọn tỉnh/thành phố';
-                } else {
-                    document.getElementById('tinh_error').textContent = '';
-                }
-
-                if (form.quan.value == "0") {
-                    isValid = false;
-                    document.getElementById('quan_error').textContent = 'Vui lòng chọn quận/huyện';
-                } else {
-                    document.getElementById('quan_error').textContent = '';
-                }
-
-                if (form.phuong.value == "0") {
-                    isValid = false;
-                    document.getElementById('phuong_error').textContent = 'Vui lòng chọn xã/phường';
-                } else {
-                    document.getElementById('phuong_error').textContent = '';
-                }
-
-                if (!form.address.value) {
-                    isValid = false;
-                    document.getElementById('address_error').textContent = 'Vui lòng điền địa chỉ cụ thể';
-                } else {
-                    document.getElementById('address_error').textContent = '';
-                }
-
-                if (!form.price.value) {
-                    isValid = false;
-                    document.getElementById('price_error').textContent = 'Vui lòng điền giá tiền';
-                } else {
-                    document.getElementById('price_error').textContent = '';
-                }
-
-                if (!form.area.value) {
-                    isValid = false;
-                    document.getElementById('area_error').textContent = 'Vui lòng điền diện tích';
-                } else {
-                    document.getElementById('area_error').textContent = '';
-                }
-
-                if (!form.number_of_bedroom.value) {
-                    isValid = false;
-                    document.getElementById('number_of_bedroom_error').textContent = 'Vui lòng điền số lượng phòng ngủ';
-                } else {
-                    document.getElementById('number_of_bedroom_error').textContent = '';
-                }
-
-                if (isValid) {
-                    form.submit();
-                }
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    var imageWrapper = this.parentElement.querySelector('div');
+                    imageWrapper.style.display = this.checked ? 'none' : 'block';
+                    var label = this.nextElementSibling;
+                    label.style.visibility = this.checked ? 'hidden' : 'visible';
+                    updateCounts();
+                    updateImageInputs();
+                });
             });
+
+            updateCounts();
+            updateImageInputs();
+            setupFileInputListeners(); // Initial setup for existing file inputs
+        });
+        </script>
+        <script>
+
+
+                                document.getElementById('apartmentForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+                                const form = event.target;
+                                let isValid = true;
+                                if (!form.name_apartment.value) {
+                        isValid = false;
+                                document.getElementById('name_apartment_error').textContent = 'Vui lòng điền tên căn hộ';
+                        } else {
+                        document.getElementById('name_apartment_error').textContent = '';
+                        }
+
+                        if (!form.apartment_type.value) {
+                        isValid = false;
+                                document.getElementById('apartment_type_error').textContent = 'Vui lòng chọn loại căn hộ';
+                        } else {
+                        document.getElementById('apartment_type_error').textContent = '';
+                        }
+
+                        if (form.tinh.value == "0") {
+                        isValid = false;
+                                document.getElementById('tinh_error').textContent = 'Vui lòng chọn tỉnh/thành phố';
+                        } else {
+                        document.getElementById('tinh_error').textContent = '';
+                        }
+
+                        if (form.quan.value == "0") {
+                        isValid = false;
+                                document.getElementById('quan_error').textContent = 'Vui lòng chọn quận/huyện';
+                        } else {
+                        document.getElementById('quan_error').textContent = '';
+                        }
+
+                        if (form.phuong.value == "0") {
+                        isValid = false;
+                                document.getElementById('phuong_error').textContent = 'Vui lòng chọn xã/phường';
+                        } else {
+                        document.getElementById('phuong_error').textContent = '';
+                        }
+
+                        if (!form.address.value) {
+                        isValid = false;
+                                document.getElementById('address_error').textContent = 'Vui lòng điền địa chỉ cụ thể';
+                        } else {
+                        document.getElementById('address_error').textContent = '';
+                        }
+
+                        if (!form.price.value) {
+                        isValid = false;
+                                document.getElementById('price_error').textContent = 'Vui lòng điền giá tiền';
+                        } else {
+                        document.getElementById('price_error').textContent = '';
+                        }
+
+                        if (!form.area.value) {
+                        isValid = false;
+                                document.getElementById('area_error').textContent = 'Vui lòng điền diện tích';
+                        } else {
+                        document.getElementById('area_error').textContent = '';
+                        }
+
+                        if (!form.number_of_bedroom.value) {
+                        isValid = false;
+                                document.getElementById('number_of_bedroom_error').textContent = 'Vui lòng điền số lượng phòng ngủ';
+                        } else {
+                        document.getElementById('number_of_bedroom_error').textContent = '';
+                        }
+
+                        if (isValid) {
+                        form.submit();
+                        }
+                        });
         </script>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script>
-            var map = L.map('map'); // Default to Hanoi
+                                var map = L.map('map'); // Default to Hanoi
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            var address = '${ap.city} .${ap.district}. ${ap.commune}.${ap.address}';
-                updateMap(address);
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                }).addTo(map);
+                                var address = '${ap.city} .${ap.district}. ${ap.commune}.${ap.address}';
+                                            updateMap(address);
+                                            var marker;
+                                            function updateMap(address) {
+                                            var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+                                                    fetch(url)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                    if (data.length > 0) {
+                                                    var lat = parseFloat(data[0].lat);
+                                                            var longitude = parseFloat(data[0].lon);
+                                                            map.setView([lat, longitude], 14);
+                                                            if (marker) {
+                                                    map.removeLayer(marker);
+                                                    }
+                                                    marker = L.marker([lat, longitude]).addTo(map).bindPopup(address).openPopup();
+                                                    } else {
+                                                    console.error('No results found for the address');
+                                                    }
+                                                    })
+                                                    .catch(error => console.error('Error:', error));
+                                            }
 
-                var marker;
-
-                function updateMap(address) {
-                    var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
-
-                    fetch(url)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.length > 0) {
-                                    var lat = parseFloat(data[0].lat);
-                                    var longitude = parseFloat(data[0].lon);
-                                    map.setView([lat, longitude], 14);
-
-                                    if (marker) {
-                                        map.removeLayer(marker);
-                                    }
-                                    marker = L.marker([lat, longitude]).addTo(map).bindPopup(address).openPopup();
-                                } else {
-                                    console.error('No results found for the address');
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                }
-
-                document.getElementById('tinh').addEventListener('change', function () {
-                    var tinh = this.options[this.selectedIndex].text;
-                    document.getElementById('hidden_tinh').value = tinh;
-
-
-                    document.getElementById('quan').innerHTML = '<option value="0">Quận huyện</option>';
-                    document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
-                    document.getElementById('hidden_quan').value = '';
-                    document.getElementById('hidden_phuong').value = '';
-
-                    updateMap(tinh);
-                });
-
-                document.getElementById('quan').addEventListener('change', function () {
-                    var tinh = document.getElementById('hidden_tinh').value;
-                    var quan = this.options[this.selectedIndex].text;
-                    document.getElementById('hidden_quan').value = quan;
-
-
-                    document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
-                    document.getElementById('hidden_phuong').value = '';
-
-                    updateMap(tinh + ' ' + quan);
-                });
-
-                document.getElementById('phuong').addEventListener('change', function () {
-                    var tinh = document.getElementById('hidden_tinh').value;
-                    var quan = document.getElementById('hidden_quan').value;
-                    var phuong = this.options[this.selectedIndex].text;
-                    document.getElementById('hidden_phuong').value = phuong;
-
-                    updateMap(tinh + ' ' + quan + ' ' + phuong);
-                });
+                                    document.getElementById('tinh').addEventListener('change', function () {
+                                    var tinh = this.options[this.selectedIndex].text;
+                                            document.getElementById('hidden_tinh').value = tinh;
+                                            document.getElementById('quan').innerHTML = '<option value="0">Quận huyện</option>';
+                                            document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
+                                            document.getElementById('hidden_quan').value = '';
+                                            document.getElementById('hidden_phuong').value = '';
+                                            updateMap(tinh);
+                                    });
+                                            document.getElementById('quan').addEventListener('change', function () {
+                                    var tinh = document.getElementById('hidden_tinh').value;
+                                            var quan = this.options[this.selectedIndex].text;
+                                            document.getElementById('hidden_quan').value = quan;
+                                            document.getElementById('phuong').innerHTML = '<option value="0">Phường xã</option>';
+                                            document.getElementById('hidden_phuong').value = '';
+                                            updateMap(tinh + ' ' + quan);
+                                    });
+                                            document.getElementById('phuong').addEventListener('change', function () {
+                                    var tinh = document.getElementById('hidden_tinh').value;
+                                            var quan = document.getElementById('hidden_quan').value;
+                                            var phuong = this.options[this.selectedIndex].text;
+                                            document.getElementById('hidden_phuong').value = phuong;
+                                            updateMap(tinh + ' ' + quan + ' ' + phuong);
+                                    });
         </script>
 
         <script src="vendor/jquery/jquery.min.js"></script>
