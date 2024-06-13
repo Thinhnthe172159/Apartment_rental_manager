@@ -73,11 +73,11 @@
                 <p><strong>Date:</strong> ${incident.date}</p>
                 <div class="image-container">
                     <p><strong>Image:</strong></p>
-                    <img src="${incident.image}" alt="Incident Image">
+                    <a href="#"><img src="Incident_image/${incident.image}" alt="Incident Image"> </a>
                 </div>
                 <!-- Add more incident details here if needed -->
             </div>
-            <a href="ListIncident.jsp" class="btn">Back to List</a>
+            <a href="listincidentreport" class="btn">Back to List</a>
         </div>
     </body>
 </html>

@@ -17,13 +17,13 @@ public class Incident {
     private User landlord_id;
     private String context;
     private String image;
-    private String status;
+    private int status;
     private Date date;
 
     public Incident() {
     }
 
-    public Incident(int id, User tenant_id, User landlord_id, String context, String image, String status, Date date) {
+    public Incident(int id, User tenant_id, User landlord_id, String context, String image, int status, Date date) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
@@ -73,11 +73,11 @@ public class Incident {
         this.image = image;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

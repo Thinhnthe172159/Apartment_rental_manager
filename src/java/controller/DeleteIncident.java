@@ -58,7 +58,15 @@ public class DeleteIncident extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+         int incidentId = Integer.parseInt(request.getParameter("id"));
+
+        try {
+            incidentReportDao.deleteIncidentReport(incidentId);
+            response.sendRedirect("listincidentreport");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendRedirect("listincidentreport");
+        }
     }
 
     /**
@@ -72,16 +80,7 @@ public class DeleteIncident extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int incidentId = Integer.parseInt(request.getParameter("id"));
-
-        try {
-            incidentReportDao.deleteIncidentReport(incidentId);
-            response.sendRedirect("ListIncident.jsp?successMessage=Incident deleted successfully");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("Error Message", "An error occurred while deleting the incident report.");
-            request.getRequestDispatcher("Error.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -29,7 +29,14 @@ public class IncidentReportDao extends DBContext {
     }
 
     public void addIncidentReport(Incident report) throws SQLException {
-        String query = "INSERT INTO Incident (tenant_id, landlord_id, context, image, status, date) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO [dbo].[Incident]\n"
+                + "           ([tenant_id]\n"
+                + "           ,[landlord_id]\n"
+                + "           ,[context]\n"
+                + "           ,[image]\n"
+                + "           ,[status]\n"
+                + "           ,[date])\n"
+                + "     VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
 
@@ -37,7 +44,7 @@ public class IncidentReportDao extends DBContext {
             statement.setInt(2, report.getLandlord_id().getId());
             statement.setString(3, report.getContext());
             statement.setString(4, report.getImage());
-            statement.setString(5, report.getStatus());
+            statement.setInt(5, report.getStatus());
             statement.setDate(6, report.getDate());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -46,7 +53,8 @@ public class IncidentReportDao extends DBContext {
     }
 
     public Incident getIncidentReport(int id) throws SQLException {
-        String query = "SELECT * FROM Incident WHERE id = ?";
+        String query = "SELECT * FROM Incident\n"
+                      + " WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -60,7 +68,7 @@ public class IncidentReportDao extends DBContext {
                     incident.setLandlord_id(landlord);
                     incident.setContext(resultSet.getString("context"));
                     incident.setImage(resultSet.getString("image"));
-                    incident.setStatus(resultSet.getString("status"));
+                    incident.setStatus(resultSet.getInt("status"));
                     incident.setDate(resultSet.getDate("date"));
                     return incident;
                 }
@@ -76,10 +84,13 @@ public class IncidentReportDao extends DBContext {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, report.getContext());
             statement.setString(2, report.getImage());
-            statement.setString(3, report.getStatus());
+            statement.setInt(3, report.getStatus());
             statement.setDate(4, new java.sql.Date(report.getDate().getTime()));
             statement.setInt(5, report.getId());
             statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            System.out.println("updateIncidentReport: " + e.getMessage());
         }
     }
 
@@ -109,7 +120,7 @@ public class IncidentReportDao extends DBContext {
                 incident.setLandlord_id(landlord);
                 incident.setContext(resultSet.getString("context"));
                 incident.setImage(resultSet.getString("image"));
-                incident.setStatus(resultSet.getString("status"));
+                incident.setStatus(resultSet.getInt("status"));
                 incident.setDate(resultSet.getDate("date"));
                 incidents.add(incident);
             }
@@ -152,14 +163,8 @@ public class IncidentReportDao extends DBContext {
         try {
             List<Incident> incidentList = incidentReportDao.getAllIncidentReports();
             for (Incident incident : incidentList) {
-                System.out.println("Incident ID: " + incident.getId());
-                System.out.println("Tenant: " + incident.getTenant_id().getFirst_name() + " " + incident.getTenant_id().getLast_name());
-                System.out.println("Landlord: " + incident.getLandlord_id().getFirst_name() + " " + incident.getLandlord_id().getLast_name());
-                System.out.println("Context: " + incident.getContext());
-                System.out.println("Image: " + incident.getImage());
-                System.out.println("Status: " + incident.getStatus());
-                System.out.println("Date: " + incident.getDate());
-                System.out.println("---------------------------------");
+                System.out.println(incident);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
