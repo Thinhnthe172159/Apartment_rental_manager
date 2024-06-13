@@ -87,7 +87,7 @@
         <!-- Properties section body start -->
         <div class="properties-section-body content-area">
             <div class="container">
-                <div class="row">
+                <div class="row col-md-12">
                     <div class="col-lg-8 col-md-12 col-xs-12">
                         <!-- Option bar start -->
                         <div class="option-bar">
@@ -563,6 +563,9 @@
                         </div>
                         <!-- Latest reviews end -->
                     </div>
+                    
+                    
+                    
                 </div>
             </div>
         </div>
