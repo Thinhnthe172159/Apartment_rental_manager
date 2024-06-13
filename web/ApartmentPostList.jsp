@@ -151,16 +151,16 @@
                                         <!-- title -->
                                         <h1 class="title">
                                             <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}">     <c:if test="${ap.payment_id.id == 1}" >
-                                                    <h4 style="">${ap.title}</h4>
+                                                    <h6 style="color: black">${ap.title}</h6>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 2}" >
-                                                    <h4 style="color: blue;font-style: italic">${ap.title}</h4>
+                                                    <h5 style="color: blue;font-style: italic">${ap.title}</h5>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 3}" >
-                                                    <h4 style="color: yellowgreen; font-family: cursive;font-size: large;" >${ap.title.toUpperCase()}</h4>
+                                                    <h4 style="color: #99cc00" >${ap.title.toUpperCase()}</h4>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 4}" >
-                                                    <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
+                                                    <h3 style="font-style: italic;">${ap.title.toUpperCase()}</h3>
                                                 </c:if></a>
                                         </h1>
                                         <!-- Property address -->
@@ -178,6 +178,14 @@
                                             <li>
                                                 <i class="flaticon-bed"></i>
                                                 <span>${ap.number_of_bedroom} bedroom</span>
+                                            </li>
+                                            <li>
+                                                <!-- thêm vào danh sách yêu thích -->
+                                                
+                                                <span><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                        </svg>Lưu</a></span>
                                             </li>
 
                                         </ul>
@@ -563,9 +571,9 @@
                         </div>
                         <!-- Latest reviews end -->
                     </div>
-                    
-                    
-                    
+
+
+
                 </div>
             </div>
         </div>
