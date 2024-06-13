@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import model.Role;
 
 /**
@@ -176,28 +177,29 @@ public class UserDao extends DBContext {
     }
 
     public boolean UpdateGeneralProfile(String email, String first_name, String last_name, Date dob, String image, int id) {
-    try {
-        String strSQL = "UPDATE [dbo].[User]\n"
-                + "   SET [email] = ?\n"
-                + "      ,[first_name] = ?\n"
-                + "      ,[last_name] = ?\n"
-                + "      ,[dob] = ?\n"
-                + "      ,[image] = ?\n"
-                + " WHERE [id] = ?;";
-        pstm = cnn.prepareStatement(strSQL);
-        pstm.setString(1, email);
-        pstm.setString(2, first_name);
-        pstm.setString(3, last_name);
-        pstm.setDate(4, new java.sql.Date(dob.getTime())); // Convert java.util.Date to java.sql.Date
-        pstm.setString(5, image);
-        pstm.setInt(6, id);
-        pstm.executeUpdate();
-        return true;
-    } catch (SQLException e) {
-        System.out.println("UpdateGeneralProfile:" + e.getMessage());
+        try {
+            String strSQL = "UPDATE [dbo].[User]\n"
+                    + "   SET [email] = ?\n"
+                    + "      ,[first_name] = ?\n"
+                    + "      ,[last_name] = ?\n"
+                    + "      ,[dob] = ?\n"
+                    + "      ,[image] = ?\n"
+                    + " WHERE [id] = ?;";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, email);
+            pstm.setString(2, first_name);
+            pstm.setString(3, last_name);
+            pstm.setDate(4, new java.sql.Date(dob.getTime())); // Convert java.util.Date to java.sql.Date
+            pstm.setString(5, image);
+            pstm.setInt(6, id);
+            pstm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("UpdateGeneralProfile:" + e.getMessage());
+        }
+        return false;
     }
-    return false;
-}
+
     public User getUserByEmail(String Email) {
         String sql = "SELECT [id]\n"
                 + "      ,[email]\n"
@@ -236,7 +238,7 @@ public class UserDao extends DBContext {
         }
         return null;
     }
-    
+
     public void updateUser(User user) {
         String sql = "UPDATE [dbo].[User] SET [first_name] = ?, [last_name] = ?, [dob] = ?, [image] = ? WHERE [email] = ?";
         try {
@@ -250,8 +252,8 @@ public class UserDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        }
-    
+    }
+
     public boolean changePassword(String password, int user_ID) {
         try {
             String strSQL = "UPDATE [dbo].[User] SET [password] = ? WHERE [id] = ?;";
@@ -266,6 +268,36 @@ public class UserDao extends DBContext {
         return false;
     }
 
+    public ArrayList<User> getUserList() {
+        ArrayList<User> user_List = new ArrayList<>();
+        try {
+            String strSQL = "SELECT [id]\n"
+                    + "      ,[email]\n"
+                    + "      ,[password]\n"
+                    + "      ,[role_id]\n"
+                    + "      ,[status]\n"
+                    + "      ,[first_name]\n"
+                    + "      ,[last_name]\n"
+                    + "      ,[dob]\n"
+                    + "      ,[image]\n"
+                    + "      ,[money]\n"
+                    + "  FROM [ams1].[dbo].[User]";
+            pstm = cnn.prepareStatement(strSQL);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String email = rs.getString(2);
+                String first_name = rs.getString(6);
+                String last_name = rs.getString(7);
+                Date dob = rs.getDate(8);
+                double money = rs.getInt(10);
+                user_List.add(new User(id, email, first_name, last_name, dob, money));
+            }
+        } catch (SQLException e) {
+            System.out.println("getUserList:" + e.getMessage());
+        }
+        return user_List;
+    }
 
     public static void main(String[] args) {
         UserDao ud = new UserDao();
