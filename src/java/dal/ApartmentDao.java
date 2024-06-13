@@ -568,8 +568,8 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
-    // search list
-    public List<Apartment> getApartmentList(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int pageNumber, int pageSize) {
+    // paging search
+    public List<Apartment> getApartmentList(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int status, int pageNumber, int pageSize) {
 
         List<Apartment> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
@@ -606,6 +606,9 @@ public class ApartmentDao extends DBContext {
         if (commune != null) {
             sql += " AND [commune] LIKE ?";
         }
+        if (status != 0) {
+            sql += " and [status_apartment] = ?";
+        }
         sql += " ORDER BY [id] DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -614,19 +617,22 @@ public class ApartmentDao extends DBContext {
             if (landlord_id != 0) {
                 st.setInt(paramIndex++, landlord_id);
             }
-            if (name != null && !name.isEmpty()) {
+            if (name != null ) {
                 st.setString(paramIndex++, "%" + name + "%");
             }
             if (apartment_type_id != 0) {
                 st.setInt(paramIndex++, apartment_type_id);
             }
-            if (city != null && !city.isEmpty()) {
+            if (city != null ) {
                 st.setString(paramIndex++, "%" + city + "%");
             }
-            if (district != null && !district.isEmpty()) {
+            if (district != null ) {
                 st.setString(paramIndex++, "%" + district + "%");
             }
-            if (commune != null && !commune.isEmpty()) {
+            if (status != 0) {
+                st.setInt(paramIndex++, status);
+            }
+            if (commune != null ) {
                 st.setString(paramIndex++, "%" + commune + "%");
             }
             int offset = (pageNumber - 1) * pageSize;
@@ -663,27 +669,30 @@ public class ApartmentDao extends DBContext {
     }
 
     //list size paging
-    public int getApartmentListSize(int landlord_id, String name, int apartment_type_id, String city, String district, String commune) {
+    public int getApartmentListSize(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int status) {
         int count = 0;
         String sql = "SELECT COUNT(*) AS total FROM [dbo].[Aparment] WHERE 1=1";
 
         if (landlord_id != 0) {
             sql += " AND [landlord_id] = ?";
         }
-        if (name != null && !name.isEmpty()) {
+        if (name != null ) {
             sql += " AND [name] LIKE ?";
         }
         if (apartment_type_id != 0) {
             sql += " AND [type_id] = ?";
         }
-        if (city != null && !city.isEmpty()) {
+        if (city != null ) {
             sql += " AND [city] LIKE ?";
         }
-        if (district != null && !district.isEmpty()) {
+        if (district != null ) {
             sql += " AND [district] LIKE ?";
         }
-        if (commune != null && !commune.isEmpty()) {
+        if (commune != null ) {
             sql += " AND [commune] LIKE ?";
+        }
+        if (status != 0) {
+            sql += " and [status_apartment] = ?";
         }
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -692,20 +701,23 @@ public class ApartmentDao extends DBContext {
             if (landlord_id != 0) {
                 st.setInt(paramIndex++, landlord_id);
             }
-            if (name != null && !name.isEmpty()) {
+            if (name != null ) {
                 st.setString(paramIndex++, "%" + name + "%");
             }
             if (apartment_type_id != 0) {
                 st.setInt(paramIndex++, apartment_type_id);
             }
-            if (city != null && !city.isEmpty()) {
+            if (city != null ) {
                 st.setString(paramIndex++, "%" + city + "%");
             }
-            if (district != null && !district.isEmpty()) {
+            if (district != null ) {
                 st.setString(paramIndex++, "%" + district + "%");
             }
-            if (commune != null && !commune.isEmpty()) {
+            if (commune != null ) {
                 st.setString(paramIndex++, "%" + commune + "%");
+            }
+            if (status != 0) {
+                st.setInt(paramIndex++, status);
             }
 
             try (ResultSet rs = st.executeQuery()) {

@@ -221,7 +221,7 @@
                 <hr>
             </div>
             <div style="display: flex; justify-content: center;">
-                <a class="btn btn-primary btn-lg" href="EditApartment?apartment_id=${ap.id}">Sửa thông tin căn hộ</a>  
+                <a class="btn btn-primary btn-lg" href="UpdateApartment?apartment_id=${ap.id}">Sửa thông tin căn hộ</a>  
             </div>
         </form>
 

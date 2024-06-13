@@ -27,22 +27,7 @@
         <title>The Nest - Real Estate HTML Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/animate.min.css">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap-submenu.css">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
-        <link rel="stylesheet" href="css/leaflet.css" type="text/css">
-        <link rel="stylesheet" href="css/map.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="fonts/flaticon/font/flaticon.css">
-        <link type="text/css" rel="stylesheet" href="fonts/bootstrap-icons/bootstrap-icons.css">
-        <link rel="stylesheet" type="text/css" href="fonts/linearicons/style.css">
-        <link rel="stylesheet" type="text/css"  href="css/jquery.mCustomScrollbar.css">
-        <link rel="stylesheet" type="text/css"  href="css/dropzone.css">
-        <link rel="stylesheet" type="text/css"  href="css/magnific-popup.css">
-        <link rel="stylesheet" type="text/css"  href="css/slick.css">
-        <link rel="stylesheet" type="text/css" href="css/initial.css">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+   
         <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">
@@ -204,16 +189,16 @@
             <div class="col-lg-10 mx-auto">
                 <div class="career-search mb-60">
 
-                    <form action="#" class="career-form mb-60">
+                    <form action="AparmentListForLandlord" method="get" class="career-form mb-60">
                         <div class="row">
-                            <div class="col-md-6 col-lg-3 my-3">
+                            <div class="col-md-4 col-lg-4 my-3">
                                 <div class="input-group position-relative">
-                                    <input type="text" class="form-control" placeholder="Nhập tên căn hộ" id="keywords">
+                                    <input name="name" type="text" class="form-control" placeholder="Nhập tên căn hộ" id="keywords">
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-3 my-3">
-                                <div class="select-container">
-                                    <select class="custom-select" >
+                            <div class="col-md-4 col-lg-4 my-3">
+                                <div class="select">
+                                    <select name="Apartment_type" class="custom-select" >
                                         <option style="color: black" value="0" >Loại hình căn hộ</option>
                                         <c:forEach items="${requestScope.apartment_types_list}" var="atl">
                                             <option style="color: black" value="${atl.id}" >${atl.name}</option>
@@ -221,21 +206,45 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-3 my-3">
-                                <div class="select-container">
-                                    <select class="custom-select">
-                                        <option style="color: black"selected="0">Trạng Thái</option>
+                            <div class="col-md-4 col-lg-4 my-3">
+                                <div class="select">
+                                    <select name="status" class="custom-select">
+                                        <option style="color: black" value="0">Trạng Thái</option>
                                         <option style="color: black"value="1">Đã có người thuê</option>
                                         <option style="color: black"value="2">Chưa có người thuê</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-3 my-3">
-                                <button type="button" class="btn btn-lg btn-block btn-light btn-custom" id="contact-submit">
-                                    Search
-                                </button>
+                            <div class="col-md-4 col-lg-4 my-3">
+                                <div class="select">
+                                    <select style="color: black;background: white" class="custom-select" id="tinh">
+                                        <option style="color: black"selected="0">Chọn Tỉnh Thành</option>
+                                     
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-4 my-3">
+                                <div class="select">
+                                    <select style="color: black;background: white" class="custom-select" id="quan">
+                                        <option style="color: black"selected="0">Chọn Quận Huyện</option>
+                                       
+                                    </select>
+                                </div>
+                            </div><input type="hidden" name="tinh" id="hidden_tinh" >
+                            <input type="hidden" name="quan" id="hidden_quan">
+                            <input type="hidden" name="phuong" id="hidden_phuong">
+                            <div class="col-md-4 col-lg-4 my-3">
+                                <div class="select">
+                                    <select style="color: black;background: white"  class="custom-select" id="phuong">
+                                        <option style="color: black"selected="0">Chọn Phường Xã</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 my-3 d-flex justify-content-lg-center">
+                                <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
                         </div>
+                        
                     </form>
                     <div class="card">
                         <div class="card-body">
@@ -319,18 +328,18 @@
                             <ul class="pagination pagination-reset justify-content-center">
                                 <c:if test="${pageIndex > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex-1}&name=${name}&Apartment_type=${Apartment_type}&status=${status}&tinh=${tinh}&quan=${quan}&phuong=${phuong}">
                                             <i class="">previous</i>
                                         </a>
                                     </li>
                                 </c:if>
                                 <c:forEach items="${requestScope.pagelist}" var="i">
-                                    <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}">${i}</a></li>
+                                    <li class="page-item ${i == pageIndex ? 'active' : ''}"><a class="page-link" href="AparmentListForLandlord?page_index=${i}&name=${name}&Apartment_type=${Apartment_type}&status=${status}&tinh=${tinh}&quan=${quan}&phuong=${phuong}">${i}</a></li>
                                     </c:forEach>
                                 <li class="page-item">
                                     <c:if test="${pageIndex < totalPages}">
                                     <li class="page-item">
-                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" href="AparmentListForLandlord?page_index=${pageIndex+1}&name=${name}&Apartment_type=${Apartment_type}&status=${status}&tinh=${tinh}&quan=${quan}&phuong=${phuong}">
                                             <i class="">next</i>
                                         </a>
                                     </li>
@@ -357,6 +366,48 @@
                     }
                 }
             </script>
+            <script>
+                $(document).ready(function () {
+                    // Fetch provinces
+                    $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                        if (data_tinh.error == 0) {
+                            $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                                $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                            });
+                            $("#tinh").change(function (e) {
+                                var idtinh = $(this).val();
+                                $("#hidden_tinh").val($("#tinh option:selected").text());
+                                // Fetch districts
+                                $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                    if (data_quan.error == 0) {
+                                        $("#quan").html('<option value="0">Quận Huyện</option>');
+                                        $("#phuong").html('<option value="0">Phường Xã</option>');
+                                        $.each(data_quan.data, function (key_quan, val_quan) {
+                                            $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                        });
+                                        // Fetch wards
+                                        $("#quan").change(function (e) {
+                                            var idquan = $(this).val();
+                                            $("#hidden_quan").val($("#quan option:selected").text());
+                                            $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                                if (data_phuong.error == 0) {
+                                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                    $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                        $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                    });
+                                                    $("#phuong").change(function (e) {
+                                                        $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            </script> 
 
             <script src="js/jquery.min.js"></script>
             <script src="js/bootstrap.bundle.min.js"></script>
