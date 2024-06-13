@@ -53,7 +53,7 @@ public class ViewIncident extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+  
         int incidentId = Integer.parseInt(request.getParameter("id"));
          try {
             Incident incident = incidentReportDao.getIncidentReport(incidentId);

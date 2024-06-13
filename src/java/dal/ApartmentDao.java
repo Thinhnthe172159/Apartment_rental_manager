@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import model.Property;
 import model.Room;
 import model.Apartment_image;
 import model.User;
+import org.apache.tomcat.util.http.fileupload.ParameterParser;
 
 /**
  *
@@ -46,7 +48,7 @@ public class ApartmentDao extends DBContext {
 
     }
 
-    // get list apartment property 
+    // get list property 
     public List<Apartment_properties> get_apartment_properties_list_by_id(int id) {
         List<Apartment_properties> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
@@ -72,6 +74,33 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    // get Apartment property
+    public Apartment_properties get_apartment_properties_by_id(int id) {
+        List<Apartment_properties> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[apartment_id]\n"
+                + "      ,[property_id]\n"
+                + "  FROM [dbo].[Apartment_room] where [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment_properties apartment_properties = new Apartment_properties();
+                Apartment a = getApartment(rs.getInt("apartment_id"));
+                Property p = getProperty(rs.getInt("property_id"));
+                apartment_properties.setApartment_id(a);
+                apartment_properties.setProperty_id(p);
+                return apartment_properties;
+            }
+
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
+    //get all apartment properties
     //select room  
     public Room getRoom(int id) {
         String sql = "SELECT [id]\n"
@@ -159,6 +188,7 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    // get all properties list 
     public List<Property> getPropertyList() {
         List<Property> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Property]"
@@ -175,6 +205,19 @@ public class ApartmentDao extends DBContext {
 
         }
         return list;
+    }
+
+    //delete properties
+    public void deleteApartmentProperties(int apartment_id) {
+        String sql = "DELETE FROM [dbo].[Apartment_room]\n"
+                + "      WHERE [apartment_id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, apartment_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
     }
 
     //Apartment type
@@ -283,7 +326,7 @@ public class ApartmentDao extends DBContext {
                 + "      ,[image]\n"
                 + "      ,[Apartment_id]\n"
                 + "  FROM [dbo].[Apartment_image]\n"
-                + "    where [Apartment_id] = ? order by [id] desc";
+                + "    where [Apartment_id] = ? order by [id]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -298,6 +341,28 @@ public class ApartmentDao extends DBContext {
             }
         } catch (SQLException e) {
 
+        }
+        return null;
+    }
+
+    // get image by id
+    public Apartment_image getApartmentImage(int id) {
+        String sql = "SELECT [id]\n"
+                + "      ,[image]\n"
+                + "      ,[Apartment_id]\n"
+                + "  FROM [dbo].[Apartment_image]\n"
+                + "    where [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Apartment a = getApartment(rs.getInt("Apartment_id"));
+                Apartment_image ai = new Apartment_image(rs.getInt("id"), rs.getString("image"), a);
+                return ai;
+            }
+
+        } catch (Exception e) {
         }
         return null;
     }
@@ -326,6 +391,7 @@ public class ApartmentDao extends DBContext {
         }
         return list;
     }
+
     //get all image
     public List<Apartment_image> getAllApartmentImageList() {
         List<Apartment_image> list = new ArrayList<>();
@@ -348,6 +414,18 @@ public class ApartmentDao extends DBContext {
 
         }
         return list;
+    }
+
+    // delete image 
+    public void deleteImageById(int id) {
+        String sql = "Delete FROM [dbo].[Apartment_image]\n"
+                + "where [id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 
     // Apartment insert
@@ -438,7 +516,7 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
-    //List Apartment
+    //List Apartment search
     public List<Apartment> getApartmentList(int landlord_id) {
 
         List<Apartment> list = new ArrayList<>();
@@ -458,7 +536,7 @@ public class ApartmentDao extends DBContext {
                 + "  FROM [dbo].[Aparment]"
                 + " where 1=1";
         if (landlord_id != 0) {
-            sql += "and [landlord_id] = " + landlord_id;
+            sql += " and [landlord_id] = " + landlord_id;
         }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -489,8 +567,172 @@ public class ApartmentDao extends DBContext {
 
         return list;
     }
-    // get newest apartment
 
+    // paging search
+    public List<Apartment> getApartmentList(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int status, int pageNumber, int pageSize) {
+
+        List<Apartment> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[name]\n"
+                + "      ,[type_id]\n"
+                + "      ,[address]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[price]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[status_apartment]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[tenant_id]\n"
+                + "  FROM [dbo].[Aparment]"
+                + " where 1=1";
+
+        if (landlord_id != 0) {
+            sql += " AND [landlord_id] = ?";
+        }
+        if (name != null && !name.isEmpty()) {
+            sql += " AND [name] LIKE ?";
+        }
+        if (apartment_type_id != 0) {
+            sql += " AND [type_id] = ?";
+        }
+        if (city != null) {
+            sql += " AND [city] LIKE ?";
+        }
+        if (district != null) {
+            sql += " AND [district] LIKE ?";
+        }
+        if (commune != null) {
+            sql += " AND [commune] LIKE ?";
+        }
+        if (status != 0) {
+            sql += " and [status_apartment] = ?";
+        }
+        sql += " ORDER BY [id] DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+
+            if (landlord_id != 0) {
+                st.setInt(paramIndex++, landlord_id);
+            }
+            if (name != null ) {
+                st.setString(paramIndex++, "%" + name + "%");
+            }
+            if (apartment_type_id != 0) {
+                st.setInt(paramIndex++, apartment_type_id);
+            }
+            if (city != null ) {
+                st.setString(paramIndex++, "%" + city + "%");
+            }
+            if (district != null ) {
+                st.setString(paramIndex++, "%" + district + "%");
+            }
+            if (status != 0) {
+                st.setInt(paramIndex++, status);
+            }
+            if (commune != null ) {
+                st.setString(paramIndex++, "%" + commune + "%");
+            }
+            int offset = (pageNumber - 1) * pageSize;
+            st.setInt(paramIndex++, offset);
+            st.setInt(paramIndex++, pageSize);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Apartment a = new Apartment();
+                    a.setId(rs.getInt("id"));
+                    a.setName(rs.getString("name"));
+                    Apartment_type at = getApartment_type(rs.getInt("type_id"));
+                    a.setType_id(at);
+                    a.setAddress(rs.getString("address"));
+                    a.setCity(rs.getString("city"));
+                    a.setDistrict(rs.getString("district"));
+                    a.setCommune(rs.getString("commune"));
+                    a.setPrice(rs.getDouble("price"));
+                    a.setArea(rs.getDouble("area"));
+                    a.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                    a.setStatus_apartment(rs.getInt("status_apartment"));
+                    User landlord = userDao.getUser(rs.getInt("landlord_id"));
+                    User tenant = userDao.getUser(rs.getInt("tenant_id"));
+                    a.setLandLord_id(landlord);
+                    a.setTenant_id(tenant);
+                    list.add(a);
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return list;
+    }
+
+    //list size paging
+    public int getApartmentListSize(int landlord_id, String name, int apartment_type_id, String city, String district, String commune, int status) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) AS total FROM [dbo].[Aparment] WHERE 1=1";
+
+        if (landlord_id != 0) {
+            sql += " AND [landlord_id] = ?";
+        }
+        if (name != null ) {
+            sql += " AND [name] LIKE ?";
+        }
+        if (apartment_type_id != 0) {
+            sql += " AND [type_id] = ?";
+        }
+        if (city != null ) {
+            sql += " AND [city] LIKE ?";
+        }
+        if (district != null ) {
+            sql += " AND [district] LIKE ?";
+        }
+        if (commune != null ) {
+            sql += " AND [commune] LIKE ?";
+        }
+        if (status != 0) {
+            sql += " and [status_apartment] = ?";
+        }
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            int paramIndex = 1;
+
+            if (landlord_id != 0) {
+                st.setInt(paramIndex++, landlord_id);
+            }
+            if (name != null ) {
+                st.setString(paramIndex++, "%" + name + "%");
+            }
+            if (apartment_type_id != 0) {
+                st.setInt(paramIndex++, apartment_type_id);
+            }
+            if (city != null ) {
+                st.setString(paramIndex++, "%" + city + "%");
+            }
+            if (district != null ) {
+                st.setString(paramIndex++, "%" + district + "%");
+            }
+            if (commune != null ) {
+                st.setString(paramIndex++, "%" + commune + "%");
+            }
+            if (status != 0) {
+                st.setInt(paramIndex++, status);
+            }
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
+
+    // get newest apartment
     public Apartment getLatedApartment() {
         String sql = "SELECT top 1 * from [dbo].[Aparment]\n"
                 + "order by [id] desc";
@@ -554,19 +796,40 @@ public class ApartmentDao extends DBContext {
             st.setInt(10, a.getStatus_apartment());
             st.setInt(11, a.getLandLord_id().getId());
             st.setInt(12, a.getTenant_id().getId());
-            st.setInt(13, a.getId());
+            st.setInt(13, id);
             st.executeUpdate();
         } catch (SQLException e) {
 
         }
     }
 
+    //delete apartment
+    public void removeApartment(int id_apartment) {
+        String sql = "DELETE FROM [dbo].[Apartment_room]\n"
+                + "where apartment_id = ? ;\n"
+                + "DELETE FROM [dbo].[Apartment_Posts]\n"
+                + "where [apartment_id] = ? ;\n"
+                + "Delete FROM [dbo].[Apartment_image]\n"
+                + "where [Apartment_id] = ? ;\n"
+                + "DELETE FROM [dbo].[Aparment]\n"
+                + "      WHERE [id] = ? ;";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id_apartment);
+            st.setInt(2, id_apartment);
+            st.setInt(3, id_apartment);
+            st.setInt(4, id_apartment);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
+    }
+
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
-        Apartment a = apartmentDao.getApartment(5);
-        a.setName("Thịnh Promax");
-        apartmentDao.updateApartment(a, 5);
-
+        Apartment_image a = apartmentDao.getApartmentImage(172);
+        System.out.println(a.getImage());
     }
 
 }

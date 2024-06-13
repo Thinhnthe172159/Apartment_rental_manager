@@ -10,23 +10,32 @@ import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.sql.Date;
 import model.Incident;
 import model.User;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
+import java.time.LocalDate;
+import java.util.Collection;
 
 /**
  *
  * @author vumin
  */
+@MultipartConfig()
 @WebServlet(name = "AddIncidentReport", urlPatterns = {"/addincidentreport"})
 public class AddIncidentReport extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final String UPLOAD_DIR = "Incident_image";
 
     private IncidentReportDao incidentReportDao;
     private UserDao userDao;
@@ -65,27 +74,66 @@ public class AddIncidentReport extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String tenantId = request.getParameter("tenant_id");
-        String landlordId = request.getParameter("landlord_id");
+        int tenantId = Integer.parseInt(request.getParameter("tenantId"));
+        int landlordId = Integer.parseInt(request.getParameter("landlordId"));
         String context = request.getParameter("context");
-        String image = request.getParameter("image");
+
         String status = request.getParameter("status");
-        String dateStr = request.getParameter("date");
-
         try {
-            User tenant = userDao.getUser(Integer.parseInt(tenantId));
-            User landlord = userDao.getUser(Integer.parseInt(landlordId));
-            Date date = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            User tenant = userDao.getUser(tenantId);
+            User landlord = userDao.getUser(landlordId);
 
-            Incident report = new Incident(0, tenant, landlord, context, image, status, new java.sql.Date(date.getTime()));
-            incidentReportDao.addIncidentReport(report);
+            if (tenant == null || landlord == null) {
+                throw new SQLException("User not found");
+            }
 
-            request.setAttribute("successMessage", "Incident report added successfully!");
-            request.getRequestDispatcher("ListIncident.jsp").forward(request, response);
-        }catch (SQLException | ParseException e) {
+            Incident incident = new Incident();
+            incident.setTenant_id(tenant);
+            incident.setLandlord_id(landlord);
+            incident.setContext(context);
+
+            incident.setStatus(status);
+            LocalDate localDate = LocalDate.now();
+            Date datesql = Date.valueOf(localDate);
+            incident.setDate(datesql);
+
+            
+            // Get the absolute path of the web application
+            String applicationPath = request.getServletContext().getRealPath("");
+            // Construct the directory path to save the uploaded file
+            String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
+
+            // Create the directory if it does not exist
+            File uploadDir = new File(uploadFilePath);
+            String image;
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            StringBuilder fileNames = new StringBuilder();
+            
+            // Get all parts from the request (images)
+            Collection<Part> parts = request.getParts();
+            for (Part part : parts) {
+                // Get the submitted file name
+                String fileName = part.getSubmittedFileName();
+                if (fileName != null && !fileName.isEmpty()) {
+                    
+                    part.write(uploadFilePath + File.separator + fileName);
+                    incident.setImage(fileName);
+                    fileNames.append(fileName);
+                }
+            }
+            
+            incidentReportDao.addIncidentReport(incident);
+            // Respond with the names of the uploaded files
+            response.setContentType("text/plain");
+            response.getWriter().write("Files uploaded successfully: " + fileNames.toString());
+            //response.sendRedirect("listincidentreport");
+        } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "An error occurred. Please try again.");
-            request.getRequestDispatcher("addIncidentReport.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Database error occurred while adding the incident report");
+            request.getRequestDispatcher("AddIncidentReport.jsp").forward(request, response);
         }
     }
 

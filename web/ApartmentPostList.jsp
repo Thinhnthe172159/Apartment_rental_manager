@@ -100,18 +100,7 @@
                                         <span class="title">Properties List</span>
                                     </h4>
                                 </div>
-                                <div class="col-lg-7 col-md-7 col-sm-7">
-                                    <div class="sorting-options advanced-search">
-                                        <select class="selectpicker search-fields sorting" name="new-to-old">
-                                            <option>New To Old</option>
-                                            <option>Old To New</option>
-                                            <option>Properties (High To Low)</option>
-                                            <option>Properties (Low To High)</option>
-                                        </select>
-                                        <a href="properties-list-rightside.html" class="change-view-btn active-view-btn"><i class="fa fa-th-list"></i></a>
-                                        <a href="properties-grid-rightside.html" class="change-view-btn"><i class="fa fa-th-large"></i></a>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <!-- Option bar end -->
@@ -287,7 +276,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
-
+                                        <div class="form-group">
+                                            <select class="form-select" name="type">
+                                                <option value="0">Sắp xếp theo giá</option>
+                                                <option value="1">Tăng dần</option>
+                                                <option value="2">Giảm dần</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <style>
