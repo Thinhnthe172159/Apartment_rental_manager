@@ -45,10 +45,10 @@
     <div class="container">
         <h2 class="my-4">Nội dung đã lưu</h2>
         <div class="wishlist-container row">
-            <c:forEach var="item" items="${wishList}">
+            <c:forEach var="item" items="${wishlist}">
                 <div class="col-md-4">
                     <div class="wishlist-item">
-                        <img src="path_to_apartment_images/${item.apartment_id}.jpg" alt="Apartment Image">
+                        <img src="path_to_apartment_images/${item.Apartment_id}.jpg" alt="Apartment Image">
                         <div class="wishlist-item-body">
                             <div class="wishlist-item-title">Apartment ID: ${item.apartment_id}</div>
                             <div class="wishlist-item-details">
