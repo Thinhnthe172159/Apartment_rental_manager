@@ -318,7 +318,7 @@ public class ApartmentPostDao extends DBContext {
             case 2 ->
                 sql += "ORDER BY [price] desc ";
             default ->
-                sql += " order by [payment_id] desc, [post_start] DESC  ";
+                sql += " order by [payment_id] desc, [post_start] DESC  , [id] DESC ";
         }
 
         int offset = (pageNumber - 1) * pageSize;

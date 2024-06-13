@@ -306,7 +306,7 @@
                     <br>
                     <div class="row">
                         <h2 class="col-md-12" style="color: royalblue">III. Thông tin hình ảnh</h2>
-                        <div class="row" style="border: 1px solid #686868;">
+                        <div class="row">
                             <p style="justify-items: center;">Tin đăng có hình ảnh thường hiệu quả hơn 59% tin đăng
                                 không có hình ảnh.<br>Lưu ý bức ảnh đầu tiên bạn chọn sẽ là thumbnail của bài đăng
                                 cho căn hộ của bạn</p>
@@ -317,7 +317,7 @@
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Swicth on để loại bỏ hình ảnh</label><br>
                                         <div style="padding-bottom: 56.25%; position: relative;">
                                             <img src="uploads/${image.image}"
-                                                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: black;"
+                                                 style="border-radius: 15px;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; background: black;"
                                                  alt="alt" />
                                         </div>
                                     </div> 

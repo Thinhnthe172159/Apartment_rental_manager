@@ -22,8 +22,10 @@
                 flex-wrap: wrap;
             }
             .preview img {
-                max-width: 550px;
+                border-radius: 15px;
+                max-width: 400px;
                 margin: 10px;
+                box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
             }
             .error {
                 color: red;
@@ -201,7 +203,7 @@
                 <br>
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">III. Thông tin hình ảnh</h2>
-                    <div class="col-md-12" style="border: 1px solid #686868;">
+                    <div class="col-md-12">
 
                         <div class="preview" id="preview">
                             <c:forEach items="${requestScope.apartment_images}" var="image">
@@ -214,7 +216,7 @@
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">IV. Thông tin bổ sung</h2>
                         <c:forEach items="${requestScope.apartment_propertieses_list}" var="p"> 
-                            <span class="col-md-4"><img style="width: 35px" src="${p.property_id.image}" alt="alt"/>  ${p.property_id.name} </span>  
+                            <span  class="col-md-4"><img style="width: 35px;" src="${p.property_id.image}" alt="alt"/>  ${p.property_id.name} </span>  
                             </c:forEach>
                    
                 </div>
