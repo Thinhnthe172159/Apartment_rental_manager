@@ -107,7 +107,7 @@ public class UpdateApartment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         String apartment_id_raw = request.getParameter("apartment_id");
@@ -190,33 +190,27 @@ public class UpdateApartment extends HttpServlet {
             }
         }
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        List<Apartment_Post> apartment_Posts_list = apartmentPostDao.getApartment_Post_list_by_apartment_id(Integer.parseInt(apartment_id_raw));
-        
-        for(Apartment_Post post : apartment_Posts_list){
-            post.setApartment_id(ap);
-            landlord = ap.getLandLord_id();
-            post.setLandlord_id(landlord);
-            Apartment_image ap_image = apartmentDao.get_First_Apartment_Image(ap.getId());
-            post.setFirst_image(ap_image.getImage());
-            post.setCity(ap.getCity());
-            post.setDistrict(ap.getDistrict());
-            post.setCommune(ap.getCommune());
-            post.setNumber_of_bedroom(ap.getNumber_of_bedroom());
-            post.setArea(ap.getArea());
-            post.setApartment_name(ap.getName());
-            post.setPrice(ap.getPrice());
-            Apartment_type ap_type = ap.getType_id();
-            post.setApartment_type(ap_type);
-            post.setTotal_image(apartmentDao.getAllApartmentImageList(ap.getId()).size());
-        }
+        Apartment_Post post = new Apartment_Post();
+        post.setApartment_id(ap);
+        landlord = ap.getLandLord_id();
+        post.setLandlord_id(landlord);
+        Apartment_image ap_image = apartmentDao.get_First_Apartment_Image(ap.getId());
+        post.setFirst_image(ap_image.getImage());
+        post.setCity(ap.getCity());
+        post.setDistrict(ap.getDistrict());
+        post.setCommune(ap.getCommune());
+        post.setNumber_of_bedroom(ap.getNumber_of_bedroom());
+        post.setArea(ap.getArea());
+        post.setApartment_name(ap.getName());
+        post.setPrice(ap.getPrice());
+        Apartment_type ap_type = ap.getType_id();
+        post.setApartment_type(ap_type);
+        post.setTotal_image(apartmentDao.getAllApartmentImageList(ap.getId()).size());
+        apartmentPostDao.updateApartmentPostByApartmentId(post, ap.getId());
+
         response.sendRedirect("AparmentListForLandlord");
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

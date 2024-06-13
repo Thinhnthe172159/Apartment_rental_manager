@@ -413,6 +413,43 @@ public class ApartmentPostDao extends DBContext {
         }
     }
 
+    // update Apartment post by apartment id
+    public void updateApartmentPostByApartmentId(Apartment_Post ap, int id) {
+        String sql = "UPDATE [dbo].[Apartment_Posts]\n"
+                + "   SET [apartment_id] = ?\n"
+                + "      ,[landlord_id] = ?\n"
+                + "      ,[first_image] = ?\n"
+                + "      ,[city] = ?\n"
+                + "      ,[district] = ?\n"
+                + "      ,[commune] = ?\n"
+                + "      ,[area] = ?\n"
+                + "      ,[number_of_bedroom] = ?\n"
+                + "      ,[apartment_name] = ?\n"
+                + "      ,[price] = ?\n"
+                + "      ,[apartment_type] = ?\n"
+                + "      ,[total_image] = ?\n"
+                + " WHERE [apartment_id]= ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, ap.getApartment_id().getId());
+            st.setInt(2, ap.getLandlord_id().getId());
+            st.setString(3, ap.getFirst_image());
+            st.setString(4, ap.getCity());
+            st.setString(5, ap.getDistrict());
+            st.setString(6, ap.getCommune());
+            st.setDouble(7, ap.getArea());
+            st.setInt(8, ap.getNumber_of_bedroom());
+            st.setString(9, ap.getApartment_name());
+            st.setDouble(10, ap.getPrice());
+            st.setInt(11, ap.getApartment_type().getId());
+            st.setInt(12, ap.getTotal_image());
+            st.setInt(13, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
