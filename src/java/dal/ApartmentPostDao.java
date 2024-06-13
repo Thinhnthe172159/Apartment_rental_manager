@@ -130,6 +130,65 @@ public class ApartmentPostDao extends DBContext {
         return null;
     }
 
+    //get Apartment post by apartment id
+    public List<Apartment_Post> getApartment_Post_list_by_apartment_id(int id) {
+        List<Apartment_Post> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[title]\n"
+                + "      ,[description]\n"
+                + "      ,[post_status]\n"
+                + "      ,[post_start]\n"
+                + "      ,[post_end]\n"
+                + "      ,[apartment_id]\n"
+                + "      ,[payment_id]\n"
+                + "      ,[landlord_id]\n"
+                + "      ,[first_image]\n"
+                + "      ,[city]\n"
+                + "      ,[district]\n"
+                + "      ,[commune]\n"
+                + "      ,[area]\n"
+                + "      ,[number_of_bedroom]\n"
+                + "      ,[apartment_name]\n"
+                + "      ,[price]\n"
+                + "      ,[apartment_type]\n"
+                + "      ,[total_image]\n"
+                + "  FROM [dbo].[apartment_id] where [id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_Post ap = new Apartment_Post();
+                ap.setTitle(rs.getString("title"));
+                ap.setDescription(rs.getString("description"));
+                ap.setPost_status(rs.getInt("post_status"));
+                ap.setPost_start(rs.getDate("post_start"));
+                ap.setPost_end(rs.getDate("post_end"));
+                Apartment a = apartmentDao.getApartment(rs.getInt("apartment_id"));
+                ap.setApartment_id(a);
+                Payment_method pm = apartmentDao.getPayment_method(rs.getInt("payment_id"));
+                ap.setPayment_id(pm);
+                User u = userDao.getUser(rs.getInt("landlord_id"));
+                ap.setLandlord_id(u);
+                ap.setFirst_image(rs.getString("first_image"));
+                ap.setCity(rs.getString("city"));
+                ap.setDistrict(rs.getString("district"));
+                ap.setCommune(rs.getString("commune"));
+                ap.setArea(rs.getDouble("area"));
+                ap.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                ap.setApartment_name(rs.getString("apartment_name"));
+                ap.setPrice(rs.getDouble("price"));
+                Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
+                ap.setApartment_type(at);
+                ap.setTotal_image(rs.getInt("total_image"));
+                list.add(ap);
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
     // list apartment size
     public int getApartmentPostSize(String name,
             String city,
@@ -254,9 +313,12 @@ public class ApartmentPostDao extends DBContext {
         }
 
         switch (type) {
-            case 1 -> sql += "ORDER BY [price]  ";
-            case 2 -> sql += "ORDER BY [price] desc ";
-            default -> sql += " order by [payment_id] desc, [post_start] DESC  ";
+            case 1 ->
+                sql += "ORDER BY [price]  ";
+            case 2 ->
+                sql += "ORDER BY [price] desc ";
+            default ->
+                sql += " order by [payment_id] desc, [post_start] DESC  ";
         }
 
         int offset = (pageNumber - 1) * pageSize;
@@ -303,7 +365,7 @@ public class ApartmentPostDao extends DBContext {
     }
 
     // update Apartment post
-    public void updateApartmentPost(Apartment_Post ap,int id) {
+    public void updateApartmentPost(Apartment_Post ap, int id) {
         String sql = "UPDATE [dbo].[Apartment_Posts]\n"
                 + "   SET [title] = ?\n"
                 + "      ,[description] = ?\n"
@@ -355,11 +417,11 @@ public class ApartmentPostDao extends DBContext {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-       Apartment_Post ap = apartmentPostDao.getApartment_Post(7);
-       ap.setCity("HO Chi Minh city");
-       ap.setDistrict("Quan 7");
-       ap.setFirst_image("quan.jpg");
-       apartmentPostDao.updateApartmentPost(ap,7);
+        Apartment_Post ap = apartmentPostDao.getApartment_Post(7);
+        ap.setCity("HO Chi Minh city");
+        ap.setDistrict("Quan 7");
+        ap.setFirst_image("quan.jpg");
+        apartmentPostDao.updateApartmentPost(ap, 7);
 
     }
 }

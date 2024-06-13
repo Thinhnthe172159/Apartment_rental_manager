@@ -5,6 +5,7 @@
 package controller;
 
 import dal.ApartmentDao;
+import dal.ApartmentPostDao;
 import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import model.Apartment;
+import model.Apartment_Post;
 import model.Apartment_image;
 import model.Apartment_properties;
 import model.Apartment_type;
@@ -186,6 +188,26 @@ public class UpdateApartment extends HttpServlet {
                 ai = new Apartment_image(0, fileName, ap);
                 apartmentDao.insertApartmentImage(ai);
             }
+        }
+        ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
+        List<Apartment_Post> apartment_Posts_list = apartmentPostDao.getApartment_Post_list_by_apartment_id(Integer.parseInt(apartment_id_raw));
+        
+        for(Apartment_Post post : apartment_Posts_list){
+            post.setApartment_id(ap);
+            landlord = ap.getLandLord_id();
+            post.setLandlord_id(landlord);
+            Apartment_image ap_image = apartmentDao.get_First_Apartment_Image(ap.getId());
+            post.setFirst_image(ap_image.getImage());
+            post.setCity(ap.getCity());
+            post.setDistrict(ap.getDistrict());
+            post.setCommune(ap.getCommune());
+            post.setNumber_of_bedroom(ap.getNumber_of_bedroom());
+            post.setArea(ap.getArea());
+            post.setApartment_name(ap.getName());
+            post.setPrice(ap.getPrice());
+            Apartment_type ap_type = ap.getType_id();
+            post.setApartment_type(ap_type);
+            post.setTotal_image(apartmentDao.getAllApartmentImageList(ap.getId()).size());
         }
         response.sendRedirect("AparmentListForLandlord");
     }
