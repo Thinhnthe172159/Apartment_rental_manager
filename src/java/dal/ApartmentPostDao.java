@@ -72,7 +72,7 @@ public class ApartmentPostDao extends DBContext {
         }
     }
 
-    // get apartment post
+    // get apartment post (lấy hàm này để lấy dữ liệu)
     public Apartment_Post getApartment_Post(int id) {
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
