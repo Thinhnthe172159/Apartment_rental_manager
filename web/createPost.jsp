@@ -37,14 +37,24 @@
             background-color: #218838;
             border-color: #1e7e34;
         }
+
+        #imagePreview {
+            margin-top: 20px;
+        }
+
+        #imagePreview img {
+            max-width: 100px; /* Giới hạn chiều rộng tối đa của ảnh */
+            max-height: 100px; /* Giới hạn chiều cao tối đa của ảnh */
+            margin-right: 10px; /* Khoảng cách giữa các ảnh */
+            margin-bottom: 10px; /* Khoảng cách giữa các ảnh */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Tạo bài viết mới</h1>
         
-       
-        <form action="addCommunityPost" method="get" enctype="multipart/form-data">
+        <form id="uploadForm" action="addCommunityPost" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Tiêu đề:</label>
                 <input type="text" class="form-control" id="title" name="t" required>
@@ -57,6 +67,7 @@
                 <label for="images">Chọn ảnh:</label>
                 <input type="file" id="imageInput" name="images" multiple accept="image/*" >
             </div>
+            <div id="imagePreview"></div> <!-- Vùng để hiển thị trước các ảnh đã chọn -->
             <button type="submit" class="btn btn-primary">Đăng bài</button>
             <a href="listpost" class="btn btn-primary">Danh sách bài viết</a>
         </form>
@@ -65,13 +76,14 @@
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('imagePreview');
-            previewContainer.innerHTML = '';
+            previewContainer.innerHTML = ''; // Xóa bỏ những ảnh hiện tại (nếu có)
 
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = document.createElement('img');
                     img.src = e.target.result;
+                    img.classList.add('img-thumbnail'); // Thêm class để hiển thị ảnh nhỏ
                     previewContainer.appendChild(img);
                 };
                 reader.readAsDataURL(file);
@@ -112,4 +124,5 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+</html>
 </html>
