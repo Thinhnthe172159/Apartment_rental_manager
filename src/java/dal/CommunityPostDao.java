@@ -51,6 +51,17 @@ public class CommunityPostDao extends DBContext {
         }
 
     }
+    
+    public void deletePost(int postId) {
+    String sql = "DELETE FROM Community_post WHERE id = ?";
+    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        statement.setInt(1, postId);
+        statement.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
 
  
 
@@ -134,5 +145,13 @@ public class CommunityPostDao extends DBContext {
         CommunityPost communityPost = cpd.getNewesPost();
         Post_image post_image = new Post_image(0, "abc", communityPost);
         cpd.addPostImage(post_image);
+    }
+
+    public CommunityPost getPostId(int postId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public CommunityPost getPostById(int parseInt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
