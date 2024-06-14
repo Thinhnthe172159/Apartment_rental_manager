@@ -1,3 +1,4 @@
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -88,7 +89,8 @@
                                                 <h5>${apl.apartment_type.name}</h5>
                                                 <div class="d-flex flex-row">
 
-                                                    <span>Diện tích: ${apl.area}m2</span>
+                                                    <span>Diện tích: ${apl.area}m2</span>&nbsp;&nbsp;
+                                                    <span style="background: blueviolet;color: white;border-radius: 15px;box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;"> &nbsp;&nbsp;Trạng Thái: <c:if test="${apl.post_status == 1}">Lưu Nháp</c:if><c:if test="${apl.post_status == 2}">Chờ Duyệt</c:if><c:if test="${apl.post_status == 3}">Xuất Bản</c:if><c:if test="${apl.post_status == 4}">Trả lại</c:if><c:if test="${apl.post_status == 5}">Hết Hạn</c:if><c:if test="${apl.post_status == 5}">Đã Thuê</c:if>&nbsp;&nbsp;</span>
                                                 </div>
                                                 <div class="mt-1 mb-0 text-muted small">
                                                     <span>${apl.city}</span>
@@ -108,7 +110,7 @@
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                                                 <div class="d-flex flex-row align-items-center mb-1">
-                                                    <h4 class="mb-1 me-1">${apl.price}</h4>
+                                                    <h4 class="mb-1 me-1"><fmt:formatNumber value="${apl.price}" pattern="#,###"/>vnd</h4>
                                                     
                                                 </div>
                                                 
@@ -117,7 +119,7 @@
                                                     <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button">
                                                         Remove
                                                     </button>
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm mt-2" type="button">
                                                         Update
                                                     </button>
                                                 </div>
@@ -134,17 +136,17 @@
                             <ul class="pagination">
                                 <c:if test="${page_index > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}">Prev</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}&status=${status}">Prev</a>
                                     </li>
                                 </c:if>
                                 <c:forEach items="${pageList}" var="i">
                                     <li class="page-item">
-                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
+                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}&status=${status}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
                                     </li>
                                 </c:forEach>
                                 <c:if test="${page_index < pageList.size()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}">Next</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}&status=${status}">Next</a>
                                     </li>
                                 </c:if>
                             </ul>
@@ -183,6 +185,17 @@
                             <select    class="form-select " id="phuong" aria-label="Default select example">
                                 <option value="0">Xã Phường</option>
                                 <hr>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select    class="form-select" name="status"  aria-label="Default select example">
+                                <option value="0">Trạng Thái Bài Đăng</option>
+                                <option value="1">Lưu Nháp</option>
+                                <option value="2">Chờ Duyệt</option>
+                                <option value="3">Xuất Bản</option>
+                                <option value="4">Trả Lại</option>
+                                <option value="5">Hết Hạn</option>
+                                <option value="6">Đã Thuê/(Đã Bán comming soon)</option>
                             </select>
                         </div>
                         <input type="hidden" name="tinh" id="hidden_tinh">
