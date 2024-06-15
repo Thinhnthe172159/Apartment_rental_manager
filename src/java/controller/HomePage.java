@@ -63,7 +63,7 @@ public class HomePage extends HttpServlet {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
 
-            request.setAttribute("user_Data", user_Data);
+            session.setAttribute("user_Data", user_Data);
         }
         int page = 1;
         request.setAttribute("page",page);

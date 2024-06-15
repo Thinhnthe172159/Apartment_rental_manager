@@ -6,6 +6,7 @@ package controller;
 
 import dal.ApartmentDao;
 import dal.ApartmentPostDao;
+import dal.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,10 +14,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
+import model.Apartment_image;
 import model.Payment_method;
+import model.User;
 
 /**
  *
@@ -64,15 +69,18 @@ public class UpdateApartmentPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // xử lý phần user
-        
-        
+
         //
         ApartmentPostDao apd = new ApartmentPostDao();
         ApartmentDao ad = new ApartmentDao();
         String apartmentPostId = request.getParameter("post_id");
-        Apartment_Post post = apd.getApartment_Post((apartmentPostId == null || apartmentPostId.isEmpty())?0:Integer.parseInt(apartmentPostId));
+        Apartment_Post post = apd.getApartment_Post((apartmentPostId == null || apartmentPostId.isEmpty()) ? 0 : Integer.parseInt(apartmentPostId));
         List<Apartment> apartments_list = ad.getApartmentList(0);
-        List<Payment_method> payment_methods_list  = ad.getPayment_method_list();
+        List<Payment_method> payment_methods_list = ad.getPayment_method_list();
+
+        Date sqlDate = post.getPost_start();
+
+        request.setAttribute("post_start", sqlDate);
         request.setAttribute("post", post);
         request.setAttribute("payment_methods_list", payment_methods_list);
         request.setAttribute("apartmentList", apartments_list);
@@ -90,7 +98,50 @@ public class UpdateApartmentPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ApartmentDao apartmentDao = new ApartmentDao();
+        ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
+        UserDao userDao = new UserDao();
+
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String apartment_id = request.getParameter("apartment");
+        String payment_id = request.getParameter("payment_method");
+        String post = request.getParameter("post");
+
+        Apartment_Post ap = apartmentPostDao.getApartment_Post((post == null || post.isEmpty()) ? 0 : Integer.parseInt(post));
+        ap.setTitle(title);
+        ap.setDescription(description);
+        Apartment a = apartmentDao.getApartment((apartment_id == null) ? 0 : Integer.parseInt(apartment_id));
+        ap.setApartment_id(a);
+        Payment_method pm = apartmentDao.getPayment_method((payment_id == null) ? 0 : Integer.parseInt(payment_id));
+        ap.setPayment_id(pm);
+        User user = userDao.getUser(a.getLandLord_id().getId());
+        ap.setLandlord_id(user);
+        Apartment_image ai = apartmentDao.get_First_Apartment_Image(a.getId());
+        if (ai != null) {
+            ap.setFirst_image(ai.getImage());
+        }
+        ap.setCity(a.getCity());
+        ap.setDistrict(a.getDistrict());
+        ap.setCommune(a.getCommune());
+        ap.setArea(a.getArea());
+        ap.setPrice(a.getPrice());
+        ap.setNumber_of_bedroom(a.getNumber_of_bedroom());
+        ap.setApartment_type(a.getType_id());
+        ap.setApartment_name(a.getName());
+        List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
+        ap.setTotal_image(imageList.size());
+        ap.setPost_status(ap.getPost_status());
+
+        Date sqlDate = ap.getPost_start();
+        LocalDate ldate = sqlDate.toLocalDate();
+
+        ldate = ldate.plusWeeks(pm.getWeek());
+        Date post_end = Date.valueOf(ldate);
+        ap.setPost_end(post_end);
+        apartmentPostDao.updateApartmentPost(ap, ap.getId());
+        response.sendRedirect("ApartmentPostForLandlord");
+
     }
 
     /**

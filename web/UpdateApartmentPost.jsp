@@ -42,14 +42,13 @@
         <div class="container">
             <br>
             <div class="row">
-                <form action="AddApartmentPost" method="post" style="background-color:antiquewhite;">
+                <form action="UpdateApartmentPost" method="post" style="background-color:antiquewhite;">
                     <br><br>
                     <div class="col-md-12">
                         <div class="input-group flex-nowrap">
-                            <select name="apartment" class="form-select" aria-label="Default select example">
-                                <option  selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
+                            <select name="apartment" class="form-select" aria-label="Default select example">       
                                 <c:forEach items="${requestScope.apartmentList}" var="ap">
-                                    <option value="${ap.id}">${ap.name}</option>
+                                    <option <c:if test="${post.apartment_id.id == ap.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${ap.id}">${ap.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -58,7 +57,7 @@
                     </div>
                     <br><br>
                     <div class="col-md-12">
-                        <input required="" name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
+                        <input required="" name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết" value="${post.title}"
                                aria-label="Username" aria-describedby="addon-wrapping">
                     </div>
                     <br><br>
@@ -73,7 +72,7 @@
 
 
                         <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết   " id="floatingTextarea2"  cols="300" rows="10">
-                                <br><br><br><br>
+                                ${post.description}
                         </textarea>
 
                         <script>
@@ -89,20 +88,19 @@
                     <br>
                     <div class="col-md-4">
                         <select name="payment_method" class="form-select" aria-label="Default select example">
-                            <option selected disabled>Chọn gói đăng tin</option>
-                            <c:forEach items="${requestScope.payment_methodsList}" var="pm">
-                                <option value="${pm.id}">${pm.name}</option>
+                            <c:forEach items="${requestScope.payment_methods_list}" var="pm">
+                                <option <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
                             </c:forEach>
                         </select>
                     </div>
                     <div class="col-md-4">
-
+                        <input type="text" hidden="" value="${post.id}" name="post">
                     </div>
                     <div class="col-md-12 d-flex justify-content-center">
-                        <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
-                        <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
+                        <input type="submit" name="submit" value="Cập Nhật"class="btn btn-primary btn-lg">
                     </div>
                     <br><br>
+                    
                 </form>
             </div>
         </div>

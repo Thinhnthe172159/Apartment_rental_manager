@@ -100,6 +100,7 @@ public class ApartmentPostDao extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
                 ap.setTitle(rs.getString("title"));
                 ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
@@ -159,6 +160,7 @@ public class ApartmentPostDao extends DBContext {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
                 ap.setTitle(rs.getString("title"));
                 ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
@@ -410,6 +412,19 @@ public class ApartmentPostDao extends DBContext {
             st.executeUpdate();
         } catch (SQLException e) {
 
+        }
+    }
+
+    //delete post
+    public void deleteApartmentPost(int id) {
+        String sql = "DELETE FROM [dbo].[Apartment_Posts]\n"
+                + "      WHERE [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 

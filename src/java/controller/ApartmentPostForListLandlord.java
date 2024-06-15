@@ -24,7 +24,7 @@ import model.Apartment_type;
  * @author thinh
  */
 @WebServlet(name="ApartmentPostForLandlord", urlPatterns={"/ApartmentPostForLandlord"})
-public class ApartmentPostForLandlord extends HttpServlet {
+public class ApartmentPostForListLandlord extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -142,7 +142,10 @@ public class ApartmentPostForLandlord extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        ApartmentPostDao  apd = new ApartmentPostDao();
+        String delete_id = request.getParameter("delete_id");
+        apd.deleteApartmentPost((delete_id == null || delete_id.isEmpty())?0:Integer.parseInt(delete_id));
+        response.sendRedirect("ApartmentPostForLandlord");
     }
 
     /** 
