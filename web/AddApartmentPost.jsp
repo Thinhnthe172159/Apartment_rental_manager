@@ -88,12 +88,13 @@
                     <br>
                     <div class="col-md-12 row">  
                         <div class="col-md-3">
-                            <select required=""  name="payment_method" class="form-select" aria-label="Default select example">
-                                <option  value="">Chọn gói đăng tin</option>
+                            <select required=""  name="payment_method" class="form-select" aria-label="Default select example" id="payment_method_select">
+                                <option value="">Chọn gói đăng tin</option>
                                 <c:forEach items="${requestScope.payment_methodsList}" var="pm">
-                                    <option value="${pm.id}">${pm.name}</option>
+                                    <option value="${pm.id}" data-description="${pm.description}" data-price="${pm.price}">${pm.name}</option>
                                 </c:forEach>
                             </select>
+
                         </div>
                         <div class="col-md-3">
                             <select required="" name="weak" class="form-select" aria-label="Default select example">
@@ -114,6 +115,15 @@
                             <input  name="Post_end" type="date" class="form-control" placeholder=""
                                     aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
+                        <br><br>
+                        <div class="col-md-4 form-select" style="font-size: 20px;padding-left;box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;">
+                            Quý khách nên chọn đăng tin VIP để có hiệu quả hơn.<br>
+                            VD: Tin HDY Diamond có lượt xem trung bình cao hơn 20 lần so với tin thường.<br>
+                            Mô tả gói:
+                            <p style="font-size: 20px;" id="package_description"></p>
+                            <p style="font-size: 20px;" id="total_price"></p>
+                        </div>
+
                     </div>
                     <br><br><br><br><br>
                     <div class="col-md-12 d-flex justify-content-center">
@@ -128,14 +138,14 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var today = new Date().toISOString().split('T')[0];
-
                 var postStartInput = document.querySelector('input[name="Post_start"]');
                 var postEndInput = document.querySelector('input[name="Post_end"]');
                 var weakSelect = document.querySelector('select[name="weak"]');
-
+                var paymentMethodSelect = document.querySelector('#payment_method_select');
+                var packageDescription = document.getElementById('package_description');
+                var totalPrice = document.getElementById('total_price');
 
                 postStartInput.value = today;
-
 
                 function calculatePostEnd() {
                     var startDate = new Date(postStartInput.value);
@@ -150,13 +160,45 @@
                     }
                 }
 
+                function updatePackageDetails() {
+                    var selectedOption = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
+                    var description = selectedOption.getAttribute('data-description');
+                    var pricePerWeek = parseFloat(selectedOption.getAttribute('data-price'));
+                    var selectedWeeks = parseInt(weakSelect.value);
+                    var packageId = selectedOption.value;
+
+                    // Update description color based on packageId
+                    switch (packageId) {
+                        case "1":
+                            packageDescription.style.color = ""; // default color
+                            break;
+                        case "2":
+                            packageDescription.style.color = "blue";
+                            break;
+                        case "3":
+                            packageDescription.style.color = "yellowgreen";
+                            break;
+                        case "4":
+                            packageDescription.style.color = "red";
+                            break;
+                        default:
+                            packageDescription.style.color = ""; // default color
+                            break;
+                    }
+
+                    packageDescription.textContent = description ? "Mô tả: " + description : "";
+                    if (!isNaN(pricePerWeek) && !isNaN(selectedWeeks)) {
+                        totalPrice.textContent = "Tổng giá: " + (pricePerWeek * selectedWeeks).toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                    } else {
+                        totalPrice.textContent = "";
+                    }
+                }
 
                 calculatePostEnd();
-
+                updatePackageDetails();
 
                 postStartInput.addEventListener('change', function () {
                     var selectedDate = new Date(postStartInput.value);
-
 
                     if (selectedDate < new Date(today)) {
                         postStartInput.value = today;
@@ -166,13 +208,18 @@
                     calculatePostEnd();
                 });
 
-
                 weakSelect.addEventListener('change', function () {
                     calculatePostEnd();
+                    updatePackageDetails();
                 });
 
+                paymentMethodSelect.addEventListener('change', function () {
+                    updatePackageDetails();
+                });
             });
         </script>
+
+
 
 
     </body>
