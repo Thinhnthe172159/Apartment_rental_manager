@@ -75,8 +75,8 @@ public class UpdateApartmentPost extends HttpServlet {
         List<Payment_method> payment_methods_list  = ad.getPayment_method_list();
         request.setAttribute("post", post);
         request.setAttribute("payment_methods_list", payment_methods_list);
-        request.setAttribute("apartments_list", apartments_list);
-        request.getRequestDispatcher("UpdatePost.jsp").forward(request, response);
+        request.setAttribute("apartmentList", apartments_list);
+        request.getRequestDispatcher("UpdateApartmentPost.jsp").forward(request, response);
     }
 
     /**

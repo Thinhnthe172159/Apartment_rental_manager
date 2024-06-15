@@ -828,8 +828,10 @@ public class ApartmentDao extends DBContext {
 
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
-        Apartment_image a = apartmentDao.getApartmentImage(172);
-        System.out.println(a.getImage());
+        Apartment_image a = apartmentDao.get_First_Apartment_Image(51);
+        Apartment_image b = apartmentDao.get_First_Apartment_Image(51);
+        System.out.println(a);
+        System.out.println(b);
     }
 
 }
