@@ -25,8 +25,8 @@
 
     <body>
         <jsp:include page="Navbar.jsp"/>
-                <br><br><br><br><br><br>
-                <div class="page-heading header-text">
+        <br><br><br><br><br><br>
+        <div class="page-heading header-text">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -45,8 +45,8 @@
                     <br><br>
                     <div class="col-md-12">
                         <div class="input-group flex-nowrap">
-                            <select name="apartment" class="form-select" aria-label="Default select example">
-                                <option  selected disabled>Lựa chọn căn hộ mà bạn muốn cho thuê</option>
+                            <select required name="apartment" class="form-select" aria-label="Default select example">
+                                <option value="">Lựa chọn căn hộ mà bạn muốn cho thuê</option>
                                 <c:forEach items="${requestScope.apartmentList}" var="ap">
                                     <option value="${ap.id}">${ap.name}</option>
                                 </c:forEach>
@@ -64,39 +64,58 @@
                     <style>
                         #editor {
                             width: 100%;
-                            min-height: 400px; 
+                            min-height: 400px;
                         }
 
                     </style>
                     <div class="col-md-12">
-                        
-                           
+
+
                         <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết   " id="floatingTextarea2"  cols="300" rows="10">
                                 <br><br><br><br>
                         </textarea>
-                            
-                            <script>
-                                ClassicEditor
-                                        .create(document.querySelector('#editor'))
-                                        .catch(error => {
-                                            console.error(error);
-                                        });
-                            </script>
-                        
-                    </div>
-                    <br>
-                    <br>
-                    <div class="col-md-4">
-                        <select name="payment_method" class="form-select" aria-label="Default select example">
-                            <option selected disabled>Chọn gói đăng tin</option>
-                            <c:forEach items="${requestScope.payment_methodsList}" var="pm">
-                                <option value="${pm.id}">${pm.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
+
+                        <script>
+                            ClassicEditor
+                                    .create(document.querySelector('#editor'))
+                                    .catch(error => {
+                                        console.error(error);
+                                    });
+                        </script>
 
                     </div>
+                    <br>
+                    <br>
+                    <div class="col-md-12 row">  
+                        <div class="col-md-3">
+                            <select required=""  name="payment_method" class="form-select" aria-label="Default select example">
+                                <option  value="">Chọn gói đăng tin</option>
+                                <c:forEach items="${requestScope.payment_methodsList}" var="pm">
+                                    <option value="${pm.id}">${pm.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select required="" name="weak" class="form-select" aria-label="Default select example">
+                                <option value="">Chọn thời hạn bài đăng</option>
+                                <option value="1">Thời hạn 1 tuần</option>
+                                <option value="2">Thời hạn 2 tuần</option>
+                                <option value="3">Thời hạn 3 tuần</option>
+                                <option value="4">Thời hạn 4 tuần</option>
+                                <option value="5">Thời hạn 5 tuần</option>
+                                <option value="6">Thời hạn 6 tuần</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input  name="Post_start" type="date" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="col-md-3">
+                            <input  name="Post_end" type="date" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <br><br><br><br><br>
                     <div class="col-md-12 d-flex justify-content-center">
                         <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
                         <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
@@ -106,6 +125,56 @@
             </div>
         </div>
         <jsp:include page="Footer.jsp"/>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var today = new Date().toISOString().split('T')[0];
+
+                var postStartInput = document.querySelector('input[name="Post_start"]');
+                var postEndInput = document.querySelector('input[name="Post_end"]');
+                var weakSelect = document.querySelector('select[name="weak"]');
+
+
+                postStartInput.value = today;
+
+
+                function calculatePostEnd() {
+                    var startDate = new Date(postStartInput.value);
+                    var selectedWeeks = parseInt(weakSelect.value);
+
+                    if (!isNaN(selectedWeeks) && selectedWeeks > 0) {
+                        var endDate = new Date(startDate.getTime());
+                        endDate.setDate(endDate.getDate() + selectedWeeks * 7);
+                        postEndInput.value = endDate.toISOString().split('T')[0];
+                    } else {
+                        postEndInput.value = "";
+                    }
+                }
+
+
+                calculatePostEnd();
+
+
+                postStartInput.addEventListener('change', function () {
+                    var selectedDate = new Date(postStartInput.value);
+
+
+                    if (selectedDate < new Date(today)) {
+                        postStartInput.value = today;
+                        alert("Ngày bắt đầu không thể là ngày trong quá khứ. Đã đặt lại ngày bắt đầu là hôm nay.");
+                    }
+
+                    calculatePostEnd();
+                });
+
+
+                weakSelect.addEventListener('change', function () {
+                    calculatePostEnd();
+                });
+
+            });
+        </script>
+
+
     </body>
 
 </html>

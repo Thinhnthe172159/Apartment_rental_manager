@@ -72,7 +72,7 @@
 
 
                         <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết   " id="floatingTextarea2"  cols="300" rows="10">
-                                ${post.description}
+                            ${post.description}
                         </textarea>
 
                         <script>
@@ -86,25 +86,117 @@
                     </div>
                     <br>
                     <br>
-                    <div class="col-md-4">
-                        <select name="payment_method" class="form-select" aria-label="Default select example">
-                            <c:forEach items="${requestScope.payment_methods_list}" var="pm">
-                                <option <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
-                            </c:forEach>
-                        </select>
+                    <div class="col-md-12 row">  
+                        <div class="col-md-3">
+                            <select required="" id="paymentMethod" name="payment_method" class="form-select" aria-label="Default select example">
+                                <option  value="">Chọn gói đăng tin</option>
+                                <c:forEach items="${requestScope.payment_methods_list}" var="pm">
+                                    <option <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="weekSelect" name="weak" class="form-select" aria-label="Default select example">
+                                <option value="0">Không thay đổi thời hạn</option>
+                                <option value="1">Thời hạn 1 tuần</option>
+                                <option value="2">Thời hạn 2 tuần</option>
+                                <option value="3">Thời hạn 3 tuần</option>
+                                <option value="4">Thời hạn 4 tuần</option>
+                                <option value="5">Thời hạn 5 tuần</option>
+                                <option value="6">Thời hạn 6 tuần</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input  name="Post_start" type="date" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                        <div class="col-md-3">
+                            <input  name="Post_end" type="date" class="form-control" placeholder=""
+                                    aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
                     </div>
+                    <br><br><br><br>
                     <div class="col-md-4">
                         <input type="text" hidden="" value="${post.id}" name="post">
                     </div>
                     <div class="col-md-12 d-flex justify-content-center">
                         <input type="submit" name="submit" value="Cập Nhật"class="btn btn-primary btn-lg">
+                        <c:if test="${post.post_status == 1}">
+
+                            &nbsp; <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
+
+                        </c:if>
                     </div>
+
                     <br><br>
-                    
+
                 </form>
             </div>
         </div>
         <jsp:include page="Footer.jsp"/>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var today = new Date().toISOString().split('T')[0];
+
+                var postStartInput = document.querySelector('input[name="Post_start"]');
+                var postEndInput = document.querySelector('input[name="Post_end"]');
+                var weakSelect = document.querySelector('select[name="weak"]');
+                var paymentMethodSelect = document.querySelector('#paymentMethod');
+
+                postStartInput.value = today;
+
+                function calculatePostEnd() {
+                    var startDate = new Date(postStartInput.value);
+                    var selectedWeeks = parseInt(weakSelect.value);
+
+                    if (!isNaN(selectedWeeks) && selectedWeeks > 0) {
+                        var endDate = new Date(startDate.getTime());
+                        endDate.setDate(endDate.getDate() + selectedWeeks * 7);
+                        postEndInput.value = endDate.toISOString().split('T')[0];
+                    } else {
+                        postEndInput.value = "";
+                    }
+                }
+
+                function updateWeekOptions() {
+                    var originalPaymentMethod = "${post.payment_id.id}";
+                    if (paymentMethodSelect.value != originalPaymentMethod) {
+                        if (weakSelect.querySelector('option[value="0"]')) {
+                            weakSelect.querySelector('option[value="0"]').remove();
+                        }
+                    } else {
+                        if (!weakSelect.querySelector('option[value="0"]')) {
+                            var defaultOption = document.createElement('option');
+                            defaultOption.value = "0";
+                            defaultOption.textContent = "Không thay đổi thời hạn";
+                            weakSelect.insertBefore(defaultOption, weakSelect.firstChild);
+                        }
+                    }
+                }
+
+                calculatePostEnd();
+
+                postStartInput.addEventListener('change', function () {
+                    var selectedDate = new Date(postStartInput.value);
+                    if (selectedDate < new Date(today)) {
+                        postStartInput.value = today;
+                        alert("Ngày bắt đầu không thể là ngày trong quá khứ. Đã đặt lại ngày bắt đầu là hôm nay.");
+                    }
+                    calculatePostEnd();
+                });
+
+                weakSelect.addEventListener('change', function () {
+                    calculatePostEnd();
+                });
+
+                paymentMethodSelect.addEventListener('change', function () {
+                    updateWeekOptions();
+                    calculatePostEnd();
+                });
+
+                updateWeekOptions();
+            });
+        </script>
     </body>
 
 </html>

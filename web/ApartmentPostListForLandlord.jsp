@@ -116,17 +116,17 @@
                                                 <div class="d-flex flex-row align-items-center mb-1">
                                                     <h4 class="mb-1 me-1"><fmt:formatNumber value="${apl.price}" pattern="#,###"/> vnd</h4>
                                                 </div>
-                                                <div class="d-flex flex-column mt-4">
+                                                <form class="d-flex flex-column mt-4" id="deleteForm-${apl.id}" action="ApartmentPostForLandlord?delete_id=${apl.id}" method="post">
                                                     <a style="color: white" href="ApartmentDetail?Apartment_id=${apl.apartment_id.id}&apartment_post_id=${apl.id}" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button">Preview</a>
-                                                    <form id="deleteForm-${apl.id}" action="ApartmentPostForLandlord?delete_id=${apl.id}" method="post">
+                                                    
                                                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button" onclick="confirmDeletion('deleteForm-${apl.id}')">
                                                             Remove
                                                         </button>
-                                                    </form>
+                                                    
                                                     <a data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm mt-2" style="color: white;" href="UpdateApartmentPost?post_id=${apl.id}">
                                                         Update
                                                     </a>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
