@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.List;
 import model.Apartment;
@@ -60,7 +61,7 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ApartmentDao apartmentDao = new ApartmentDao();
         List<Apartment> apartmentList = apartmentDao.getApartmentList(0);
         List<Payment_method> payment_methodsList = apartmentDao.getPayment_method_list();
@@ -74,11 +75,20 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       // PrintWriter out = response.getWriter();
+        // PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
         UserDao userDao = new UserDao();
+        User user_Data;
+        if (session.getAttribute("user_Data") != null) {
+            //land lord
+            user_Data = (User) session.getAttribute("user_Data");
+            
+        }
         
+        
+
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String apartment_id = request.getParameter("apartment");
@@ -116,7 +126,7 @@ public class AddApartmentPost extends HttpServlet {
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(2);
             Date PostStart = Date.valueOf(postStart);
-            Date PostEnd  =Date.valueOf(postEnd);
+            Date PostEnd = Date.valueOf(postEnd);
             ap.setPost_start(PostStart);
             ap.setWeek(week);
             ap.setPaid_for_post(pm.getPrice() * week);

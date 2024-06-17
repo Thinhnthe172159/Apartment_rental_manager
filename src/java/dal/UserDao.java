@@ -299,6 +299,22 @@ public class UserDao extends DBContext {
         return user_List;
     }
 
+    // nạp vip
+    public void UserMoneyChange(User u) {
+        String sql = "UPDATE [dbo].[User]\n"
+                + "   SET \n"
+                + "      [money] = ?\n"
+                + " WHERE [id] = ?";
+        try {
+            pstm = cnn.prepareStatement(sql);
+            pstm.setDouble(1, u.getMoney());
+            pstm.setInt(2, u.getId());
+            pstm.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
     public static void main(String[] args) {
         UserDao ud = new UserDao();
         RoleDao rd = new RoleDao();
