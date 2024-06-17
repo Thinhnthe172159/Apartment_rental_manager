@@ -51,6 +51,16 @@ public class User {
         this.money = money;
     }
 
+    public User(int id, String email, String first_name, String last_name, Date dob, double money) {
+        this.id = id;
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.dob = dob;
+        this.money = money;
+    }
+    
+
     public int getId() {
         return id;
     }
