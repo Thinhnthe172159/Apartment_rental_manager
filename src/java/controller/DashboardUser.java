@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import model.User;
 
 /**
@@ -29,8 +30,10 @@ public class DashboardUser extends HttpServlet {
         if (session.getAttribute("user_ID") != null) {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
+            ArrayList<User> user_List = user_DAO.getUserList();
 
             request.setAttribute("user_Data", user_Data);
+            request.setAttribute("user_List", user_List);
         }
 
         request.getRequestDispatcher("DashboardUser.jsp").forward(request, response);
