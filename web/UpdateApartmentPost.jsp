@@ -1,9 +1,3 @@
-<%-- 
-    Document   : AddApartmentPost
-    Created on : May 27, 2024, 12:38:22 AM
-    Author     : thinh
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,7 +14,6 @@
         crossorigin="anonymous"></script>
         <title>Update Apartment Post</title>
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
     </head>
 
     <body>
@@ -66,15 +59,11 @@
                             width: 100%;
                             min-height: 400px;
                         }
-
                     </style>
                     <div class="col-md-12">
-
-
-                        <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết   " id="floatingTextarea2"  cols="300" rows="10">
+                        <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết" id="floatingTextarea2" cols="300" rows="10">
                             ${post.description}
                         </textarea>
-
                         <script>
                             ClassicEditor
                                     .create(document.querySelector('#editor'))
@@ -82,16 +71,15 @@
                                         console.error(error);
                                     });
                         </script>
-
                     </div>
                     <br>
                     <br>
                     <div class="col-md-12 row">  
                         <div class="col-md-3">
                             <select required="" id="paymentMethod" name="payment_method" class="form-select" aria-label="Default select example">
-                                <option  value="">Chọn gói đăng tin</option>
+                                <option value="">Chọn gói đăng tin</option>
                                 <c:forEach items="${requestScope.payment_methods_list}" var="pm">
-                                    <option <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
+                                    <option data-description="${pm.description}" data-price="${pm.price}" <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -108,12 +96,21 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input  required="" name="Post_start" type="date" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
+                            <input required="" name="Post_start" type="date" class="form-control" placeholder=""
+                                   aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
                         <div class="col-md-3">
-                            <input  name="Post_end" type="date" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
+                            <input name="Post_end" type="date" class="form-control" placeholder=""
+                                   aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                        <div id="paymentDescription" class="alert alert-info" style="background: white" role="alert">
+                            Chọn gói bài đăng để xem mô tả.
+                        </div>
+                        <div style="background: white" id="totalPrice" class="alert alert-warning" role="alert">
+                            Tổng tiền: 0
                         </div>
                     </div>
                     <br><br><br><br>
@@ -121,16 +118,12 @@
                         <input type="text" hidden="" value="${post.id}" name="post">
                     </div>
                     <div class="col-md-12 d-flex justify-content-center">
-                        <input type="submit" name="submit" value="Cập Nhật"class="btn btn-primary btn-lg">
+                        <input type="submit" name="submit" value="Cập Nhật" class="btn btn-primary btn-lg">
                         <c:if test="${post.post_status == 1}">
-
-                            &nbsp; <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
-
+                            &nbsp; <input type="submit" name="submit" value="Đăng Bài" class="btn btn-primary btn-lg">
                         </c:if>
                     </div>
-
                     <br><br>
-
                 </form>
             </div>
         </div>
@@ -138,11 +131,12 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var today = new Date().toISOString().split('T')[0];
-
                 var postStartInput = document.querySelector('input[name="Post_start"]');
                 var postEndInput = document.querySelector('input[name="Post_end"]');
                 var weakSelect = document.querySelector('select[name="week"]');
                 var paymentMethodSelect = document.querySelector('#paymentMethod');
+                var paymentDescriptionDiv = document.getElementById('paymentDescription');
+                var totalPriceDiv = document.getElementById('totalPrice');
 
                 postStartInput.value = today;
 
@@ -175,6 +169,41 @@
                     }
                 }
 
+                function updatePaymentDescription() {
+                    var selectedOption = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
+                    var description = selectedOption.getAttribute('data-description');
+                    var packageId = selectedOption.value;
+
+
+                    switch (packageId) {
+                        case "1":
+                            paymentDescriptionDiv.style.color = ""; // default color
+                            break;
+                        case "2":
+                            paymentDescriptionDiv.style.color = "blue";
+                            break;
+                        case "3":
+                            paymentDescriptionDiv.style.color = "yellowgreen";
+                            break;
+                        case "4":
+                            paymentDescriptionDiv.style.color = "red";
+                            break;
+                        default:
+                            paymentDescriptionDiv.style.color = ""; // default color
+                            break;
+                    }
+                    
+                    paymentDescriptionDiv.textContent = description ? description : "Chọn gói bài đăng để xem mô tả.";
+                }
+
+                function updateTotalPrice() {
+                    var selectedOption = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
+                    var price = parseFloat(selectedOption.getAttribute('data-price')) || 0;
+                    var selectedWeeks = parseInt(weakSelect.value) || 0;
+                    var totalPrice = price * selectedWeeks;
+                    totalPriceDiv.textContent = "Tổng tiền: " + totalPrice.toLocaleString('vi-VN') + " VND";
+                }
+
                 calculatePostEnd();
 
                 postStartInput.addEventListener('change', function () {
@@ -188,16 +217,20 @@
 
                 weakSelect.addEventListener('change', function () {
                     calculatePostEnd();
+                    updateTotalPrice();
                 });
 
                 paymentMethodSelect.addEventListener('change', function () {
                     updateWeekOptions();
                     calculatePostEnd();
+                    updatePaymentDescription();
+                    updateTotalPrice();
                 });
 
                 updateWeekOptions();
+                updatePaymentDescription();
+                updateTotalPrice();
             });
         </script>
     </body>
-
 </html>
