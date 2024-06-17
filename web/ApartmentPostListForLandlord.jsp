@@ -68,7 +68,15 @@
 
 
                 <div class="container py-5">
+                    <c:if test="${page_index == 1}">
+                        <c:set var="indexPage" value="0"/>
+                    </c:if>
+                    <c:if test="${page_index > 1}">
+                        <c:set var="indexPage" value="${(page_index-1)*6}"/>
+                    </c:if>
+                    
                     <c:forEach items="${requestScope.apartmentPostList}" var="apl">
+                        <c:set var="indexPage" value="${indexPage+1}"/>
                         <div class="row justify-content-center mb-4">
                             <div class="">
                                 <div class="card shadow-0 border rounded-3">
@@ -76,7 +84,7 @@
                                         <div class="row">
                                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                                                 <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                                    <img height="200" width="300" style="object-fit: cover;" src="uploads/${apl.first_image}" class="w-100" />
+                                                    ${indexPage}<img height="200" width="300" style="object-fit: cover;" src="uploads/${apl.first_image}" class="w-100" />
                                                     <a href="#!">
                                                         <div class="hover-overlay">
                                                             <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
