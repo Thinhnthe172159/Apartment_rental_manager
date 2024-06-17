@@ -256,7 +256,13 @@
                                                 <div class="table-responsive px-3">
                                                     <table class="table table-striped align-middle table-nowrap">
                                                         <tbody>
-                                                            <c:set var="index" value="0" />
+                                                            <c:if test="${pageIndex == 1}">
+                                                                <c:set var="index" value="0" />
+                                                            </c:if>
+                                                            <c:if test="${pageIndex > 1}">
+                                                                <c:set var="index" value="${(pageIndex-1)*6}" />
+                                                            </c:if>
+                                                            
                                                             <c:forEach items="${requestScope.apartmentList}" var="ap">
                                                                 <c:set var="index" value="${index + 1}" />
                                                                 <tr>
