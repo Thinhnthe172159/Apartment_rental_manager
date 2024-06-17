@@ -60,6 +60,7 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         ApartmentDao apartmentDao = new ApartmentDao();
         List<Apartment> apartmentList = apartmentDao.getApartmentList(0);
         List<Payment_method> payment_methodsList = apartmentDao.getPayment_method_list();
@@ -73,17 +74,21 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       // PrintWriter out = response.getWriter();
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
         UserDao userDao = new UserDao();
-
+        
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String apartment_id = request.getParameter("apartment");
         String payment_id = request.getParameter("payment_method");
         String submit = request.getParameter("submit");
-        String week_raw  = request.getParameter("weak");
-        int week  = (week_raw == null || week_raw.isEmpty())?0:Integer.parseInt(week_raw);
+        String week_raw = request.getParameter("week");
+        String postStart = request.getParameter("Post_start");
+        String postEnd = request.getParameter("Post_end");
+
+        int week = (week_raw == null || week_raw.isEmpty()) ? 0 : Integer.parseInt(week_raw);
 
         Apartment_Post ap = new Apartment_Post();
         ap.setTitle(title);
@@ -110,15 +115,13 @@ public class AddApartmentPost extends HttpServlet {
         ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
             ap.setPost_status(2);
-            LocalDate currentDate = LocalDate.now();
-            Date sqlDate = Date.valueOf(currentDate);
-            ap.setPost_start(sqlDate);
+            Date PostStart = Date.valueOf(postStart);
+            Date PostEnd  =Date.valueOf(postEnd);
+            ap.setPost_start(PostStart);
             ap.setWeek(week);
-            ap.setPaid_for_post(pm.getPrice()*week);
-            currentDate = currentDate.plusWeeks(week);
-            Date sqlDate1 = Date.valueOf(currentDate);
-            ap.setPost_end(sqlDate1);
-        }else{
+            ap.setPaid_for_post(pm.getPrice() * week);
+            ap.setPost_end(PostEnd);
+        } else {
             ap.setPost_status(1);
         }
         apartmentPostDao.addApartmentPost(ap);

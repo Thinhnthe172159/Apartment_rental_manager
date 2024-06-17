@@ -85,7 +85,18 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-xl-6">
-                                                <h5>${apl.apartment_type.name}</h5>
+                                                <h5 class="col-md-4">${apl.apartment_type.name} | <h5  class="col-md-3 justify-content-center" style=" color:white;border-radius: 15px; <c:if test="${apl.payment_id.id == 1}" >
+                                                                                     background: black;
+                                                        </c:if>
+                                                        <c:if test="${apl.payment_id.id == 2}" >
+                                                            background: blue;
+                                                        </c:if>
+                                                        <c:if test="${apl.payment_id.id == 3}" >
+                                                            background: #99cc00;
+                                                        </c:if>
+                                                        <c:if test="${apl.payment_id.id == 4}" >
+                                                            background: red;
+                                                        </c:if>">&nbsp;&nbsp;&nbsp;Vip ${apl.payment_id.name}</h5></h5>
                                                 <div class="d-flex flex-row">
                                                     <span>Diện tích: ${apl.area}m2</span>&nbsp;&nbsp;
                                                     <span style="background: blueviolet; color: white; border-radius: 15px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
@@ -111,6 +122,10 @@
                                                 <h3 style="font-size: 20px;" class="text-truncate mb-4 mb-md-0">
                                                     ${apl.title}
                                                 </h3>
+                                                <br>
+                                                <h6>
+                                                   start at: ${apl.post_start}/ end: ${apl.post_end}/ limitation: ${apl.week} week/ paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
+                                                </h6>
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                                                 <div class="d-flex flex-row align-items-center mb-1">
@@ -118,11 +133,11 @@
                                                 </div>
                                                 <form class="d-flex flex-column mt-4" id="deleteForm-${apl.id}" action="ApartmentPostForLandlord?delete_id=${apl.id}" method="post">
                                                     <a style="color: white" href="ApartmentDetail?Apartment_id=${apl.apartment_id.id}&apartment_post_id=${apl.id}" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button">Preview</a>
-                                                    
-                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button" onclick="confirmDeletion('deleteForm-${apl.id}')">
-                                                            Remove
-                                                        </button>
-                                                    
+
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button" onclick="confirmDeletion('deleteForm-${apl.id}')">
+                                                        Remove
+                                                    </button>
+
                                                     <a data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm mt-2" style="color: white;" href="UpdateApartmentPost?post_id=${apl.id}">
                                                         Update
                                                     </a>
@@ -269,56 +284,56 @@
                         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
                         <script>
-                                                            $(document).ready(function () {
-                                                                var $slider = $("#ArearangeSlider");
-                                                                var $minInput = $("#areaUp");
-                                                                var $maxInput = $("#areaDown");
+                                                        $(document).ready(function () {
+                                                            var $slider = $("#ArearangeSlider");
+                                                            var $minInput = $("#areaUp");
+                                                            var $maxInput = $("#areaDown");
 
-                                                                $slider.slider({
-                                                                    range: true,
-                                                                    min: 0,
-                                                                    max: 500,
-                                                                    values: [0, 500],
-                                                                    slide: function (event, ui) {
-                                                                        $minInput.val(ui.values[0]);
-                                                                        $maxInput.val(ui.values[1]);
-                                                                    }
-                                                                });
+                                                            $slider.slider({
+                                                                range: true,
+                                                                min: 0,
+                                                                max: 500,
+                                                                values: [0, 500],
+                                                                slide: function (event, ui) {
+                                                                    $minInput.val(ui.values[0]);
+                                                                    $maxInput.val(ui.values[1]);
+                                                                }
+                                                            });
 
-                                                                $minInput.val($slider.slider("values", 0));
-                                                                $maxInput.val($slider.slider("values", 1));
+                                                            $minInput.val($slider.slider("values", 0));
+                                                            $maxInput.val($slider.slider("values", 1));
 
-                                                                function updateSlider() {
-                                                                    var min = parseInt($minInput.val(), 10);
-                                                                    var max = parseInt($maxInput.val(), 10);
+                                                            function updateSlider() {
+                                                                var min = parseInt($minInput.val(), 10);
+                                                                var max = parseInt($maxInput.val(), 10);
 
-                                                                    if (min > max) {
-                                                                        min = max;
-                                                                        $minInput.val(min);
-                                                                    }
-                                                                    if (max < min) {
-                                                                        max = min;
-                                                                        $maxInput.val(max);
-                                                                    }
-
-                                                                    $slider.slider("values", 0, min);
-                                                                    $slider.slider("values", 1, max);
+                                                                if (min > max) {
+                                                                    min = max;
+                                                                    $minInput.val(min);
+                                                                }
+                                                                if (max < min) {
+                                                                    max = min;
+                                                                    $maxInput.val(max);
                                                                 }
 
-                                                                $minInput.on("input", function () {
-                                                                    clearTimeout(this.delay);
-                                                                    this.delay = setTimeout(function () {
-                                                                        updateSlider();
-                                                                    }.bind(this), 1500);
-                                                                });
+                                                                $slider.slider("values", 0, min);
+                                                                $slider.slider("values", 1, max);
+                                                            }
 
-                                                                $maxInput.on("input", function () {
-                                                                    clearTimeout(this.delay);
-                                                                    this.delay = setTimeout(function () {
-                                                                        updateSlider();
-                                                                    }.bind(this), 1500);
-                                                                });
+                                                            $minInput.on("input", function () {
+                                                                clearTimeout(this.delay);
+                                                                this.delay = setTimeout(function () {
+                                                                    updateSlider();
+                                                                }.bind(this), 1500);
                                                             });
+
+                                                            $maxInput.on("input", function () {
+                                                                clearTimeout(this.delay);
+                                                                this.delay = setTimeout(function () {
+                                                                    updateSlider();
+                                                                }.bind(this), 1500);
+                                                            });
+                                                        });
                         </script>
 
 
@@ -343,56 +358,56 @@
                         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
                         <script>
-                                                            $(document).ready(function () {
-                                                                var $slider = $("#rangeSlider");
-                                                                var $minInput = $("#priceUp");
-                                                                var $maxInput = $("#priceDown");
+                                                        $(document).ready(function () {
+                                                            var $slider = $("#rangeSlider");
+                                                            var $minInput = $("#priceUp");
+                                                            var $maxInput = $("#priceDown");
 
-                                                                $slider.slider({
-                                                                    range: true,
-                                                                    min: 0,
-                                                                    max: 100,
-                                                                    values: [0, 100],
-                                                                    slide: function (event, ui) {
-                                                                        $minInput.val(ui.values[0]);
-                                                                        $maxInput.val(ui.values[1]);
-                                                                    }
-                                                                });
+                                                            $slider.slider({
+                                                                range: true,
+                                                                min: 0,
+                                                                max: 100,
+                                                                values: [0, 100],
+                                                                slide: function (event, ui) {
+                                                                    $minInput.val(ui.values[0]);
+                                                                    $maxInput.val(ui.values[1]);
+                                                                }
+                                                            });
 
-                                                                $minInput.val($slider.slider("values", 0));
-                                                                $maxInput.val($slider.slider("values", 1));
+                                                            $minInput.val($slider.slider("values", 0));
+                                                            $maxInput.val($slider.slider("values", 1));
 
-                                                                function updateSlider() {
-                                                                    var min = parseInt($minInput.val(), 10);
-                                                                    var max = parseInt($maxInput.val(), 10);
+                                                            function updateSlider() {
+                                                                var min = parseInt($minInput.val(), 10);
+                                                                var max = parseInt($maxInput.val(), 10);
 
-                                                                    if (min > max) {
-                                                                        min = max;
-                                                                        $minInput.val(min);
-                                                                    }
-                                                                    if (max < min) {
-                                                                        max = min;
-                                                                        $maxInput.val(max);
-                                                                    }
-
-                                                                    $slider.slider("values", 0, min);
-                                                                    $slider.slider("values", 1, max);
+                                                                if (min > max) {
+                                                                    min = max;
+                                                                    $minInput.val(min);
+                                                                }
+                                                                if (max < min) {
+                                                                    max = min;
+                                                                    $maxInput.val(max);
                                                                 }
 
-                                                                $minInput.on("input", function () {
-                                                                    clearTimeout(this.delay);
-                                                                    this.delay = setTimeout(function () {
-                                                                        updateSlider();
-                                                                    }.bind(this), 1500);
-                                                                });
+                                                                $slider.slider("values", 0, min);
+                                                                $slider.slider("values", 1, max);
+                                                            }
 
-                                                                $maxInput.on("input", function () {
-                                                                    clearTimeout(this.delay);
-                                                                    this.delay = setTimeout(function () {
-                                                                        updateSlider();
-                                                                    }.bind(this), 1500);
-                                                                });
+                                                            $minInput.on("input", function () {
+                                                                clearTimeout(this.delay);
+                                                                this.delay = setTimeout(function () {
+                                                                    updateSlider();
+                                                                }.bind(this), 1500);
                                                             });
+
+                                                            $maxInput.on("input", function () {
+                                                                clearTimeout(this.delay);
+                                                                this.delay = setTimeout(function () {
+                                                                    updateSlider();
+                                                                }.bind(this), 1500);
+                                                            });
+                                                        });
                         </script>
                         <script>
                             function confirmDeletion(formId) {

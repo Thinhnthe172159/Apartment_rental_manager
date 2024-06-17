@@ -96,7 +96,8 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select id="weekSelect" name="weak" class="form-select" aria-label="Default select example">
+                            <select required="" id="weekSelect" name="week" class="form-select" aria-label="Default select example">
+                                <option value="">Lựa chọn thời hạn bài đăng</option>
                                 <option value="0">Không thay đổi thời hạn</option>
                                 <option value="1">Thời hạn 1 tuần</option>
                                 <option value="2">Thời hạn 2 tuần</option>
@@ -107,7 +108,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input  name="Post_start" type="date" class="form-control" placeholder=""
+                            <input  required="" name="Post_start" type="date" class="form-control" placeholder=""
                                     aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
                         <div class="col-md-3">
@@ -140,7 +141,7 @@
 
                 var postStartInput = document.querySelector('input[name="Post_start"]');
                 var postEndInput = document.querySelector('input[name="Post_end"]');
-                var weakSelect = document.querySelector('select[name="weak"]');
+                var weakSelect = document.querySelector('select[name="week"]');
                 var paymentMethodSelect = document.querySelector('#paymentMethod');
 
                 postStartInput.value = today;

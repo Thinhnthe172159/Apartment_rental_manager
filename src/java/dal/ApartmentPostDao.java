@@ -366,6 +366,8 @@ public class ApartmentPostDao extends DBContext {
                 Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
                 ap.setApartment_type(at);
                 ap.setTotal_image(rs.getInt("total_image"));
+                ap.setPaid_for_post(rs.getDouble("paid_for_post"));
+                ap.setWeek(rs.getInt("week"));
                 list.add(ap);
 
             }
