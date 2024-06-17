@@ -43,9 +43,11 @@ public class ApartmentPostDao extends DBContext {
                 + "           ,[apartment_name]\n"
                 + "           ,[price]\n"
                 + "           ,[apartment_type] \n"
-                + "           ,[total_image])\n"
+                + "           ,[total_image]\n"
+                + "           ,[paid_for_post]\n"
+                + "           ,[week])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, ap.getTitle());
@@ -66,13 +68,15 @@ public class ApartmentPostDao extends DBContext {
             st.setDouble(16, ap.getPrice());
             st.setInt(17, ap.getApartment_type().getId());
             st.setInt(18, ap.getTotal_image());
+            st.setDouble(19, ap.getPaid_for_post());
+            st.setInt(20, ap.getWeek());
             st.executeUpdate();
         } catch (SQLException e) {
 
         }
     }
 
-    // get apartment post
+    // get apartment post (lấy hàm này để lấy dữ liệu)
     public Apartment_Post getApartment_Post(int id) {
         String sql = "SELECT [id]\n"
                 + "      ,[title]\n"
@@ -93,6 +97,8 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[price]\n"
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
+                + "      ,[paid_for_post]\n"
+                + "      ,[week]\n"
                 + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -100,6 +106,7 @@ public class ApartmentPostDao extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
                 ap.setTitle(rs.getString("title"));
                 ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
@@ -122,6 +129,8 @@ public class ApartmentPostDao extends DBContext {
                 Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
                 ap.setApartment_type(at);
                 ap.setTotal_image(rs.getInt("total_image"));
+                ap.setPaid_for_post(rs.getDouble("paid_for_post"));
+                ap.setWeek(rs.getInt("week"));
                 return ap;
             }
         } catch (SQLException e) {
@@ -152,13 +161,16 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[price]\n"
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
-                + "  FROM [dbo].[apartment_id] where [id] = ?";
+                + "      ,[paid_for_post]\n"
+                + "      ,[week]\n"
+                + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
                 ap.setTitle(rs.getString("title"));
                 ap.setDescription(rs.getString("description"));
                 ap.setPost_status(rs.getInt("post_status"));
@@ -181,6 +193,8 @@ public class ApartmentPostDao extends DBContext {
                 Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
                 ap.setApartment_type(at);
                 ap.setTotal_image(rs.getInt("total_image"));
+                ap.setPaid_for_post(rs.getDouble("paid_for_post"));
+                ap.setWeek(rs.getInt("week"));
                 list.add(ap);
             }
         } catch (SQLException e) {
@@ -271,9 +285,7 @@ public class ApartmentPostDao extends DBContext {
             int pageNumber,
             int pageSize, int payment_id) {
         List<Apartment_Post> list = new ArrayList<>();
-        String sql = "SELECT [id], [title], [description], [post_status], [post_start], [post_end], [apartment_id], [payment_id], [landlord_id], [first_image], [city], [district], [commune], [area], [number_of_bedroom], [apartment_name], [price], [apartment_type], [total_image] ";
-        sql += "FROM [dbo].[Apartment_Posts] ";
-        sql += "WHERE 1=1 ";
+        String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
 
         if (name != null) {
             sql += "AND [title] LIKE N'%" + name + "%' ";
@@ -385,6 +397,8 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[price] = ?\n"
                 + "      ,[apartment_type] = ?\n"
                 + "      ,[total_image] = ?\n"
+                + "      ,[paid_for_post] = ? \n"
+                + "      ,[week] = ? \n"
                 + " WHERE [id]= ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -406,10 +420,25 @@ public class ApartmentPostDao extends DBContext {
             st.setDouble(16, ap.getPrice());
             st.setInt(17, ap.getApartment_type().getId());
             st.setInt(18, ap.getTotal_image());
-            st.setInt(19, id);
+            st.setDouble(19, ap.getPaid_for_post());
+            st.setInt(20, ap.getWeek());
+            st.setInt(21, id);
             st.executeUpdate();
         } catch (SQLException e) {
 
+        }
+    }
+
+    //delete post
+    public void deleteApartmentPost(int id) {
+        String sql = "DELETE FROM [dbo].[Apartment_Posts]\n"
+                + "      WHERE [id] = ? ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 

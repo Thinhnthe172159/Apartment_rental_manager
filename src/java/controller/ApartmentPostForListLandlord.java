@@ -24,7 +24,7 @@ import model.Apartment_type;
  * @author thinh
  */
 @WebServlet(name="ApartmentPostForLandlord", urlPatterns={"/ApartmentPostForLandlord"})
-public class ApartmentPostForLandlord extends HttpServlet {
+public class ApartmentPostForListLandlord extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -76,6 +76,7 @@ public class ApartmentPostForLandlord extends HttpServlet {
         String areaDown = request.getParameter("areaDown");
         String type_raw = request.getParameter("type");
         String page_index = request.getParameter("page_index");
+        String status_raw = request.getParameter("status");
 
         int Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
         int bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
@@ -85,6 +86,7 @@ public class ApartmentPostForLandlord extends HttpServlet {
         double area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
         double area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
+        int status = (status_raw == null || status_raw.isEmpty())?0:Integer.parseInt(status_raw);
 
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         request.setAttribute("apartment_types_list", apartment_types_list);
@@ -94,7 +96,7 @@ public class ApartmentPostForLandlord extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 1
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, status
         );
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
@@ -108,7 +110,7 @@ public class ApartmentPostForLandlord extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 1, pageIndex, pageSize,0
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, status, pageIndex, pageSize,0
         );
 
         request.setAttribute("pageList", pagelist);
@@ -126,6 +128,7 @@ public class ApartmentPostForLandlord extends HttpServlet {
         request.setAttribute("areaUp", areaUp);
         request.setAttribute("areaDown", areaDown);
         request.setAttribute("type", type_raw);
+        request.setAttribute("status", status);
         request.getRequestDispatcher("ApartmentPostListForLandlord.jsp").forward(request, response);
     } 
 
@@ -139,7 +142,10 @@ public class ApartmentPostForLandlord extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        ApartmentPostDao  apd = new ApartmentPostDao();
+        String delete_id = request.getParameter("delete_id");
+        apd.deleteApartmentPost((delete_id == null || delete_id.isEmpty())?0:Integer.parseInt(delete_id));
+        response.sendRedirect("ApartmentPostForLandlord");
     }
 
     /** 

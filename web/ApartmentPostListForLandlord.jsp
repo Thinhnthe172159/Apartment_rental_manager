@@ -1,3 +1,4 @@
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -75,8 +76,7 @@
                                         <div class="row">
                                             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                                                 <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                                    <img height="200" width="300" style="object-fit: cover;" src="uploads/${apl.first_image}"
-                                                         class="w-100" />
+                                                    <img height="200" width="300" style="object-fit: cover;" src="uploads/${apl.first_image}" class="w-100" />
                                                     <a href="#!">
                                                         <div class="hover-overlay">
                                                             <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -87,11 +87,20 @@
                                             <div class="col-md-6 col-lg-6 col-xl-6">
                                                 <h5>${apl.apartment_type.name}</h5>
                                                 <div class="d-flex flex-row">
-
-                                                    <span>Diện tích: ${apl.area}m2</span>
-                                                </div>
-                                                <div class="mt-1 mb-0 text-muted small">
-                                                    <span>${apl.city}</span>
+                                                    <span>Diện tích: ${apl.area}m2</span>&nbsp;&nbsp;
+                                                    <span style="background: blueviolet; color: white; border-radius: 15px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
+                                                        &nbsp;&nbsp;Trạng Thái:
+                                                        <c:if test="${apl.post_status == 1}">Lưu Nháp</c:if>
+                                                        <c:if test="${apl.post_status == 2}">Chờ Duyệt</c:if>
+                                                        <c:if test="${apl.post_status == 3}">Xuất Bản</c:if>
+                                                        <c:if test="${apl.post_status == 4}">Trả lại</c:if>
+                                                        <c:if test="${apl.post_status == 5}">Hết Hạn</c:if>
+                                                        <c:if test="${apl.post_status == 6}">Đã Thuê</c:if>
+                                                            &nbsp;&nbsp;
+                                                        </span>
+                                                    </div>
+                                                    <div class="mt-1 mb-0 text-muted small">
+                                                        <span>${apl.city}</span>
                                                     <span class="text-primary"> • </span>
                                                     <span>${apl.district}</span>
                                                     <span class="text-primary"> • </span>
@@ -99,28 +108,25 @@
                                                     <span class="text-primary"> • </span>
                                                     <span>${apl.apartment_id.address}<br /></span>
                                                 </div>
-                                                <div class="mb-2 text-muted small">
-                                                 
-                                                </div>
-                                                <h3 style="font-size: 20px; " class="text-truncate mb-4 mb-md-0">
+                                                <h3 style="font-size: 20px;" class="text-truncate mb-4 mb-md-0">
                                                     ${apl.title}
                                                 </h3>
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
                                                 <div class="d-flex flex-row align-items-center mb-1">
-                                                    <h4 class="mb-1 me-1">${apl.price}</h4>
+                                                    <h4 class="mb-1 me-1"><fmt:formatNumber value="${apl.price}" pattern="#,###"/> vnd</h4>
+                                                </div>
+                                                <form class="d-flex flex-column mt-4" id="deleteForm-${apl.id}" action="ApartmentPostForLandlord?delete_id=${apl.id}" method="post">
+                                                    <a style="color: white" href="ApartmentDetail?Apartment_id=${apl.apartment_id.id}&apartment_post_id=${apl.id}" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button">Preview</a>
                                                     
-                                                </div>
-                                                
-                                                <div class="d-flex flex-column mt-4">
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm" type="button"><a style="color: white" href="ApartmentDetail?Apartment_id=${apl.apartment_id.id}&apartment_post_id=${apl.id}">Preview</a></button>
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button">
-                                                        Remove
-                                                    </button>
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary btn-sm mt-2" type="button" onclick="confirmDeletion('deleteForm-${apl.id}')">
+                                                            Remove
+                                                        </button>
+                                                    
+                                                    <a data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm mt-2" style="color: white;" href="UpdateApartmentPost?post_id=${apl.id}">
                                                         Update
-                                                    </button>
-                                                </div>
+                                                    </a>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -134,17 +140,17 @@
                             <ul class="pagination">
                                 <c:if test="${page_index > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}">Prev</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}&status=${status}">Prev</a>
                                     </li>
                                 </c:if>
                                 <c:forEach items="${pageList}" var="i">
                                     <li class="page-item">
-                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
+                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}&status=${status}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
                                     </li>
                                 </c:forEach>
                                 <c:if test="${page_index < pageList.size()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}">Next</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}&status=${status}">Next</a>
                                     </li>
                                 </c:if>
                             </ul>
@@ -183,6 +189,17 @@
                             <select    class="form-select " id="phuong" aria-label="Default select example">
                                 <option value="0">Xã Phường</option>
                                 <hr>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select    class="form-select" name="status"  aria-label="Default select example">
+                                <option value="0">Trạng Thái Bài Đăng</option>
+                                <option value="1">Lưu Nháp</option>
+                                <option value="2">Chờ Duyệt</option>
+                                <option value="3">Xuất Bản</option>
+                                <option value="4">Trả Lại</option>
+                                <option value="5">Hết Hạn</option>
+                                <option value="6">Đã Thuê/(Đã Bán comming soon)</option>
                             </select>
                         </div>
                         <input type="hidden" name="tinh" id="hidden_tinh">
@@ -252,56 +269,56 @@
                         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
                         <script>
-                            $(document).ready(function () {
-                                var $slider = $("#ArearangeSlider");
-                                var $minInput = $("#areaUp");
-                                var $maxInput = $("#areaDown");
+                                                            $(document).ready(function () {
+                                                                var $slider = $("#ArearangeSlider");
+                                                                var $minInput = $("#areaUp");
+                                                                var $maxInput = $("#areaDown");
 
-                                $slider.slider({
-                                    range: true,
-                                    min: 0,
-                                    max: 500,
-                                    values: [0, 500],
-                                    slide: function (event, ui) {
-                                        $minInput.val(ui.values[0]);
-                                        $maxInput.val(ui.values[1]);
-                                    }
-                                });
+                                                                $slider.slider({
+                                                                    range: true,
+                                                                    min: 0,
+                                                                    max: 500,
+                                                                    values: [0, 500],
+                                                                    slide: function (event, ui) {
+                                                                        $minInput.val(ui.values[0]);
+                                                                        $maxInput.val(ui.values[1]);
+                                                                    }
+                                                                });
 
-                                $minInput.val($slider.slider("values", 0));
-                                $maxInput.val($slider.slider("values", 1));
+                                                                $minInput.val($slider.slider("values", 0));
+                                                                $maxInput.val($slider.slider("values", 1));
 
-                                function updateSlider() {
-                                    var min = parseInt($minInput.val(), 10);
-                                    var max = parseInt($maxInput.val(), 10);
+                                                                function updateSlider() {
+                                                                    var min = parseInt($minInput.val(), 10);
+                                                                    var max = parseInt($maxInput.val(), 10);
 
-                                    if (min > max) {
-                                        min = max;
-                                        $minInput.val(min);
-                                    }
-                                    if (max < min) {
-                                        max = min;
-                                        $maxInput.val(max);
-                                    }
+                                                                    if (min > max) {
+                                                                        min = max;
+                                                                        $minInput.val(min);
+                                                                    }
+                                                                    if (max < min) {
+                                                                        max = min;
+                                                                        $maxInput.val(max);
+                                                                    }
 
-                                    $slider.slider("values", 0, min);
-                                    $slider.slider("values", 1, max);
-                                }
+                                                                    $slider.slider("values", 0, min);
+                                                                    $slider.slider("values", 1, max);
+                                                                }
 
-                                $minInput.on("input", function () {
-                                    clearTimeout(this.delay);
-                                    this.delay = setTimeout(function () {
-                                        updateSlider();
-                                    }.bind(this), 1500);
-                                });
+                                                                $minInput.on("input", function () {
+                                                                    clearTimeout(this.delay);
+                                                                    this.delay = setTimeout(function () {
+                                                                        updateSlider();
+                                                                    }.bind(this), 1500);
+                                                                });
 
-                                $maxInput.on("input", function () {
-                                    clearTimeout(this.delay);
-                                    this.delay = setTimeout(function () {
-                                        updateSlider();
-                                    }.bind(this), 1500);
-                                });
-                            });
+                                                                $maxInput.on("input", function () {
+                                                                    clearTimeout(this.delay);
+                                                                    this.delay = setTimeout(function () {
+                                                                        updateSlider();
+                                                                    }.bind(this), 1500);
+                                                                });
+                                                            });
                         </script>
 
 
@@ -326,58 +343,64 @@
                         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
                         <script>
-                            $(document).ready(function () {
-                                var $slider = $("#rangeSlider");
-                                var $minInput = $("#priceUp");
-                                var $maxInput = $("#priceDown");
+                                                            $(document).ready(function () {
+                                                                var $slider = $("#rangeSlider");
+                                                                var $minInput = $("#priceUp");
+                                                                var $maxInput = $("#priceDown");
 
-                                $slider.slider({
-                                    range: true,
-                                    min: 0,
-                                    max: 100,
-                                    values: [0, 100],
-                                    slide: function (event, ui) {
-                                        $minInput.val(ui.values[0]);
-                                        $maxInput.val(ui.values[1]);
-                                    }
-                                });
+                                                                $slider.slider({
+                                                                    range: true,
+                                                                    min: 0,
+                                                                    max: 100,
+                                                                    values: [0, 100],
+                                                                    slide: function (event, ui) {
+                                                                        $minInput.val(ui.values[0]);
+                                                                        $maxInput.val(ui.values[1]);
+                                                                    }
+                                                                });
 
-                                $minInput.val($slider.slider("values", 0));
-                                $maxInput.val($slider.slider("values", 1));
+                                                                $minInput.val($slider.slider("values", 0));
+                                                                $maxInput.val($slider.slider("values", 1));
 
-                                function updateSlider() {
-                                    var min = parseInt($minInput.val(), 10);
-                                    var max = parseInt($maxInput.val(), 10);
+                                                                function updateSlider() {
+                                                                    var min = parseInt($minInput.val(), 10);
+                                                                    var max = parseInt($maxInput.val(), 10);
 
-                                    if (min > max) {
-                                        min = max;
-                                        $minInput.val(min);
-                                    }
-                                    if (max < min) {
-                                        max = min;
-                                        $maxInput.val(max);
-                                    }
+                                                                    if (min > max) {
+                                                                        min = max;
+                                                                        $minInput.val(min);
+                                                                    }
+                                                                    if (max < min) {
+                                                                        max = min;
+                                                                        $maxInput.val(max);
+                                                                    }
 
-                                    $slider.slider("values", 0, min);
-                                    $slider.slider("values", 1, max);
-                                }
+                                                                    $slider.slider("values", 0, min);
+                                                                    $slider.slider("values", 1, max);
+                                                                }
 
-                                $minInput.on("input", function () {
-                                    clearTimeout(this.delay);
-                                    this.delay = setTimeout(function () {
-                                        updateSlider();
-                                    }.bind(this), 1500);
-                                });
+                                                                $minInput.on("input", function () {
+                                                                    clearTimeout(this.delay);
+                                                                    this.delay = setTimeout(function () {
+                                                                        updateSlider();
+                                                                    }.bind(this), 1500);
+                                                                });
 
-                                $maxInput.on("input", function () {
-                                    clearTimeout(this.delay);
-                                    this.delay = setTimeout(function () {
-                                        updateSlider();
-                                    }.bind(this), 1500);
-                                });
-                            });
+                                                                $maxInput.on("input", function () {
+                                                                    clearTimeout(this.delay);
+                                                                    this.delay = setTimeout(function () {
+                                                                        updateSlider();
+                                                                    }.bind(this), 1500);
+                                                                });
+                                                            });
                         </script>
-
+                        <script>
+                            function confirmDeletion(formId) {
+                                if (confirm("Bạn có chắc chắn là muốn xóa bài đăng này không, nếu có vui lòng nhấn ok để thực hiện. Trong trường hợp bài đăng của bạn chưa hết hạn mà bạn vẫn muốn xóa thì bạn sẽ được hoàn tiền vì ví với số tiền tương ứng với các ngày còn lại.")) {
+                                    document.getElementById(formId).submit();
+                                }
+                            }
+                        </script>
 
 
                         <div class="form-group mb-0">
@@ -387,137 +410,34 @@
                 </div>
                 <!-- Advanced search end -->
 
-                <!-- Category posts start -->
-                <div class="sidebar-widget category-posts">
-                    <div class="main-title-4">
-                        <h1>Popular Category</h1>
-                    </div>
-                    <ul class="list-unstyled list-cat">
-                        <li><a href="#">Single Family </a> <span>(45)  </span></li>
-                        <li><a href="#">Apartment  </a> <span>(21)  </span></li>
-                        <li><a href="#">Condo </a> <span>(23)  </span></li>
-                        <li><a href="#">Multi Family </a> <span>(19)  </span></li>
-                        <li><a href="#">Villa </a> <span>(19)  </span></li>
-                        <li><a href="#">Other  </a> <span>(22)  </span></li>
-                    </ul>
-                </div>
-                <!-- Category posts end -->
 
-                <!-- Popular posts start -->
-                <div class="sidebar-widget popular-posts">
-                    <div class="main-title-4">
-                        <h1>Recent Properties</h1>
-                    </div>
-                    <div class="d-flex mb-3 popular-posts-box">
-                        <a class="pr-3" href="properties-details.html">
-                            <img src="img/properties/small-properties-2.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                        </a>
-                        <div class="detail align-self-center">
-                            <h4>
-                                <a href="properties-details.html">Modern Family Home</a>
-                            </h4>
-                            <div class="listing-post-meta">
-                                Sep 18, 2021 | <a href="#">$470,00</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex mb-3 popular-posts-box">
-                        <a class="pr-3" href="properties-details.html">
-                            <img src="img/properties/small-properties-1.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                        </a>
-                        <div class="detail align-self-center">
-                            <h4>
-                                <a href="properties-details.html">Sweet Family Home</a>
-                            </h4>
-                            <div class="listing-post-meta">
-                                Aug 18, 2020 | <a href="#">$485,00</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex popular-posts-box">
-                        <a class="pr-3" href="properties-details.html">
-                            <img src="img/properties/small-properties-3.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                        </a>
-                        <div class="detail align-self-center">
-                            <h4>
-                                <a href="properties-details.html">Beautful Single Home</a>
-                            </h4>
-                            <div class="listing-post-meta">
-                                Aug Feb, 2021 | <a href="#">$850,00</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Popular posts end -->
-
-                <!-- Helping box Start -->
-                <div class="sidebar-widget helping-box clearfix">
-                    <div class="main-title-4">
-                        <h1>Helping Center</h1>
-                    </div>
-                    <div class="helping-center">
-                        <div class="icon"><i class="fa fa-map-marker"></i></div>
-                        <h4>Address</h4>
-                        <p>123 Kathal St. Tampa City,</p>
-                    </div>
-                    <div class="helping-center">
-                        <div class="icon"><i class="fa fa-phone"></i></div>
-                        <h4>Phone</h4>
-                        <p><a href="tel:+55-417-634-7071">+55 417 634 7071</a> </p>
-                    </div>
-                </div>
-                <!-- Helping box end -->
-
-                <!-- Latest reviews start -->
-                <div class="sidebar-widget latest-reviews mb-30">
-                    <div class="main-title-4">
-                        <h1>Latest  Reviews</h1>
-                    </div>
-                    <div class="latest-reviews-box d-flex mb-4">
-                        <a class="pr-3" href="#">
-                            <img src="img/avatar/avatar-1.jpg" alt="avatar" class="flex-shrink-0 me-3">
-                        </a>
-                        <div class="detail">
-                            <h3><a href="#">John Antony</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
-                        </div>
-                    </div>
-                    <div class="latest-reviews-box d-flex">
-                        <a class="pr-3" href="#">
-                            <img src="img/avatar/avatar-2.jpg" alt="avatar" class="flex-shrink-0 me-3">
-                        </a>
-                        <div class="detail">
-                            <h3><a href="#">Karen Paran</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Latest reviews end -->
             </div>
-        </section>  
+
+        </div>
+    </section>  
 
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script  src="js/bootstrap-submenu.js"></script>
-        <script src="js/rangeslider.js"></script>
-        <script src="js/jquery.mb.YTPlayer.js"></script>
-        <script src="js/wow.min.js"></script>
-        <script src="js/bootstrap-select.min.js"></script>
-        <script src="js/jquery.easing.1.3.js"></script>
-        <script src="js/jquery.scrollUp.js"></script>
-        <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet-providers.js"></script>
-        <script src="js/leaflet.markercluster.js"></script>
-        <script src="js/dropzone.js"></script>
-        <script src="js/jquery.filterizr.js"></script>
-        <script src="js/jquery.magnific-popup.min.js"></script>
-        <script src="js/slick.min.js"></script>
-        <script src="js/maps.js"></script>
-        <script src="js/sidebar.js"></script>
-        <script src="js/app.js"></script>
-        <script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script  src="js/bootstrap-submenu.js"></script>
+    <script src="js/rangeslider.js"></script>
+    <script src="js/jquery.mb.YTPlayer.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/bootstrap-select.min.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
+    <script src="js/jquery.scrollUp.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet-providers.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="js/dropzone.js"></script>
+    <script src="js/jquery.filterizr.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/maps.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/app.js"></script>
+    <script>
                             $(document).ready(function () {
                                 // Fetch provinces
                                 $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
@@ -558,14 +478,14 @@
                                     }
                                 });
                             });
-        </script> 
+    </script> 
 
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
-        <!-- Custom javascript -->
-        <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Custom javascript -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
 
-        <br><br>
-        <jsp:include page="Footer.jsp"/>
-    </body>
+    <br><br>
+    <jsp:include page="Footer.jsp"/>
+</body>
 </html>

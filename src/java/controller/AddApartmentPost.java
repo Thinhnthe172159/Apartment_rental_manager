@@ -82,6 +82,8 @@ public class AddApartmentPost extends HttpServlet {
         String apartment_id = request.getParameter("apartment");
         String payment_id = request.getParameter("payment_method");
         String submit = request.getParameter("submit");
+        String week_raw  = request.getParameter("weak");
+        int week  = (week_raw == null || week_raw.isEmpty())?0:Integer.parseInt(week_raw);
 
         Apartment_Post ap = new Apartment_Post();
         ap.setTitle(title);
@@ -107,13 +109,17 @@ public class AddApartmentPost extends HttpServlet {
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
         ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
-            ap.setPost_status(1);
+            ap.setPost_status(2);
             LocalDate currentDate = LocalDate.now();
             Date sqlDate = Date.valueOf(currentDate);
             ap.setPost_start(sqlDate);
-            currentDate = currentDate.plusWeeks(pm.getWeek());
+            ap.setWeek(week);
+            ap.setPaid_for_post(pm.getPrice()*week);
+            currentDate = currentDate.plusWeeks(week);
             Date sqlDate1 = Date.valueOf(currentDate);
             ap.setPost_end(sqlDate1);
+        }else{
+            ap.setPost_status(1);
         }
         apartmentPostDao.addApartmentPost(ap);
         response.sendRedirect("HomePage");

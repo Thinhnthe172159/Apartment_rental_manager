@@ -1,4 +1,4 @@
-<%-- 
+ <%-- 
     Document   : apartmentPostLists
     Created on : Jun 4, 2024, 10:33:18 PM
     Author     : thinh
@@ -62,14 +62,18 @@
     <body>
         <jsp:include page="Navbar.jsp"/>
         <br><br><br><br>
-        <div class="page-heading header-text">
+        <div class="page-heading header-text">  
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="search" method="get" action="ApartmentPostList">
+                        <form class="search row justify-content-center" method="get" action="ApartmentPostList">
                             <i class="fa fa-search"></i>
-                            <input name="name" type="text" class="form-control" placeholder="Find apartment post title">
-                            <button class="btn btn-primary" type="submit" id="submit">Search</button>
+                            <input style="border-radius: 20px;height: 40px;z-index: 1;" name="name" type="text" class="col-md-9" placeholder="Find apartment post title"> 
+                            <button class="btn btn-primary col-md-1" style="border-radius: 20px; z-index: 10" type="submit" id="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg> Search
+                            </button>
                         </form>
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Apartment</a></span>
@@ -78,6 +82,7 @@
                 </div>
             </div>
         </div>
+
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNL8QV6"
                           height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
@@ -134,7 +139,18 @@
                                 <div class="col-lg-5 col-md-5 col-sm-12">
                                     <!-- Property img -->
                                     <div class="property-img">
-                                        <div class="property-tag button alt featured">Vip ${ap.payment_id.name}</div>
+                                        <div class="property-tag button alt featured" style="<c:if test="${ap.payment_id.id == 1}" >
+                                             background: black;
+                                            </c:if>
+                                            <c:if test="${ap.payment_id.id == 2}" >
+                                                background: blue;
+                                            </c:if>
+                                            <c:if test="${ap.payment_id.id == 3}" >
+                                                background: #99cc00;
+                                            </c:if>
+                                            <c:if test="${ap.payment_id.id == 4}" >
+                                                background: red;
+                                            </c:if>">Vip ${ap.payment_id.name}</div>
                                         <div class="property-tag button sale">${ap.apartment_type.name}</div>
                                         <div class="property-price"><fmt:formatNumber value="${ap.price}" pattern="#,###"/>vnd</div>
                                         <img src="uploads/${ap.first_image}" alt="fp-list" class="img-responsive hp-1">
@@ -150,17 +166,18 @@
                                     <div class="info">
                                         <!-- title -->
                                         <h1 class="title">
-                                            <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}">     <c:if test="${ap.payment_id.id == 1}" >
-                                                    <h4 style="">${ap.title}</h4>
+                                            <a href="ApartmentDetail?Apartment_id=${ap.apartment_id.id}&apartment_post_id=${ap.id}">    
+                                                <c:if test="${ap.payment_id.id == 1}" >
+                                                    <h6 style="color: black">${ap.title}</h6>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 2}" >
-                                                    <h4 style="color: blue;font-style: italic">${ap.title}</h4>
+                                                    <h5 style="color: blue;">${ap.title}</h5>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 3}" >
-                                                    <h4 style="color: yellowgreen; font-family: cursive;font-size: large;" >${ap.title.toUpperCase()}</h4>
+                                                    <h4 style="color: #99cc00;font-style: italic;" >${ap.title.toUpperCase()}</h4>
                                                 </c:if>
                                                 <c:if test="${ap.payment_id.id == 4}" >
-                                                    <h4 style="color: red;font-style: italic; font-family: serif">${ap.title.toUpperCase()}</h4>
+                                                    <h3 style="font-style: italic; color: red;">${ap.title.toUpperCase()}</h3>
                                                 </c:if></a>
                                         </h1>
                                         <!-- Property address -->
@@ -178,6 +195,14 @@
                                             <li>
                                                 <i class="flaticon-bed"></i>
                                                 <span>${ap.number_of_bedroom} bedroom</span>
+                                            </li>
+                                            <li>
+                                                <!-- thêm vào danh sách yêu thích -->
+
+                                                <span><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/>
+                                                        </svg>Lưu</a></span>
                                             </li>
 
                                         </ul>
@@ -563,9 +588,9 @@
                         </div>
                         <!-- Latest reviews end -->
                     </div>
-                    
-                    
-                    
+
+
+
                 </div>
             </div>
         </div>

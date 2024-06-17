@@ -18,13 +18,14 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-        <title>Tạo bài đăng căn hộ</title>
+        <title>Update Apartment Post</title>
         <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     </head>
 
     <body>
         <jsp:include page="Navbar.jsp"/>
+        <c:set value="${requestScope.post}" var="post"/>
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
             <div class="container">
@@ -32,7 +33,7 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Apartment</a></span>
-                        <h3>ADD POST</h3>
+                        <h3>UPDATE POST</h3>
                     </div>
                 </div>
             </div>
@@ -41,14 +42,13 @@
         <div class="container">
             <br>
             <div class="row">
-                <form action="AddApartmentPost" method="post" style="background-color:antiquewhite;">
+                <form action="UpdateApartmentPost" method="post" style="background-color:antiquewhite;">
                     <br><br>
                     <div class="col-md-12">
                         <div class="input-group flex-nowrap">
-                            <select required name="apartment" class="form-select" aria-label="Default select example">
-                                <option value="">Lựa chọn căn hộ mà bạn muốn cho thuê</option>
+                            <select name="apartment" class="form-select" aria-label="Default select example">       
                                 <c:forEach items="${requestScope.apartmentList}" var="ap">
-                                    <option value="${ap.id}">${ap.name}</option>
+                                    <option <c:if test="${post.apartment_id.id == ap.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${ap.id}">${ap.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -57,7 +57,7 @@
                     </div>
                     <br><br>
                     <div class="col-md-12">
-                        <input required="" name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết"
+                        <input required="" name="title" type="text" class="form-control" placeholder="Nhập tiêu đề bài viết" value="${post.title}"
                                aria-label="Username" aria-describedby="addon-wrapping">
                     </div>
                     <br><br>
@@ -72,7 +72,7 @@
 
 
                         <textarea id="editor" required="" name="description" class="form-control" placeholder="Nhập nội dung bài viết   " id="floatingTextarea2"  cols="300" rows="10">
-                                <br><br><br><br>
+                            ${post.description}
                         </textarea>
 
                         <script>
@@ -88,17 +88,16 @@
                     <br>
                     <div class="col-md-12 row">  
                         <div class="col-md-3">
-                            <select required=""  name="payment_method" class="form-select" aria-label="Default select example" id="payment_method_select">
-                                <option value="">Chọn gói đăng tin</option>
-                                <c:forEach items="${requestScope.payment_methodsList}" var="pm">
-                                    <option value="${pm.id}" data-description="${pm.description}" data-price="${pm.price}">${pm.name}</option>
+                            <select required="" id="paymentMethod" name="payment_method" class="form-select" aria-label="Default select example">
+                                <option  value="">Chọn gói đăng tin</option>
+                                <c:forEach items="${requestScope.payment_methods_list}" var="pm">
+                                    <option <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
                                 </c:forEach>
                             </select>
-
                         </div>
                         <div class="col-md-3">
-                            <select required="" name="weak" class="form-select" aria-label="Default select example">
-                                <option value="">Chọn thời hạn bài đăng</option>
+                            <select id="weekSelect" name="weak" class="form-select" aria-label="Default select example">
+                                <option value="0">Không thay đổi thời hạn</option>
                                 <option value="1">Thời hạn 1 tuần</option>
                                 <option value="2">Thời hạn 2 tuần</option>
                                 <option value="3">Thời hạn 3 tuần</option>
@@ -115,22 +114,22 @@
                             <input  name="Post_end" type="date" class="form-control" placeholder=""
                                     aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
-                        <br><br>
-                        <div class="col-md-4 form-select" style="font-size: 20px;padding-left;box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;">
-                            Quý khách nên chọn đăng tin VIP để có hiệu quả hơn.<br>
-                            VD: Tin HDY Diamond có lượt xem trung bình cao hơn 20 lần so với tin thường.<br>
-                            Mô tả gói:
-                            <p style="font-size: 20px;" id="package_description"></p>
-                            <p style="font-size: 20px;" id="total_price"></p>
-                        </div>
-
                     </div>
-                    <br><br><br><br><br>
+                    <br><br><br><br>
+                    <div class="col-md-4">
+                        <input type="text" hidden="" value="${post.id}" name="post">
+                    </div>
                     <div class="col-md-12 d-flex justify-content-center">
-                        <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
-                        <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
+                        <input type="submit" name="submit" value="Cập Nhật"class="btn btn-primary btn-lg">
+                        <c:if test="${post.post_status == 1}">
+
+                            &nbsp; <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
+
+                        </c:if>
                     </div>
+
                     <br><br>
+
                 </form>
             </div>
         </div>
@@ -138,12 +137,11 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var today = new Date().toISOString().split('T')[0];
+
                 var postStartInput = document.querySelector('input[name="Post_start"]');
                 var postEndInput = document.querySelector('input[name="Post_end"]');
                 var weakSelect = document.querySelector('select[name="weak"]');
-                var paymentMethodSelect = document.querySelector('#payment_method_select');
-                var packageDescription = document.getElementById('package_description');
-                var totalPrice = document.getElementById('total_price');
+                var paymentMethodSelect = document.querySelector('#paymentMethod');
 
                 postStartInput.value = today;
 
@@ -160,68 +158,45 @@
                     }
                 }
 
-                function updatePackageDetails() {
-                    var selectedOption = paymentMethodSelect.options[paymentMethodSelect.selectedIndex];
-                    var description = selectedOption.getAttribute('data-description');
-                    var pricePerWeek = parseFloat(selectedOption.getAttribute('data-price'));
-                    var selectedWeeks = parseInt(weakSelect.value);
-                    var packageId = selectedOption.value;
-
-                    // Update description color based on packageId
-                    switch (packageId) {
-                        case "1":
-                            packageDescription.style.color = ""; // default color
-                            break;
-                        case "2":
-                            packageDescription.style.color = "blue";
-                            break;
-                        case "3":
-                            packageDescription.style.color = "yellowgreen";
-                            break;
-                        case "4":
-                            packageDescription.style.color = "red";
-                            break;
-                        default:
-                            packageDescription.style.color = ""; // default color
-                            break;
-                    }
-
-                    packageDescription.textContent = description ? "Mô tả: " + description : "";
-                    if (!isNaN(pricePerWeek) && !isNaN(selectedWeeks)) {
-                        totalPrice.textContent = "Tổng giá: " + (pricePerWeek * selectedWeeks).toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                function updateWeekOptions() {
+                    var originalPaymentMethod = "${post.payment_id.id}";
+                    if (paymentMethodSelect.value != originalPaymentMethod) {
+                        if (weakSelect.querySelector('option[value="0"]')) {
+                            weakSelect.querySelector('option[value="0"]').remove();
+                        }
                     } else {
-                        totalPrice.textContent = "";
+                        if (!weakSelect.querySelector('option[value="0"]')) {
+                            var defaultOption = document.createElement('option');
+                            defaultOption.value = "0";
+                            defaultOption.textContent = "Không thay đổi thời hạn";
+                            weakSelect.insertBefore(defaultOption, weakSelect.firstChild);
+                        }
                     }
                 }
 
                 calculatePostEnd();
-                updatePackageDetails();
 
                 postStartInput.addEventListener('change', function () {
                     var selectedDate = new Date(postStartInput.value);
-
                     if (selectedDate < new Date(today)) {
                         postStartInput.value = today;
                         alert("Ngày bắt đầu không thể là ngày trong quá khứ. Đã đặt lại ngày bắt đầu là hôm nay.");
                     }
-
                     calculatePostEnd();
                 });
 
                 weakSelect.addEventListener('change', function () {
                     calculatePostEnd();
-                    updatePackageDetails();
                 });
 
                 paymentMethodSelect.addEventListener('change', function () {
-                    updatePackageDetails();
+                    updateWeekOptions();
+                    calculatePostEnd();
                 });
+
+                updateWeekOptions();
             });
         </script>
-
-
-
-
     </body>
 
 </html>
