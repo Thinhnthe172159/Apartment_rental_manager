@@ -76,6 +76,12 @@
                         </a>
                     </li>-->
                     <li class="nav-item">
+                        <a class="nav-link" href="DashboardUser">
+                            <i class="mdi mdi-contacts menu-icon"></i>
+                            <span class="menu-title">Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="DashboardChart">
                             <i class="mdi mdi-chart-bar menu-icon"></i>
                             <span class="menu-title">Charts</span>

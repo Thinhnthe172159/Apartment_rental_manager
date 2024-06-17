@@ -87,7 +87,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="DashboardUser">
                             <i class="mdi mdi-contacts menu-icon"></i>
-                            <span class="menu-title">Tables</span>
+                            <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -234,8 +234,12 @@
                             </li>-->
                             <li class="nav-item nav-profile dropdown border-0">
                                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
-                                    <img class="nav-profile-img mr-2" alt="" src="dashboard/assets/images/faces/face1.jpg" />
-                                    <span class="profile-name">Henry Klein</span>
+                                    <img src="img/User/${user_Data.getImage()}" 
+                                             alt="Error" 
+                                             class="nav-profile-img mr-2" 
+                                             id="previewImage"
+                                             onerror="this.onerror=null; this.src='${user_Data.getImage()}';"/>
+                                        <span class="profile-name">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
                                 </a>
                                 <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
 <!--                                    <a class="dropdown-item" href="#">
