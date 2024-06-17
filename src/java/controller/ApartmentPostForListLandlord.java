@@ -105,7 +105,7 @@ public class ApartmentPostForListLandlord extends HttpServlet {
             pagelist.add(i);
         }
 
-        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List(
+        List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List2(
                 (title_name == null || title_name.isEmpty()) ? null : title_name,
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,

@@ -377,6 +377,115 @@ public class ApartmentPostDao extends DBContext {
         System.out.println(sql);
         return list;
     }
+    
+    
+     public List<Apartment_Post> getApartment_Post_List2(String name,
+            String city,
+            String district,
+            String commune,
+            double areaUp,
+            double areaDown,
+            double priceUp,
+            double priceDown,
+            int numberOfBedroom,
+            int apartment_type,
+            int type,
+            int status,
+            int pageNumber,
+            int pageSize, int payment_id) {
+        List<Apartment_Post> list = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
+
+        if (name != null) {
+            sql += "AND [title] LIKE N'%" + name + "%' ";
+        }
+        if (city != null) {
+            sql += "AND [city] LIKE N'%" + city + "%' ";
+        }
+        if (district != null) {
+            sql += "AND [district] LIKE N'%" + district + "%' ";
+        }
+        if (commune != null) {
+            sql += "AND [commune] LIKE N'%" + commune + "%' ";
+        }
+        if (areaUp != 0) {
+            sql += "AND [area] >= " + areaUp;
+        }
+        if (areaDown != 0) {
+            sql += "AND [area] <= " + areaDown;
+        }
+        if (priceUp != 0) {
+            sql += "AND [price] >= " + priceUp;
+        }
+        if (priceDown != 0) {
+            sql += "AND [price] <= " + priceDown;
+        }
+        if (numberOfBedroom != 0) {
+            sql += "AND [number_of_bedroom] =" + numberOfBedroom;
+        }
+        if (apartment_type != 0) {
+            sql += "AND [apartment_type] =" + apartment_type;
+        }
+        if (status != 0) {
+            sql += "AND [post_status] = " + status;
+        }
+        if (payment_id != 0) {
+            sql += " and [payment_id] = " + payment_id;
+        }
+
+        switch (type) {
+            case 1 ->
+                sql += "ORDER BY [price]  ";
+            case 2 ->
+                sql += "ORDER BY [price] desc ";
+            default ->
+                sql += " order by  [id] DESC ";
+        }
+
+        int offset = (pageNumber - 1) * pageSize;
+
+        sql += "OFFSET " + offset + " ROWS ";
+        sql += "FETCH NEXT " + pageSize + " ROWS ONLY ";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
+                ap.setTitle(rs.getString("title"));
+                ap.setDescription(rs.getString("description"));
+                ap.setPost_status(rs.getInt("post_status"));
+                ap.setPost_start(rs.getDate("post_start"));
+                ap.setPost_end(rs.getDate("post_end"));
+                Apartment a = apartmentDao.getApartment(rs.getInt("apartment_id"));
+                ap.setApartment_id(a);
+                Payment_method pm = apartmentDao.getPayment_method(rs.getInt("payment_id"));
+                ap.setPayment_id(pm);
+                User u = userDao.getUser(rs.getInt("landlord_id"));
+                ap.setLandlord_id(u);
+                ap.setFirst_image(rs.getString("first_image"));
+                ap.setCity(rs.getString("city"));
+                ap.setDistrict(rs.getString("district"));
+                ap.setCommune(rs.getString("commune"));
+                ap.setArea(rs.getDouble("area"));
+                ap.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                ap.setApartment_name(rs.getString("apartment_name"));
+                ap.setPrice(rs.getDouble("price"));
+                Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
+                ap.setApartment_type(at);
+                ap.setTotal_image(rs.getInt("total_image"));
+                ap.setPaid_for_post(rs.getDouble("paid_for_post"));
+                ap.setWeek(rs.getInt("week"));
+                list.add(ap);
+
+            }
+        } catch (SQLException e) {
+
+        }
+        System.out.println(sql);
+        return list;
+    }
 
     // update Apartment post
     public void updateApartmentPost(Apartment_Post ap, int id) {
