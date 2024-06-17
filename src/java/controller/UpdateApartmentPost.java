@@ -107,6 +107,12 @@ public class UpdateApartmentPost extends HttpServlet {
         String apartment_id = request.getParameter("apartment");
         String payment_id = request.getParameter("payment_method");
         String post = request.getParameter("post");
+        String week_raw = request.getParameter("week");
+        String postStart = request.getParameter("Post_start");
+        String postEnd = request.getParameter("Post_end");
+        String submit = request.getParameter("submit");
+
+        int week = (week_raw == null || week_raw.isEmpty()) ? 0 : Integer.parseInt(week_raw);
 
         Apartment_Post ap = apartmentPostDao.getApartment_Post((post == null || post.isEmpty()) ? 0 : Integer.parseInt(post));
         ap.setTitle(title);
@@ -131,14 +137,29 @@ public class UpdateApartmentPost extends HttpServlet {
         ap.setApartment_name(a.getName());
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
         ap.setTotal_image(imageList.size());
-        ap.setPost_status(ap.getPost_status());
 
-        Date sqlDate = ap.getPost_start();
-        LocalDate ldate = sqlDate.toLocalDate();
+        Date post_Start, post_End;
+        if (week != 0) {
+            post_End = Date.valueOf(postEnd);
+            post_Start = Date.valueOf(postStart);
+            ap.setPost_start(post_Start);
+            ap.setPost_end(post_End);
+            ap.setWeek(week);
+            ap.setPaid_for_post(pm.getPrice() * week);
+        } else {
+            ap.setPost_start(ap.getPost_start());
+            ap.setPost_end(ap.getPost_end());
+            ap.setPaid_for_post(ap.getPaid_for_post());
+            ap.setWeek(ap.getWeek());
+        }
+        
+       
+        if (submit.equals("Cập Nhật")) {
+            ap.setPost_status(ap.getPost_status());
+        } else {
+            ap.setPost_status(2);
+        }
 
-        ldate = ldate.plusWeeks(pm.getWeek());
-        Date post_end = Date.valueOf(ldate);
-        ap.setPost_end(post_end);
         apartmentPostDao.updateApartmentPost(ap, ap.getId());
         response.sendRedirect("ApartmentPostForLandlord");
 

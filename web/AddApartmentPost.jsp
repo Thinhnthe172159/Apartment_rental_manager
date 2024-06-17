@@ -97,7 +97,7 @@
 
                         </div>
                         <div class="col-md-3">
-                            <select required="" name="weak" class="form-select" aria-label="Default select example">
+                            <select required="" name="week" class="form-select" aria-label="Default select example">
                                 <option value="">Chọn thời hạn bài đăng</option>
                                 <option value="1">Thời hạn 1 tuần</option>
                                 <option value="2">Thời hạn 2 tuần</option>
@@ -109,11 +109,11 @@
                         </div>
                         <div class="col-md-3">
                             <input  name="Post_start" type="date" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
+                                    aria-label="poststart" aria-describedby="addon-wrapping">
                         </div>
                         <div class="col-md-3">
                             <input  name="Post_end" type="date" class="form-control" placeholder=""
-                                    aria-label="Username" aria-describedby="addon-wrapping">
+                                    aria-label="postend" aria-describedby="addon-wrapping">
                         </div>
                         <br><br>
                         <div class="col-md-4 form-select" style="font-size: 20px;padding-left;box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;">
@@ -129,7 +129,8 @@
                     <div class="col-md-12 d-flex justify-content-center">
                         <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
                         <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
-                    </div>
+                       
+                    </div><br><br><br> *Lưu ý nếu như bạn lựa chọn lưu nháp thì thời gian của bài đăng của bạn sẽ không được ghi nhận!
                     <br><br>
                 </form>
             </div>
@@ -140,7 +141,7 @@
                 var today = new Date().toISOString().split('T')[0];
                 var postStartInput = document.querySelector('input[name="Post_start"]');
                 var postEndInput = document.querySelector('input[name="Post_end"]');
-                var weakSelect = document.querySelector('select[name="weak"]');
+                var weakSelect = document.querySelector('select[name="week"]');
                 var paymentMethodSelect = document.querySelector('#payment_method_select');
                 var packageDescription = document.getElementById('package_description');
                 var totalPrice = document.getElementById('total_price');
@@ -185,6 +186,7 @@
                             packageDescription.style.color = ""; // default color
                             break;
                     }
+                    
 
                     packageDescription.textContent = description ? "Mô tả: " + description : "";
                     if (!isNaN(pricePerWeek) && !isNaN(selectedWeeks)) {
