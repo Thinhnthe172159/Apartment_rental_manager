@@ -31,9 +31,12 @@ public class Dashboard extends HttpServlet {
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
 
             request.setAttribute("user_Data", user_Data);
+            request.getRequestDispatcher("Dashboard.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("Login");
         }
 
-        request.getRequestDispatcher("Dashboard.jsp").forward(request, response);
+        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -4,6 +4,7 @@
     Author     : ASUS
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,10 +33,10 @@
                         <a href="#" class="nav-link">
                             <div class="nav-profile-image">
                                 <img src="img/User/${user_Data.getImage()}" 
-                                             alt="Error" 
-                                             class="d-block ui-w-80" 
-                                             id="previewImage"
-                                             onerror="this.onerror=null; this.src='${user_Data.getImage()}';"/>
+                                     alt="Error" 
+                                     class="d-block ui-w-80" 
+                                     id="previewImage"
+                                     onerror="this.onerror=null; this.src='${user_Data.getImage()}';"/>
                                 <span class="login-status online"></span>
                                 <!--change to offline or busy as needed-->
                             </div>
@@ -52,42 +53,42 @@
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
-<!--                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                            <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                            <span class="menu-title">Basic UI Elements</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="ui-basic">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="dashboard/pages/ui-features/buttons.html">Buttons</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="dashboard/pages/ui-features/dropdowns.html">Dropdowns</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="dashboard/pages/ui-features/typography.html">Typography</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard/pages/icons/mdi.html">
-                            <i class="mdi mdi-contacts menu-icon"></i>
-                            <span class="menu-title">Icons</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard/pages/forms/basic_elements.html">
-                            <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                            <span class="menu-title">Forms</span>
-                        </a>
-                    </li>-->
+                    <!--                    <li class="nav-item">
+                                            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                                                <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+                                                <span class="menu-title">Basic UI Elements</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                            <div class="collapse" id="ui-basic">
+                                                <ul class="nav flex-column sub-menu">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="dashboard/pages/ui-features/buttons.html">Buttons</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="dashboard/pages/ui-features/dropdowns.html">Dropdowns</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="dashboard/pages/ui-features/typography.html">Typography</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="dashboard/pages/icons/mdi.html">
+                                                <i class="mdi mdi-contacts menu-icon"></i>
+                                                <span class="menu-title">Icons</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="dashboard/pages/forms/basic_elements.html">
+                                                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                                                <span class="menu-title">Forms</span>
+                                            </a>
+                                        </li>-->
                     <li class="nav-item">
                         <a class="nav-link" href="DashboardUser">
                             <i class="mdi mdi-contacts menu-icon"></i>
-                            <span class="menu-title">Tables</span>
+                            <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -102,18 +103,18 @@
                             <span class="menu-title">Tables</span>
                         </a>
                     </li>
-<!--                    <li class="nav-item sidebar-actions">
-                        <div class="nav-link">
-                            <div class="mt-4">
-                                <div class="border-none">
-                                    <p class="text-black">Notification</p>
-                                </div>
-                                <ul class="mt-4 pl-0">
-                                    <li>Sign Out</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>-->
+                    <!--                    <li class="nav-item sidebar-actions">
+                                            <div class="nav-link">
+                                                <div class="mt-4">
+                                                    <div class="border-none">
+                                                        <p class="text-black">Notification</p>
+                                                    </div>
+                                                    <ul class="mt-4 pl-0">
+                                                        <li>Sign Out</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>-->
                 </ul>
             </nav>
             <div class="container-fluid page-body-wrapper">
@@ -209,37 +210,41 @@
                                 </div>
                             </li>
                             <li class="nav-item nav-search border-0 ml-1 ml-md-3 ml-lg-5 d-none d-md-flex">
-<!--                                <form class="nav-link form-inline mt-2 mt-md-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" />
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">
-                                                <i class="mdi mdi-magnify"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>-->
+                                <!--                                <form class="nav-link form-inline mt-2 mt-md-0">
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control" placeholder="Search" />
+                                                                        <div class="input-group-append">
+                                                                            <span class="input-group-text">
+                                                                                <i class="mdi mdi-magnify"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>-->
                             </li>
                         </ul>
                         <ul class="navbar-nav navbar-nav-right ml-lg-auto">
-<!--                            <li class="nav-item dropdown d-none d-xl-flex border-0">
-                                <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
-                                    <i class="mdi mdi-earth"></i> English </a>
-                                <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
-                                    <a class="dropdown-item" href="#"> French </a>
-                                    <a class="dropdown-item" href="#"> Spain </a>
-                                    <a class="dropdown-item" href="#"> Latin </a>
-                                    <a class="dropdown-item" href="#"> Japanese </a>
-                                </div>
-                            </li>-->
+                            <!--                            <li class="nav-item dropdown d-none d-xl-flex border-0">
+                                                            <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
+                                                                <i class="mdi mdi-earth"></i> English </a>
+                                                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
+                                                                <a class="dropdown-item" href="#"> French </a>
+                                                                <a class="dropdown-item" href="#"> Spain </a>
+                                                                <a class="dropdown-item" href="#"> Latin </a>
+                                                                <a class="dropdown-item" href="#"> Japanese </a>
+                                                            </div>
+                                                        </li>-->
                             <li class="nav-item nav-profile dropdown border-0">
                                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
-                                    <img class="nav-profile-img mr-2" alt="" src="dashboard/assets/images/faces/face1.jpg" />
-                                    <span class="profile-name">Henry Klein</span>
+                                    <img src="img/User/${user_Data.getImage()}" 
+                                         alt="Error" 
+                                         class="nav-profile-img mr-2" 
+                                         id="previewImage"
+                                         onerror="this.onerror=null; this.src='${user_Data.getImage()}';"/>
+                                    <span class="profile-name">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
                                 </a>
                                 <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
-<!--                                    <a class="dropdown-item" href="#">
-                                        <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log </a>-->
+                                    <!--                                    <a class="dropdown-item" href="#">
+                                                                            <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log </a>-->
                                     <a class="dropdown-item" href="Logout">
                                         <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
                                 </div>
@@ -415,171 +420,200 @@
                                     <div class="card-body px-0 overflow-auto">
                                         <h4 class="card-title pl-4">Customers</h4>
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table table-hover">
                                                 <thead class="bg-light">
                                                     <tr>
                                                         <th>Customer</th>
-                                                        <th>Project</th>
-                                                        <th>Invoice</th>
+                                                        <th>Email</th>
+                                                        <th>Role</th>
+                                                        <th>Date of birth</th>
                                                         <th>Amount</th>
-                                                    </tr>
+                                                        <th>Status</th>
+                                                        <th></th>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="dashboard/assets/images/faces/face1.jpg" alt="image" />
-                                                                <div class="table-user-name ml-3">
-                                                                    <p class="mb-0 font-weight-medium"> Cecelia Cooper </p>
-                                                                    <small> Payment on hold</small>
+                                                    <c:forEach items="${user_List}" var="u">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <img src="img/User/${u.image}"
+                                                                         alt="Error"
+                                                                         onerror="this.onerror=null; this.src='${u.image}';"/>
+                                                                    <div class="table-user-name ml-3">
+                                                                        <p class="mb-0 font-weight-medium"> ${u.first_name} ${u.last_name} </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>Angular Admin</td>
-                                                        <td>
-                                                            <div class="badge badge-inverse-success"> Completed </div>
-                                                        </td>
-                                                        <td>$ 77.99</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="dashboard/assets/images/faces/face10.jpg" alt="image" />
-                                                                <div class="table-user-name ml-3">
-                                                                    <p class="mb-0 font-weight-medium"> Victor Watkins </p>
-                                                                    <small>Email verified</small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>Angular Admin</td>
-                                                        <td>
-                                                            <div class="badge badge-inverse-success"> Completed </div>
-                                                        </td>
-                                                        <td>$245.30</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="dashboard/assets/images/faces/face11.jpg" alt="image" />
-                                                                <div class="table-user-name ml-3">
-                                                                    <p class="mb-0 font-weight-medium"> Ada Burgess </p>
-                                                                    <small>Email verified</small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>One page html</td>
-                                                        <td>
-                                                            <div class="badge badge-inverse-danger"> Completed </div>
-                                                        </td>
-                                                        <td>$ 160.25</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="dashboard/assets/images/faces/face13.jpg" alt="image" />
-                                                                <div class="table-user-name ml-3">
-                                                                    <p class="mb-0 font-weight-medium"> Dollie Lynch </p>
-                                                                    <small>Email verified</small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>Wordpress</td>
-                                                        <td>
-                                                            <div class="badge badge-inverse-success"> Declined </div>
-                                                        </td>
-                                                        <td>$ 123.21</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="dashboard/assets/images/faces/face16.jpg" alt="image" />
-                                                                <div class="table-user-name ml-3">
-                                                                    <p class="mb-0 font-weight-medium"> Harry Holloway </p>
-                                                                    <small>Payment on process</small>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>VueJs Application</td>
-                                                        <td>
-                                                            <div class="badge badge-inverse-danger"> Declined </div>
-                                                        </td>
-                                                        <td>$ 150.00</td>
-                                                    </tr>
+                                                            </td>
+                                                            <td>${u.email}</td>
+                                                            <td>${u.role_id.role_name}</td>
+                                                            <td>${u.dob}</td>
+                                                            <td>$ ${u.money}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${u.status eq 0}">
+                                                                        <a class="btn btn-sm btn-danger" href="BlockUser?userId=${u.id}">Block</a>
+                                                                    </c:when>
+                                                                    <c:when test="${u.status eq 1}">
+                                                                        <a class="btn btn-sm btn-success" href="BlockUser?userId=${u.id}">Unblock</a>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td><a href="EditUser?userId=${u.id}" class="btn btn-sm btn-primary">Edit</a></td>
+                                                        </tr>
+                                                    </c:forEach>
+
+                                                    <!--                                                    <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <img src="dashboard/assets/images/faces/face1.jpg" alt="image" />
+                                                                                                                    <div class="table-user-name ml-3">
+                                                                                                                        <p class="mb-0 font-weight-medium"> Cecelia Cooper </p>
+                                                                                                                        <small> Payment on hold</small>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>Angular Admin</td>
+                                                                                                            <td>
+                                                                                                                <div class="badge badge-inverse-success"> Completed </div>
+                                                                                                            </td>
+                                                                                                            <td>$ 77.99</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <img src="dashboard/assets/images/faces/face10.jpg" alt="image" />
+                                                                                                                    <div class="table-user-name ml-3">
+                                                                                                                        <p class="mb-0 font-weight-medium"> Victor Watkins </p>
+                                                                                                                        <small>Email verified</small>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>Angular Admin</td>
+                                                                                                            <td>
+                                                                                                                <div class="badge badge-inverse-success"> Completed </div>
+                                                                                                            </td>
+                                                                                                            <td>$245.30</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <img src="dashboard/assets/images/faces/face11.jpg" alt="image" />
+                                                                                                                    <div class="table-user-name ml-3">
+                                                                                                                        <p class="mb-0 font-weight-medium"> Ada Burgess </p>
+                                                                                                                        <small>Email verified</small>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>One page html</td>
+                                                                                                            <td>
+                                                                                                                <div class="badge badge-inverse-danger"> Completed </div>
+                                                                                                            </td>
+                                                                                                            <td>$ 160.25</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <img src="dashboard/assets/images/faces/face13.jpg" alt="image" />
+                                                                                                                    <div class="table-user-name ml-3">
+                                                                                                                        <p class="mb-0 font-weight-medium"> Dollie Lynch </p>
+                                                                                                                        <small>Email verified</small>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>Wordpress</td>
+                                                                                                            <td>
+                                                                                                                <div class="badge badge-inverse-success"> Declined </div>
+                                                                                                            </td>
+                                                                                                            <td>$ 123.21</td>
+                                                                                                        </tr>
+                                                                                                        <tr>
+                                                                                                            <td>
+                                                                                                                <div class="d-flex align-items-center">
+                                                                                                                    <img src="dashboard/assets/images/faces/face16.jpg" alt="image" />
+                                                                                                                    <div class="table-user-name ml-3">
+                                                                                                                        <p class="mb-0 font-weight-medium"> Harry Holloway </p>
+                                                                                                                        <small>Payment on process</small>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                            <td>VueJs Application</td>
+                                                                                                            <td>
+                                                                                                                <div class="badge badge-inverse-danger"> Declined </div>
+                                                                                                            </td>
+                                                                                                            <td>$ 150.00</td>
+                                                                                                        </tr>-->
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <a class="text-black mt-3 d-block pl-4" href="#">
-                                            <span class="font-weight-medium h6">View all order history</span>
-                                            <i class="mdi mdi-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>
-<!--                            <div class="col-xl-4 col-sm-6 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="card-title font-weight-medium"> Business Survey </div>
-                                        <p class="text-muted"> Lorem ipsum dolor sitadipiscing elit, sed amet do eiusmod tempor we find a new solution </p>
-                                        <div class="d-flex flex-wrap border-bottom py-2 border-top justify-content-between">
-                                            <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_3.jpg" alt="" />
-                                            <div class="pt-2">
-                                                <h5 class="mb-0">Villa called Archagel</h5>
-                                                <p class="mb-0 text-muted">St, San Diego, CA</p>
-                                                <h5 class="mb-0">$600/mo</h5>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-wrap border-bottom py-2 justify-content-between">
-                                            <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_1.jpg" alt="" />
-                                            <div class="pt-2">
-                                                <h5 class="mb-0">Luxury villa in Hermo</h5>
-                                                <p class="mb-0 text-muted">Glendale, CA</p>
-                                                <h5 class="mb-0">$900/mo</h5>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-wrap border-bottom py-2 justify-content-between">
-                                            <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_2.jpg" alt="" />
-                                            <div class="pt-2">
-                                                <h5 class="mb-0">House on the Clarita</h5>
-                                                <p class="mb-0 text-muted">Business Survey</p>
-                                                <h5 class="mb-0">$459/mo</h5>
-                                            </div>
-                                        </div>
-                                        <a class="text-black mt-3 d-block font-weight-medium h6" href="#">View all <i class="mdi mdi-chevron-right"></i></a>
-                                    </div>
-                                </div>
-                            </div>-->
+                            <!--                            <div class="col-xl-4 col-sm-6 grid-margin stretch-card">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="card-title font-weight-medium"> Business Survey </div>
+                                                                    <p class="text-muted"> Lorem ipsum dolor sitadipiscing elit, sed amet do eiusmod tempor we find a new solution </p>
+                                                                    <div class="d-flex flex-wrap border-bottom py-2 border-top justify-content-between">
+                                                                        <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_3.jpg" alt="" />
+                                                                        <div class="pt-2">
+                                                                            <h5 class="mb-0">Villa called Archagel</h5>
+                                                                            <p class="mb-0 text-muted">St, San Diego, CA</p>
+                                                                            <h5 class="mb-0">$600/mo</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex flex-wrap border-bottom py-2 justify-content-between">
+                                                                        <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_1.jpg" alt="" />
+                                                                        <div class="pt-2">
+                                                                            <h5 class="mb-0">Luxury villa in Hermo</h5>
+                                                                            <p class="mb-0 text-muted">Glendale, CA</p>
+                                                                            <h5 class="mb-0">$900/mo</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex flex-wrap border-bottom py-2 justify-content-between">
+                                                                        <img class="survey-img mb-lg-3" src="dashboard/assets/images/dashboard/img_2.jpg" alt="" />
+                                                                        <div class="pt-2">
+                                                                            <h5 class="mb-0">House on the Clarita</h5>
+                                                                            <p class="mb-0 text-muted">Business Survey</p>
+                                                                            <h5 class="mb-0">$459/mo</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <a class="text-black mt-3 d-block font-weight-medium h6" href="#">View all <i class="mdi mdi-chevron-right"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>-->
                         </div>
-                    <footer class="footer">
-                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard template</a> from Bootstrapdash.com</span>
-                        </div>
-                    </footer>
+                        <footer class="footer">
+                            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+                                <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard template</a> from Bootstrapdash.com</span>
+                            </div>
+                        </footer>
+                    </div>
+                    <!-- main-panel ends -->
                 </div>
-                <!-- main-panel ends -->
+                <!-- page-body-wrapper ends -->
             </div>
-            <!-- page-body-wrapper ends -->
-        </div>
-        <!-- container-scroller -->
-        <!-- plugins:js -->
-        <script src="dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
-        <!-- endinject -->
-        <!-- Plugin js for this page -->
-        <script src="dashboard/assets/vendors/chart.js/Chart.min.js"></script>
-        <script src="dashboard/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.resize.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.categories.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.fillbetween.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.stack.js"></script>
-        <script src="dashboard/assets/vendors/flot/jquery.flot.pie.js"></script>
-        <!-- End plugin js for this page -->
-        <!-- inject:js -->
-        <script src="dashboard/assets/js/off-canvas.js"></script>
-        <script src="dashboard/assets/js/hoverable-collapse.js"></script>
-        <script src="dashboard/assets/js/misc.js"></script>
-        <!-- endinject -->
-        <!-- Custom js for this page -->
-        <script src="dashboard/assets/js/dashboard.js"></script>
-        <!-- End custom js for this page -->
+            <!-- container-scroller -->
+            <!-- plugins:js -->
+            <script src="dashboard/assets/vendors/js/vendor.bundle.base.js"></script>
+            <!-- endinject -->
+            <!-- Plugin js for this page -->
+            <script src="dashboard/assets/vendors/chart.js/Chart.min.js"></script>
+            <script src="dashboard/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.resize.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.categories.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.fillbetween.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.stack.js"></script>
+            <script src="dashboard/assets/vendors/flot/jquery.flot.pie.js"></script>
+            <!-- End plugin js for this page -->
+            <!-- inject:js -->
+            <script src="dashboard/assets/js/off-canvas.js"></script>
+            <script src="dashboard/assets/js/hoverable-collapse.js"></script>
+            <script src="dashboard/assets/js/misc.js"></script>
+            <!-- endinject -->
+            <!-- Custom js for this page -->
+            <script src="dashboard/assets/js/dashboard.js"></script>
+            <!-- End custom js for this page -->
     </body>
 </html>

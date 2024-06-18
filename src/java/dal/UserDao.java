@@ -271,27 +271,24 @@ public class UserDao extends DBContext {
     public ArrayList<User> getUserList() {
         ArrayList<User> user_List = new ArrayList<>();
         try {
-            String strSQL = "SELECT [id]\n"
-                    + "      ,[email]\n"
-                    + "      ,[password]\n"
-                    + "      ,[role_id]\n"
-                    + "      ,[status]\n"
-                    + "      ,[first_name]\n"
-                    + "      ,[last_name]\n"
-                    + "      ,[dob]\n"
-                    + "      ,[image]\n"
-                    + "      ,[money]\n"
-                    + "  FROM [ams1].[dbo].[User]";
+            String strSQL = "SELECT u.id, u.email, u.password, u.role_id, u.status, u.first_name, u.last_name, u.dob, u.image, u.money, r.role_name "
+                    + "FROM [ams].[dbo].[User] u "
+                    + "JOIN [ams].[dbo].[Role] r ON u.role_id = r.id";
             pstm = cnn.prepareStatement(strSQL);
             rs = pstm.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String email = rs.getString(2);
-                String first_name = rs.getString(6);
-                String last_name = rs.getString(7);
-                Date dob = rs.getDate(8);
-                double money = rs.getInt(10);
-                user_List.add(new User(id, email, first_name, last_name, dob, money));
+                int id = rs.getInt("id");
+                String email = rs.getString("email");
+                int roleId = rs.getInt("role_id");
+                String roleName = rs.getString("role_name");
+                int status = rs.getInt("status");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                Date dob = rs.getDate("dob");
+                String image = rs.getString("image");
+                double money = rs.getDouble("money");
+                Role role = new Role(roleId, roleName);
+                user_List.add(new User(id, email, role, status, first_name, last_name, dob, image, money));
             }
         } catch (SQLException e) {
             System.out.println("getUserList:" + e.getMessage());
@@ -313,6 +310,45 @@ public class UserDao extends DBContext {
         } catch (SQLException e) {
 
         }
+    }
+
+    public void updateAccountStatus(int user_ID) {
+        try {
+            String strSQL = "UPDATE [dbo].[User] SET [status] = (CASE WHEN [status] = 1 THEN 0 ELSE 1 END) WHERE [id] = ?";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setInt(1, user_ID);
+            pstm.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("updateAccountStatus:" + e.getMessage());
+        }
+    }
+
+    public boolean Admin_EditUser(String email, int role_id, String first_name, String last_name, String password, Date dob, double money, int id) {
+        try {
+            String strSQL = "UPDATE [dbo].[User]\n"
+                    + "   SET [email] = ?\n"
+                    + "      ,[role_id] = ?\n"
+                    + "      ,[first_name] = ?\n"
+                    + "      ,[last_name] = ?\n"
+                    + "      ,[password] = ?\n"
+                    + "      ,[dob] = ?\n"
+                    + "      ,[money] = ?\n"
+                    + " WHERE [id] = ?;";
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setString(1, email);
+            pstm.setInt(2, role_id);
+            pstm.setString(3, first_name);
+            pstm.setString(4, last_name);
+            pstm.setString(5, password);
+            pstm.setDate(6, new java.sql.Date(dob.getTime())); // Convert java.util.Date to java.sql.Date
+            pstm.setDouble(7, money);
+            pstm.setInt(8, id);
+            pstm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Admin_EditUser:" + e.getMessage());
+        }
+        return false;
     }
 
     public static void main(String[] args) {
