@@ -7,7 +7,8 @@ package com.vnpay.common;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import java.io.IOException;import java.net.URLEncoder;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
 
 /**
  *
@@ -32,11 +35,17 @@ public class ajaxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
+        HttpSession session = req.getSession();
+        
+        
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
         long amount = Integer.parseInt(req.getParameter("amount"))*100;
         String bankCode = req.getParameter("bankCode");
+        // ;sửa thông tin nội dung của người thanh toán ở đây
+        User user  = (User) session.getAttribute("user_Data");
+        String name = user.getFirst_name()+" "+user.getLast_name();
         
         String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_IpAddr = Config.getIpAddress(req);
@@ -54,7 +63,7 @@ public class ajaxServlet extends HttpServlet {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo","User "+name+" Da Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_OrderType", orderType);
 
         String locate = req.getParameter("language");

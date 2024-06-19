@@ -1,4 +1,3 @@
-
 package com.vnpay.common;
 
 import java.io.UnsupportedEncodingException;
@@ -23,8 +22,8 @@ public class Config {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_ReturnUrl = "http://localhost:9999/vnpay_jsp/vnpay_return.jsp";
-    public static String vnp_TmnCode = "7JJFDFTR";
-    public static String secretKey = "5J6U6H02FACEEFG38NU85UUQ11THQKAH";
+    public static String vnp_TmnCode = "CA7QDFRK";
+    public static String secretKey = "QWNYH6INNDD9CVEAJ70QA9WW9HZCS0II";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
     public static String md5(String message) {
@@ -81,9 +80,9 @@ public class Config {
                 sb.append("&");
             }
         }
-        return hmacSHA512(secretKey,sb.toString());
+        return hmacSHA512(secretKey, sb.toString());
     }
-    
+
     public static String hmacSHA512(final String key, final String data) {
         try {
 
@@ -106,7 +105,7 @@ public class Config {
             return "";
         }
     }
-    
+
     public static String getIpAddress(HttpServletRequest request) {
         String ipAdress;
         try {

@@ -93,7 +93,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-xl-6">
-                                                <h5 class="col-md-4">${apl.apartment_type.name} | <h5  class="col-md-3 justify-content-center" style=" color:white;border-radius: 15px; <c:if test="${apl.payment_id.id == 1}" >
+                                                <h5 class="col-md-4">${apl.apartment_type.name} | <h5  class="col-md-4 text-center" style=" color:white;border-radius: 15px; <c:if test="${apl.payment_id.id == 1}" >
                                                                                      background: black;
                                                         </c:if>
                                                         <c:if test="${apl.payment_id.id == 2}" >
@@ -104,7 +104,7 @@
                                                         </c:if>
                                                         <c:if test="${apl.payment_id.id == 4}" >
                                                             background: red;
-                                                        </c:if>">&nbsp;&nbsp;&nbsp;Vip ${apl.payment_id.name}</h5></h5>
+                                                        </c:if>">Vip ${apl.payment_id.name}</h5></h5>
                                                 <div class="d-flex flex-row">
                                                     <span>Diện tích: ${apl.area}m2</span>&nbsp;&nbsp;
                                                     <span style="background: blueviolet; color: white; border-radius: 15px; box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;">
