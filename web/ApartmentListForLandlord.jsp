@@ -27,7 +27,8 @@
         <title>The Nest - Real Estate HTML Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="utf-8">
-   
+        <script src="sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="sweetalert2.min.css">
         <link rel="stylesheet" type="text/css" id="style_sheet" href="css/skins/default.css">
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" >
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800%7CPlayfair+Display:400,700%7CRoboto:100,300,400,400i,500,700">
@@ -219,7 +220,7 @@
                                 <div class="select">
                                     <select style="color: black;background: white" class="custom-select" id="tinh">
                                         <option style="color: black"selected="0">Chọn Tỉnh Thành</option>
-                                     
+
                                     </select>
                                 </div>
                             </div>
@@ -227,7 +228,7 @@
                                 <div class="select">
                                     <select style="color: black;background: white" class="custom-select" id="quan">
                                         <option style="color: black"selected="0">Chọn Quận Huyện</option>
-                                       
+
                                     </select>
                                 </div>
                             </div><input type="hidden" name="tinh" id="hidden_tinh" >
@@ -244,7 +245,7 @@
                                 <input class="btn btn-primary" type="submit" value="Submit">
                             </div>
                         </div>
-                        
+
                     </form>
                     <div class="card">
                         <div class="card-body">
@@ -262,7 +263,7 @@
                                                             <c:if test="${pageIndex > 1}">
                                                                 <c:set var="index" value="${(pageIndex-1)*6}" />
                                                             </c:if>
-                                                            
+
                                                             <c:forEach items="${requestScope.apartmentList}" var="ap">
                                                                 <c:set var="index" value="${index + 1}" />
                                                                 <tr>
@@ -364,13 +365,33 @@
 
             <!-- Footer end -->
 
-
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script>
-                function confirmDeletion(formId) {
-                    if (confirm("Bạn có chắc muốn xóa căn hộ này!Nếu như bạn xóa căn hộ này thì bài đăng liên quan đến căn hộ này sẽ bị xóa và bạn sẽ được hoàn lại tiền vào ví nếu như bài đăng của bạn chưa hết hạn")) {
+
+
+
+            function confirmDeletion(formId) {
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Bạn có chắc muốn xóa căn hộ này!Nếu như bạn xóa căn hộ này thì bài đăng liên quan đến căn hộ này sẽ bị xóa và bạn sẽ không thể khôi phục lại nó nữa!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your file has been deleted.",
+                            icon: "success"
+                        });
                         document.getElementById(formId).submit();
                     }
-                }
+                });
+
+            }
             </script>
             <script>
                 $(document).ready(function () {

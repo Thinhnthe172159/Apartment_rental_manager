@@ -74,7 +74,7 @@
                     <c:if test="${page_index > 1}">
                         <c:set var="indexPage" value="${(page_index-1)*6}"/>
                     </c:if>
-                    
+
                     <c:forEach items="${requestScope.apartmentPostList}" var="apl">
                         <c:set var="indexPage" value="${indexPage+1}"/>
                         <div class="row justify-content-center mb-4">
@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="col-md-6 col-lg-6 col-xl-6">
                                                 <h5 class="col-md-4">${apl.apartment_type.name} | <h5  class="col-md-4 text-center" style=" color:white;border-radius: 15px; <c:if test="${apl.payment_id.id == 1}" >
-                                                                                     background: black;
+                                                                                                       background: black;
                                                         </c:if>
                                                         <c:if test="${apl.payment_id.id == 2}" >
                                                             background: blue;
@@ -132,7 +132,7 @@
                                                 </h3>
                                                 <br>
                                                 <h6>
-                                                   start at: ${apl.post_start}/ end: ${apl.post_end}/ limitation: ${apl.week} week/ paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
+                                                    start at: ${apl.post_start}/ end: ${apl.post_end}/ limitation: ${apl.week} week/ paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
@@ -417,12 +417,28 @@
                                                             });
                                                         });
                         </script>
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                         <script>
-                            function confirmDeletion(formId) {
-                                if (confirm("Bạn có chắc chắn là muốn xóa bài đăng này không, nếu có vui lòng nhấn ok để thực hiện. Trong trường hợp bài đăng của bạn chưa hết hạn mà bạn vẫn muốn xóa thì bạn sẽ được hoàn tiền vì ví với số tiền tương ứng với các ngày còn lại.")) {
-                                    document.getElementById(formId).submit();
-                                }
-                            }
+                                                        function confirmDeletion(formId) {
+                                                            Swal.fire({
+                                                                title: "Are you sure?",
+                                                                text: "You won't be able to revert this!",
+                                                                icon: "warning",
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: "#3085d6",
+                                                                cancelButtonColor: "#d33",
+                                                                confirmButtonText: "Yes, delete it!"
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    Swal.fire({
+                                                                        title: "Deleted!",
+                                                                        text: "Your file has been deleted.",
+                                                                        icon: "success"
+                                                                    });
+                                                                    document.getElementById(formId).submit();
+                                                                }
+                                                            });
+                                                        }
                         </script>
 
 
@@ -461,46 +477,46 @@
     <script src="js/sidebar.js"></script>
     <script src="js/app.js"></script>
     <script>
-                            $(document).ready(function () {
-                                // Fetch provinces
-                                $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
-                                    if (data_tinh.error == 0) {
-                                        $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                                            $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
-                                        });
-                                        $("#tinh").change(function (e) {
-                                            var idtinh = $(this).val();
-                                            $("#hidden_tinh").val($("#tinh option:selected").text());
-                                            // Fetch districts
-                                            $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
-                                                if (data_quan.error == 0) {
-                                                    $("#quan").html('<option value="0">Quận Huyện</option>');
-                                                    $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                    $.each(data_quan.data, function (key_quan, val_quan) {
-                                                        $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-                                                    });
-                                                    // Fetch wards
-                                                    $("#quan").change(function (e) {
-                                                        var idquan = $(this).val();
-                                                        $("#hidden_quan").val($("#quan option:selected").text());
-                                                        $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
-                                                            if (data_phuong.error == 0) {
-                                                                $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                                                    $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                                                                });
-                                                                $("#phuong").change(function (e) {
-                                                                    $("#hidden_phuong").val($("#phuong option:selected").text());
-                                                                });
-                                                            }
+                                                        $(document).ready(function () {
+                                                            // Fetch provinces
+                                                            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                                                                if (data_tinh.error == 0) {
+                                                                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                                                                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                                                                    });
+                                                                    $("#tinh").change(function (e) {
+                                                                        var idtinh = $(this).val();
+                                                                        $("#hidden_tinh").val($("#tinh option:selected").text());
+                                                                        // Fetch districts
+                                                                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                                                            if (data_quan.error == 0) {
+                                                                                $("#quan").html('<option value="0">Quận Huyện</option>');
+                                                                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                                                $.each(data_quan.data, function (key_quan, val_quan) {
+                                                                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                                                                });
+                                                                                // Fetch wards
+                                                                                $("#quan").change(function (e) {
+                                                                                    var idquan = $(this).val();
+                                                                                    $("#hidden_quan").val($("#quan option:selected").text());
+                                                                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                                                                        if (data_phuong.error == 0) {
+                                                                                            $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                                                            });
+                                                                                            $("#phuong").change(function (e) {
+                                                                                                $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                                                            });
+                                                                                        }
+                                                                                    });
+                                                                                });
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                }
+                                                            });
                                                         });
-                                                    });
-                                                }
-                                            });
-                                        });
-                                    }
-                                });
-                            });
     </script> 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
