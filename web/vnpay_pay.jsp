@@ -1,6 +1,7 @@
 
 
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -48,16 +49,17 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Apartment</a></span>
-                        <h3>ADD PROPERTIES</h3>
+                        <h3>ADD FUNDS</h3>
                     </div>
                 </div>
             </div>
         </div>
+        <c:if test="${sessionScope.user_Data.money == 0}">
         <div class="alert alert-danger d-flex justify-content-between align-items-center p-4">
             <p>Số dư tài khoản của bạn đang bằng 0 hoặc không đủ để đặt ngân sách. Để đảm bảo chiến dịch AI của bạn không bị gián đoạn, hãy nạp tiền ngay!</p>
             <button class="btn btn-danger">Nạp tiền</button>
         </div>
-
+        </c:if>
 
 
         <div class="container" style="font-size: 20px;">
@@ -138,8 +140,14 @@
                                     <label class="btn btn-primary">
                                         <input type="checkbox" name="options" class="custom-checkbox" value="20000000" autocomplete="off"> 20.000.000
                                     </label>
+                                </div><br>
+                                <div class="form-group" style="color: red" data-toggle="buttons">
+                                    *Số tiền nạp trên 1 triệu đồng sẽ được tặng 2% giá trị tiền nạp<br>
+                                    *Số tiền nạp trên 2 triệu đồng sẽ được tặng 3% giá trị tiền nạp<br>
+                                    *Số tiền nạp trên 5 triệu đồng sẽ được tặng 5% giá trị tiền nạp<br>
+                                    *Số tiền nạp trên 10 triệu đồng sẽ được tặng 10% giá trị tiền nạp<br>
+                                    *Số tiền nạp trên 20 triệu đồng sẽ được tặng 20% giá trị tiền nạp
                                 </div>
-
                                 <div class="form-group">
                                     <label for="amount">Số tiền</label>
 

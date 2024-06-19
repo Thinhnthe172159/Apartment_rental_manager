@@ -62,12 +62,29 @@ public class PaymentServlet extends HttpServlet {
             if ("00".equals(request.getParameter("vnp_TransactionStatus"))) {
                 String id = request.getParameter("vnp_TxnRef");
                 String moneyStr = request.getParameter("vnp_Amount");
-                long money = Long.parseLong(moneyStr);
-                System.out.println(money / 100);
+                Double money = Double.parseDouble(moneyStr);
+                money=money/100;
+                
                 response.getWriter().print(request.getParameter("vnp_OrderInfo"));
                 //PaymentDAO paymentDAO = new PaymentDAO();
                 //int check = paymentDAO.insertPayment(id, user.getId(), money/100);
-                u.setMoney(u.getMoney() + money/100);
+                
+                if(money >= 1000000){
+                     u.setMoney(u.getMoney() + money+(money*0.02));
+                }
+                if(money >= 2000000){
+                    u.setMoney(u.getMoney() + money+(money*0.03));
+                }
+                if(money >= 5000000){
+                    u.setMoney(u.getMoney() + money+(money*0.05));
+                }
+                if(money >= 10000000){
+                    u.setMoney(u.getMoney() + money+(money*0.1));
+                }
+                if(money >= 20000000){
+                    u.setMoney(u.getMoney() + money+(money*0.2));
+                }
+               
                 userDao.UserMoneyChange(u);
                 System.out.println("Da add giao dich vao data");
                 request.setAttribute("message","a");
