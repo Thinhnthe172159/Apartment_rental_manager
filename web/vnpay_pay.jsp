@@ -1,3 +1,7 @@
+
+
+
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,10 +14,11 @@
         <meta name="author" content="">
         <title>Tạo mới đơn hàng</title>
         <!-- Bootstrap core CSS -->
-
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <!-- Custom styles for this template -->
 
-        <script src="/vnpay_jsp/assets/jquery-1.11.3.min.js"></script>
+        <script src="assets/jquery-1.11.3.min.js"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
         <style>
             .media {
@@ -30,7 +35,9 @@
             }
         </style>
     </head>
-
+    <%
+        String url = request.getScheme()+"://"+request.getServerName()+":" +request.getServerPort()+request.getContextPath();
+    %>
     <body>
 
         <jsp:include page="Navbar.jsp"/>
@@ -71,26 +78,29 @@
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                                         </svg>
-                                        <div class="media-body">Nguyen Trong Thinh HL K17</div>
+                                        <div class="media-body">${sessionScope.user_Data.first_name} ${sessionScope.user_Data.last_name}</div>
                                     </li>
                                     <li class="media mb-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
                                         <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
                                         <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
                                         </svg>
-                                        <div class="media-body">0345882332</div>
+                                        <div class="media-body">${sessionScope.user_Data.dob}</div>
                                     </li>
                                     <li class="media mb-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
                                         <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/>
                                         </svg>
-                                        <div class="media-body">thinhnthe172159@fpt.edu.vn</div>
+                                        <div class="media-body">${sessionScope.user_Data.email}</div>
                                     </li>
                                     <li class="media mb-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0"/>
+                                        <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z"/>
+                                        <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
+                                        <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
                                         </svg>
-                                        <div class="media-body">Chưa cập nhật</div>
+                                        <div class="media-body"><fmt:formatNumber value="${sessionScope.user_Data.money}" pattern="#,###"/> vnd</div>
                                     </li>
                                 </ul>
                                 <div class="alert alert-secondary d-flex align-items-center p-2 mt-4">
@@ -103,12 +113,12 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="card shadow-sm">
-                            <form action="/vnpay_jsp/vnpayajax" id="frmCreateOrder" method="post">     
+                        <div class="" style="">
+                            <form action="payment" id="frmCreateOrder" method="post">     
                                 <h2 class="text-secondary font-weight-bold mb-4">Chọn số tiền thanh toán</h2>
                                 <div class="btn-group btn-group-toggle mb-4" data-toggle="buttons">
                                     <label class="btn btn-primary">
-                                        <input type="checkbox" name="options" class="custom-checkbox" value="300000" autocomplete="off"> 300.000
+                                        <input type="checkbox" name="options" class="form-check-input" value="300000" autocomplete="off"> 300.000
                                     </label>
                                     <label class="btn btn-primary">
                                         <input type="checkbox" name="options" class="custom-checkbox" value="500000" autocomplete="off"> 500.000
@@ -134,34 +144,36 @@
                                     <label for="amount">Số tiền</label>
 
                                     <input required="" type="number" id="custom-amount" name="amount" max="100000000"  class="form-control mb-4" placeholder="50.000 vnd"  value="50000">
+                                    <input name="id" value="${sessionScope.user_Data.id}" type="hidden"/>
                                 </div>
                                 <h4>Chọn phương thức thanh toán</h4>
-                                <div class="form-group">
+                                <div class="form-check">
                                     <h5>Cách 1: Chuyển hướng sang Cổng VNPAY chọn phương thức thanh toán</h5>
-                                    <input type="radio" Checked="True" id="bankCode" name="bankCode" value="">
+                                    
+                                    <input type="radio" class="form-check-input" Checked="True" id="bankCode" name="bankCode" value="">
                                     <label for="bankCode">Cổng thanh toán VNPAYQR</label><br>
 
                                     <h5>Cách 2: Tách phương thức tại site của đơn vị kết nối</h5>
-                                    <input type="radio" id="bankCode" name="bankCode" value="VNPAYQR">
+                                    <input class="form-check-input" type="radio" id="bankCode" name="bankCode" value="VNPAYQR">
                                     <label for="bankCode">Thanh toán bằng ứng dụng hỗ trợ VNPAYQR</label><br>
 
-                                    <input type="radio" id="bankCode" name="bankCode" value="VNBANK">
+                                    <input class="form-check-input" type="radio" id="bankCode" name="bankCode" value="VNBANK">
                                     <label for="bankCode">Thanh toán qua thẻ ATM/Tài khoản nội địa</label><br>
 
-                                    <input type="radio" id="bankCode" name="bankCode" value="INTCARD">
+                                    <input class="form-check-input" type="radio" id="bankCode" name="bankCode" value="INTCARD">
                                     <label for="bankCode">Thanh toán qua thẻ quốc tế</label><br>
 
                                 </div>
                                 <div class="form-group">
                                     <h5>Chọn ngôn ngữ giao diện thanh toán:</h5>
-                                    <input type="radio" id="language" Checked="True" name="language" value="vn">
+                                    <input class="form-check-input" type="radio" id="language" Checked="True" name="language" value="vn">
                                     <label for="language">Tiếng việt</label><br>
-                                    <input type="radio" id="language" name="language" value="en">
+                                    <input class="form-check-input" type="radio" id="language" name="language" value="en">
                                     <label for="language">Tiếng anh</label><br>
 
                                 </div>
                                 <div class="d-flex justify-content-center mt-4">
-                                    <button type="submit" class="btn btn-primary">Thanh toán</button>
+                                    <button type="submit" class="btn btn-primary" >Thanh toán</button>
                                 </div>
 
                             </form>
@@ -274,6 +286,25 @@
                     });
                 });
             });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            var message = '${requestScope.message}';
+            if (message) {
+                if (message === "b") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Giao dịch không thành công, vui lòng thử lại",
+                    });
+                } else if (message === 'a') {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Giao dịch thành công",
+                        icon: "success"
+                    });
+                }
+            }
         </script>
 
 

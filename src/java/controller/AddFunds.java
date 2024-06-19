@@ -55,7 +55,7 @@ public class AddFunds extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect("vnpay_pay.jsp");
+        request.getRequestDispatcher("vnpay_pay.jsp").forward(request, response);
     } 
 
     /** 

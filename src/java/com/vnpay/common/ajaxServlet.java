@@ -7,6 +7,7 @@ package com.vnpay.common;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import dal.UserDao;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +32,7 @@ import model.User;
  *
  * @author CTT VNPAY
  */
+@WebServlet(name = "payment", urlPatterns = {"/payment"})
 public class ajaxServlet extends HttpServlet {
 
     @Override
@@ -43,9 +46,8 @@ public class ajaxServlet extends HttpServlet {
         String orderType = "other";
         long amount = Integer.parseInt(req.getParameter("amount"))*100;
         String bankCode = req.getParameter("bankCode");
-        // ;sửa thông tin nội dung của người thanh toán ở đây
+        // sửa thông tin nội dung của người thanh toán ở đây
         User user  = (User) session.getAttribute("user_Data");
-        String name = user.getFirst_name()+" "+user.getLast_name();
         
         String vnp_TxnRef = Config.getRandomNumber(8);
         String vnp_IpAddr = Config.getIpAddress(req);
@@ -63,7 +65,7 @@ public class ajaxServlet extends HttpServlet {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo","User "+name+" Da Thanh toan don hang:" + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo","thinh");
         vnp_Params.put("vnp_OrderType", orderType);
 
         String locate = req.getParameter("language");
@@ -118,5 +120,11 @@ public class ajaxServlet extends HttpServlet {
         Gson gson = new Gson();
         resp.getWriter().write(gson.toJson(job));
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("vnpay_pay.jsp").forward(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
 
 }
