@@ -3,7 +3,7 @@
     Created on : Jun 10, 2024, 4:08:21 PM
     Author     : ASUS
 --%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -166,29 +166,9 @@
                                 </div>
                             </li>
                             <li class="nav-item nav-search border-0 ml-1 ml-md-3 ml-lg-5 d-none d-md-flex">
-                                <!--                                <form class="nav-link form-inline mt-2 mt-md-0">
-                                                                    <div class="input-group">
-                                                                        <input type="text" class="form-control" placeholder="Search" />
-                                                                        <div class="input-group-append">
-                                                                            <span class="input-group-text">
-                                                                                <i class="mdi mdi-magnify"></i>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>-->
                             </li>
                         </ul>
                         <ul class="navbar-nav navbar-nav-right ml-lg-auto">
-                            <!--                            <li class="nav-item dropdown d-none d-xl-flex border-0">
-                                                            <a class="nav-link dropdown-toggle" id="languageDropdown" href="#" data-toggle="dropdown">
-                                                                <i class="mdi mdi-earth"></i> English </a>
-                                                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="languageDropdown">
-                                                                <a class="dropdown-item" href="#"> French </a>
-                                                                <a class="dropdown-item" href="#"> Spain </a>
-                                                                <a class="dropdown-item" href="#"> Latin </a>
-                                                                <a class="dropdown-item" href="#"> Japanese </a>
-                                                            </div>
-                                                        </li>-->
                             <li class="nav-item nav-profile dropdown border-0">
                                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown">
                                     <img src="img/User/${user_Data.getImage()}" 
@@ -199,8 +179,6 @@
                                     <span class="profile-name">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
                                 </a>
                                 <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
-                                    <!--                                    <a class="dropdown-item" href="#">
-                                                                            <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log </a>-->
                                     <a class="dropdown-item" href="Logout">
                                         <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
                                 </div>
@@ -214,77 +192,143 @@
                 <div class="main-panel">
                     <div class="content-wrapper pb-0">
                         <div class="page-header flex-wrap">
-                            <h3 class="mb-0"> Hi, welcome back! <span class="pl-0 h6 pl-sm-2 text-muted d-inline-block"></span>
+                            <h3 class="mb-0"> Hi, welcome back! <span class="pl-0 h6 pl-sm-2 text-muted d-inline-block">Your web analytics dashboard template.</span>
                             </h3>
-                            <div class="d-flex">
-                                <!--                                <button type="button" class="btn btn-sm bg-white btn-icon-text border">
-                                                                    <i class="mdi mdi-email btn-icon-prepend"></i> Email </button>
-                                                                <button type="button" class="btn btn-sm bg-white btn-icon-text border ml-3">
-                                                                    <i class="mdi mdi-printer btn-icon-prepend"></i> Print </button>-->
-                                <a href="DashboardAddUser" class="btn btn-sm ml-3 btn-success"><span style="color: white">Add User</span></a>
-                            </div>
+                            <!--                            <div class="d-flex">
+                                                            <button type="button" class="btn btn-sm bg-white btn-icon-text border">
+                                                                <i class="mdi mdi-email btn-icon-prepend"></i> Email </button>
+                                                            <button type="button" class="btn btn-sm bg-white btn-icon-text border ml-3">
+                                                                <i class="mdi mdi-printer btn-icon-prepend"></i> Print </button>
+                                                            <button type="button" class="btn btn-sm ml-3 btn-success"> Add User </button>
+                                                        </div>-->
                         </div>
-                        <c:if test="${messagesuccess != null}">
-                            <div style="width: 100%" class="alert alert-success" role="alert">
-                                ${messagesuccess}
-                            </div>
-                        </c:if>
-                        <c:if test="${messagedanger != null}">
-                            <div style="width: 100%" class="alert alert-danger" role="alert">
-                                ${messagedanger}
-                            </div>
-                        </c:if>
                         <div class="row">
-                            <div class="col-xl-12 col-sm-12 grid-margin stretch-card">
+                            <div class="col-12 grid-margin stretch-card">
                                 <div class="card">
-                                    <div class="card-body px-0 overflow-auto">
-                                        <h4 class="card-title pl-4">Customers</h4>
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <thead class="bg-light">
-                                                    <tr>
-                                                        <th>Customer</th>
-                                                        <th>Email</th>
-                                                        <th>Role</th>
-                                                        <th>Date of birth</th>
-                                                        <th>Amount</th>
-                                                        <th>Status</th>
-                                                        <th></th>
-                                                </thead>
-                                                <tbody>
-                                                    <c:forEach items="${user_List}" var="u">
-                                                        <tr>
-                                                            <td>
-                                                                <div class="d-flex align-items-center">
-                                                                    <img src="img/User/${u.image}"
-                                                                         alt="Error"
-                                                                         onerror="this.onerror=null; this.src='${u.image}';"/>
-                                                                    <div class="table-user-name ml-3">
-                                                                        <p class="mb-0 font-weight-medium"> ${u.first_name} ${u.last_name} </p>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>${u.email}</td>
-                                                            <td>${u.role_id.role_name}</td>
-                                                            <td>${u.dob}</td>
-                                                            <td><fmt:formatNumber value="${u.money}" pattern="#,###"/></td>
-                                                            <td>
-                                                                <c:choose>
-                                                                    <c:when test="${u.status eq 0}">
-                                                                        <a class="btn btn-sm btn-danger" href="BlockUser?userId=${u.id}"><i class="mdi mdi-block-helper"></i></a>
-                                                                        </c:when>
-                                                                        <c:when test="${u.status eq 1}">
-                                                                        <a class="btn btn-sm btn-success" href="BlockUser?userId=${u.id}"><i class="mdi mdi-check"></i></a>
-                                                                        </c:when>
-                                                                    </c:choose>
-                                                            </td>
-                                                            <td><a href="EditUser?userId=${u.id}" class="btn btn-sm btn-primary">Edit</a></td>
-                                                        </tr>
+                                    <div class="card-body">
+                                        <h4 class="card-title">Edit user</h4>
+                                        <!--<p class="card-description">Basic form elements</p>-->
+                                        <form action="EditUser" method="post" class="forms-sample">
+                                            <input hidden readonly value="${specific_user_data.id}" type="text" name="userId">
+                                            <div class="form-group">
+                                                <label for="first_name">First Name</label><br>
+                                                <input type="text" value="${specific_user_data.first_name}" name="first-name" class="form-control-lg" id="first_name" placeholder="First Name" required=""/>
+                                                <c:if test="${messagefirstname != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messagefirstname}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="last_name">Last Name</label><br>
+                                                <input type="text" value="${specific_user_data.last_name}" name="last-name" class="form-control-lg" id="last_name" placeholder="Last Name" required=""/>
+                                                <c:if test="${messagelastname != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messagelastname}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email address</label><br>
+                                                <input type="email" value="${specific_user_data.email}"name="email" class="form-control-lg" id="email" placeholder="Email" required=""/>
+                                                <c:if test="${messageemail != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messageemail}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password</label><br>
+                                                <input type="password" value="${specific_user_data.password}" name="password" class="form-control-lg" id="password" placeholder="Password" required=""/>
+                                                <c:if test="${messagepassword != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messagepassword}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-password">Password</label><br>
+                                                <input type="password" value="${specific_user_data.password}" name="re-password" class="form-control-lg" id="password" placeholder="Password" required=""/>
+                                                <c:if test="${messagerepassword != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messagerepassword}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="role">Role</label><br>
+                                                <select class="form-control-lg" id="role" name="role" required="">
+                                                    <c:forEach items="${role_List}" var="r">
+                                                        <c:choose>
+                                                            <c:when test="${r.getId() eq specific_user_data.getRole_id().getId()}">
+                                                                <option selected value="${r.getId()}">${r.getRole_name()}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${r.getId()}">${r.getRole_name()}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:forEach>
-
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                </select>
+                                                <c:if test="${messagerole != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messagerole}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <!--                                            <div class="form-group">
+                                                                                            <label>Membership</label>
+                                                                                            <div class="col-sm-4">
+                                                                                                <div class="form-check">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked /> Free </label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-sm-5">
+                                                                                                <div class="form-check">
+                                                                                                    <label class="form-check-label">
+                                                                                                        <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2" /> Professional </label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>-->
+                                            <!--                                            <div class="form-group">
+                                                                                            <label>File upload</label>
+                                                                                            <input type="file" name="img[]" class="file-upload-default" />
+                                                                                            <div class="input-group col-xs-12">
+                                                                                                <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image" />
+                                                                                                <span class="input-group-append">
+                                                                                                    <button class="file-upload-browse btn btn-primary" type="button"> Upload </button>
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>-->
+                                            <div class="form-group">
+                                                <label for="dob">Date of Birth</label><br>
+                                                <input type="date" value="${specific_user_data.dob}" name="dob" class="form-control-lg" id="dob" required=""/>
+                                                <c:if test="${messageDob != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messageDob}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="amount">Amount</label><br>
+                                                <input type="number" step="any" value="${specific_user_data.money}" name="money" class="form-control-lg" id="amount" required=""/>
+                                                <c:if test="${messageamount != null}">
+                                                    <div style="width: 500px" class="alert alert-danger" role="alert">
+                                                        ${messageamount}
+                                                    </div>
+                                                </c:if>
+                                            </div>
+                                            <!--                                            <div class="form-group">
+                                                                                            <label for="exampleTextarea1">Textarea</label>
+                                                                                            <textarea
+                                                                                                class="form-control"
+                                                                                                id="exampleTextarea1"
+                                                                                                rows="4"
+                                                                                                ></textarea>
+                                                                                        </div>-->
+                                            <button type="submit" class="btn btn-primary mr-2"> Submit </button>
+                                            <a href="DashboardUser" class="btn btn-light">Cancel</a>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
