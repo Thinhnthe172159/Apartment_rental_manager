@@ -77,6 +77,24 @@ public class RoleDao extends DBContext {
         }
         return roleList;
     }
+    public List<Role> getRoleListExpectAdmin() {
+        List<Role> roleList = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM [dbo].[Role] Where [id] != 1";
+            pstm = cnn.prepareStatement(sql);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                Role role = new Role();
+                role.setId(rs.getInt(1));
+                role.setRole_name(rs.getString(2));
+
+                roleList.add(role);
+            }
+        } catch (SQLException e) {
+            System.out.println("getRoleList:" + e.getMessage());
+        }
+        return roleList;
+    }
 
     public static void main(String[] args) {
         RoleDao rd = new RoleDao();

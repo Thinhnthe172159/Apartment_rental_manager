@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
@@ -34,15 +35,16 @@ public class EditUser extends HttpServlet {
         UserDao user_DAO = new UserDao();
         User user = user_DAO.getUser(Integer.parseInt(user_ID));
         RoleDao roleDao = new RoleDao();
-        List<Role> role_List = roleDao.getRoleList();
+        List<Role> role_List = roleDao.getRoleListExpectAdmin();
         request.setAttribute("role_List", role_List);
         request.setAttribute("specific_user_data", user);
 
-        request.getRequestDispatcher("DashboardUserEdit.jsp").forward(request, response);
+        request.getRequestDispatcher("DashboardEditUser.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String user_ID = request.getParameter("userId");
         int Id = Integer.parseInt(user_ID);
 
@@ -50,6 +52,7 @@ public class EditUser extends HttpServlet {
         String lastname = request.getParameter("last-name");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String repassword = request.getParameter("re-password");
         String dobStr = request.getParameter("dob");
         int role = Integer.parseInt(request.getParameter("role"));
         double money = Double.parseDouble(request.getParameter("money").trim());
@@ -57,24 +60,29 @@ public class EditUser extends HttpServlet {
         User user = user_DAO.getUser(Integer.parseInt(user_ID));
         boolean isValid = true;
         String nameRegex = "^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         if (!firstname.matches(nameRegex)) {
-            request.setAttribute("message1", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
-            System.out.println("1");
+            request.setAttribute("messagefirstname", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
             isValid = false;
         }
         if (!lastname.matches(nameRegex)) {
-            request.setAttribute("message2", "Invalid last name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
-            System.out.println("2");
+            request.setAttribute("messagelastname", "Invalid last name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
+            isValid = false;
+        }
+        if (!email.matches(emailRegex)) {
+            request.setAttribute("messageemail", "Invalid email format. Please enter a valid email address.");
             isValid = false;
         }
         if (!email.equals(user.getEmail()) && user_DAO.checkEmail(email)) {
-            request.setAttribute("message3", "Email address already exists. Please use a different email.");
-            System.out.println("3");
+            request.setAttribute("messageemail", "Email address already exists. Please use a different email.");
             isValid = false;
         }
         if (password.length() < 8 || !hasUpperCase(password) || !hasNumber(password)) {
-            request.setAttribute("message4", "Password must have at least 8 characters, 1 uppercase letter, and 1 number.");
-            System.out.println("4");
+            request.setAttribute("messagepassword", "Password must have at least 8 characters, 1 uppercase letter, and 1 number.");
+            isValid = false;
+        }
+        if (!password.equals(repassword)) {
+            request.setAttribute("messagerepassword", "Repeat password not match.");
             isValid = false;
         }
         Date dob = null;
@@ -84,25 +92,26 @@ public class EditUser extends HttpServlet {
             LocalDate today = LocalDate.now();
             if (Period.between(dobLocal, today).getYears() < 18) {
                 // User is less than 18 years old
-                request.setAttribute("message4", "You must be at least 18 years old to register.");
-                System.out.println("5");
+                request.setAttribute("messageDob", "You must be at least 18 years old to register.");
                 isValid = false;
             }
         } catch (DateTimeParseException | IllegalArgumentException e) {
             // Invalid date format or null value
-            request.setAttribute("message4", "Invalid date of birth format.");
-            System.out.println("5");
+            request.setAttribute("messageDob", "Invalid date of birth format.");
             isValid = false;
         }
 
         if (!isValid) {
             doGet(request, response);
         } else {
-            request.setAttribute("messagesuccess", "Change your profile successfully!");
-            user_DAO.Admin_EditUser(email, role, firstname, lastname, password, dob, money, Id);
+            if (user_DAO.Admin_EditUser(email, role, firstname, lastname, password, dob, money, Id)) {
+                session.setAttribute("messagesuccess", "Change profile successfully!");
+                response.sendRedirect("DashboardUser");
+            } else {
+                session.setAttribute("messagedanger", "Change profile fail!");
+                response.sendRedirect("DashboardUser");
+            }
         }
-
-        response.sendRedirect("DashboardUser");
     }
 
     private boolean hasUpperCase(String password) {
