@@ -29,11 +29,10 @@ public class ChangePassword extends HttpServlet {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
             request.setAttribute("user_Data", user_Data);
-            String activeTab = "account-change-password"; // Set active tab to Change Password
-            request.setAttribute("activeTab", activeTab);
-            request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
+            request.getRequestDispatcher("User-Password.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("login");
         }
-        response.sendRedirect("login");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -49,15 +48,19 @@ public class ChangePassword extends HttpServlet {
 
         UserDao userdao = new UserDao();
 
+        if (newpassword.length() < 8 || !hasUpperCase(newpassword) || !hasNumber(newpassword)) {
+            request.setAttribute("messagenewpassword", "Password must have at least 8 characters, 1 uppercase letter, and 1 number.");
+        }
+
         User user_Data = userdao.getUser((int) session.getAttribute("user_ID"));
         if (request.getParameter("button").equals("ChangePassword")) {
             if (!currentpassword.equals(user_Data.getPassword()) || !newpassword.equals(repassword)) {
                 if (!currentpassword.equals(user_Data.getPassword())) {
-                    request.setAttribute("messagedanger", "Old password not correct.");
+                    request.setAttribute("messagecurrentpassword", "Current password not correct.");
                     doGet(request, response);
                 }
                 if (!newpassword.equals(repassword)) {
-                    request.setAttribute("messagedanger", "Repeat password not match.");
+                    request.setAttribute("messagerepassword", "Repeat password not match.");
                     doGet(request, response);
                 }
             } else {
@@ -70,6 +73,23 @@ public class ChangePassword extends HttpServlet {
                 }
             }
         }
-        request.setAttribute("activeTab", activeTab);
+    }
+
+    private boolean hasUpperCase(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasNumber(String password) {
+        for (char c : password.toCharArray()) {
+            if (Character.isDigit(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
