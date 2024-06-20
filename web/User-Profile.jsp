@@ -1,10 +1,4 @@
-<%-- 
-    Document   : User-Profile
-    Created on : May 27, 2024, 7:39:38 PM
-    Author     : ASUS
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -127,7 +121,8 @@
         </style>
     </head>
     <body>
-        <div class="container light-style flex-grow-1 container-p-y">
+        <jsp:include page="Navbar.jsp"/>
+        <div class="container light-style flex-grow-1 container-p-y" style="padding-top: 150px">
             <h4 class="font-weight-bold py-3 mb-4">
                 Account settings
             </h4>
@@ -136,12 +131,9 @@
                     <div class="col-md-3 pt-0 d-flex flex-column">
                         <!-- List group -->
                         <div class="list-group list-group-flush account-settings-links flex-grow-1">
-                            <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">General</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-info">Info</a>
-                            <!-- <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-social-links">Social links</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-connections">Connections</a>
-                            <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications">Notifications</a> -->
+                            <a class="list-group-item list-group-item-action active" href="UserProfile">General</a>
+                            <a class="list-group-item list-group-item-action" href="ChangePassword">Change password</a>
+                            <a class="list-group-item list-group-item-action" href="#account-info">Info</a>
                         </div>
 
                         <!-- Back to Home button -->
@@ -155,7 +147,7 @@
 
                             <!--General-->
 
-                            <div class="tab-pane fade ${requestScope.activeTab == 'account-general' ? 'show active' : ''}" id="account-general">
+                            <div class="tab-pane active" id="account-general">
                                 <!--Avatar-->
                                 <form action="UserProfile" method="post" enctype="multipart/form-data">
                                     <input name="userid" type="hidden" value="${user_Data.getId()}">
@@ -171,7 +163,7 @@
                                                 Upload new photo
                                                 <input type="file" id="imageInput" name="avatar" onchange="previewAvatar()" class="account-settings-fileinput">
                                             </label> &nbsp;
-                                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+<!--                                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>-->
                                             <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
                                         </div>
                                     </div>
@@ -180,38 +172,38 @@
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control mb-1" name="first-name" value="${user_Data.getFirst_name()}">
+                                            <input type="text" class="form-control mb-1" name="first-name" id="firstName" value="${user_Data.getFirst_name()}">
                                         </div>
-                                        <c:if test="${message1 != null}">
+                                        <c:if test="${messagefirstname != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${message1}
+                                                ${messagefirstname}
                                             </div>
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" name="last-name" value="${user_Data.getLast_name()}">
+                                            <input type="text" class="form-control" name="last-name" id="lastName" value="${user_Data.getLast_name()}">
                                         </div>
-                                        <c:if test="${message2 != null}">
+                                        <c:if test="${messagelastname != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${message2}
+                                                ${messagelastname}
                                             </div>
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label">E-mail</label>
-                                            <input type="text" class="form-control mb-1" name="email" value="${user_Data.getEmail()}">
+                                            <input type="text" class="form-control mb-1" name="email" id="email" value="${user_Data.getEmail()}">
                                         </div>
-                                        <c:if test="${message3 != null}">
+                                        <c:if test="${messageemail != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${message3}
+                                                ${messageemail}
                                             </div>
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label" for="dob">Date of Birth</label>
-                                            <input type="date" class="form-control" name="dob" value="${user_Data.getDob()}" required>
+                                            <input type="date" class="form-control" name="dob" id="dob" value="${user_Data.getDob()}" required>
                                         </div>
-                                        <c:if test="${message4 != null}">
+                                        <c:if test="${messageDoB != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${message4}
+                                                ${messageDoB}
                                             </div>
                                         </c:if>
                                     </div>
@@ -225,102 +217,43 @@
                                             ${messagedanger}
                                         </div>
                                     </c:if>
-                                    <div style="margin: 0 10px 10px" class="text-right mt-3">
+                                    <div style="margin: 0 20px 10px" class="text-right mt-3">
                                         <button type="submit" name="button" value="general" class="btn btn-primary">Save changes</button>&nbsp;
-                                        <button type="button" class="btn btn-default">Cancel</button>
+<!--                                        <button type="button" class="btn btn-default" onclick="resetForm()">Cancel</button>-->
                                     </div>
                                 </form>
                             </div>
-
-                            <!--Change Password-->
-
-                            <div class="tab-pane fade ${requestScope.activeTab == 'account-change-password' ? 'show active' : ''}" id="account-change-password">
-                                <form action="ChangePassword" method="post">
-                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
-                                    <div class="card-body pb-2">
-                                        <div class="form-group">
-                                            <label class="form-label">Current password</label>
-                                            <input type="password" name="current-password" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">New password</label>
-                                            <input type="password" name="new-password" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Repeat new password</label>
-                                            <input type="password" name="re-password" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div style="margin: 0 10px 10px" class="text-right mt-3">
-                                        <button type="submit" name="button" value="ChangePassword" class="btn btn-primary">Save changes</button>&nbsp;
-                                        <button type="button" class="btn btn-default">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!--User info-->
-
-                            <div class="tab-pane fade" id="account-info">
-                                <form action="UserProfile" method="post">
-                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
-                                    <div class="card-body pb-2">
-                                        <div class="form-group">
-                                            <label class="form-label">Bio</label>
-                                            <textarea class="form-control"
-                                                      rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Birthday</label>
-                                            <input type="text" class="form-control" value="May 3, 1995">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Country</label>
-                                            <select class="custom-select">
-                                                <option>USA</option>
-                                                <option selected>Canada</option>
-                                                <option>UK</option>
-                                                <option>Germany</option>
-                                                <option>France</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Phone</label>
-                                            <input type="text" class="form-control" value="+0 (123) 456 7891">
-                                        </div>
-                                    </div>
-                                    <div style="margin: 0 10px 10px" class="text-right mt-3">
-                                        <button type="submit" name="button" value="UserInfo" class="btn btn-primary">Save changes</button>&nbsp;
-                                        <button type="button" class="btn btn-default">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-            <!--            <div class="text-right mt-3">
-                            <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-                            <button type="button" class="btn btn-default">Cancel</button>
-                        </div>-->
         </div>
+
+        <footer>
+            <div class="container">
+                <div class="col-lg-8">
+                    <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+                        Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
+                </div>
+            </div>
+        </footer>
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                                    function previewAvatar() {
-                                                        const imageInput = document.getElementById('imageInput');
-                                                        const previewImage = document.getElementById('previewImage');
+            function previewAvatar() {
+                const imageInput = document.getElementById('imageInput');
+                const previewImage = document.getElementById('previewImage');
 
-                                                        if (imageInput.files && imageInput.files[0]) {
-                                                            const reader = new FileReader();
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
 
-                                                            reader.onload = function (e) {
-                                                                previewImage.src = e.target.result;
-                                                            }
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                    }
 
-                                                            reader.readAsDataURL(imageInput.files[0]);
-                                                        }
-                                                    }
+                    reader.readAsDataURL(imageInput.files[0]);
+                }
+            }
         </script>
     </body>
 </html>
