@@ -21,7 +21,6 @@ import model.Apartment;
 import model.Apartment_Post;
 import model.Payment_method;
 import model.User;
-import java.time.LocalDate;
 
 import model.Apartment_image;
 
@@ -61,10 +60,18 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
+        User user_Data = (User) session.getAttribute("user_Data");
+
+        if (user_Data == null) {
+            request.getRequestDispatcher("Login").forward(request, response);
+        }
         ApartmentDao apartmentDao = new ApartmentDao();
-        List<Apartment> apartmentList = apartmentDao.getApartmentList(0);
+        List<Apartment> apartmentList = apartmentDao.getApartmentList(user_Data.getId());
         List<Payment_method> payment_methodsList = apartmentDao.getPayment_method_list();
+
+       
         request.setAttribute("apartmentList", apartmentList);
         request.setAttribute("payment_methodsList", payment_methodsList);
         int page = 3;
@@ -75,19 +82,12 @@ public class AddApartmentPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
         UserDao userDao = new UserDao();
         User user_Data;
-        if (session.getAttribute("user_Data") != null) {
-            //land lord
-            user_Data = (User) session.getAttribute("user_Data");
-            
-        }
-        
-        
+        user_Data = (User) session.getAttribute("user_Data");
 
         String title = request.getParameter("title");
         String description = request.getParameter("description");
@@ -124,19 +124,31 @@ public class AddApartmentPost extends HttpServlet {
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
         ap.setTotal_image(imageList.size());
         if (submit.equals("Đăng Bài")) {
-            ap.setPost_status(2);
-            Date PostStart = Date.valueOf(postStart);
-            Date PostEnd = Date.valueOf(postEnd);
-            ap.setPost_start(PostStart);
-            ap.setWeek(week);
-            ap.setPaid_for_post(pm.getPrice() * week);
-            ap.setPost_end(PostEnd);
+            if (user_Data.getMoney() >= (pm.getPrice()*week)) {
+                Date PostStart = Date.valueOf(postStart);
+                Date PostEnd = Date.valueOf(postEnd);
+                ap.setPost_end(PostEnd);
+                ap.setPost_start(PostStart);
+                ap.setWeek(week);
+                ap.setPaid_for_post(pm.getPrice() * week);
+                ap.setPost_status(2);
+                double money = user_Data.getMoney() - ap.getPaid_for_post();
+                user_Data.setMoney(money);
+                userDao.UserMoneyChange(user_Data);
+                session.setAttribute("message", "a");
+            }
+
+            if (user_Data.getMoney() < (pm.getPrice()*week)) {
+                ap.setPost_status(1);
+                session.setAttribute("message", "b");
+            }
         } else {
             ap.setPost_status(1);
+            session.setAttribute("message", "c");
+
         }
         apartmentPostDao.addApartmentPost(ap);
-        response.sendRedirect("HomePage");
-
+        request.getRequestDispatcher("ApartmentPostForLandlord").forward(request, response);
     }
 
     @Override

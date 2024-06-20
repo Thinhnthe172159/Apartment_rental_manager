@@ -211,8 +211,8 @@
                                 <div class="select">
                                     <select name="status" class="custom-select">
                                         <option style="color: black" value="0">Trạng Thái</option>
-                                        <option style="color: black"value="1">Đã có người thuê</option>
-                                        <option style="color: black"value="2">Chưa có người thuê</option>
+                                        <option style="color: black"value="2">Đã có người thuê</option>
+                                        <option style="color: black"value="1">Chưa có người thuê</option>
                                     </select>
                                 </div>
                             </div>
@@ -278,7 +278,7 @@
 
                                                                     <td>
                                                                         <ul class="list-unstyled ps-0 mb-0">
-                                                                            <li><i class=""></i> Apartment: ${ap.name}</li>
+                                                                            <li><i class=""></i> Apartment: ${ap.name} | Type: ${ap.type_id.name}</li>
                                                                             <li><i class=""></i> Address : ${ap.city},${ap.district}.${ap.commune}</li>
                                                                             <li><i class=""></i> ${ap.address}| Area: ${ap.area}m2</li>
                                                                         </ul>
@@ -286,10 +286,18 @@
 
                                                                     <td style="width: 180px;">
                                                                         <p>Status :</p>
-                                                                        <c:if test="${ap.status_apartment == 0}">
+                                                                        <c:if test="${ap.status_apartment == 1}">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                                                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                                                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                                                            </svg>
                                                                             <p>chưa có người</p>
                                                                         </c:if>
-                                                                        <c:if test="${ap.status_apartment == 1}">
+                                                                        <c:if test="${ap.status_apartment == 2}">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-check" viewBox="0 0 16 16">
+                                                                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                                                                            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                                                            </svg>
                                                                             <p>Đã có người thuê</p>
                                                                         </c:if>
                                                                     </td>
@@ -392,6 +400,10 @@
                 });
 
             }
+
+
+
+
             </script>
             <script>
                 $(document).ready(function () {
@@ -435,6 +447,20 @@
                     });
                 });
             </script> 
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                var message = '${requestScope.message}';
+               
+                    if (message === "a") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Done",
+                            text: "Bài đăng của bạn sẽ được admin phê duyệt,vui lòng đợi",
+                        });
+                   
+                }
+            </script>
 
             <script src="js/jquery.min.js"></script>
             <script src="js/bootstrap.bundle.min.js"></script>

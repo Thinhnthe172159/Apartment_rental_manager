@@ -132,7 +132,7 @@
                                                 </h3>
                                                 <br>
                                                 <h6>
-                                                    start at: ${apl.post_start}/ end: ${apl.post_end}/ limitation: ${apl.week} week/ paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
+                                                    start at: ${apl.post_start}/ end: ${apl.post_end}<br> limitation: ${apl.week} week<br> paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
@@ -163,17 +163,17 @@
                             <ul class="pagination">
                                 <c:if test="${page_index > 1}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}&status=${status}">Prev</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index-1}&status=${status}&post_type=${post_type}">Prev</a>
                                     </li>
                                 </c:if>
                                 <c:forEach items="${pageList}" var="i">
                                     <li class="page-item">
-                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}&status=${status}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
+                                        <a href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${i}&status=${status}&post_type=${post_type}" class="page-link ${i == page_index ? 'active' : ''}">${i}</a>
                                     </li>
                                 </c:forEach>
                                 <c:if test="${page_index < pageList.size()}">
                                     <li class="page-item">
-                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}&status=${status}">Next</a>
+                                        <a class="page-link" href="ApartmentPostForLandlord?name=${name}&apartmentType=${apartmentType}&type=${type}&tinh=${tinh}&quan=${quan}&phuong=${phuong}&moneyUp=${moneyUp}&moneyDown=${moneyDown}&bedroom=${bedroom}&areaUp=${areaUp}&areaDown=${areaDown}&page_index=${page_index+1}&status=${status}&post_type=${post_type}">Next</a>
                                     </li>
                                 </c:if>
                             </ul>
@@ -225,6 +225,14 @@
                                 <option value="6">Đã Thuê/(Đã Bán comming soon)</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <select    class="form-select" name="post_type"  aria-label="Default select example">
+                                <option value="0">Chọn loại bài đăng</option>
+                                <c:forEach items="${requestScope.payment_methods_list}" var="pml">
+                                    <option value="${pml.id}">VIP ${pml.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                         <input type="hidden" name="tinh" id="hidden_tinh">
                         <input type="hidden" name="quan" id="hidden_quan">
                         <input type="hidden" name="phuong" id="hidden_phuong">
@@ -249,7 +257,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="form-group">
                                     <select class="form-select" name="type">
-                                        <option value="0">Sắp xếp theo giá</option>
+                                        <option value="0">Sắp xếp giá</option>
                                         <option value="1">Tăng dần</option>
                                         <option value="2">Giảm dần</option>
                                     </select>
@@ -441,6 +449,31 @@
                                                         }
                         </script>
 
+                        <script>
+                          var message = '${requestScope.message}';
+                          if (message) {
+                              if (message === 'b') {
+                                  Swal.fire({
+                                      icon: "error",
+                                      title: "Oops...",
+                                      text: "Tài khoản của bạn không đủ để chi cho bài đăng này, Vui lòng nạp thêm tiền vào tài khoản! Bài đăng của bạn sẽ được lưu nháp lại",
+                                  });
+                              } else if (message === 'a') {
+                                  Swal.fire({
+                                      title: "Done!",
+                                      text: "Đăng bài thành công, bài đăng của bạn sẽ được công khai trong vài phút",
+                                      icon: "success"
+                                  });
+                              } else if (message === 'c') {
+                                  Swal.fire({
+                                      title: "Done!",
+                                      text: "Lưu nháp bài đăng thành công",
+                                      icon: "success"
+                                  });
+                              }
+                          }
+                        </script>
+
 
                         <div class="form-group mb-0">
                             <button type="submit" class="button-md button-theme btn-3 w-100">Search</button>
@@ -477,46 +510,46 @@
     <script src="js/sidebar.js"></script>
     <script src="js/app.js"></script>
     <script>
-                                                        $(document).ready(function () {
-                                                            // Fetch provinces
-                                                            $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
-                                                                if (data_tinh.error == 0) {
-                                                                    $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                                                                        $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
-                                                                    });
-                                                                    $("#tinh").change(function (e) {
-                                                                        var idtinh = $(this).val();
-                                                                        $("#hidden_tinh").val($("#tinh option:selected").text());
-                                                                        // Fetch districts
-                                                                        $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
-                                                                            if (data_quan.error == 0) {
-                                                                                $("#quan").html('<option value="0">Quận Huyện</option>');
-                                                                                $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                                                $.each(data_quan.data, function (key_quan, val_quan) {
-                                                                                    $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-                                                                                });
-                                                                                // Fetch wards
-                                                                                $("#quan").change(function (e) {
-                                                                                    var idquan = $(this).val();
-                                                                                    $("#hidden_quan").val($("#quan option:selected").text());
-                                                                                    $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
-                                                                                        if (data_phuong.error == 0) {
-                                                                                            $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                                                            $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                                                                                $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                                                                                            });
-                                                                                            $("#phuong").change(function (e) {
-                                                                                                $("#hidden_phuong").val($("#phuong option:selected").text());
-                                                                                            });
-                                                                                        }
-                                                                                    });
-                                                                                });
-                                                                            }
-                                                                        });
-                                                                    });
-                                                                }
-                                                            });
-                                                        });
+                          $(document).ready(function () {
+                              // Fetch provinces
+                              $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                                  if (data_tinh.error == 0) {
+                                      $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                                          $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                                      });
+                                      $("#tinh").change(function (e) {
+                                          var idtinh = $(this).val();
+                                          $("#hidden_tinh").val($("#tinh option:selected").text());
+                                          // Fetch districts
+                                          $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                              if (data_quan.error == 0) {
+                                                  $("#quan").html('<option value="0">Quận Huyện</option>');
+                                                  $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                  $.each(data_quan.data, function (key_quan, val_quan) {
+                                                      $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                                  });
+                                                  // Fetch wards
+                                                  $("#quan").change(function (e) {
+                                                      var idquan = $(this).val();
+                                                      $("#hidden_quan").val($("#quan option:selected").text());
+                                                      $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                                          if (data_phuong.error == 0) {
+                                                              $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                              $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                                  $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                              });
+                                                              $("#phuong").change(function (e) {
+                                                                  $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                              });
+                                                          }
+                                                      });
+                                                  });
+                                              }
+                                          });
+                                      });
+                                  }
+                              });
+                          });
     </script> 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

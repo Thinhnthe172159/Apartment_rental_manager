@@ -113,6 +113,7 @@
                             }
                         </style>
                         <script>
+                            
                             $(document).ready(function () {
                                 // Fetch provinces
                                 $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
@@ -153,6 +154,7 @@
                                     }
                                 });
                             });
+                            
                         </script>
 
                         <table class="col-md-7">

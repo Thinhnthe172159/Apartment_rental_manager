@@ -84,6 +84,9 @@ public class PaymentServlet extends HttpServlet {
                 if(money >= 20000000){
                     u.setMoney(u.getMoney() + money+(money*0.2));
                 }
+                if(money>= 50000 && money < 1000000){
+                    u.setMoney(u.getMoney()+money);
+                }
                
                 userDao.UserMoneyChange(u);
                 System.out.println("Da add giao dich vao data");

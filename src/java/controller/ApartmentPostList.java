@@ -87,7 +87,7 @@ public class ApartmentPostList extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3,0,0
         );
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);

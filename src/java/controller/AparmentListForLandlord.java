@@ -12,12 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_image;
 import model.Apartment_type;
+import model.User;
 
 /**
  *
@@ -66,6 +68,15 @@ public class AparmentListForLandlord extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+
+        User user_Data = (User) session.getAttribute("user_Data");
+
+        if (user_Data == null) {
+            request.getRequestDispatcher("Login").forward(request, response);
+        }
+        
         ApartmentDao apartmentDao = new ApartmentDao();
         String page_index = request.getParameter("page_index");
         String name = request.getParameter("name");
@@ -74,21 +85,21 @@ public class AparmentListForLandlord extends HttpServlet {
         String city = request.getParameter("tinh");
         String district = request.getParameter("quan");
         String commune = request.getParameter("phuong");
-        String names= (name == null || name.isEmpty())?null:name;
-        String tinh= (city == null || city.isEmpty())?null:city;
-        String quan= (district == null || district.isEmpty())?null:district;
-        String huyen= (commune == null || commune.isEmpty())?null:commune;
+        String names = (name == null || name.isEmpty()) ? null : name;
+        String tinh = (city == null || city.isEmpty()) ? null : city;
+        String quan = (district == null || district.isEmpty()) ? null : district;
+        String huyen = (commune == null || commune.isEmpty()) ? null : commune;
 
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
         int pageSize = 6;
-        int totalSize = apartmentDao.getApartmentListSize(2, names, (Apartment_type_raw == null || Apartment_type_raw.isEmpty()) ? 0 : Integer.parseInt(Apartment_type_raw), tinh, quan, huyen, (status_raw == null || status_raw.isEmpty()) ? 0 : Integer.parseInt(status_raw));
+        int totalSize = apartmentDao.getApartmentListSize(user_Data.getId(), names, (Apartment_type_raw == null || Apartment_type_raw.isEmpty()) ? 0 : Integer.parseInt(Apartment_type_raw), tinh, quan, huyen, (status_raw == null || status_raw.isEmpty()) ? 0 : Integer.parseInt(status_raw));
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             pagelist.add(i);
         }
-        List<Apartment> apartmentList = apartmentDao.getApartmentList(2, names, (Apartment_type_raw == null || Apartment_type_raw.isEmpty()) ? 0 : Integer.parseInt(Apartment_type_raw),tinh,quan,huyen,(status_raw == null || status_raw.isEmpty()) ? 0 : Integer.parseInt(status_raw), pageIndex, pageSize);
+        List<Apartment> apartmentList = apartmentDao.getApartmentList(user_Data.getId(), names, (Apartment_type_raw == null || Apartment_type_raw.isEmpty()) ? 0 : Integer.parseInt(Apartment_type_raw), tinh, quan, huyen, (status_raw == null || status_raw.isEmpty()) ? 0 : Integer.parseInt(status_raw), pageIndex, pageSize);
         request.setAttribute("apartmentList", apartmentList);
         request.setAttribute("name", names);
         request.setAttribute("Apartment_type", Apartment_type_raw);
