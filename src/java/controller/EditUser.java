@@ -95,6 +95,11 @@ public class EditUser extends HttpServlet {
                 request.setAttribute("messageDob", "You must be at least 18 years old to register.");
                 isValid = false;
             }
+            if (Period.between(dobLocal, today).getYears() > 120) {
+                // User is less than 18 years old
+                request.setAttribute("messageDob", "Date of birth must be within a reasonable range.");
+                isValid = false;
+            }
         } catch (DateTimeParseException | IllegalArgumentException e) {
             // Invalid date format or null value
             request.setAttribute("messageDob", "Invalid date of birth format.");
