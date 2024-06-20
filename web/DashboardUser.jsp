@@ -3,7 +3,7 @@
     Created on : Jun 10, 2024, 4:08:21 PM
     Author     : ASUS
 --%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -447,7 +447,7 @@
                                                             <td>${u.email}</td>
                                                             <td>${u.role_id.role_name}</td>
                                                             <td>${u.dob}</td>
-                                                            <td>$ ${u.money}</td>
+                                                            <td><fmt:formatNumber value="${u.money}" pattern="#,###"/></td>
                                                             <td>
                                                                 <c:choose>
                                                                     <c:when test="${u.status eq 0}">
