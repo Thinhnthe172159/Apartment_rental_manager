@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.Collection;
@@ -36,6 +37,7 @@ public class AddApartments extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String UPLOAD_DIR = "uploads";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,9 +54,17 @@ public class AddApartments extends HttpServlet {
             out.println("</html>");
         }
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
+        User user_Data = (User) session.getAttribute("user_Data");
+
+        if (user_Data == null) {
+            request.getRequestDispatcher("Login").forward(request, response);
+        }
         ApartmentDao apartmentDao = new ApartmentDao();
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         List<Property> propertys_List_livingroom = apartmentDao.getPropertyList(1);
@@ -67,7 +77,7 @@ public class AddApartments extends HttpServlet {
         request.setAttribute("propertys_List_bedroom", propertys_List_bedroom);
         request.setAttribute("propertys_List_bathroom", propertys_List_bathroom);
         request.setAttribute("propertys_List_kitchen", propertys_List_kitchen);
-        
+
         int page = 3;
         request.setAttribute("page", page);
 
@@ -111,10 +121,10 @@ public class AddApartments extends HttpServlet {
         String[] property = request.getParameterValues("property");
         PrintWriter out = response.getWriter();
         Apartment ap = apartmentDao.getLatedApartment();
-        if (property !=null) {
+        if (property != null) {
             for (String item : property) {
-                 out.print(item);
-                 apartmentDao.input_ApartApartment_properties(ap.getId(),Integer.parseInt(item));
+                out.print(item);
+                apartmentDao.input_ApartApartment_properties(ap.getId(), Integer.parseInt(item));
             }
         }
 
@@ -129,7 +139,7 @@ public class AddApartments extends HttpServlet {
         for (Part part : parts) {
             String fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.isEmpty()) {
-                fileName = ap.getId()+"_"+ap.getLandLord_id().getId()+"_"+fileName;
+                fileName = ap.getId() + "_" + ap.getLandLord_id().getId() + "_" + fileName;
                 part.write(uploadFilePath + File.separator + fileName);
                 ai = new Apartment_image(0, fileName, ap);
                 apartmentDao.insertApartmentImage(ai);

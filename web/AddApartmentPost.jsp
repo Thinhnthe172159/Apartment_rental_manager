@@ -48,7 +48,7 @@
                             <select required name="apartment" class="form-select" aria-label="Default select example">
                                 <option value="">Lựa chọn căn hộ mà bạn muốn cho thuê</option>
                                 <c:forEach items="${requestScope.apartmentList}" var="ap">
-                                    <option value="${ap.id}">${ap.name}</option>
+                                    <option value="${ap.id}">${ap.name} <c:if test="${ap.status_apartment == 1}"></c:if></option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -129,7 +129,7 @@
                     <div class="col-md-12 d-flex justify-content-center">
                         <input type="submit" name="submit" value="Đăng Bài"class="btn btn-primary btn-lg">
                         <input type="submit" name="submit" value="Lưu nháp"class="btn btn-secondary btn-lg ms-3">
-                       
+
                     </div><br><br><br> *Lưu ý nếu như bạn lựa chọn lưu nháp thì thời gian của bài đăng của bạn sẽ không được ghi nhận!
                     <br><br>
                 </form>
@@ -186,7 +186,7 @@
                             packageDescription.style.color = ""; // default color
                             break;
                     }
-                    
+
 
                     packageDescription.textContent = description ? "Mô tả: " + description : "";
                     if (!isNaN(pricePerWeek) && !isNaN(selectedWeeks)) {
@@ -220,7 +220,19 @@
                 });
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            var message = '${requestScope.message}';
 
+            if (message === "b") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oop...",
+                    text: "Tài khoản của bạn không đủ để thanh toán cho bài đăng,vui lòng nạp thêm tiền vào tài khoản!",
+                });
+
+            }
+        </script>
 
 
 

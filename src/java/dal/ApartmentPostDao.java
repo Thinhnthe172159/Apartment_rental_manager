@@ -204,7 +204,8 @@ public class ApartmentPostDao extends DBContext {
     }
 
     // list apartment size
-    public int getApartmentPostSize(String name,
+    public int getApartmentPostSize(
+            String name,
             String city,
             String district,
             String commune,
@@ -214,7 +215,9 @@ public class ApartmentPostDao extends DBContext {
             double priceDown,
             int numberOfBedroom,
             int apartment_type,
-            int status) {
+            int status,
+            int landlord_id,
+            int payment_id) {
         int result = 0;
         String sql = "SELECT COUNT([id]) AS list_size\n"
                 + "FROM [ams].[dbo].[Apartment_Posts]\n"
@@ -254,6 +257,12 @@ public class ApartmentPostDao extends DBContext {
 
         if (status != 0) {
             sql += " and [post_status] = " + status;
+        }
+        if (landlord_id != 0) {
+            sql += " and [landlord_id] = " + landlord_id;
+        }
+        if(payment_id != 0){
+            sql+= " and [payment_id] =" + payment_id;
         }
 
         try {
@@ -377,9 +386,8 @@ public class ApartmentPostDao extends DBContext {
         System.out.println(sql);
         return list;
     }
-    
-    
-     public List<Apartment_Post> getApartment_Post_List2(String name,
+
+    public List<Apartment_Post> getApartment_Post_List2(String name,
             String city,
             String district,
             String commune,
@@ -392,7 +400,7 @@ public class ApartmentPostDao extends DBContext {
             int type,
             int status,
             int pageNumber,
-            int pageSize, int payment_id) {
+            int pageSize, int payment_id, int landlord_id) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
 
@@ -431,6 +439,9 @@ public class ApartmentPostDao extends DBContext {
         }
         if (payment_id != 0) {
             sql += " and [payment_id] = " + payment_id;
+        }
+        if (landlord_id != 0) {
+            sql += " and [landlord_id] = " + landlord_id;
         }
 
         switch (type) {
