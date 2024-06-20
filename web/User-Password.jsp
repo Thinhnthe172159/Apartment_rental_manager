@@ -1,4 +1,10 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Document   : User-Profile
+    Created on : May 27, 2024, 7:39:38 PM
+    Author     : ASUS
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -131,9 +137,9 @@
                     <div class="col-md-3 pt-0 d-flex flex-column">
                         <!-- List group -->
                         <div class="list-group list-group-flush account-settings-links flex-grow-1">
-                            <a class="list-group-item list-group-item-action active" href="UserProfile">General</a>
-                            <a class="list-group-item list-group-item-action" href="ChangePassword">Change password</a>
-                            <a class="list-group-item list-group-item-action" href="#account-info">Info</a>
+                            <a class="list-group-item list-group-item-action"  href="UserProfile">General</a>
+                            <a class="list-group-item list-group-item-action active"  href="ChangePassword">Change password</a>
+                            <a class="list-group-item list-group-item-action"  href="#account-info">Info</a>
                         </div>
 
                         <!-- Back to Home button -->
@@ -145,65 +151,37 @@
                     <div class="col-md-9">
                         <div class="tab-content">
 
-                            <!--General-->
+                            <!--Change Password-->
 
-                            <div class="tab-pane active" id="account-general">
-                                <!--Avatar-->
-                                <form action="UserProfile" method="post" enctype="multipart/form-data">
+                            <div class="tab-pane active" id="account-change-password">
+                                <form action="ChangePassword" method="post">
                                     <input name="userid" type="hidden" value="${user_Data.getId()}">
-                                    <div class="card-body media align-items-center">
-                                        <img src="img/User/${user_Data.getImage()}" 
-                                             alt="Error" 
-                                             class="d-block ui-w-80" 
-                                             id="previewImage"
-                                             onerror="this.onerror=null; this.src='${user_Data.getImage()}';">
-
-                                        <div class="media-body ml-4">
-                                            <label class="btn btn-outline-primary">
-                                                Upload new photo
-                                                <input type="file" id="imageInput" name="avatar" onchange="previewAvatar()" class="account-settings-fileinput">
-                                            </label> &nbsp;
-<!--                                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>-->
-                                            <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                                        </div>
-                                    </div>
-                                    <hr class="border-light m-0">
-                                    <!--General Info-->
-                                    <div class="card-body">
+                                    <div class="card-body pb-2">
                                         <div class="form-group">
-                                            <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control mb-1" name="first-name" id="firstName" value="${user_Data.getFirst_name()}">
+                                            <label class="form-label">Current password</label>
+                                            <input type="password" name="current-password" class="form-control">
                                         </div>
-                                        <c:if test="${messagefirstname != null}">
+                                        <c:if test="${messagecurrentpassword != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${messagefirstname}
+                                                ${messagecurrentpassword}
                                             </div>
                                         </c:if>
                                         <div class="form-group">
-                                            <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" name="last-name" id="lastName" value="${user_Data.getLast_name()}">
+                                            <label class="form-label">New password</label>
+                                            <input type="password" name="new-password" class="form-control">
                                         </div>
-                                        <c:if test="${messagelastname != null}">
+                                        <c:if test="${messagenewpassword != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${messagelastname}
+                                                ${messagenewpassword}
                                             </div>
                                         </c:if>
                                         <div class="form-group">
-                                            <label class="form-label">E-mail</label>
-                                            <input type="text" class="form-control mb-1" name="email" id="email" value="${user_Data.getEmail()}">
+                                            <label class="form-label">Repeat new password</label>
+                                            <input type="password" name="re-password" class="form-control">
                                         </div>
-                                        <c:if test="${messageemail != null}">
+                                        <c:if test="${messagerepassword != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${messageemail}
-                                            </div>
-                                        </c:if>
-                                        <div class="form-group">
-                                            <label class="form-label" for="dob">Date of Birth</label>
-                                            <input type="date" class="form-control" name="dob" id="dob" value="${user_Data.getDob()}" required>
-                                        </div>
-                                        <c:if test="${messageDoB != null}">
-                                            <div style="width: 500px" class="alert alert-danger" role="alert">
-                                                ${messageDoB}
+                                                ${messagerepassword}
                                             </div>
                                         </c:if>
                                     </div>
@@ -217,12 +195,49 @@
                                             ${messagedanger}
                                         </div>
                                     </c:if>
-                                    <div style="margin: 0 20px 10px" class="text-right mt-3">
-                                        <button type="submit" name="button" value="general" class="btn btn-primary">Save changes</button>&nbsp;
-<!--                                        <button type="button" class="btn btn-default" onclick="resetForm()">Cancel</button>-->
+                                    <div style="margin: 0 10px 10px" class="text-right mt-3">
+                                        <button type="submit" name="button" value="ChangePassword" class="btn btn-primary">Save changes</button>&nbsp;
                                     </div>
                                 </form>
                             </div>
+
+                            <!--User info-->
+
+                            <div class="tab-pane fade" id="account-info">
+                                <form action="UserProfile" method="post">
+                                    <input name="userid" type="hidden" value="${user_Data.getId()}">
+                                    <div class="card-body pb-2">
+                                        <div class="form-group">
+                                            <label class="form-label">Bio</label>
+                                            <textarea class="form-control"
+                                                      rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Birthday</label>
+                                            <input type="text" class="form-control" value="May 3, 1995">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Country</label>
+                                            <select class="custom-select">
+                                                <option>USA</option>
+                                                <option selected>Canada</option>
+                                                <option>UK</option>
+                                                <option>Germany</option>
+                                                <option>France</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Phone</label>
+                                            <input type="text" class="form-control" value="+0 (123) 456 7891">
+                                        </div>
+                                    </div>
+                                    <div style="margin: 0 10px 10px" class="text-right mt-3">
+                                        <button type="submit" name="button" value="UserInfo" class="btn btn-primary">Save changes</button>&nbsp;
+                                        <button type="button" class="btn btn-default">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -233,6 +248,7 @@
             <div class="container">
                 <div class="col-lg-8">
                     <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved. 
+
                         Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a> Distribution: <a href="https://themewagon.com">ThemeWagon</a></p>
                 </div>
             </div>
@@ -240,20 +256,20 @@
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            function previewAvatar() {
-                const imageInput = document.getElementById('imageInput');
-                const previewImage = document.getElementById('previewImage');
+                                                    function previewAvatar() {
+                                                        const imageInput = document.getElementById('imageInput');
+                                                        const previewImage = document.getElementById('previewImage');
 
-                if (imageInput.files && imageInput.files[0]) {
-                    const reader = new FileReader();
+                                                        if (imageInput.files && imageInput.files[0]) {
+                                                            const reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        previewImage.src = e.target.result;
-                    }
+                                                            reader.onload = function (e) {
+                                                                previewImage.src = e.target.result;
+                                                            }
 
-                    reader.readAsDataURL(imageInput.files[0]);
-                }
-            }
+                                                            reader.readAsDataURL(imageInput.files[0]);
+                                                        }
+                                                    }
         </script>
     </body>
 </html>

@@ -37,9 +37,7 @@ public class UserProfile extends HttpServlet {
         if (session.getAttribute("user_ID") != null) {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
-            request.setAttribute("user_Data", user_Data);
-            String activeTab = "account-general"; // Default active tab
-            request.setAttribute("activeTab", activeTab);
+            session.setAttribute("user_Data", user_Data);
             request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
         } else {
             response.sendRedirect("Login");
@@ -66,15 +64,15 @@ public class UserProfile extends HttpServlet {
         boolean isValid = true;
         String nameRegex = "^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$";
         if (!firstname.matches(nameRegex)) {
-            request.setAttribute("message1", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
+            request.setAttribute("messagefirstname", "Invalid first name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
             isValid = false;
         }
         if (!lastname.matches(nameRegex)) {
-            request.setAttribute("message2", "Invalid last name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
+            request.setAttribute("messagelastname", "Invalid last name. Only alphabetic characters, hyphens, and apostrophes are allowed.");
             isValid = false;
         }
         if (!email.equals(user_Data.getEmail()) && userdao.checkEmail(email)) {
-            request.setAttribute("message3", "Email address already exists. Please use a different email.");
+            request.setAttribute("messageemail", "Email address already exists. Please use a different email.");
             isValid = false;
         }
 
@@ -85,12 +83,12 @@ public class UserProfile extends HttpServlet {
             LocalDate today = LocalDate.now();
             if (Period.between(dobLocal, today).getYears() < 18) {
                 // User is less than 18 years old
-                request.setAttribute("message4", "You must be at least 18 years old to register.");
+                request.setAttribute("messageDoB", "You must be at least 18 years old to register.");
                 isValid = false;
             }
         } catch (DateTimeParseException | IllegalArgumentException e) {
             // Invalid date format or null value
-            request.setAttribute("message4", "Invalid date of birth format.");
+            request.setAttribute("messageDoB", "Invalid date of birth format.");
             isValid = false;
         }
 
@@ -117,15 +115,12 @@ public class UserProfile extends HttpServlet {
             if (!isValid) {
                 doGet(request, response);
             } else {
-                request.setAttribute("messagesuccess", "Change your profile successfully!");
                 userdao.UpdateGeneralProfile(email, firstname, lastname, dob, fileName, user_ID);
+                request.setAttribute("messagesuccess", "Change your profile successfully!"); 
+                doGet(request, response);
             }
-//            part.write(filePath);
         }
-
-        request.setAttribute("activeTab", activeTab); // Set the active tab attribute
-//        response.sendRedirect("UserProfile");
-        doGet(request, response);
+        
     }
 
     private String getFileName(Part part) {
