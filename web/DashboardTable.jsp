@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="dashboard/assets/vendors/flag-icon-css/css/flag-icon.min.css" />
         <link rel="stylesheet" href="dashboard/assets/vendors/css/vendor.bundle.base.css" />
         <link rel="stylesheet" href="dashboard/assets/css/style.css" />
-        <link rel="shortcut icon" href="dashboard/assets/images/favicon.png" />
+        <link rel="shortcut icon" href="img/logoWeb.png" />
     </head>
     <body>
         <div class="container-scroller">

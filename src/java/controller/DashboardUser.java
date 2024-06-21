@@ -32,11 +32,22 @@ public class DashboardUser extends HttpServlet {
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
             ArrayList<User> user_List = user_DAO.getUserList();
 
-            request.setAttribute("user_Data", user_Data);
+            session.setAttribute("user_Data", user_Data);
             request.setAttribute("user_List", user_List);
+            String successMessage = (String) session.getAttribute("messagesuccess");
+            String errorMessage = (String) session.getAttribute("messagedanger");
+            if (successMessage != null) {
+                request.setAttribute("messagesuccess", successMessage);
+                session.removeAttribute("messagesuccess");
+            }
+            if (errorMessage != null) {
+                request.setAttribute("messagedanger", errorMessage);
+                session.removeAttribute("messagedanger");
+            }
+            request.getRequestDispatcher("DashboardUser.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("Login");
         }
-
-        request.getRequestDispatcher("DashboardUser.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

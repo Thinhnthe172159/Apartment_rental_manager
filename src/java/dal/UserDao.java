@@ -268,33 +268,35 @@ public class UserDao extends DBContext {
         return false;
     }
 
-    public ArrayList<User> getUserList() {
-        ArrayList<User> user_List = new ArrayList<>();
-        try {
-            String strSQL = "SELECT u.id, u.email, u.password, u.role_id, u.status, u.first_name, u.last_name, u.dob, u.image, u.money, r.role_name "
-                    + "FROM [ams].[dbo].[User] u "
-                    + "JOIN [ams].[dbo].[Role] r ON u.role_id = r.id";
-            pstm = cnn.prepareStatement(strSQL);
-            rs = pstm.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String email = rs.getString("email");
-                int roleId = rs.getInt("role_id");
-                String roleName = rs.getString("role_name");
-                int status = rs.getInt("status");
-                String first_name = rs.getString("first_name");
-                String last_name = rs.getString("last_name");
-                Date dob = rs.getDate("dob");
-                String image = rs.getString("image");
-                double money = rs.getDouble("money");
-                Role role = new Role(roleId, roleName);
-                user_List.add(new User(id, email, role, status, first_name, last_name, dob, image, money));
-            }
-        } catch (SQLException e) {
-            System.out.println("getUserList:" + e.getMessage());
+public ArrayList<User> getUserList() {
+    ArrayList<User> user_List = new ArrayList<>();
+    try {
+        String strSQL = "SELECT u.id, u.email, u.password, u.role_id, u.status, u.first_name, u.last_name, u.dob, u.image, u.money, r.role_name "
+                      + "FROM [ams].[dbo].[User] u "
+                      + "JOIN [ams].[dbo].[Role] r ON u.role_id = r.id "
+                      + "WHERE u.role_id != 1";
+        pstm = cnn.prepareStatement(strSQL);
+        rs = pstm.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String email = rs.getString("email");
+            int roleId = rs.getInt("role_id");
+            String roleName = rs.getString("role_name");
+            int status = rs.getInt("status");
+            String first_name = rs.getString("first_name");
+            String last_name = rs.getString("last_name");
+            Date dob = rs.getDate("dob");
+            String image = rs.getString("image");
+            double money = rs.getDouble("money");
+            Role role = new Role(roleId, roleName);
+            user_List.add(new User(id, email, role, status, first_name, last_name, dob, image, money));
         }
-        return user_List;
+    } catch (SQLException e) {
+        System.out.println("getUserList: " + e.getMessage());
     }
+    return user_List;
+}
+
 
     // nạp vip
     public void UserMoneyChange(User u) {

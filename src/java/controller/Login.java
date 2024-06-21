@@ -84,12 +84,15 @@ public class Login extends HttpServlet {
         if (user_DAO.checkLogin(email, password)) {
             User user_Data = user_DAO.loginUser(email, password);
 
+            if (user_Data.getStatus() == 0) {
             int user_ID = user_Data.getId();
             session.setAttribute("user_ID", user_ID);
             // Redirect to the home page
             response.sendRedirect("HomePage");
-//            request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
-
+            } else {
+                request.setAttribute("message", "Login fail. Your account is blocked.");
+                doGet(request, response);
+            }
         } else {
             // Login fail --> Di chuyen ve login
             request.setAttribute("message", "Login fail. Try again.");

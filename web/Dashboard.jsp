@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="dashboard/assets/vendors/font-awesome/css/font-awesome.min.css" />
         <link rel="stylesheet" href="dashboard/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
         <link rel="stylesheet" href="dashboard/assets/css/style.css" />
-        <link rel="shortcut icon" href="dashboard/assets/images/favicon.png" />
+        <link rel="shortcut icon" href="img/logoWeb.png" />
     </head>
     <body>
         <div class="container-scroller">
@@ -242,8 +242,6 @@
                                         <span class="profile-name">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
                                 </a>
                                 <div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
-<!--                                    <a class="dropdown-item" href="#">
-                                        <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log </a>-->
                                     <a class="dropdown-item" href="Logout">
                                         <i class="mdi mdi-logout mr-2 text-primary"></i> Signout </a>
                                 </div>
