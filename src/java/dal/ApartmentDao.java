@@ -441,10 +441,10 @@ public class ApartmentDao extends DBContext {
                 + "           ,[area]\n"
                 + "           ,[number_of_bedroom]\n"
                 + "           ,[status_apartment]\n"
-                + "           ,[landlord_id]\n"
-                + "           ,[tenant_id])\n"
+                + "           ,[landlord_id])\n"
+               // + "           ,[tenant_id])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, a.getName());
@@ -458,7 +458,7 @@ public class ApartmentDao extends DBContext {
             st.setInt(9, a.getNumber_of_bedroom());
             st.setInt(10, a.getStatus_apartment());
             st.setInt(11, a.getLandLord_id().getId());
-            st.setInt(12, a.getTenant_id().getId());
+            //st.setInt(12, a.getTenant_id().getId());
 
             st.executeUpdate();
         } catch (SQLException e) {
@@ -733,11 +733,12 @@ public class ApartmentDao extends DBContext {
     }
 
     // get newest apartment
-    public Apartment getLatedApartment() {
-        String sql = "SELECT top 1 * from [dbo].[Aparment]\n"
+    public Apartment getLatedApartment(int landlord_id) {
+        String sql = "SELECT top 1 * from [dbo].[Aparment] where [landlord_id] = ? \n"
                 + "order by [id] desc";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, landlord_id);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Apartment a = new Apartment();
@@ -779,7 +780,7 @@ public class ApartmentDao extends DBContext {
                 + "      ,[number_of_bedroom] =?\n"
                 + "      ,[status_apartment] = ?\n"
                 + "      ,[landlord_id] = ?\n"
-                + "      ,[tenant_id] = ?\n"
+              //  + "      ,[tenant_id] = ?\n"
                 + " WHERE [id] = ?";
 
         try {
@@ -795,8 +796,8 @@ public class ApartmentDao extends DBContext {
             st.setInt(9, a.getNumber_of_bedroom());
             st.setInt(10, a.getStatus_apartment());
             st.setInt(11, a.getLandLord_id().getId());
-            st.setInt(12, a.getTenant_id().getId());
-            st.setInt(13, id);
+            //st.setInt(12, a.getTenant_id().getId());
+            st.setInt(12, id);
             st.executeUpdate();
         } catch (SQLException e) {
 
