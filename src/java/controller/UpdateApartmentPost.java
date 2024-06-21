@@ -14,9 +14,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import javax.print.attribute.standard.Chromaticity;
 import model.Apartment;
 import model.Apartment_Post;
 import model.Apartment_image;
@@ -98,6 +101,8 @@ public class UpdateApartmentPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
         ApartmentDao apartmentDao = new ApartmentDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
         UserDao userDao = new UserDao();
@@ -120,7 +125,7 @@ public class UpdateApartmentPost extends HttpServlet {
         Apartment a = apartmentDao.getApartment((apartment_id == null) ? 0 : Integer.parseInt(apartment_id));
         ap.setApartment_id(a);
         Payment_method pm = apartmentDao.getPayment_method((payment_id == null) ? 0 : Integer.parseInt(payment_id));
-        ap.setPayment_id(pm);
+
         User user = userDao.getUser(a.getLandLord_id().getId());
         ap.setLandlord_id(user);
         Apartment_image ai = apartmentDao.get_First_Apartment_Image(a.getId());
@@ -137,32 +142,59 @@ public class UpdateApartmentPost extends HttpServlet {
         ap.setApartment_name(a.getName());
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(a.getId());
         ap.setTotal_image(imageList.size());
-
+        LocalDate current = LocalDate.now();
         Date post_Start, post_End;
+
+        double currentPayment = ap.getPaid_for_post();
+        double newPayment = pm.getPrice() * week;
+        double moneyReturn = 0.0;
+        double moneyPass = 0.0;
+
         if (week != 0) {
+            LocalDate pStart = ap.getPost_start().toLocalDate();
+            int daysPassed = (int) ChronoUnit.DAYS.between(pStart, current);
+
+            // Calculate the refund for the remaining time
+            if (pStart.isBefore(current)) {
+                moneyReturn = currentPayment - ((pm.getPrice() / 7) * daysPassed);
+                moneyPass = currentPayment - moneyReturn;
+            } else {
+                moneyReturn = currentPayment;
+            }
+
+            if ((user.getMoney() + moneyReturn) < newPayment) {
+                session.setAttribute("message", "b"); // Not enough balance
+                request.getRequestDispatcher("ApartmentPostForLandlord").forward(request, response);
+                return;
+            }
+
+            ap.setPaid_for_post(moneyPass + newPayment);
+            user.setMoney((user.getMoney() + moneyReturn) - newPayment);
+            userDao.UserMoneyChange(user);
+
+           
+            session.removeAttribute("user_Data");
+            session.setAttribute("user_Data", user);
+            session.setAttribute("message", "a"); // Payment successful
+
             post_End = Date.valueOf(postEnd);
             post_Start = Date.valueOf(postStart);
             ap.setPost_start(post_Start);
             ap.setPost_end(post_End);
             ap.setWeek(week);
-            ap.setPaid_for_post(pm.getPrice() * week);
+            ap.setPayment_id(pm);
         } else {
-            ap.setPost_start(ap.getPost_start());
-            ap.setPost_end(ap.getPost_end());
-            ap.setPaid_for_post(ap.getPaid_for_post());
-            ap.setWeek(ap.getWeek());
+            session.setAttribute("message", "d"); // No changes to payment method or duration
         }
-        
-       
+
         if (submit.equals("Cập Nhật")) {
             ap.setPost_status(ap.getPost_status());
         } else {
-            ap.setPost_status(2);
+            ap.setPost_status(2); // Assuming 2 means published
         }
 
         apartmentPostDao.updateApartmentPost(ap, ap.getId());
         response.sendRedirect("ApartmentPostForLandlord");
-
     }
 
     /**

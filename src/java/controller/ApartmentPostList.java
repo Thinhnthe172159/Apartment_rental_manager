@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import model.Apartment_Post;
 import model.Apartment_type;
@@ -81,14 +83,18 @@ public class ApartmentPostList extends HttpServlet {
 
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         request.setAttribute("apartment_types_list", apartment_types_list);
-
+        LocalDate today = LocalDate.now();
+        Date current = Date.valueOf(today);
         int totalSize = apartmentPostDao.getApartmentPostSize(
                 (title_name == null || title_name.isEmpty()) ? null : title_name,
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3,0,0
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3,0,0,current
         );
+        
+        
+        
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
@@ -101,7 +107,7 @@ public class ApartmentPostList extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 3, pageIndex, pageSize,0
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 3, pageIndex, pageSize,0,current
         );
 
         request.setAttribute("pageList", pagelist);
