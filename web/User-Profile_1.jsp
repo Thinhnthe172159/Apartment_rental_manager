@@ -133,7 +133,7 @@
                         <div class="list-group list-group-flush account-settings-links flex-grow-1">
                             <a class="list-group-item list-group-item-action active" href="UserProfile">General</a>
                             <a class="list-group-item list-group-item-action" href="ChangePassword">Change password</a>
-                            <a class="list-group-item list-group-item-action" href="User-Profile_1.jsp">Info</a>
+                            <a class="list-group-item list-group-item-action" href="#account-info">Info</a>
                         </div>
 
                         <!-- Back to Home button -->
@@ -149,7 +149,7 @@
 
                             <div class="tab-pane active" id="account-general">
                                 <!--Avatar-->
-                                <form action="UserProfile" method="post" enctype="multipart/form-data">
+                                <!--<form action="UserProfile" method="post" enctype="multipart/form-data">-->
                                     <input name="userid" type="hidden" value="${user_Data.getId()}">
                                     <div class="card-body media align-items-center">
                                         <img src="img/User/${user_Data.getImage()}" 
@@ -158,21 +158,21 @@
                                              id="previewImage"
                                              onerror="this.onerror=null; this.src='${user_Data.getImage()}';">
 
-                                        <div class="media-body ml-4">
+<!--                                        <div class="media-body ml-4">
                                             <label class="btn btn-outline-primary">
                                                 Upload new photo
                                                 <input type="file" id="imageInput" name="avatar" onchange="previewAvatar()" class="account-settings-fileinput">
                                             </label> &nbsp;
-<!--                                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>-->
+                                            <button type="button" class="btn btn-default md-btn-flat">Reset</button>
                                             <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <hr class="border-light m-0">
                                     <!--General Info-->
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label class="form-label">First Name</label>
-                                            <input type="text" class="form-control mb-1" name="first-name" id="firstName" value="${user_Data.getFirst_name()}">
+                                            <input type="text" class="form-control mb-1" name="first-name" id="firstName" value="${user_Data.getFirst_name()}" readonly="">
                                         </div>
                                         <c:if test="${messagefirstname != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
@@ -181,7 +181,7 @@
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label">Last Name</label>
-                                            <input type="text" class="form-control" name="last-name" id="lastName" value="${user_Data.getLast_name()}">
+                                            <input type="text" class="form-control" name="last-name" id="lastName" value="${user_Data.getLast_name()}" readonly="">
                                         </div>
                                         <c:if test="${messagelastname != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
@@ -190,7 +190,7 @@
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label">E-mail</label>
-                                            <input type="text" class="form-control mb-1" name="email" id="email" value="${user_Data.getEmail()}">
+                                            <input type="text" class="form-control mb-1" name="email" id="email" value="${user_Data.getEmail()}" readonly="">
                                         </div>
                                         <c:if test="${messageemail != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
@@ -199,13 +199,17 @@
                                         </c:if>
                                         <div class="form-group">
                                             <label class="form-label" for="dob">Date of Birth</label>
-                                            <input type="date" class="form-control" name="dob" id="dob" value="${user_Data.getDob()}" required>
+                                            <input type="date" class="form-control" name="dob" id="dob" value="${user_Data.getDob()}" readonly="">
                                         </div>
                                         <c:if test="${messageDoB != null}">
                                             <div style="width: 500px" class="alert alert-danger" role="alert">
                                                 ${messageDoB}
                                             </div>
                                         </c:if>
+                                        <div class="form-group">
+                                            <label class="form-label" for="dob">Date of Birth</label>
+                                            <input type="date" class="form-control" name="dob" id="dob" value="${user_Data.getMoney()}" readonly="">
+                                        </div>
                                     </div>
                                     <c:if test="${messagesuccess != null}">
                                         <div style="width: 100%" class="alert alert-success" role="alert">
@@ -217,11 +221,11 @@
                                             ${messagedanger}
                                         </div>
                                     </c:if>
-                                    <div style="margin: 0 20px 10px" class="text-right mt-3">
+<!--                                    <div style="margin: 0 20px 10px" class="text-right mt-3">
                                         <button type="submit" name="button" value="general" class="btn btn-primary">Save changes</button>&nbsp;
-<!--                                        <button type="button" class="btn btn-default" onclick="resetForm()">Cancel</button>-->
-                                    </div>
-                                </form>
+                                        <button type="button" class="btn btn-default" onclick="resetForm()">Cancel</button>
+                                    </div>-->
+                                <!--</form>-->
                             </div>
                         </div>
                     </div>
