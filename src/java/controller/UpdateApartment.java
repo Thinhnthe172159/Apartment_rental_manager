@@ -15,6 +15,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.util.ArrayList;
@@ -107,9 +108,14 @@ public class UpdateApartment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
+
+        HttpSession session = request.getSession();
+
+        User user_Data = (User) session.getAttribute("user_Data");
+
         String apartment_id_raw = request.getParameter("apartment_id");
         String name_apartment = request.getParameter("name_apartment");
         String apartment_type = request.getParameter("apartment_type");
@@ -134,7 +140,7 @@ public class UpdateApartment extends HttpServlet {
         apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
         apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
 
-        User landlord = userDao.getUser(2);
+        User landlord = userDao.getUser(user_Data.getId());
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
         apartmentDao.updateApartment(apartment, (apartment_id_raw == null || apartment_id_raw.isEmpty()) ? 0 : Integer.parseInt(apartment_id_raw));

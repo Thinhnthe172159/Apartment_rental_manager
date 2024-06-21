@@ -90,6 +90,10 @@ public class AddApartments extends HttpServlet {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
 
+        HttpSession session = request.getSession();
+
+        User user_Data = (User) session.getAttribute("user_Data");
+
         String name_apartment = request.getParameter("name_apartment");
         String apartment_type = request.getParameter("apartment_type");
         String tinh = request.getParameter("tinh");
@@ -113,14 +117,14 @@ public class AddApartments extends HttpServlet {
         apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
         apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
 
-        User landlord = userDao.getUser(2);
+        User landlord = userDao.getUser(user_Data.getId());
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);
         apartmentDao.insertApartment(apartment);
 
         String[] property = request.getParameterValues("property");
         PrintWriter out = response.getWriter();
-        Apartment ap = apartmentDao.getLatedApartment();
+        Apartment ap = apartmentDao.getLatedApartment(landlord.getId());
         if (property != null) {
             for (String item : property) {
                 out.print(item);
