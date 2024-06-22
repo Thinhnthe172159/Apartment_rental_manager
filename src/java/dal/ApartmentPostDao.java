@@ -284,7 +284,9 @@ public class ApartmentPostDao extends DBContext {
         }
         return 0;
     }
+    
 
+    // list common
     public List<Apartment_Post> getApartment_Post_List(String name,
             String city,
             String district,
