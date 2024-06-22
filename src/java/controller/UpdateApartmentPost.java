@@ -24,7 +24,7 @@ import java.util.List;
 @WebServlet(name = "UpdateApartmentPost", urlPatterns = {"/UpdateApartmentPost"})
 public class UpdateApartmentPost extends HttpServlet {
 
-    private static final int STATUS_PUBLISHED = 2;
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,8 +58,6 @@ public class UpdateApartmentPost extends HttpServlet {
         String payment_id = request.getParameter("payment_method");
         String post_id = request.getParameter("post");
         String week_raw = request.getParameter("week");
-        String postStart = request.getParameter("Post_start");
-        String postEnd = request.getParameter("Post_end");
         String submit = request.getParameter("submit");
 
         int postId = (post_id == null || post_id.isEmpty()) ? 0 : Integer.parseInt(post_id);
