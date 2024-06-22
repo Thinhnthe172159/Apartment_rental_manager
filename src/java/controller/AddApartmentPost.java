@@ -142,6 +142,7 @@ public class AddApartmentPost extends HttpServlet {
                 ap.setPost_status(1);
                 session.setAttribute("message", "b");
             }
+            
         } else {
             ap.setPost_status(1);
             session.setAttribute("message", "c");
