@@ -111,8 +111,7 @@
                                                         &nbsp;&nbsp;Trạng Thái:
                                                         <c:if test="${apl.post_status == 1}">Lưu Nháp</c:if>
                                                         <c:if test="${apl.post_status == 2}">Chờ Duyệt</c:if>
-                                                        <c:if test="${apl.post_status == 3}">Xuất Bản</c:if>
-                                                   
+                                                        <c:if test="${apl.post_status == 3}">Xuất Bản</c:if>        
                                                         <c:if test="${apl.post_status == 4}">Hết Hạn</c:if>
                                                         <c:if test="${apl.post_status == 5}">Đã Thuê</c:if>
                                                             &nbsp;&nbsp;
@@ -449,28 +448,34 @@
                         </script>
 
                         <script>
-                          var message = '${requestScope.message}';
-                          if (message) {
-                              if (message === 'b') {
-                                  Swal.fire({
-                                      icon: "error",
-                                      title: "Oops...",
-                                      text: "Tài khoản của bạn không đủ để chi cho bài đăng này, Vui lòng nạp thêm tiền vào tài khoản! Bài đăng của bạn sẽ được lưu nháp lại",
-                                  });
-                              } else if (message === 'a') {
-                                  Swal.fire({
-                                      title: "Done!",
-                                      text: "Đăng bài thành công, bài đăng của bạn sẽ được công khai trong vài phút",
-                                      icon: "success"
-                                  });
-                              } else if (message === 'c') {
-                                  Swal.fire({
-                                      title: "Done!",
-                                      text: "Lưu nháp bài đăng thành công",
-                                      icon: "success"
-                                  });
-                              }
-                          }
+                            var message = '${requestScope.message}';
+                            if (message) {
+                                if (message === 'b') {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Oops...",
+                                        text: "Tài khoản của bạn không đủ để chi cho bài đăng này, Vui lòng nạp thêm tiền vào tài khoản! Bài đăng của bạn sẽ được lưu nháp lại",
+                                    });
+                                } else if (message === 'a') {
+                                    Swal.fire({
+                                        title: "Done!",
+                                        text: "Đăng bài thành công, bài đăng của bạn sẽ được công khai trong vài phút",
+                                        icon: "success"
+                                    });
+                                } else if (message === 'c') {
+                                    Swal.fire({
+                                        title: "Done!",
+                                        text: "Lưu nháp bài đăng thành công",
+                                        icon: "success"
+                                    });
+                                } else if (message === 'd') {
+                                    Swal.fire({
+                                        title: "Done!",
+                                        text: "Lưu nháp bài đăng thành công",
+                                        icon: "success"
+                                    });
+                                }
+                            }
                         </script>
 
 
@@ -509,46 +514,46 @@
     <script src="js/sidebar.js"></script>
     <script src="js/app.js"></script>
     <script>
-                          $(document).ready(function () {
-                              // Fetch provinces
-                              $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
-                                  if (data_tinh.error == 0) {
-                                      $.each(data_tinh.data, function (key_tinh, val_tinh) {
-                                          $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
-                                      });
-                                      $("#tinh").change(function (e) {
-                                          var idtinh = $(this).val();
-                                          $("#hidden_tinh").val($("#tinh option:selected").text());
-                                          // Fetch districts
-                                          $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
-                                              if (data_quan.error == 0) {
-                                                  $("#quan").html('<option value="0">Quận Huyện</option>');
-                                                  $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                  $.each(data_quan.data, function (key_quan, val_quan) {
-                                                      $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-                                                  });
-                                                  // Fetch wards
-                                                  $("#quan").change(function (e) {
-                                                      var idquan = $(this).val();
-                                                      $("#hidden_quan").val($("#quan option:selected").text());
-                                                      $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
-                                                          if (data_phuong.error == 0) {
-                                                              $("#phuong").html('<option value="0">Phường Xã</option>');
-                                                              $.each(data_phuong.data, function (key_phuong, val_phuong) {
-                                                                  $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                                                              });
-                                                              $("#phuong").change(function (e) {
-                                                                  $("#hidden_phuong").val($("#phuong option:selected").text());
-                                                              });
-                                                          }
-                                                      });
-                                                  });
-                                              }
-                                          });
-                                      });
-                                  }
-                              });
-                          });
+                            $(document).ready(function () {
+                                // Fetch provinces
+                                $.getJSON('https://esgoo.net/api-tinhthanh/1/0.htm', function (data_tinh) {
+                                    if (data_tinh.error == 0) {
+                                        $.each(data_tinh.data, function (key_tinh, val_tinh) {
+                                            $("#tinh").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+                                        });
+                                        $("#tinh").change(function (e) {
+                                            var idtinh = $(this).val();
+                                            $("#hidden_tinh").val($("#tinh option:selected").text());
+                                            // Fetch districts
+                                            $.getJSON('https://esgoo.net/api-tinhthanh/2/' + idtinh + '.htm', function (data_quan) {
+                                                if (data_quan.error == 0) {
+                                                    $("#quan").html('<option value="0">Quận Huyện</option>');
+                                                    $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                    $.each(data_quan.data, function (key_quan, val_quan) {
+                                                        $("#quan").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+                                                    });
+                                                    // Fetch wards
+                                                    $("#quan").change(function (e) {
+                                                        var idquan = $(this).val();
+                                                        $("#hidden_quan").val($("#quan option:selected").text());
+                                                        $.getJSON('https://esgoo.net/api-tinhthanh/3/' + idquan + '.htm', function (data_phuong) {
+                                                            if (data_phuong.error == 0) {
+                                                                $("#phuong").html('<option value="0">Phường Xã</option>');
+                                                                $.each(data_phuong.data, function (key_phuong, val_phuong) {
+                                                                    $("#phuong").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                                                                });
+                                                                $("#phuong").change(function (e) {
+                                                                    $("#hidden_phuong").val($("#phuong option:selected").text());
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                            });
     </script> 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

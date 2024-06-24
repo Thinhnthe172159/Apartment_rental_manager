@@ -135,7 +135,7 @@ public class UpdateApartmentPost1 extends HttpServlet {
         ap.setTotal_image(imageList.size());
 
         if (week != 0 && !"Cập Nhật".equals(submit)) {
-            processPayment(ap, paymentMethod, week, user, session, request);
+           check = processPayment(ap, paymentMethod, week, user, session, request);
         } else {
             check = 0;
             session.setAttribute("message", "d");// chỉ thông báo là đã cập nhật thành công mà không trừ đi khoản tiền vốn có của user
@@ -179,8 +179,9 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setPost_end(Date.valueOf(request.getParameter("Post_end")));
             ap.setWeek(week);
             ap.setPayment_id(paymentMethod);
+            return 1;
         }
-        return 1;
+        
     }
 
     /**

@@ -178,8 +178,9 @@ public class UpdateApartmentPost4 extends HttpServlet {
             ap.setPost_end(Date.valueOf(request.getParameter("Post_end")));
             ap.setWeek(week);
             ap.setPayment_id(paymentMethod);
+            return 1;
         }
-        return 1;
+
     }
 
     /**
