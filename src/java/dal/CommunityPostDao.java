@@ -15,6 +15,9 @@ import java.util.List;
 import model.CommunityPost;
 import model.Post_image;
 import model.User;
+import java.sql.SQLException;
+
+
 
 /**
  *
@@ -22,48 +25,42 @@ import model.User;
  */
 public class CommunityPostDao extends DBContext {
 
-    private UserDao userDao = new UserDao();
+    private DBContext dBContext;
+    private UserDao userDao;
 
-    Connection con = null;
-    PreparedStatement statement = null;
-    ResultSet rs = null;
+    public CommunityPostDao(DBContext dBContext) {
+        this.dBContext = dBContext;
+        this.userDao = new UserDao();
+    }
 
-    public void addPost(CommunityPost cp) {
-
-        String sql = "INSERT INTO [dbo].[Community_post]\n"
+    public void addPost(CommunityPost cp) throws SQLException {
+        String query = "INSERT INTO [dbo].[Community_post]\n"
                 + "           ([tittle]\n"
                 + "           ,[context]\n"
                 + "           ,[user_id]\n"
                 + "           ,[time])\n"
-                + "     VALUES\n"
-                + "           (?, ?, ?, ?)";
+                + " VALUES    (?,?,?,?)";
+
         try {
-            statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, cp.getTitle());
             statement.setString(2, cp.getContext());
             statement.setInt(3, cp.getUser_id().getId());
             statement.setDate(4, cp.getTime());
+        }catch(SQLException){
+            
+        }
+    }
 
+    public void deletePost(int postId) {
+        String sql = "DELETE FROM Community_post WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, postId);
             statement.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-    
-    public void deletePost(int postId) {
-    String sql = "DELETE FROM Community_post WHERE id = ?";
-    try (PreparedStatement statement = connection.prepareStatement(sql)) {
-        statement.setInt(1, postId);
-        statement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-
-
- 
 
     public List<CommunityPost> getAllPosts() {
         List<CommunityPost> posts = new ArrayList<>();
@@ -127,11 +124,11 @@ public class CommunityPostDao extends DBContext {
             e.printStackTrace();
         }
     }
-    
-       public static void main(String[] args) {
+
+    public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
         UserDao userDao = new UserDao();
-        
+
         // Add a post first
         User user = userDao.getUser(1); // Assume user with ID 1 exists
         CommunityPost newPost = new CommunityPost();
