@@ -112,9 +112,9 @@
                                                         <c:if test="${apl.post_status == 1}">Lưu Nháp</c:if>
                                                         <c:if test="${apl.post_status == 2}">Chờ Duyệt</c:if>
                                                         <c:if test="${apl.post_status == 3}">Xuất Bản</c:if>
-                                                        <c:if test="${apl.post_status == 4}">Trả lại</c:if>
-                                                        <c:if test="${apl.post_status == 5}">Hết Hạn</c:if>
-                                                        <c:if test="${apl.post_status == 6}">Đã Thuê</c:if>
+                                                   
+                                                        <c:if test="${apl.post_status == 4}">Hết Hạn</c:if>
+                                                        <c:if test="${apl.post_status == 5}">Đã Thuê</c:if>
                                                             &nbsp;&nbsp;
                                                         </span>
                                                     </div>
@@ -220,9 +220,8 @@
                                 <option value="1">Lưu Nháp</option>
                                 <option value="2">Chờ Duyệt</option>
                                 <option value="3">Xuất Bản</option>
-                                <option value="4">Trả Lại</option>
-                                <option value="5">Hết Hạn</option>
-                                <option value="6">Đã Thuê/(Đã Bán comming soon)</option>
+                                <option value="4">Hết Hạn</option>
+                                <option value="5">Căn Hộ Đã Cho Thuê</option>
                             </select>
                         </div>
                         <div class="form-group">

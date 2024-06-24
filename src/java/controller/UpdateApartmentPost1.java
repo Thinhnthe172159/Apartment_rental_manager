@@ -1,52 +1,86 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller;
 
 import dal.ApartmentDao;
 import dal.ApartmentPostDao;
 import dal.UserDao;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
 import model.Apartment_image;
 import model.Payment_method;
 import model.User;
 
-import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
+/**
+ *
+ * @author thinh
+ */
+@WebServlet(name = "UpdateApartmentPost1", urlPatterns = {"/UpdateApartmentPost1"})
+public class UpdateApartmentPost1 extends HttpServlet {
 
-@WebServlet(name = "UpdateApartmentPost", urlPatterns = {"/UpdateApartmentPost"})
-public class UpdateApartmentPost extends HttpServlet {
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet UpdateApartmentPost1</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet UpdateApartmentPost1 at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
 
-    
-
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String apartmentPostId = request.getParameter("post_id");
-        int postId = (apartmentPostId == null || apartmentPostId.isEmpty()) ? 0 : Integer.parseInt(apartmentPostId);
-
-        ApartmentPostDao apd = new ApartmentPostDao();
-        ApartmentDao ad = new ApartmentDao();
-        
-        Apartment_Post post = apd.getApartment_Post(postId);
-        List<Apartment> apartments_list = ad.getApartmentList(0);
-        List<Payment_method> payment_methods_list = ad.getPayment_method_list();
-
-        request.setAttribute("post_start", post.getPost_start());
-        request.setAttribute("post", post);
-        request.setAttribute("payment_methods_list", payment_methods_list);
-        request.setAttribute("apartmentList", apartments_list);
-
-        request.getRequestDispatcher("UpdateApartmentPost.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,19 +107,19 @@ public class UpdateApartmentPost extends HttpServlet {
         Apartment_Post ap = apartmentPostDao.getApartment_Post(postId);
         ap.setTitle(title);
         ap.setDescription(description);
-        
+
         Apartment apartment = apartmentDao.getApartment(apartmentId);
         ap.setApartment_id(apartment);
-        
+
         Payment_method paymentMethod = apartmentDao.getPayment_method(paymentMethodId);
         User user = userDao.getUser(apartment.getLandLord_id().getId());
-        
+
         ap.setLandlord_id(user);
         Apartment_image firstImage = apartmentDao.get_First_Apartment_Image(apartmentId);
         if (firstImage != null) {
             ap.setFirst_image(firstImage.getImage());
         }
-        
+
         ap.setCity(apartment.getCity());
         ap.setDistrict(apartment.getDistrict());
         ap.setCommune(apartment.getCommune());
@@ -94,18 +128,18 @@ public class UpdateApartmentPost extends HttpServlet {
         ap.setNumber_of_bedroom(apartment.getNumber_of_bedroom());
         ap.setApartment_type(apartment.getType_id());
         ap.setApartment_name(apartment.getName());
-        
+
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(apartmentId);
         ap.setTotal_image(imageList.size());
 
-        if (week != 0) {
+        if (week != 0 && !"Cập Nhật".equals(submit)) {
             processPayment(ap, paymentMethod, week, user, session, request);
         } else {
-            session.setAttribute("message", "d");
+            session.setAttribute("message", "d");// chỉ thông báo là đã cập nhật thành công mà không trừ đi khoản tiền vốn có của user
         }
 
         if ("Cập Nhật".equals(submit)) {
-            ap.setPost_status(ap.getPost_status());
+            ap.setPost_status(1);
         } else {
             ap.setPost_status(2);
         }
@@ -122,7 +156,7 @@ public class UpdateApartmentPost extends HttpServlet {
         double moneyPass = 0.0;
         LocalDate current = LocalDate.now();
 
-        LocalDate postStart = (ap.getPost_start() == null)?LocalDate.now():ap.getPost_start().toLocalDate();
+        LocalDate postStart = (ap.getPost_start() == null) ? LocalDate.now() : ap.getPost_start().toLocalDate();
         int daysPassed = (int) ChronoUnit.DAYS.between(postStart, current);
 
         if (postStart.isBefore(current)) {
@@ -149,8 +183,14 @@ public class UpdateApartmentPost extends HttpServlet {
         }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
-        return "UpdateApartmentPost Servlet";
-    }
+        return "Short description";
+    }// </editor-fold>
+
 }
