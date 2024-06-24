@@ -128,49 +128,48 @@ public class UpdateApartmentPost1 extends HttpServlet {
         ap.setNumber_of_bedroom(apartment.getNumber_of_bedroom());
         ap.setApartment_type(apartment.getType_id());
         ap.setApartment_name(apartment.getName());
-
+        
+        int check = -1;
+        
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(apartmentId);
         ap.setTotal_image(imageList.size());
 
         if (week != 0 && !"Cập Nhật".equals(submit)) {
             processPayment(ap, paymentMethod, week, user, session, request);
         } else {
+            check = 0;
             session.setAttribute("message", "d");// chỉ thông báo là đã cập nhật thành công mà không trừ đi khoản tiền vốn có của user
         }
 
         if ("Cập Nhật".equals(submit)) {
+            ap.setPost_start(null);
+            ap.setPost_end(null);
+            ap.setWeek(0);
             ap.setPost_status(1);
         } else {
-            ap.setPost_status(2);
+            if(check == 1){
+              ap.setPost_status(2);  
+            }else{
+               ap.setPost_status(1);
+            }
+            
         }
 
         apartmentPostDao.updateApartmentPost(ap, ap.getId());
         request.getRequestDispatcher("ApartmentPostForLandlord").forward(request, response);
     }
 
-    private void processPayment(Apartment_Post ap, Payment_method paymentMethod, int week, User user, HttpSession session, HttpServletRequest request) {
+    private int processPayment(Apartment_Post ap, Payment_method paymentMethod, int week, User user, HttpSession session, HttpServletRequest request) {
         UserDao userDao = new UserDao();
         double currentPayment = ap.getPaid_for_post();
         double newPayment = paymentMethod.getPrice() * week;
-        double moneyReturn = 0.0;
-        double moneyPass = 0.0;
-        LocalDate current = LocalDate.now();
 
-        LocalDate postStart = (ap.getPost_start() == null) ? LocalDate.now() : ap.getPost_start().toLocalDate();
-        int daysPassed = (int) ChronoUnit.DAYS.between(postStart, current);
-
-        if (postStart.isBefore(current)) {
-            moneyReturn = currentPayment - ((paymentMethod.getPrice() / 7) * daysPassed);
-            moneyPass = currentPayment - moneyReturn;
-        } else {
-            moneyReturn = currentPayment;
-        }
-
-        if ((user.getMoney() + moneyReturn) < newPayment) {
+        if (user.getMoney() < newPayment) {
             session.setAttribute("message", "b");
+            return 0;
         } else {
-            ap.setPaid_for_post(moneyPass + newPayment);
-            user.setMoney((user.getMoney() + moneyReturn) - newPayment);
+            ap.setPaid_for_post(currentPayment + newPayment);
+            user.setMoney(user.getMoney() - newPayment);
             userDao.UserMoneyChange(user);
 
             session.setAttribute("user_Data", user);
@@ -181,6 +180,7 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setWeek(week);
             ap.setPayment_id(paymentMethod);
         }
+        return 1;
     }
 
     /**
