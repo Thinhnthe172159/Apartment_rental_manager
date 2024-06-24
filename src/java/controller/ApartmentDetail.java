@@ -72,7 +72,7 @@ public class ApartmentDetail extends HttpServlet {
         List<Apartment_image> apartment_images_list = new ArrayList<>();
         List<Apartment_properties> apartment_propertieses_list = new ArrayList<>();
         List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 3, 1, 10, 4,null);
-
+        
         int apartment_id;
         int apartmentPost_id;
 

@@ -142,11 +142,10 @@
                                     </label>
                                 </div><br>
                                 <div class="form-group" style="color: red" data-toggle="buttons">
-                                    *Số tiền nạp trên 1 triệu đồng sẽ được tặng 2% giá trị tiền nạp<br>
-                                    *Số tiền nạp trên 2 triệu đồng sẽ được tặng 3% giá trị tiền nạp<br>
-                                    *Số tiền nạp trên 5 triệu đồng sẽ được tặng 5% giá trị tiền nạp<br>
-                                    *Số tiền nạp trên 10 triệu đồng sẽ được tặng 10% giá trị tiền nạp<br>
-                                    *Số tiền nạp trên 20 triệu đồng sẽ được tặng 20% giá trị tiền nạp
+                                    *Số tiền nạp từ 2 triệu trở lên sẽ được khuyến mại 300.000đ <br>
+                                    *Số tiền nạp từ 5 triệu trở lên sẽ được khuyến mại 900.000đ<br>
+                                    *Số tiền nạp từ 10 triệu trở lên sẽ được khuyến mại 1.800.000đ <br>
+                                    *Số tiền nạp từ 20 triệu trở lên sẽ được khuyến mại 2.900.000đ
                                 </div>
                                 <div class="form-group">
                                     <label for="amount">Số tiền</label>
