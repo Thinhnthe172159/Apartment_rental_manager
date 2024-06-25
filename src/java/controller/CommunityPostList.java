@@ -19,8 +19,8 @@ import model.CommunityPost;
  *
  * @author DuyThai
  */
-@WebServlet(name = "ListCommunityPost", urlPatterns = {"/listpost"})
-public class ListCommunityPost extends HttpServlet {
+@WebServlet(name = "ListCommunityPost", urlPatterns = {"/CommunityPostList"})
+public class CommunityPostList extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,11 +60,13 @@ public class ListCommunityPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        int page = 3;
+        request.setAttribute("page", page);
+        
         CommunityPostDao cpd = new CommunityPostDao();
         List<CommunityPost> postList = cpd.getAllPosts(); // Lấy danh sách bài đăng từ DAO
         request.setAttribute("postList", postList); // Lưu danh sách vào request
-        request.getRequestDispatcher("listPost.jsp").forward(request, response);
+        request.getRequestDispatcher("CommunityPostList.jsp").forward(request, response);
 //       for(CommunityPost item:posts){
 //           out.println(item.toString());
 //       }

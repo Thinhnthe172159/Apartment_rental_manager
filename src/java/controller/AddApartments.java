@@ -116,7 +116,7 @@ public class AddApartments extends HttpServlet {
         apartment.setPrice((price == null) ? 0 : Double.parseDouble(price));
         apartment.setNumber_of_bedroom((number_of_bedroom == null) ? 0 : Integer.parseInt(number_of_bedroom));
         apartment.setArea((area == null) ? 0 : Double.parseDouble(area));
-
+        apartment.setStatus_apartment(1);
         User landlord = userDao.getUser(user_Data.getId());
         apartment.setLandLord_id(landlord);
         apartment.setTenant_id(landlord);

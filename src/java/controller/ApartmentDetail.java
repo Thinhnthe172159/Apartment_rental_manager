@@ -71,8 +71,8 @@ public class ApartmentDetail extends HttpServlet {
         String apartment_post_id = request.getParameter("apartment_post_id");
         List<Apartment_image> apartment_images_list = new ArrayList<>();
         List<Apartment_properties> apartment_propertieses_list = new ArrayList<>();
-        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 4);
-
+        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 3, 1, 10, 4,null);
+        
         int apartment_id;
         int apartmentPost_id;
 
@@ -83,7 +83,7 @@ public class ApartmentDetail extends HttpServlet {
             apartment_propertieses_list = apartmentDao.get_apartment_properties_list_by_id(apartment_id);
             Apartment_Post apartment_Post = apartmentPostDao.getApartment_Post(apartmentPost_id);
             Apartment a = apartmentDao.getApartment(apartment_id);
-            List<Apartment_Post> apartment_Post_nearby_list = apartmentPostDao.getApartment_Post_List(null, a.getCity(), null, null, 0, 0, 0, 0, 0, 0, 0, 1, 1, 10, 0);
+            List<Apartment_Post> apartment_Post_nearby_list = apartmentPostDao.getApartment_Post_List(null, a.getCity(), a.getDistrict(), null, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 0,null);
             int page = 2;
             request.setAttribute("page", page);
             request.setAttribute("Apartment", a);

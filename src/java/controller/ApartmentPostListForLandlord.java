@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import model.Apartment_Post;
@@ -93,7 +95,7 @@ public class ApartmentPostListForLandlord extends HttpServlet {
         String page_index = request.getParameter("page_index");
         String status_raw = request.getParameter("status");
         String post_type_raw = request.getParameter("post_type");
-        
+
         int post_type = (post_type_raw == null || post_type_raw.isEmpty()) ? 0 : Integer.parseInt(post_type_raw);
         int Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
         int bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
@@ -107,22 +109,33 @@ public class ApartmentPostListForLandlord extends HttpServlet {
         List<Payment_method> payment_methods_list = apartmentDao.getPayment_method_list();
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         //list
-        request.setAttribute("apartment_types_list", apartment_types_list)  ;
+        request.setAttribute("apartment_types_list", apartment_types_list);
         request.setAttribute("payment_methods_list", payment_methods_list);
-        
-        
+
         int totalSize = apartmentPostDao.getApartmentPostSize(
                 (title_name == null || title_name.isEmpty()) ? null : title_name,
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
                 area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, status,
-                 user_Data.getId(),post_type);
+                user_Data.getId(), post_type, null);
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             pagelist.add(i);
+        }
+
+        LocalDate today = LocalDate.now();
+        Date current = Date.valueOf(today);
+
+        List<Apartment_Post> apartment_Posts = apartmentPostDao.getAllByLandlordId(user_Data.getId(), current);
+        
+        Apartment_Post ap_status = new Apartment_Post();
+        for(Apartment_Post apost:apartment_Posts){
+            ap_status = apost;
+            ap_status.setPost_status(4);
+            apartmentPostDao.updateApartmentPost(ap_status, ap_status.getId());
         }
 
         List<Apartment_Post> apartmentPostList = apartmentPostDao.getApartment_Post_List2(
@@ -132,7 +145,7 @@ public class ApartmentPostListForLandlord extends HttpServlet {
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
                 area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, status, pageIndex, pageSize, post_type, user_Data.getId()
         );
-        
+
         request.setAttribute("post_type", post_type);
         request.setAttribute("pageList", pagelist);
         request.setAttribute("apartmentPostList", apartmentPostList);

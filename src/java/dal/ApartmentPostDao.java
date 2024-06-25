@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
@@ -217,7 +219,7 @@ public class ApartmentPostDao extends DBContext {
             int apartment_type,
             int status,
             int landlord_id,
-            int payment_id) {
+            int payment_id, Date current) {
         int result = 0;
         String sql = "SELECT COUNT([id]) AS list_size\n"
                 + "FROM [ams].[dbo].[Apartment_Posts]\n"
@@ -261,8 +263,12 @@ public class ApartmentPostDao extends DBContext {
         if (landlord_id != 0) {
             sql += " and [landlord_id] = " + landlord_id;
         }
-        if(payment_id != 0){
-            sql+= " and [payment_id] =" + payment_id;
+        if (payment_id != 0) {
+            sql += " and [payment_id] =" + payment_id;
+        }
+
+        if (current != null) {
+            sql += "and [post_end] >= '" + current + "' ";
         }
 
         try {
@@ -278,7 +284,9 @@ public class ApartmentPostDao extends DBContext {
         }
         return 0;
     }
+    
 
+    // list common
     public List<Apartment_Post> getApartment_Post_List(String name,
             String city,
             String district,
@@ -292,7 +300,7 @@ public class ApartmentPostDao extends DBContext {
             int type,
             int status,
             int pageNumber,
-            int pageSize, int payment_id) {
+            int pageSize, int payment_id, Date current) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
 
@@ -331,6 +339,10 @@ public class ApartmentPostDao extends DBContext {
         }
         if (payment_id != 0) {
             sql += " and [payment_id] = " + payment_id;
+        }
+
+        if (current != null) {
+            sql += "and [post_end] >= '" + current + "' ";
         }
 
         switch (type) {
@@ -386,6 +398,7 @@ public class ApartmentPostDao extends DBContext {
         System.out.println(sql);
         return list;
     }
+// list for landlord
 
     public List<Apartment_Post> getApartment_Post_List2(String name,
             String city,
@@ -498,6 +511,54 @@ public class ApartmentPostDao extends DBContext {
         return list;
     }
 
+    // list all for landlord
+    public List<Apartment_Post> getAllByLandlordId(int landlord_id,Date current) {
+        List<Apartment_Post> list = new ArrayList<>();
+        String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE [landlord_id] = ? ";
+        
+        if(current!=null){
+            sql+=" and [post_end] <'"+current+"' ";
+        }
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, landlord_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Apartment_Post ap = new Apartment_Post();
+                ap.setId(rs.getInt("id"));
+                ap.setTitle(rs.getString("title"));
+                ap.setDescription(rs.getString("description"));
+                ap.setPost_status(rs.getInt("post_status"));
+                ap.setPost_start(rs.getDate("post_start"));
+                ap.setPost_end(rs.getDate("post_end"));
+                Apartment a = apartmentDao.getApartment(rs.getInt("apartment_id"));
+                ap.setApartment_id(a);
+                Payment_method pm = apartmentDao.getPayment_method(rs.getInt("payment_id"));
+                ap.setPayment_id(pm);
+                User u = userDao.getUser(rs.getInt("landlord_id"));
+                ap.setLandlord_id(u);
+                ap.setFirst_image(rs.getString("first_image"));
+                ap.setCity(rs.getString("city"));
+                ap.setDistrict(rs.getString("district"));
+                ap.setCommune(rs.getString("commune"));
+                ap.setArea(rs.getDouble("area"));
+                ap.setNumber_of_bedroom(rs.getInt("number_of_bedroom"));
+                ap.setApartment_name(rs.getString("apartment_name"));
+                ap.setPrice(rs.getDouble("price"));
+                Apartment_type at = apartmentDao.getApartment_type(rs.getInt("apartment_type"));
+                ap.setApartment_type(at);
+                ap.setTotal_image(rs.getInt("total_image"));
+                ap.setPaid_for_post(rs.getDouble("paid_for_post"));
+                ap.setWeek(rs.getInt("week"));
+                list.add(ap);
+
+            }
+        } catch (SQLException e) {
+
+        }
+        return list;
+    }
+
     // update Apartment post
     public void updateApartmentPost(Apartment_Post ap, int id) {
         String sql = "UPDATE [dbo].[Apartment_Posts]\n"
@@ -605,11 +666,13 @@ public class ApartmentPostDao extends DBContext {
         ApartmentDao apartmentDao = new ApartmentDao();
         UserDao userDao = new UserDao();
         ApartmentPostDao apartmentPostDao = new ApartmentPostDao();
-        Apartment_Post ap = apartmentPostDao.getApartment_Post(7);
-        ap.setCity("HO Chi Minh city");
-        ap.setDistrict("Quan 7");
-        ap.setFirst_image("quan.jpg");
-        apartmentPostDao.updateApartmentPost(ap, 7);
+        LocalDate today = LocalDate.now();
+        Date current = Date.valueOf(today);
+        List<Apartment_Post> list = apartmentPostDao.getAllByLandlordId(2, current);
+        
+        for(Apartment_Post item:list){
+            System.out.println(item.getTitle());
+        }
 
     }
 }

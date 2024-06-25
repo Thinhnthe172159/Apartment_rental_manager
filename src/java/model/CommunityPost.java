@@ -17,16 +17,18 @@ public class CommunityPost {
     private String context;
     private User user_id;
     private Date time;
+    private String first_image;
 
     public CommunityPost() {
     }
 
-    public CommunityPost(int id, String title, String context, User user_id, Date time) {
+    public CommunityPost(int id, String title, String context, User user_id, Date time, String first_image) {
         this.id = id;
         this.title = title;
         this.context = context;
         this.user_id = user_id;
         this.time = time;
+        this.first_image = first_image;
     }
 
     public int getId() {
@@ -69,11 +71,22 @@ public class CommunityPost {
         this.time = time;
     }
 
-    @Override
-    public String toString() {
-        return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + '}';
+    public String getFirst_image() {
+        return first_image;
     }
 
+    public void setFirst_image(String first_image) {
+        this.first_image = first_image;
+    }
+
+    @Override
+    public String toString() {
+        return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + ", first_image=" + first_image + '}';
+    }
+    
+    
+    
+    
     
    
  

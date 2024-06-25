@@ -35,11 +35,11 @@
         <div class="container">
             <br>
             <div class="row">
-                <form action="UpdateApartmentPost" method="post" style="background-color:antiquewhite;">
-                    <br><br>
-                    <div class="col-md-12">
-                        <div class="input-group flex-nowrap">
-                            <select name="apartment" class="form-select" aria-label="Default select example">       
+                <form action="<c:if test="${post.post_status == 1}">UpdateApartmentPost1</c:if><c:if test="${post.post_status == 2 || post.post_status == 3}">UpdateApartmentPost</c:if><c:if test="${post.post_status == 4}">UpdateApartmentPost4</c:if>" method="post" style="background-color:antiquewhite;">
+                        <br><br>
+                        <div class="col-md-12">
+                            <div class="input-group flex-nowrap">
+                                <select name="apartment" class="form-select" aria-label="Default select example">       
                                 <c:forEach items="${requestScope.apartmentList}" var="ap">
                                     <option <c:if test="${post.apartment_id.id == ap.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${ap.id}">${ap.name}</option>
                                 </c:forEach>
@@ -79,7 +79,7 @@
                             <select required="" id="paymentMethod" name="payment_method" class="form-select" aria-label="Default select example">
                                 <option value="">Chọn gói đăng tin</option>
                                 <c:forEach items="${requestScope.payment_methods_list}" var="pm">
-                                    <option data-description="${pm.description}" data-price="${pm.price}" <c:if test="${post.payment_id.id == pm.id}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
+                                    <option data-description="${pm.description}" data-price="${pm.price}" <c:if test="${post.payment_id.id == pm.id && post.post_status!=1 && post.post_status != 4}">style="background: blueviolet; color: white;"  selected</c:if> value="${pm.id}">${pm.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -118,9 +118,15 @@
                         <input type="text" hidden="" value="${post.id}" name="post">
                     </div>
                     <div class="col-md-12 d-flex justify-content-center">
-                        <input type="submit" name="submit" value="Cập Nhật" class="btn btn-primary btn-lg">
+
+                     
+                            <input type="submit" name="submit" value="Cập Nhật" class="btn btn-primary btn-lg">
+                     
                         <c:if test="${post.post_status == 1}">
                             &nbsp; <input type="submit" name="submit" value="Đăng Bài" class="btn btn-primary btn-lg">
+                        </c:if>
+                        <c:if test="${post.post_status == 4}">
+                            &nbsp; <input type="submit" name="submit" value="Đăng Lại Bài" class="btn btn-primary btn-lg">
                         </c:if>
                     </div>
                     <br><br>
@@ -192,7 +198,7 @@
                             paymentDescriptionDiv.style.color = ""; // default color
                             break;
                     }
-                    
+
                     paymentDescriptionDiv.textContent = description ? description : "Chọn gói bài đăng để xem mô tả.";
                 }
 
