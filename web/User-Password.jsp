@@ -139,7 +139,7 @@
                         <div class="list-group list-group-flush account-settings-links flex-grow-1">
                             <a class="list-group-item list-group-item-action"  href="UserProfile">General</a>
                             <a class="list-group-item list-group-item-action active"  href="ChangePassword">Change password</a>
-                            <a class="list-group-item list-group-item-action"  href="#account-info">Info</a>
+                            <a class="list-group-item list-group-item-action"  href="User-ViewProfile.jsp">Info</a>
                         </div>
 
                         <!-- Back to Home button -->
