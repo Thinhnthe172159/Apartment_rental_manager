@@ -22,13 +22,10 @@ import java.sql.SQLException;
  */
 public class CommunityPostDao extends DBContext {
 
-    private DBContext dBContext;
-    private UserDao userDao;
 
-    public CommunityPostDao(DBContext dBContext) {
-        this.dBContext = dBContext;
-        this.userDao = new UserDao();
-    }
+    private UserDao userDao = new UserDao();
+
+   
 
     public void addPost(CommunityPost cp) throws SQLException {
         String query = "INSERT INTO [dbo].[Community_post]\n"
