@@ -60,7 +60,9 @@ public class CommunityPostList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        int page = 3;
+        request.setAttribute("page", page);
+        
         CommunityPostDao cpd = new CommunityPostDao();
         List<CommunityPost> postList = cpd.getAllPosts(); // Lấy danh sách bài đăng từ DAO
         request.setAttribute("postList", postList); // Lưu danh sách vào request

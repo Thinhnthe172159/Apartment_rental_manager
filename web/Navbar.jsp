@@ -114,7 +114,7 @@
                             <ul class="nav">
                                 <li><a href="HomePage" class="<c:if test="${requestScope.page == 1}">active</c:if>">Home</a></li>
                                 <li><a href="ApartmentPostList"class="<c:if test="${requestScope.page == 2}">active</c:if>">Tìm Căn Hộ</a></li>
-                                    <li><a href="CommunityPostList">Blogs</a></li>
+                                    <li><a href="CommunityPostList" class="<c:if test="${requestScope.page == 3}">active</c:if>">Blogs</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>
                                     <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
                                 </ul>

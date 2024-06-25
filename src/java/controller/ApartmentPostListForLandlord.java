@@ -134,7 +134,7 @@ public class ApartmentPostListForLandlord extends HttpServlet {
         Apartment_Post ap_status = new Apartment_Post();
         for(Apartment_Post apost:apartment_Posts){
             ap_status = apost;
-            ap_status.setPost_status(5);
+            ap_status.setPost_status(4);
             apartmentPostDao.updateApartmentPost(ap_status, ap_status.getId());
         }
 

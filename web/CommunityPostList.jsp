@@ -12,8 +12,10 @@
         <title>Tạo mới đơn hàng</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="assets/jquery-1.11.3.min.js"></script>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
         <style type="text/tailwindcss">
             @layer base {
                 :root {
@@ -60,7 +62,20 @@
                     --ring: 240 4.9% 83.9%;
                 }
             }
+
+            .fixedElement.fixed {
+                position: fixed;
+                top: 100px;
+                z-index: 1;
+                width: 100%;
+                max-width: 310px; /* Fixed width to ensure consistency during zoom */
+            }
+            .container-relative {
+                position: relative;
+            }
+
         </style>
+
         <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
         <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
         <script type="text/javascript">
@@ -107,14 +122,7 @@
                 }
             }
         </script>
-        <style>
-            .user-info {
-                position: sticky;
-                top: 100px; /* Adjust this value based on your navbar height */
-                max-height: calc(100vh - 100px); /* Ensures it doesn't scroll past the viewport */
-                overflow-y: auto; /* Adds a scrollbar if the content exceeds max height */
-            }
-        </style>
+
     </head>
 
     <body>
@@ -125,80 +133,122 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div><br></div>
-                        <span class="breadcrumb"><a href="#">Commnunity</a></span>
+                        <span class="breadcrumb"><a href="#">Community</a></span>
                         <h3>BLOG</h3>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container mt-4">
+        <div class="container mt-4 container-relative">
             <div class="row">
-                <div class="col-md-3 user-info">
-                    <div class="card mb-4">
-                        <div class="card-body text-center">
-                            <img src="https://placehold.co/100" class="rounded-circle mb-3" alt="User Avatar" />
-                            <h5 class="card-title">Nguyen Trong Thinh HL K17</h5>
-                            <p class="card-text">82 lượt xem</p>
-                            <p class="card-text">0 người theo dõi</p>
-                            <p class="card-text">0 đang theo dõi</p>
-                        </div>
-                    </div>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action active">Bảng tin</a>
-                        <a href="#" class="list-group-item list-group-item-action">Tin nhắn</a>
-                        <a href="#" class="list-group-item list-group-item-action">Khám phá</a>
-                        <a href="#" class="list-group-item list-group-item-action">Chủ đề đã theo dõi</a>
-                        <a href="#" class="list-group-item list-group-item-action">Bài viết đã lưu</a>
-                        <a href="#" class="list-group-item list-group-item-action">Cài đặt</a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Đi thuê nhà ưng mọi thứ rồi mà "hướng" lại không hợp thì xử lý như thế nào?</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Tuyn Tận Tâm - 4 tháng trước</h6>
-                            <p class="card-text">Đi thuê nhà ưng mọi thứ rồi mà "hướng" lại không hợp thì xử lý như thế nào? Trong suốt hành trình làm môi giới cho thuê nhà vừa...</p>
-                            <a href="#" class="card-link">Xem thêm</a>
-                            <a href="#" class="card-link">#Kinh nghiệm cho thuê nhà</a>
-                        </div>
-                        <img src="https://placehold.co/600x300" class="card-img-bottom" alt="Post Image" />
-                        <div class="card-footer text-muted d-flex justify-content-between">
-                            <div>
-                                <span class="mr-2"><i class="far fa-heart"></i> 3</span>
-                                <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                <span><i class="far fa-eye"></i> 736</span>
+
+                <div class="col-md-3 row">
+                    <div class="col-md-12 user-info fixedElement">
+                        <div class="card mb-4">
+                            <div class="card-body text-center">
+                                <img src="<c:choose>
+                                         <c:when test="${sessionScope.user_Data != null}">
+                                             ${sessionScope.user_Data.getImage()}
+                                         </c:when>
+                                         <c:otherwise>
+                                             https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
+                                         </c:otherwise>
+                                     </c:choose>"
+                                     class="rounded-circle mb-3" alt="User Avatar" />
+                                <h5 class="card-title"><c:if test="${sessionScope.user_Data!=null}">${sessionScope.user_Data.first_name} ${sessionScope.user_Data.last_name}</c:if><c:if test="${sessionScope.user_Data==null}">Bạn chưa đăng nhập</c:if></h5>
+                                    <p class="card-text">0 người theo dõi</p>
+                                    <p class="card-text">0 đang theo dõi</p>
+                                </div>
                             </div>
-                            <div>
-                                <i class="far fa-bookmark"></i>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action active">Bảng tin</a>
+                                <a href="#" class="list-group-item list-group-item-action">Tin nhắn</a>
+                                <a href="#" class="list-group-item list-group-item-action">Bài viết đã lưu</a>
+                                <a href="#" class="list-group-item list-group-item-action">Cài đặt</a>
                             </div>
                         </div>
+                    </div>
+
+
+                    <div class="col-md-9 post">
+                    <c:forEach items="${postList}" var="pl">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${pl.title}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Tuyn Tận Tâm - 4 tháng trước</h6>
+                                <p class="card-text">${pl.context}...</p>
+                                <a href="#" class="card-link">Xem thêm</a>
+                                
+                            </div>
+                            <img src="https://placehold.co/600x300" class="card-img-bottom" alt="Post Image" />
+                            <div class="card-footer text-muted d-flex justify-content-between">
+                                <div>
+                                    <span class="mr-2"><i class="far fa-heart"></i> 3</span>
+                                    <span class="mr-2"><i class="far fa-comment"></i> 1</span>
+                                    <span><i class="far fa-eye"></i> 736</span>
+                                </div>
+                                <div>
+                                    <i class="far fa-bookmark"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                        
                     </div>
                 </div>
             </div>
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+            <div class="sticky-top">
+            <jsp:include page="Footer.jsp" />
         </div>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-        <jsp:include page="Footer.jsp" />
         <script>
-        var message = '${requestScope.message}';
-        if (message) {
-            if (message === "b") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Giao dịch không thành công, vui lòng thử lại",
-                });
-            } else if (message === 'a') {
-                Swal.fire({
-                    title: "Good job!",
-                    text: "Giao dịch thành công",
-                    icon: "success"
-                });
+            var message = '${requestScope.message}';
+            if (message) {
+                if (message === "b") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Giao dịch không thành công, vui lòng thử lại",
+                    });
+                } else if (message === 'a') {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Giao dịch thành công",
+                        icon: "success"
+                    });
+                }
             }
-        }
+
+
         </script>
+        <script type="text/javascript">
+            $(window).scroll(function (e) {
+                var $el = $('.fixedElement');
+                var isPositionFixed = $el.hasClass('fixed');
+                var containerWidth = $el.parent().width(); // Get the parent container's width
+
+                if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                    $el.addClass('fixed').css('width', containerWidth);
+                }
+                if ($(this).scrollTop() < 410 && isPositionFixed) {
+                    $el.removeClass('fixed').css('width', '');
+                }
+            });
+
+            // Adjust the width on window resize to maintain proper positioning
+            $(window).resize(function () {
+                var $el = $('.fixedElement.fixed');
+                if ($el.length > 0) {
+                    var containerWidth = $el.parent().width();
+                    $el.css('width', containerWidth);
+                }
+            });
+        </script>
+
     </body>
 </html>
