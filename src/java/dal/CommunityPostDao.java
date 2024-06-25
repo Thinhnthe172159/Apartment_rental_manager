@@ -9,15 +9,12 @@ import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.CommunityPost;
 import model.Post_image;
 import model.User;
 import java.sql.SQLException;
-
-
 
 /**
  *
@@ -38,8 +35,8 @@ public class CommunityPostDao extends DBContext {
                 + "           ([tittle]\n"
                 + "           ,[context]\n"
                 + "           ,[user_id]\n"
-                + "           ,[time])\n"
-                + " VALUES    (?,?,?,?)";
+                + "           ,[time],[first_image])\n"
+                + " VALUES    (?,?,?,?,?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -47,14 +44,15 @@ public class CommunityPostDao extends DBContext {
             statement.setString(2, cp.getContext());
             statement.setInt(3, cp.getUser_id().getId());
             statement.setDate(4, cp.getTime());
-        }catch(SQLException){
-            
+            statement.setString(5, cp.getFirst_image());
+        } catch (SQLException e) {
+
         }
     }
 
     public void deletePost(int postId) {
-        String sql = "DELETE FROM Community_post WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        String query = "DELETE FROM Community_post WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, postId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -64,16 +62,18 @@ public class CommunityPostDao extends DBContext {
 
     public List<CommunityPost> getAllPosts() {
         List<CommunityPost> posts = new ArrayList<>();
-        String sql = "SELECT * FROM Community_post";
-        try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
+        String query = "SELECT * FROM Community_post";
+        try (PreparedStatement statement = connection.prepareStatement(query); ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
-                int postId = rs.getInt("id");
-                String title = rs.getString("tittle");
-                String context = rs.getString("context");
-                int userId = rs.getInt("user_id");
-                User user = userDao.getUser(userId);
-                CommunityPost post = new CommunityPost(postId, title, context, user, rs.getDate("time"));
-                posts.add(post);
+                CommunityPost cp = new CommunityPost();
+                cp.setId(rs.getInt("id"));
+                cp.setContext(rs.getString("context"));
+                cp.setTitle(rs.getString("title"));
+                User userId = userDao.getUser(rs.getInt("user_id"));
+                cp.setUser_id(userId);
+                cp.setTime(rs.getDate("time"));
+                cp.setFirst_image(rs.getString("first_image"));
+                posts.add(cp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,22 +82,25 @@ public class CommunityPostDao extends DBContext {
     }
 
     public void updatePost(CommunityPost post) {
-        String sql = "UPDATE Community_post SET tittle = ?, context = ? WHERE id = ?";
-        try {
-            statement = connection.prepareStatement(sql);
+        String query = "UPDATE Community_post SET tittle = ?, context = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContext());
             statement.setInt(3, post.getId());
+
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public CommunityPost getNewesPost() {
-        String sql = " SELECT TOP (1) [id], [tittle], [context], [user_id], [time]\n"
-                + "  FROM [dbo].[Community_post] ORDER BY id DESC";
-        try (PreparedStatement statement = connection.prepareStatement(sql); ResultSet rs = statement.executeQuery()) {
+    public CommunityPost getNewesPost(int user_id) {
+        String sql = " SELECT TOP (1)*\n"
+                + "  FROM [dbo].[Community_post] where[id] = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, user_id);
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 CommunityPost post = new CommunityPost();
                 post.setId(rs.getInt("id"));
@@ -114,9 +117,34 @@ public class CommunityPostDao extends DBContext {
         return null;
     }
 
+    public CommunityPost getCommunityPost(int id) {
+        String sql = " SELECT *\n"
+                + "  FROM [dbo].[Community_post] where[id] = ? ";
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                CommunityPost post = new CommunityPost();
+                post.setId(rs.getInt("id"));
+                post.setTitle(rs.getString("tittle"));
+                post.setContext(rs.getString("context"));
+                User user = userDao.getUser(rs.getInt("user_id"));
+                post.setUser_id(user);
+                post.setTime(rs.getDate("time"));
+                return post;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    
+
     public void addPostImage(Post_image post_image) {
-        String sql = "INSERT INTO [dbo].[Image_post] ([image], [post_id]) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        String query = "INSERT INTO [dbo].[Image_post] ([image], [post_id]) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post_image.getImage());
             statement.setInt(2, post_image.getPost_id().getId());
             statement.executeUpdate();
@@ -125,30 +153,23 @@ public class CommunityPostDao extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        CommunityPostDao cpd = new CommunityPostDao();
-        UserDao userDao = new UserDao();
+    public Post_image getFirstPostImage(int post_id) {
+        String query = "SELECT top 1 *\n"
+                + "  FROM [dbo].[Image_post] where [post_id] = ? order by id desc";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, post_id);
+            ResultSet rs = statement.executeQuery();
 
-        // Add a post first
-        User user = userDao.getUser(1); // Assume user with ID 1 exists
-        CommunityPost newPost = new CommunityPost();
-        newPost.setTitle("Sample Title");
-        newPost.setContext("Sample Context");
-        newPost.setUser_id(user);
-        newPost.setTime(new java.sql.Date(System.currentTimeMillis()));
-        cpd.addPost(newPost);
+            if (rs.next()) {
+                CommunityPost communityPost = getCommunityPost(rs.getInt("post_id"));
+                Post_image pi = new Post_image(rs.getInt("id"), rs.getString("image"), communityPost);
+                return pi;
+            }
 
-        // Then get the newest post and add an image to it
-        CommunityPost communityPost = cpd.getNewesPost();
-        Post_image post_image = new Post_image(0, "abc", communityPost);
-        cpd.addPostImage(post_image);
-    }
-
-    public CommunityPost getPostId(int postId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public CommunityPost getPostById(int parseInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }
