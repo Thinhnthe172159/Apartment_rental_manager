@@ -1,3 +1,9 @@
+
+
+
+
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
@@ -126,7 +132,7 @@
     </head>
 
     <body>
-        
+
         <jsp:include page="Navbar.jsp" />
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
@@ -174,14 +180,27 @@
                     <div class="col-md-9 post">
                     <c:forEach items="${postList}" var="pl">
                         <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">${pl.title}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Tuyn Tận Tâm - 4 tháng trước</h6>
-                                <p class="card-text">${pl.context}...</p>
-                                <a href="#" class="card-link">Xem thêm</a>
+                            <div class="card-body" style="">
+                                <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
+                                <div><br><div>
+                                <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
+                                <span><h5 class="">${pl.title}</h5></span>
+
+                                <c:set var="originalString" value="${pl.context}" />
+                                <c:choose>
+                                    <c:when test="${fn:length(originalString) > 400}">
+                                        <c:out value="${fn:substring(originalString, 0, 400)}" />...
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:out value="${originalString}" />
+                                    </c:otherwise>
+                                </c:choose>
+
+
+                                <a href="#" class="card-link">Xem chi tiết</a>
 
                             </div>
-                            <img src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
+                            <img src="uploads/${pl.first_image}" class="card-img-bottom" alt="Post Image" />
                             <div class="card-footer text-muted d-flex justify-content-between">
                                 <div>
                                     <span class="mr-2"><i class="far fa-heart"></i> 3</span>
