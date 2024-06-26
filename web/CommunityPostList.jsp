@@ -126,6 +126,7 @@
     </head>
 
     <body>
+        
         <jsp:include page="Navbar.jsp" />
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
@@ -178,9 +179,9 @@
                                 <h6 class="card-subtitle mb-2 text-muted">Tuyn Tận Tâm - 4 tháng trước</h6>
                                 <p class="card-text">${pl.context}...</p>
                                 <a href="#" class="card-link">Xem thêm</a>
-                                
+
                             </div>
-                            <img src="https://placehold.co/600x300" class="card-img-bottom" alt="Post Image" />
+                            <img src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
                             <div class="card-footer text-muted d-flex justify-content-between">
                                 <div>
                                     <span class="mr-2"><i class="far fa-heart"></i> 3</span>
@@ -193,17 +194,35 @@
                             </div>
                         </div>
                     </c:forEach>
-                        
-                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
-            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        </div>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-            <div class="sticky-top">
+        <div class="sticky-top">
             <jsp:include page="Footer.jsp" />
         </div>
         <script>
