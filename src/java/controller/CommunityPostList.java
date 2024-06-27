@@ -63,6 +63,7 @@ public class CommunityPostList extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
+        
     }
 
 }

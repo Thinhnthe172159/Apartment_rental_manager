@@ -61,22 +61,23 @@
         </style>
         <title>Community Post</title>
     </head>
-    <jsp:include page="Navbar.jsp" />
-    <br><br><br><br><br><br>
-    <div class="page-heading header-text">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div><br></div>
-                    <span class="breadcrumb"><a href="#">Community</a></span>
-                    <h3>ADD COMMUNITY POST</h3>
+
+
+    <body> <jsp:include page="Navbar.jsp" />
+        <br><br><br><br><br><br>
+        <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <span class="breadcrumb"><a href="#">Community</a></span>
+                        <h3>ADD COMMUNITY POST</h3>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <body>
-        <main class="post">
+        </div> 
+        <br><br><br><br><br><br>
+        <main class="container">
             <form class="wrapper" action="addCommunityPost" method="post" enctype="multipart/form-data">
                 <section class="create-post">
                     <header class="header">
@@ -109,7 +110,7 @@
                             <i class="emoji" aria-label="Insert an emoji" role="img"></i>
                         </div>
                         <div class="form-group row">
-                            <input type="file" id="imageInput" name="images" multiple accept="image/*" ><br><br>
+                            <input class="form-control" type="file" id="imageInput" name="images" multiple accept="image/*" ><br><br>
                             <div class="preview" id="imagePreview"></div><br>
                         </div>
                         <input type="submit" class="btn btn-primary" value="Post">
@@ -125,21 +126,21 @@
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <jsp:include page="Footer.jsp" />
         <script>
-                              document.getElementById('imageInput').addEventListener('change', function (event) {
-                const files = event.target.files;
-                const previewContainer = document.getElementById('imagePreview');
-                previewContainer.innerHTML = '';
+                                document.getElementById('imageInput').addEventListener('change', function (event) {
+                                    const files = event.target.files;
+                                    const previewContainer = document.getElementById('imagePreview');
+                                    previewContainer.innerHTML = '';
 
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        previewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
+                                    Array.from(files).forEach(file => {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            const img = document.createElement('img');
+                                            img.src = e.target.result;
+                                            previewContainer.appendChild(img);
+                                        };
+                                        reader.readAsDataURL(file);
+                                    });
+                                });
         </script>
     </body>
 
