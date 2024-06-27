@@ -21,11 +21,9 @@ import java.sql.SQLException;
  * @author DuyThai
  */
 public class CommunityPostDao extends DBContext {
-
     private UserDao userDao = new UserDao();
 
-    // hàm cho phép chúng ta tạo ra bài đăng
-    public void addPost(CommunityPost cp) throws SQLException {
+    public void addPost(CommunityPost cp) {
         String query = "INSERT INTO [dbo].[Community_post]\n"
                 + "           ([tittle]\n"
                 + "           ,[context]\n"
@@ -33,15 +31,17 @@ public class CommunityPostDao extends DBContext {
                 + "           ,[time],[first_image])\n"
                 + " VALUES    (?,?,?,?,?)";
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, cp.getTitle());
             statement.setString(2, cp.getContext());
             statement.setInt(3, cp.getUser_id().getId());
             statement.setDate(4, cp.getTime());
             statement.setString(5, cp.getFirst_image());
+
+            statement.executeUpdate();
         } catch (SQLException e) {
 
+            e.printStackTrace();
         }
     }
 
@@ -59,7 +59,7 @@ public class CommunityPostDao extends DBContext {
 
     public List<CommunityPost> getAllPosts() {
         List<CommunityPost> posts = new ArrayList<>();
-        String query = "SELECT * FROM Community_post";
+        String query = "SELECT * FROM Community_post order by [time] desc , [id] desc ";
         try (PreparedStatement statement = connection.prepareStatement(query); ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
                 CommunityPost cp = new CommunityPost();
@@ -141,11 +141,12 @@ public class CommunityPostDao extends DBContext {
 
     // hàm này cho phép chúng ta có thể thay đổi thông tin của bài đăng của chính mình
     public void updatePost(CommunityPost post) {
-        String query = "UPDATE Community_post SET tittle = ?, context = ? WHERE id = ?";
+        String query = "UPDATE Community_post SET tittle = ?, context = ? , first_image = ?  WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContext());
-            statement.setInt(3, post.getId());
+            statement.setString(3, post.getFirst_image());
+            statement.setInt(4, post.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -155,8 +156,8 @@ public class CommunityPostDao extends DBContext {
 
     // lấy ra bài post mới nhất thuộc về 1 user nào đó
     public CommunityPost getNewesPost(int user_id) {
-        String sql = " SELECT TOP (1)*\n"
-                + "  FROM [dbo].[Community_post] where[id] = ? ";
+        String sql = "  SELECT TOP (1)*\n"
+                + "  FROM [dbo].[Community_post] where [user_id] = ?  order by [id] desc ";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, user_id);
@@ -216,7 +217,7 @@ public class CommunityPostDao extends DBContext {
     //lấy ra bức ảnh đầu tiên thuộc về 1 bài đăng nào đó
     public Post_image getFirstPostImage(int post_id) {
         String query = "SELECT top 1 *\n"
-                + "  FROM [dbo].[Image_post] where [post_id] = ? order by id desc";
+                + "  FROM [dbo].[Image_post] where [post_id] = ? order by [id] desc";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, post_id);
@@ -232,5 +233,15 @@ public class CommunityPostDao extends DBContext {
             System.out.println(e);
         }
         return null;
+    }
+    
+    
+    public static void main(String[] args) {
+        CommunityPostDao cpd = new CommunityPostDao();
+        Post_image p = cpd.getFirstPostImage(18);
+        System.out.println(p.getImage());
+        
+        CommunityPost cp = cpd.getNewesPost(11);
+        System.out.println(cp.getContext());
     }
 }

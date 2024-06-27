@@ -1,4 +1,4 @@
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,17 +16,17 @@
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <style>
 
-            .error {
-                color: red;
-                font-size: 0.9em;
-            }
+
             .navbar {
                 position: fixed;
                 top: 0;
                 width: 100%;
                 z-index: 1000; /* Đảm bảo navbar hiển thị trên cùng */
             }
-
+            .error {
+                color: red;
+                font-size: 0.9em;
+            }
             #map{
                 z-index: 2;
             }
@@ -41,7 +41,7 @@
                 border-color: black;
                 height: auto;
                 max-width: 350px;
-                max-height: 284px; 
+                max-height: 284px;
                 margin: 10px;
                 object-fit: contain;
                 background: black;
@@ -62,8 +62,8 @@
                 cursor: pointer;
                 font-size: 1em;
                 padding: 5px 10px;
-                border-radius: 15%; 
-                transform: translate(50%, -50%); 
+                border-radius: 15%;
+                transform: translate(50%, -50%);
                 display: inline;
             }
         </style>
@@ -389,57 +389,57 @@
 
             function handleFileSelect(event) {
                 const input = event.target;
-                const preview = input.nextElementSibling; 
+                const preview = input.nextElementSibling;
                 const files = input.files;
 
                 if (!files || files.length === 0) {
                     return;
                 }
 
-                const file = files[0]; 
+                const file = files[0];
 
-             
+
                 if (!file.type.startsWith('image/')) {
                     return;
                 }
 
-              
+
                 const reader = new FileReader();
 
-          
+
                 reader.onload = function (e) {
                     const imgSrc = e.target.result;
 
-              
+
                     const img = document.createElement('img');
                     img.src = imgSrc;
 
-              
+
                     const removeBtn = document.createElement('button');
                     removeBtn.innerHTML = 'X';
                     removeBtn.className = 'remove-btn';
                     removeBtn.onclick = function () {
-                   
+
                         preview.innerHTML = '';
                         input.value = '';
                     };
 
-               
+
                     const imageWrapper = document.createElement('div');
                     imageWrapper.className = 'img-wrapper';
                     imageWrapper.appendChild(img);
                     imageWrapper.appendChild(removeBtn);
 
-               
+
                     while (preview.firstChild) {
                         preview.removeChild(preview.firstChild);
                     }
 
-                 
+
                     preview.appendChild(imageWrapper);
                 };
 
-               
+
                 reader.readAsDataURL(file);
             }
 
