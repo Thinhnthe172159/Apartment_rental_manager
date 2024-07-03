@@ -56,6 +56,8 @@ public class CommunityPostDao extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    //
 
     public List<CommunityPost> getAllPosts() {
         List<CommunityPost> posts = new ArrayList<>();
@@ -70,6 +72,9 @@ public class CommunityPostDao extends DBContext {
                 cp.setUser_id(userId);
                 cp.setTime(rs.getDate("time"));
                 cp.setFirst_image(rs.getString("first_image"));
+                cp.setNum_of_view(rs.getInt("num_of_view"));
+                cp.setNum_of_like(rs.getInt("num_of_like"));
+                cp.setNum_of_comment(rs.getInt("num_of_comment"));
                 posts.add(cp);
             }
         } catch (SQLException e) {
@@ -105,6 +110,8 @@ public class CommunityPostDao extends DBContext {
                 cp.setUser_id(userId);
                 cp.setTime(rs.getDate("time"));
                 cp.setFirst_image(rs.getString("first_image"));
+                cp.setNum_of_like(rs.getInt("num_of_like"));
+                cp.setNum_of_view(rs.getInt("num_of_view"));
                 list.add(cp);
             }
         } catch (SQLException e) {
@@ -201,6 +208,7 @@ public class CommunityPostDao extends DBContext {
         }
         return null;
     }
+    
 
     // thêm ảnh vào trong bài đăng
     public void addPostImage(Post_image post_image) {

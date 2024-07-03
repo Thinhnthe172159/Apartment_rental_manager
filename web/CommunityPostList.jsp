@@ -152,7 +152,7 @@
                     <div class="col-md-12 user-info fixedElement">
                         <div class="card mb-4">
                             <div class="card-body text-center">
-                                <img src="<c:choose>
+                                <img style="object-fit: contain" src="<c:choose>
                                          <c:when test="${sessionScope.user_Data != null}">
                                              ${sessionScope.user_Data.getImage()}
                                          </c:when>
@@ -193,9 +193,9 @@
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
-                                            <span class="mr-2"><i class="far fa-heart"></i> 3</span>
+                                            <span class="mr-2"><i class="far fa-heart"></i>${pl.num_of_like}</span>
                                             <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                            <span><i class="far fa-eye"></i> 736</span>
+                                            <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
                                         </div>
                                         <div>
                                             <i class="far fa-bookmark"></i>

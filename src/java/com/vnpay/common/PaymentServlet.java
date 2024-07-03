@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import model.User;
+import util.Email;
 
 @WebServlet(name = "PaymentServlet", urlPatterns = {"/PaymentServlet"})
 public class PaymentServlet extends HttpServlet {
@@ -36,6 +37,7 @@ public class PaymentServlet extends HttpServlet {
         HttpSession session = request.getSession();
         UserDao userDao = new UserDao();
         User u = (User) session.getAttribute("user_Data");
+        Email email = new Email();
 
         Set<String> processedTransactions = (Set<String>) session.getAttribute("processedTransactions");
         if (processedTransactions == null) {
@@ -80,6 +82,19 @@ public class PaymentServlet extends HttpServlet {
                     userDao.UserMoneyChange(u);
 
                     processedTransactions.add(transactionId);
+                    util.Email.sendEmail(u.getEmail(), "Cảm ơn Quý khách đã sử dụng dịch vụ đăng bài của Easy rentals", "<h3>Kính gửi anh/chị "+u.getFirst_name()+" "+u.getLast_name()+"</h3><br>"
+                            + "Chúng tôi xin chân thành cảm ơn Quý khách đã lựa chọn và sử dụng dịch vụ đăng bài của Easy_rentals<br>"
+                            + "Chúng tôi rất vui mừng thông báo rằng chúng tôi đã nhận được thanh toán của Quý khách cho dịch vụ này<br><br>"
+                            + "Sự tin tưởng và ủng hộ của Quý khách là nguồn động viên lớn đối với chúng tôi. Chúng tôi cam kết <br>"
+                            + "sẽ nỗ lực hết mình để mang lại cho Quý khách những dịch vụ chất lượng và hiệu quả nhất.<br><br>"
+                            + "Nếu Quý khách có bất kỳ thắc mắc hoặc cần hỗ trợ thêm, xin vui lòng liên hệ với chúng tôi qua 0987654321<br>"
+                            + "hoặc email hỗ trợ thinhnthe172159@fpt.edu.vn .Chúng tôi luôn sẵn sàng phục vụ Quý khách.<br><br>"
+                            + "Một lần nữa, xin chân thành cảm ơn Quý khách.<br><br>"
+                            + "Trân trọng,<br><br>"
+                            + "Thông tin giao dịch:<br>"
+                            + "Người gửi:"+u.getFirst_name()+" "+u.getLast_name()+"<br>"
+                            + "Số tiền thanh toán :"+money+".<br>"
+                            + "<iframe src=\"https://drive.google.com/file/d/1O-2SjrxTmVxWRcHUnad12m5QrDZ0hixC/preview\" width=\"640\" height=\"480\" allow=\"autoplay\"></iframe>");
 
                     request.setAttribute("message", "a");
                 } else {
