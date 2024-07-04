@@ -78,7 +78,10 @@
                         <ul class="social-links">
                             <c:if test="${user_Data.getRole_id().getId() == 1}">
                                 <li><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>
-                                    </c:if>
+                            </c:if>
+                            <c:if test="${user_Data.getRole_id().getId() != 0}">
+                                <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>
+                            </c:if>
                             <li><a href="#"><i class="fab fa-facebook"></i></a></li>
                             <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
                             <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
@@ -102,12 +105,12 @@
         <header class="header-area header-sticky">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
+                    <div style="height: 100px" class="col-12">
+                        <nav style="height: 100px" class="main-nav">
                             <!-- ***** Logo Start ***** -->
                             <span style="font-size:50px;cursor:pointer;padding-top: 5px;" onclick="openNav()">&#9776;.</span>
-                            <a href="HomePage" class="logo">
-                                <h1>Easy_Rentals</h1>
+                            <a style="height: 100px; width: 225px" href="HomePage" class="logo">
+                                <h1 style="margin-bottom: 0px;">Easy_Rentals</h1>
                             </a>
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
