@@ -55,12 +55,12 @@ public class image extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get the absolute path of the web application
+  
         String applicationPath = request.getServletContext().getRealPath("");
-        // Construct the directory path to save the uploaded file
+
         String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
 
-        // Create the directory if it does not exist
+
         File uploadDir = new File(uploadFilePath);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
@@ -68,19 +68,18 @@ public class image extends HttpServlet {
 
         StringBuilder fileNames = new StringBuilder();
 
-        // Get all parts from the request (images)
+
         Collection<Part> parts = request.getParts();
         for (Part part : parts) {
-            // Get the submitted file name
+
             String fileName = part.getSubmittedFileName();
             if (fileName != null && !fileName.isEmpty()) {
-                // Save the file to the specified directory
+
                 part.write(uploadFilePath + File.separator +"thinh"+ fileName);
                 fileNames.append(fileName).append(" ");
             }
         }
 
-        // Respond with the names of the uploaded files
         response.setContentType("text/plain");
         response.getWriter().write("Files uploaded successfully: " + fileNames.toString());
     }

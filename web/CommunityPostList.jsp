@@ -1,3 +1,9 @@
+
+
+
+
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
@@ -9,7 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Tạo mới đơn hàng</title>
+        <title>Cộng Đồng</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -126,7 +132,7 @@
     </head>
 
     <body>
-        <jsp:include page="Navbar.jsp" />
+        <jsp:include page="Navbar.jsp"/>
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
             <div class="container">
@@ -146,7 +152,7 @@
                     <div class="col-md-12 user-info fixedElement">
                         <div class="card mb-4">
                             <div class="card-body text-center">
-                                <img src="<c:choose>
+                                <img style="object-fit: contain" src="<c:choose>
                                          <c:when test="${sessionScope.user_Data != null}">
                                              ${sessionScope.user_Data.getImage()}
                                          </c:when>
@@ -173,40 +179,64 @@
                     <div class="col-md-9 post">
                     <c:forEach items="${postList}" var="pl">
                         <div class="card mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title">${pl.title}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">Tuyn Tận Tâm - 4 tháng trước</h6>
-                                <p class="card-text">${pl.context}...</p>
-                                <a href="#" class="card-link">Xem thêm</a>
-                                
-                            </div>
-                            <img src="https://placehold.co/600x300" class="card-img-bottom" alt="Post Image" />
-                            <div class="card-footer text-muted d-flex justify-content-between">
-                                <div>
-                                    <span class="mr-2"><i class="far fa-heart"></i> 3</span>
-                                    <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                    <span><i class="far fa-eye"></i> 736</span>
+                            <div class="card-body" style="">
+                                <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
+                                <div><br><div>
+                                        <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
+                                        <span><h5 class="">${pl.title}</h5></span>
+                                            ${pl.context}
+                                        <br><br><br>
+                                        <a href="#" class="card-link">Xem chi tiết</a>
+
+                                    </div>  <c:if test="${pl.first_image !=null}">
+                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
+                                    </c:if>
+                                    <div class="card-footer text-muted d-flex justify-content-between">
+                                        <div>
+                                            <span class="mr-2"><i class="far fa-heart"></i>${pl.num_of_like}</span>
+                                            <span class="mr-2"><i class="far fa-comment"></i> 1</span>
+                                            <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
+                                        </div>
+                                        <div>
+                                            <i class="far fa-bookmark"></i>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <i class="far fa-bookmark"></i>
-                                </div>
+
+
                             </div>
                         </div>
                     </c:forEach>
-                        
-                    </div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-            </div>
-            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-            <div class="sticky-top">
-            <jsp:include page="Footer.jsp" />
-        </div>
-        <script>
+                <div class="sticky-lg-top">
+                    <jsp:include page="Footer.jsp" />
+
+                    <script>
             var message = '${requestScope.message}';
             if (message) {
                 if (message === "b") {
@@ -225,30 +255,30 @@
             }
 
 
-        </script>
-        <script type="text/javascript">
-            $(window).scroll(function (e) {
-                var $el = $('.fixedElement');
-                var isPositionFixed = $el.hasClass('fixed');
-                var containerWidth = $el.parent().width(); // Get the parent container's width
+                    </script>
+                    <script type="text/javascript">
+                        $(window).scroll(function (e) {
+                            var $el = $('.fixedElement');
+                            var isPositionFixed = $el.hasClass('fixed');
+                            var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                    $el.addClass('fixed').css('width', containerWidth);
-                }
-                if ($(this).scrollTop() < 410 && isPositionFixed) {
-                    $el.removeClass('fixed').css('width', '');
-                }
-            });
+                            if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                                $el.addClass('fixed').css('width', containerWidth);
+                            }
+                            if ($(this).scrollTop() < 410 && isPositionFixed) {
+                                $el.removeClass('fixed').css('width', '');
+                            }
+                        });
 
-            // Adjust the width on window resize to maintain proper positioning
-            $(window).resize(function () {
-                var $el = $('.fixedElement.fixed');
-                if ($el.length > 0) {
-                    var containerWidth = $el.parent().width();
-                    $el.css('width', containerWidth);
-                }
-            });
-        </script>
+                        // Adjust the width on window resize to maintain proper positioning
+                        $(window).resize(function () {
+                            var $el = $('.fixedElement.fixed');
+                            if ($el.length > 0) {
+                                var containerWidth = $el.parent().width();
+                                $el.css('width', containerWidth);
+                            }
+                        });
+                    </script>
 
-    </body>
-</html>
+                    </body>
+                    </html>
