@@ -40,7 +40,9 @@ public class LoginByGoogle extends HttpServlet {
         HttpSession session = request.getSession();
         int user_ID = user.getId();
         session.setAttribute("user_ID", user_ID);
-
+        UserDao user_DAO = new UserDao();
+        User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
+        session.setAttribute("user_Data", user_Data);
         // Redirect to a secured page
         response.sendRedirect("HomePage");
     }

@@ -87,6 +87,7 @@ public class Login extends HttpServlet {
             if (user_Data.getStatus() == 0) {
             int user_ID = user_Data.getId();
             session.setAttribute("user_ID", user_ID);
+            session.setAttribute("user_Data", user_Data);
             // Redirect to the home page
             response.sendRedirect("HomePage");
             } else {
