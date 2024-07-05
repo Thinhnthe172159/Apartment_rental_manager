@@ -193,7 +193,7 @@
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
-                                            <span class="mr-2"><i class="far fa-heart"></i>${pl.num_of_like}</span>
+                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}" class="far fa-heart"></a>${pl.num_of_like}</span>
                                             <span class="mr-2"><i class="far fa-comment"></i> 1</span>
                                             <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
                                         </div>
