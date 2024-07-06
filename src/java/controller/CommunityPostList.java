@@ -46,9 +46,13 @@ public class CommunityPostList extends HttpServlet {
         int page = 3;
         request.setAttribute("page", page);
         
+        String like_raw = request.getParameter("like");
+        int like = (like_raw == null || like_raw.isEmpty())?0:Integer.parseInt(like_raw);
+        
+        
         CommunityPostDao cpd = new CommunityPostDao();
-        List<CommunityPost> postList = cpd.getAllPosts();//searchCommunityPostsList(null, 1, 6); // Lấy danh sách bài đăng từ DAO
-        request.setAttribute("postList", postList); // Lưu danh sách vào request
+        List<CommunityPost> postList = cpd.getAllPosts();
+        request.setAttribute("postList", postList); 
         request.getRequestDispatcher("CommunityPostList.jsp").forward(request, response);
 
     }

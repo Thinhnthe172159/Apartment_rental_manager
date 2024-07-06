@@ -17,6 +17,7 @@ import model.User;
 import java.sql.SQLException;
 import model.CommentPost;
 import model.LikePost;
+import org.apache.tomcat.util.http.fileupload.ParameterParser;
 
 /**
  *
@@ -296,6 +297,29 @@ public class CommunityPostDao extends DBContext {
 
     }
 
+    // hàm kiểm tra xem người nào đã like bài đăng hay chưa
+    public LikePost chechLikePost(int post_id, int user_id) {
+        String sql = "select * FROM [dbo].[List_of_post_liked] where [user_id] = ? and [post_id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, user_id);
+            st.setInt(2, post_id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                LikePost likePost = new LikePost();
+                likePost.setId(rs.getInt("id"));
+                User u = userDao.getUser(rs.getInt("user_id"));
+                CommunityPost commentPost = getCommunityPost(rs.getInt("post_id"));
+                likePost.setPost_id(commentPost);
+                return likePost;
+            }
+        } catch (SQLException e) {
+
+        }
+
+        return null;
+    }
+
     // hàm lấy ra danh sách mà 1 cá nhân đã like
     public List<LikePost> getListLIkedPost(int user_id) {
         List<LikePost> list = new ArrayList<>();
@@ -359,7 +383,44 @@ public class CommunityPostDao extends DBContext {
     }
 
     // hàm sửa commment
+    public void updateComment(CommentPost commentPost, int messageId, int userid) {
+        String sql = "UPDATE [dbo].[Comment]\n"
+                + "   SET [message] = ?\n"
+                + "      ,[user_id] = ?\n"
+                + "      ,[post_id] = ?\n"
+                + " WHERE [id] = ? and [user_id]= ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, commentPost.getMassgee());
+            st.setInt(2, commentPost.getUser_id().getId());
+            st.setInt(3, commentPost.getPost_id().getId());
+            st.setInt(4, messageId);
+            st.setInt(5, userid);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // hàm đếm số lượng comment
+    public int countCommentEachPost(int post_id) {
+        int count = 0;
+        String sql = "SELECT count(*)\n"
+                + "  FROM [dbo].[Comment] where [post_id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, post_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                count++;
+            }
+        } catch (SQLException e) {
+
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
         Post_image p = cpd.getFirstPostImage(18);
