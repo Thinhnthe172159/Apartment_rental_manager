@@ -152,7 +152,7 @@
                     <div class="col-md-12 user-info fixedElement">
                         <div class="card mb-4">
                             <div class="card-body text-center">
-                                <img style="object-fit: contain" src="<c:choose>
+                                <a href="UserProfile"><img style="object-fit: contain" src="<c:choose>
                                          <c:when test="${sessionScope.user_Data != null}">
                                              ${sessionScope.user_Data.getImage()}
                                          </c:when>
@@ -160,7 +160,7 @@
                                              https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
                                          </c:otherwise>
                                      </c:choose>"
-                                     class="rounded-circle mb-3" alt="User Avatar" />
+                                     class="rounded-circle mb-3" alt="User Avatar" /></a>
                                 <h5 class="card-title"><c:if test="${sessionScope.user_Data!=null}">${sessionScope.user_Data.first_name} ${sessionScope.user_Data.last_name}</c:if><c:if test="${sessionScope.user_Data==null}">Bạn chưa đăng nhập</c:if></h5>
                                     <p class="card-text">0 người theo dõi</p>
                                     <p class="card-text">0 đang theo dõi</p>
