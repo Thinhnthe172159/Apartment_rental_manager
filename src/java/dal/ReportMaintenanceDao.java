@@ -20,7 +20,7 @@ import model.User;
  * @author ASUS
  */
 public class ReportMaintenanceDao extends DBContext {
-    
+
     private ApartmentDao apartmentDao;
     private UserDao userDao;
 
@@ -64,4 +64,48 @@ public class ReportMaintenanceDao extends DBContext {
         }
         return false;
     }
+
+    public List<ReportMaintain> getReportsForLandlord(int landlordId) {
+        List<ReportMaintain> reports = new ArrayList<>();
+        String strSQL = "SELECT rm.*, a.name as apartment_name, t.first_name as tenant_first_name, t.last_name as tenant_last_name, t.image "
+                + "FROM Report_maintain rm "
+                + "JOIN Aparment a ON rm.apartment_id = a.id "
+                + "JOIN [dbo].[User] t ON rm.tenant_id = t.id "
+                + "WHERE rm.landlord_id = ?";
+        try {
+            pstm = cnn.prepareStatement(strSQL);
+            pstm.setInt(1, landlordId);
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Apartment apartment = new Apartment();
+                apartment.setId(rs.getInt("apartment_id"));
+                apartment.setName(rs.getString("apartment_name"));
+
+                User tenant = new User();
+                tenant.setId(rs.getInt("tenant_id"));
+                tenant.setFirst_name(rs.getString("tenant_first_name"));
+                tenant.setLast_name(rs.getString("tenant_last_name"));
+                tenant.setImage(rs.getString("image"));
+
+                ReportMaintain report = new ReportMaintain();
+                report.setId(rs.getInt("id"));
+                report.setApartmentId(apartment);
+                report.setTenantId(tenant);
+                report.setContext(rs.getString("context"));
+                report.setStatus(rs.getString("status"));
+                report.setDatePost(rs.getDate("date_post"));
+                report.setImage1(rs.getString("image1"));
+                report.setImage2(rs.getString("image2"));
+                report.setImage3(rs.getString("image3"));
+
+                reports.add(report);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return reports;
+    }
+
+    
+
 }
