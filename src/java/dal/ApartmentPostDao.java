@@ -284,7 +284,6 @@ public class ApartmentPostDao extends DBContext {
         }
         return 0;
     }
-    
 
     // list common
     public List<Apartment_Post> getApartment_Post_List(String name,
@@ -300,7 +299,7 @@ public class ApartmentPostDao extends DBContext {
             int type,
             int status,
             int pageNumber,
-            int pageSize, int payment_id, Date current) {
+            int pageSize, int payment_id, Date current, int currentPostId) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
 
@@ -343,6 +342,10 @@ public class ApartmentPostDao extends DBContext {
 
         if (current != null) {
             sql += "and [post_end] >= '" + current + "' ";
+        }
+
+        if (currentPostId != 0) {
+            sql += " and [id] != " + currentPostId;
         }
 
         switch (type) {
@@ -512,12 +515,12 @@ public class ApartmentPostDao extends DBContext {
     }
 
     // list all for landlord
-    public List<Apartment_Post> getAllByLandlordId(int landlord_id,Date current) {
+    public List<Apartment_Post> getAllByLandlordId(int landlord_id, Date current) {
         List<Apartment_Post> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE [landlord_id] = ? ";
-        
-        if(current!=null){
-            sql+=" and [post_end] <'"+current+"' ";
+
+        if (current != null) {
+            sql += " and [post_end] <'" + current + "' ";
         }
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -669,8 +672,8 @@ public class ApartmentPostDao extends DBContext {
         LocalDate today = LocalDate.now();
         Date current = Date.valueOf(today);
         List<Apartment_Post> list = apartmentPostDao.getAllByLandlordId(2, current);
-        
-        for(Apartment_Post item:list){
+
+        for (Apartment_Post item : list) {
             System.out.println(item.getTitle());
         }
 

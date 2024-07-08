@@ -307,20 +307,18 @@
                                                                     </td>
 
                                                                     <td>
-                                                                        <div class="dropdown">
-                                                                            <button class="btn btn-secondary " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                                Action .
-                                                                            </button>
-                                                                            <ul class="dropdown-menu">
-                                                                                <li><button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}">View detail</a></button></li>
-                                                                                <li><button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}">Update</a></button></li>
-                                                                                <li> <form id="deleteForm-${ap.id}" action="AparmentListForLandlord?remove_id=${ap.id}" method="post">
-                                                                                        <button class="dropdown-item" type="button" onclick="confirmDeletion('deleteForm-${ap.id}')">Remove</button>
-                                                                                    </form></li>
-                                                                            </ul>
+                                                                        <div class="">
+                                                                           
+                                                                            
+                                                                                <button class="dropdown-item" type="button"><a href="ViewApartmentDetail?apartment_id=${ap.id}"><i class="far fa-eye"></i></a></button>
+                                                                                <button class="dropdown-item" type="button"><a href="UpdateApartment?apartment_id=${ap.id}"<i class="far fa-pen-to-square"></i></a></button>
+                                                                                <form id="deleteForm-${ap.id}" action="AparmentListForLandlord?remove_id=${ap.id}" method="post">
+                                                                                        <button class="dropdown-item" type="button" onclick="confirmDeletion('deleteForm-${ap.id}')"><i class="far fa-trash-can"></i></button>
+                                                                                    </form>
+                                                                            
                                                                         </div>
                                                                     </td>
-                                                                    <td>.</td>
+                                                                   
 
 
                                                                 </tr> 
