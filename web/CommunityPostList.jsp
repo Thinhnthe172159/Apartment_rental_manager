@@ -139,6 +139,16 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div><br></div>
+                        <form class="search row justify-content-center" method="get" action="CommunityPostList">
+                            <i class="fa fa-search"></i>
+                            <input style="border-radius: 20px;height: 40px;z-index: 1;" name="title" type="text" class="col-md-9" placeholder="tìm kiếm tiêu đề bài đăng"> 
+                            <button class="btn btn-primary col-md-1" style="border-radius: 20px; z-index: 10;background:" type="submit" id="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </button>
+                        </form>
+                        <br><br>
                         <span class="breadcrumb"><a href="#">Community</a></span>
                         <h3>BLOG</h3>
                     </div>
@@ -153,14 +163,14 @@
                         <div class="card mb-4">
                             <div class="card-body text-center">
                                 <a href="UserProfile"><img style="object-fit: contain" src="<c:choose>
-                                         <c:when test="${sessionScope.user_Data != null}">
-                                             ${sessionScope.user_Data.getImage()}
-                                         </c:when>
-                                         <c:otherwise>
-                                             https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
-                                         </c:otherwise>
-                                     </c:choose>"
-                                     class="rounded-circle mb-3" alt="User Avatar" /></a>
+                                                               <c:when test="${sessionScope.user_Data != null}">
+                                                                   ${sessionScope.user_Data.getImage()}
+                                                               </c:when>
+                                                               <c:otherwise>
+                                                                   https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
+                                                               </c:otherwise>
+                                                           </c:choose>"
+                                                           class="rounded-circle mb-3" alt="User Avatar" /></a>
                                 <h5 class="card-title"><c:if test="${sessionScope.user_Data!=null}">${sessionScope.user_Data.first_name} ${sessionScope.user_Data.last_name}</c:if><c:if test="${sessionScope.user_Data==null}">Bạn chưa đăng nhập</c:if></h5>
                                     <p class="card-text">0 người theo dõi</p>
                                     <p class="card-text">0 đang theo dõi</p>
@@ -177,8 +187,19 @@
 
 
                     <div class="col-md-9 post">
+                            <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                                              <c:when test="${sessionScope.user_Data != null}">
+                                                  ${sessionScope.user_Data.getImage()}
+                                              </c:when>
+                                              <c:otherwise>
+                                                  https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
+                                              </c:otherwise>
+                                          </c:choose>" alt="alt"/>
+                        <a href="addCommunityPost" class="col-lg-11"><input class="col-md-12"  style="border-radius: 30px;height: 55px;z-index: 1;box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;border: 0"   type="text" placeholder="Tạo bài đăng mới"></a>
+                    </div>
+                    <br><br>
                     <c:forEach items="${postList}" var="pl">
-                        <div class="card mb-4">
+                        <div id="${pl.id}" class="card mb-4">
                             <div class="card-body" style="">
                                 <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
                                 <div><br><div>
@@ -193,7 +214,7 @@
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
-                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}" class="far fa-heart"></a>${pl.num_of_like}</span>
+                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="far fa-heart"></a>${pl.num_of_like}</span>
                                             <span class="mr-2"><i class="far fa-comment"></i> 1</span>
                                             <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
                                         </div>
@@ -207,6 +228,20 @@
                             </div>
                         </div>
                     </c:forEach>
+
+                    <script>
+
+                        var scrollToPostId = '${requestScope.scrollToPost}';
+                        if (scrollToPostId) {
+
+                            var element = document.getElementById(scrollToPostId);
+                            if (element) {
+                                element.scrollIntoView({behavior: 'smooth', block: 'start'});
+                            }
+                        }
+
+                    </script>
+                    <c:set value="0" var="num"/>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item">
@@ -215,9 +250,12 @@
                                     <span class="sr-only">Previous</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+                            <c:forEach items="${requestScope.pageList}" var="Index">
+                                <c:set value="${num+1}" var="num"/>
+                                <li class="page-item"><a class="page-link" href="CommunityPostList?page_index=${num}&title=${title}">${num}</a></li>  
+                                </c:forEach>
+
                             <li class="page-item">
                                 <a class="page-link" href="#" aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
@@ -227,6 +265,10 @@
                         </ul>
                     </nav>
                 </div>
+
+
+
+
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
                 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -237,25 +279,24 @@
                     <jsp:include page="Footer.jsp" />
 
                     <script>
-            var message = '${requestScope.message}';
-            if (message) {
-                if (message === "b") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Giao dịch không thành công, vui lòng thử lại",
-                    });
-                } else if (message === 'a') {
-                    Swal.fire({
-                        title: "Good job!",
-                        text: "Giao dịch thành công",
-                        icon: "success"
-                    });
-                }
-            }
-
-
+                        var message = '${requestScope.message}';
+                        if (message) {
+                            if (message === "b") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: "Giao dịch không thành công, vui lòng thử lại",
+                                });
+                            } else if (message === 'a') {
+                                Swal.fire({
+                                    title: "Good job!",
+                                    text: "Giao dịch thành công",
+                                    icon: "success"
+                                });
+                            }
+                        }
                     </script>
+
                     <script type="text/javascript">
                         $(window).scroll(function (e) {
                             var $el = $('.fixedElement');

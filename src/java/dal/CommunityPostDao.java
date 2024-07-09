@@ -89,20 +89,19 @@ public class CommunityPostDao extends DBContext {
     // đây là list tìm kiếm có thể phân trang
     public List<CommunityPost> searchCommunityPostsList(String title, int pageNumber, int pageSize) {
         List<CommunityPost> list = new ArrayList<>();
-        String sql = "SELECT * FROM Community_post where 1=1  ";
+        String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1 ";
 
         if (title != null) {
-            sql += " and [tittle] like ? ";
+            sql += " and [tittle] like '%" + title + "%'";
         }
-
+        sql += "   ORDER BY [time] DESC ";
         int offset = (pageNumber - 1) * pageSize;
 
         sql += "OFFSET " + offset + " ROWS ";
-        sql += "FETCH NEXT " + pageSize + " ROWS ONLY ";
+        sql += "FETCH NEXT " + pageSize + " ROWS ONLY";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, title);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 CommunityPost cp = new CommunityPost();
@@ -126,18 +125,17 @@ public class CommunityPostDao extends DBContext {
     // hàm này sẽ lấy ra được kích thước của list vừa mới search
     public int getSizeOfListSearch(String title) {
         List<CommunityPost> list = new ArrayList<>();
-        String sql = "SELECT COUNT([id]) AS list_size\n"
+        String sql = "SELECT COUNT(*) AS list_size\n"
                 + "FROM [ams].[dbo].[Community_post]\n"
                 + "where 1=1 ";
-
+        
         if (title != null) {
-            sql += " and [tittle] like ? ";
+            sql += " and [tittle] like '%" + title + "%'";
         }
 
         int result = 0;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, title);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 result = rs.getInt("list_size");
@@ -151,18 +149,29 @@ public class CommunityPostDao extends DBContext {
 
     // hàm này cho phép chúng ta có thể thay đổi thông tin của bài đăng của chính mình
     public void updatePost(CommunityPost post) {
-        String query = "UPDATE Community_post SET tittle = ?, context = ? , first_image = ?  WHERE id = ?";
+        String query = "UPDATE [dbo].[Community_post]\n"
+                + "   SET [tittle] = ?\n"
+                + "      ,[context] = ?\n"
+                + "      ,[user_id] = ?\n"
+                + "      ,[time] = ?\n"
+                + "      ,[num_of_view] = ?\n"
+                + "      ,[num_of_like] = ?\n"
+                + "      ,[num_of_comment] = ?\n"
+                + " WHERE [id] = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
             statement.setString(2, post.getContext());
-            statement.setString(3, post.getFirst_image());
-            statement.setInt(4, post.getId());
-
+            statement.setInt(3, post.getUser_id().getId());
+            statement.setDate(4, post.getTime());
+            statement.setInt(5, post.getNum_of_view());
+            statement.setInt(6, post.getNum_of_like());
+            statement.setInt(7, post.getNum_of_comment());
+            statement.setInt(8, post.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }// check
 
     // lấy ra bài post mới nhất thuộc về 1 user nào đó
     public CommunityPost getNewesPost(int user_id) {
@@ -279,22 +288,19 @@ public class CommunityPostDao extends DBContext {
     // hàm đếm số lượng like 
     public int countLikedPost(int postId) {
         int count = 0;
-        String sql = "SELECT count(*) as total \n"
-                + "  FROM [dbo].[List_of_post_liked]\n"
-                + "  where [post_id] = ? ";
+        String sql = "SELECT count(*) as total FROM [dbo].[List_of_post_liked] WHERE [post_id] = ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, postId);
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                count++;
+            if (rs.next()) {
+                count = rs.getInt("total");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return count;
-
     }
 
     // hàm kiểm tra xem người nào đã like bài đăng hay chưa
@@ -406,15 +412,15 @@ public class CommunityPostDao extends DBContext {
     // hàm đếm số lượng comment
     public int countCommentEachPost(int post_id) {
         int count = 0;
-        String sql = "SELECT count(*)\n"
+        String sql = "SELECT count(*) as total \n"
                 + "  FROM [dbo].[Comment] where [post_id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, post_id);
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                count++;
-            }
+
+            count = rs.getInt("total");
+
         } catch (SQLException e) {
 
         }
@@ -423,10 +429,19 @@ public class CommunityPostDao extends DBContext {
 
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
-        Post_image p = cpd.getFirstPostImage(18);
-        System.out.println(p.getImage());
+//        Post_image p = cpd.getFirstPostImage(18);
+//        System.out.println(p.getImage());
+//
+//        CommunityPost cp = cpd.getCommunityPost(25);
+//        cp.setNum_of_like(14);
+//        cpd.updatePost(cp);
+//        CommunityPost cp22 = cpd.getCommunityPost(25);
+//        System.out.println(cp22.getNum_of_like());
 
-        CommunityPost cp = cpd.getNewesPost(11);
-        System.out.println(cp.getContext());
+        List<CommunityPost> list = cpd.searchCommunityPostsList("", 1, 6);
+        for (CommunityPost item : list) {
+            System.out.println(item);
+        }
+        System.out.println(cpd.getSizeOfListSearch(""));
     }
 }
