@@ -19,7 +19,6 @@ import model.CommentPost;
 import model.LikePost;
 import org.apache.tomcat.util.http.fileupload.ParameterParser;
 
-
 public class CommunityPostDao extends DBContext {
 
     private UserDao userDao = new UserDao();
@@ -91,7 +90,7 @@ public class CommunityPostDao extends DBContext {
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
         }
-        sql += "   ORDER BY [time] DESC ";
+        sql += "   ORDER BY [id] DESC , [time] desc ";
         int offset = (pageNumber - 1) * pageSize;
 
         sql += "OFFSET " + offset + " ROWS ";
@@ -109,8 +108,9 @@ public class CommunityPostDao extends DBContext {
                 cp.setUser_id(userId);
                 cp.setTime(rs.getDate("time"));
                 cp.setFirst_image(rs.getString("first_image"));
-                cp.setNum_of_like(rs.getInt("num_of_like"));
                 cp.setNum_of_view(rs.getInt("num_of_view"));
+                cp.setNum_of_like(rs.getInt("num_of_like"));
+                cp.setNum_of_comment(rs.getInt("num_of_comment"));
                 list.add(cp);
             }
         } catch (SQLException e) {
@@ -125,7 +125,7 @@ public class CommunityPostDao extends DBContext {
         String sql = "SELECT COUNT(*) AS list_size\n"
                 + "FROM [ams].[dbo].[Community_post]\n"
                 + "where 1=1 ";
-        
+
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
         }
@@ -168,8 +168,36 @@ public class CommunityPostDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }// check
+    }
 
+    public void updatePost2(CommunityPost post) {
+        String query = "UPDATE [dbo].[Community_post]\n"
+                + "   SET [tittle] = ?\n"
+                + "      ,[context] = ?\n"
+                + "      ,[user_id] = ?\n"
+                + "      ,[time] = ?\n"
+                + "      ,[first_image]= ? \n"
+                + "      ,[num_of_view] = ?\n"
+                + "      ,[num_of_like] = ?\n"
+                + "      ,[num_of_comment] = ?\n"
+                + " WHERE [id] = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, post.getTitle());
+            statement.setString(2, post.getContext());
+            statement.setInt(3, post.getUser_id().getId());
+            statement.setDate(4, post.getTime());
+            statement.setString(5, post.getFirst_image());
+            statement.setInt(6, post.getNum_of_view());
+            statement.setInt(7, post.getNum_of_like());
+            statement.setInt(8, post.getNum_of_comment());
+            statement.setInt(9, post.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+// check
     // lấy ra bài post mới nhất thuộc về 1 user nào đó
     public CommunityPost getNewesPost(int user_id) {
         String sql = "  SELECT TOP (1)*\n"
@@ -435,10 +463,14 @@ public class CommunityPostDao extends DBContext {
 //        CommunityPost cp22 = cpd.getCommunityPost(25);
 //        System.out.println(cp22.getNum_of_like());
 
-        List<CommunityPost> list = cpd.searchCommunityPostsList("", 1, 6);
-        for (CommunityPost item : list) {
-            System.out.println(item);
-        }
-        System.out.println(cpd.getSizeOfListSearch(""));
+//        List<CommunityPost> list = cpd.searchCommunityPostsList("", 1, 6);
+//        for (CommunityPost item : list) {
+//            System.out.println(item);
+//        }
+//        System.out.println(cpd.getSizeOfListSearch(""));
+        CommunityPost communityPost = cpd.getNewesPost(11);
+        System.out.println(communityPost.getFirst_image());
+        Post_image post_image = cpd.getFirstPostImage(32);
+        System.out.println(post_image.getImage());
     }
 }

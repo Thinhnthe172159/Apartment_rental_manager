@@ -66,7 +66,7 @@ public class CommunityPostList extends HttpServlet {
 
         int totalSize = cpd.getSizeOfListSearch(title);
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
-        int pageSize = 3;
+        int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {

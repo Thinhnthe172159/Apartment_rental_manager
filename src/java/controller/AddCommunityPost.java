@@ -88,6 +88,7 @@ public class AddCommunityPost extends HttpServlet {
             cp.setTitle(title);
             cp.setContext(context);
             cp.setTime(timePost);
+            cp.setFirst_image("1");
             cp.setNum_of_like(0);
             cp.setNum_of_view(0);
             cp.setNum_of_comment(0);
@@ -126,7 +127,7 @@ public class AddCommunityPost extends HttpServlet {
 
             Post_image post_image1 = communityPostDao.getFirstPostImage(post.getId());
             post1.setFirst_image(post_image1.getImage());
-            communityPostDao.updatePost(post1);
+            communityPostDao.updatePost2(post1);
             response.sendRedirect("CommunityPostList");
         } catch (Exception e) {
             e.printStackTrace();
