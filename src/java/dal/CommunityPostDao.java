@@ -19,10 +19,7 @@ import model.CommentPost;
 import model.LikePost;
 import org.apache.tomcat.util.http.fileupload.ParameterParser;
 
-/**
- *
- * @author DuyThai
- */
+
 public class CommunityPostDao extends DBContext {
 
     private UserDao userDao = new UserDao();
