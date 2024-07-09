@@ -61,6 +61,7 @@ public class CommunityPostList extends HttpServlet {
         int post_id = (post_id_raw == null || post_id_raw.isEmpty()) ? 0 : Integer.parseInt(post_id_raw);
         if (request.getParameter("checkNull") != null && user != null) {
             processLike(cpd, post_id, user);
+            likePosts = cpd.getListLIkedPost(user.getId());
         }
 
         int totalSize = cpd.getSizeOfListSearch(title);
@@ -72,7 +73,7 @@ public class CommunityPostList extends HttpServlet {
             pagelist.add(i);
         }
         List<CommunityPost> postList = cpd.searchCommunityPostsList(title, pageIndex, pageSize);
-
+        
         request.setAttribute("title", title);
         request.setAttribute("pageList", pagelist);
         request.setAttribute("postList", postList);

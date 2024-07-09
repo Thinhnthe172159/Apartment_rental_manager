@@ -214,7 +214,11 @@
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
-                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="far fa-heart"></a>${pl.num_of_like}</span>
+                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="fa-solid fa-heart" style="<c:forEach items="${requestScope.likePost}" var="likedPost">
+                                                                      <c:if test="${likedPost.post_id.id == pl.id}">
+                                                                          color: red    
+                                                                      </c:if>
+                                                                  </c:forEach>"></a>${pl.num_of_like}</span>
                                             <span class="mr-2"><i class="far fa-comment"></i> 1</span>
                                             <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
                                         </div>
