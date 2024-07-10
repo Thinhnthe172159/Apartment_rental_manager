@@ -194,95 +194,46 @@
                         <a href="addCommunityPost" class="col-lg-11"><input class="col-md-12"  style="border-radius: 30px;height: 55px;z-index: 1;box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;border: 0"   type="text" placeholder="Tạo bài đăng mới"></a>
                     </div>
                     <br><br>
-                    <c:forEach items="${postList}" var="pl">
-                        <div id="${pl.id}" class="card mb-4">
-                            <div class="card-body" style="">
-                                <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
-                                <div><br><div>
-                                        <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
-                                        <span><h5 class="">${pl.title}</h5></span>
-                                            ${pl.context}
-                                        <br><br><br>
-                                        <a href="DetailCommnityPost?post_id=${pl.id}" class="card-link">Xem chi tiết</a>
-
-                                    </div>  <c:if test="${pl.first_image !=null}">
-                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
-                                    </c:if>
-                                    <div class="card-footer text-muted d-flex justify-content-between">
-                                        <div>
-                                            <span class="mr-2">
-                                                <a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="fa-solid fa-heart" 
-                                                   style="<c:choose>
-                                                       <c:when test="${requestScope.likePost.contains(pl.id)}">
-                                                           color:red;
-                                                       </c:when>
-                                                       <c:otherwise>
-                                                           color:black;
-                                                       </c:otherwise>
-                                                   </c:choose>"></a>${pl.num_of_like}</span>
-                                            <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                            <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
-                                        </div>
-                                        <div>
-                                            <i class="far fa-bookmark"></i>
-                                        </div>
+                    <c:set value="${Cpost}" var="pl" />
+                    <div id="${pl.id}" class="card mb-4">
+                        <div class="card-body" style="">
+                            <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
+                            <div><br><div>
+                                    <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
+                                    <span><h5 class="">${pl.title}</h5></span>
+                                        ${pl.context}
+                                    <br><br><br>
+                                </div>  
+                                    <c:forEach items="${requestScope.listImage}" var="img">
+                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${img.image}" class="card-img-bottom" alt="Post Image" />
+                                        <br>
+                                    </c:forEach>
+                                    
+                                
+                                <div class="card-footer text-muted d-flex justify-content-between">
+                                    <div>
+                                        <span class="mr-2">
+                                            <a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="fa-solid fa-heart" 
+                                               style="<c:choose>
+                                                   <c:when test="${requestScope.likePost.contains(pl.id)}">
+                                                       color:red;
+                                                   </c:when>
+                                                   <c:otherwise>
+                                                       color:black;
+                                                   </c:otherwise>
+                                               </c:choose>"></a>${pl.num_of_like}</span>
+                                        <span class="mr-2"><i class="far fa-comment"></i> 1</span>
+                                        <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
+                                    </div>
+                                    <div>
+                                        <i class="far fa-bookmark"></i>
                                     </div>
                                 </div>
-
-
                             </div>
+
+
                         </div>
-                    </c:forEach>
-
-                    <script>
-
-                        var scrollToPostId = '${requestScope.scrollToPost}';
-                        if (scrollToPostId) {
-
-                            var element = document.getElementById(scrollToPostId);
-                            if (element) {
-                                element.scrollIntoView({behavior: 'smooth', block: 'start'});
-                            }
-                        }
-
-                    </script>
-                    <c:set value="${param.page_index != null ? param.page_index : 1}" var="num"/>
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <c:if test="${num > 1}">
-                                <li class="page-item">
-                                    <a class="page-link" href="CommunityPostList?page_index=${num-1}&title=${title}&selection=${selection}" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                            </c:if>
-
-                            <c:forEach items="${requestScope.pageList}" var="pageIndex">
-                                <c:choose>
-                                    <c:when test="${pageIndex == num}">
-                                        <li class="page-item active">
-                                            <a class="page-link" href="CommunityPostList?page_index=${pageIndex}&title=${title}&selection=${selection}">${pageIndex}</a>
-                                        </li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li class="page-item">
-                                            <a class="page-link" href="CommunityPostList?page_index=${pageIndex}&title=${title}&selection=${selection}">${pageIndex}</a>
-                                        </li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-
-                            <c:if test="${num < totalPages}">
-                                <li class="page-item">
-                                    <a class="page-link" href="CommunityPostList?page_index=${num+1}&title=${title}&selection=${selection}" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </c:if>
-                        </ul>
-                    </nav>
+                    </div>
 
                 </div>
 
@@ -298,47 +249,28 @@
                 <div class="sticky-lg-top">
                     <jsp:include page="Footer.jsp" />
 
-                    <script>
-                        var message = '${requestScope.message}';
-                        if (message) {
-                            if (message === "b") {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Giao dịch không thành công, vui lòng thử lại",
-                                });
-                            } else if (message === 'a') {
-                                Swal.fire({
-                                    title: "Good job!",
-                                    text: "Giao dịch thành công",
-                                    icon: "success"
-                                });
-                            }
-                        }
-                    </script>
-
                     <script type="text/javascript">
-                        $(window).scroll(function (e) {
-                            var $el = $('.fixedElement');
-                            var isPositionFixed = $el.hasClass('fixed');
-                            var containerWidth = $el.parent().width(); // Get the parent container's width
+            $(window).scroll(function (e) {
+                var $el = $('.fixedElement');
+                var isPositionFixed = $el.hasClass('fixed');
+                var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                            if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                                $el.addClass('fixed').css('width', containerWidth);
-                            }
-                            if ($(this).scrollTop() < 410 && isPositionFixed) {
-                                $el.removeClass('fixed').css('width', '');
-                            }
-                        });
+                if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                    $el.addClass('fixed').css('width', containerWidth);
+                }
+                if ($(this).scrollTop() < 410 && isPositionFixed) {
+                    $el.removeClass('fixed').css('width', '');
+                }
+            });
 
-                        // Adjust the width on window resize to maintain proper positioning
-                        $(window).resize(function () {
-                            var $el = $('.fixedElement.fixed');
-                            if ($el.length > 0) {
-                                var containerWidth = $el.parent().width();
-                                $el.css('width', containerWidth);
-                            }
-                        });
+            // Adjust the width on window resize to maintain proper positioning
+            $(window).resize(function () {
+                var $el = $('.fixedElement.fixed');
+                if ($el.length > 0) {
+                    var containerWidth = $el.parent().width();
+                    $el.css('width', containerWidth);
+                }
+            });
                     </script>
 
                     </body>

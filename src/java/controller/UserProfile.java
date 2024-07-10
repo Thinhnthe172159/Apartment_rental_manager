@@ -44,7 +44,7 @@ public class UserProfile extends HttpServlet {
         }
     }
 
-    private static final String uploadFolder = "img/User";
+    private static final String uploadFolder = "userImage";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -115,7 +115,7 @@ public class UserProfile extends HttpServlet {
             if (!isValid) {
                 doGet(request, response);
             } else {
-                userdao.UpdateGeneralProfile(email, firstname, lastname, dob, fileName, user_ID);
+                userdao.UpdateGeneralProfile(email, firstname, lastname, dob, UserProfile.uploadFolder+"/"+fileName, user_ID);
                 request.setAttribute("messagesuccess", "Change your profile successfully!"); 
                 doGet(request, response);
             }

@@ -45,6 +45,28 @@ public class CommunityPostDao extends DBContext {
         }
     }
 
+    // hàm lấy ra danh sách ảnh của 1 bài đăng\
+    public List<Post_image> getPostImageByPostId(int post_id) {
+        List<Post_image> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[image]\n"
+                + "      ,[post_id]\n"
+                + "  FROM [dbo].[Image_post] where [post_id] = ? order by id desc";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, post_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                CommunityPost communityPost = getCommunityPost(rs.getInt("post_id"));
+                Post_image p = new Post_image(0, rs.getString("image"), communityPost);
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     // Hàm này sẽ xóa bài đăng thuộc về 1 user nào đó
     public void deletePost(int postId, int user_id) {
         String query = "DELETE FROM Community_post WHERE [id] = ? and [user_id] = ? ";
@@ -83,12 +105,15 @@ public class CommunityPostDao extends DBContext {
     }
 
     // đây là list tìm kiếm có thể phân trang
-    public List<CommunityPost> searchCommunityPostsList(String title, int pageNumber, int pageSize) {
+    public List<CommunityPost> searchCommunityPostsList(String title, int user_id, int pageNumber, int pageSize) {
         List<CommunityPost> list = new ArrayList<>();
         String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1 ";
 
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
+        }
+        if (user_id != 0) {
+            sql += " and [user_id] =" + user_id;
         }
         sql += "   ORDER BY [id] DESC , [time] desc ";
         int offset = (pageNumber - 1) * pageSize;
@@ -120,7 +145,7 @@ public class CommunityPostDao extends DBContext {
     }
 
     // hàm này sẽ lấy ra được kích thước của list vừa mới search
-    public int getSizeOfListSearch(String title) {
+    public int getSizeOfListSearch(String title, int user_id) {
         List<CommunityPost> list = new ArrayList<>();
         String sql = "SELECT COUNT(*) AS list_size\n"
                 + "FROM [ams].[dbo].[Community_post]\n"
@@ -128,6 +153,9 @@ public class CommunityPostDao extends DBContext {
 
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
+        }
+        if (user_id != 0) {
+            sql += " and [user_id] = " + user_id;
         }
 
         int result = 0;
@@ -231,14 +259,18 @@ public class CommunityPostDao extends DBContext {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                CommunityPost post = new CommunityPost();
-                post.setId(rs.getInt("id"));
-                post.setTitle(rs.getString("tittle"));
-                post.setContext(rs.getString("context"));
-                User user = userDao.getUser(rs.getInt("user_id"));
-                post.setUser_id(user);
-                post.setTime(rs.getDate("time"));
-                return post;
+                CommunityPost cp = new CommunityPost();
+                cp.setId(rs.getInt("id"));
+                cp.setContext(rs.getString("context"));
+                cp.setTitle(rs.getString("tittle"));
+                User userId = userDao.getUser(rs.getInt("user_id"));
+                cp.setUser_id(userId);
+                cp.setTime(rs.getDate("time"));
+                cp.setFirst_image(rs.getString("first_image"));
+                cp.setNum_of_view(rs.getInt("num_of_view"));
+                cp.setNum_of_like(rs.getInt("num_of_like"));
+                cp.setNum_of_comment(rs.getInt("num_of_comment"));
+                return cp;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -454,23 +486,11 @@ public class CommunityPostDao extends DBContext {
 
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
-//        Post_image p = cpd.getFirstPostImage(18);
-//        System.out.println(p.getImage());
-//
-//        CommunityPost cp = cpd.getCommunityPost(25);
-//        cp.setNum_of_like(14);
-//        cpd.updatePost(cp);
-//        CommunityPost cp22 = cpd.getCommunityPost(25);
-//        System.out.println(cp22.getNum_of_like());
+        List<Post_image> list = cpd.getPostImageByPostId(18);
+        for(Post_image i : list){
+            System.out.println(i.getImage());
+        }
+        
 
-//        List<CommunityPost> list = cpd.searchCommunityPostsList("", 1, 6);
-//        for (CommunityPost item : list) {
-//            System.out.println(item);
-//        }
-//        System.out.println(cpd.getSizeOfListSearch(""));
-        CommunityPost communityPost = cpd.getNewesPost(11);
-        System.out.println(communityPost.getFirst_image());
-        Post_image post_image = cpd.getFirstPostImage(32);
-        System.out.println(post_image.getImage());
     }
 }

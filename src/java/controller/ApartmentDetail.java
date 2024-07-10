@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import model.Apartment;
 import model.Apartment_Post;
@@ -71,10 +73,12 @@ public class ApartmentDetail extends HttpServlet {
         String apartment_post_id = request.getParameter("apartment_post_id");
         List<Apartment_image> apartment_images_list = new ArrayList<>();
         List<Apartment_properties> apartment_propertieses_list = new ArrayList<>();
-        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 3, 1, 10, 4,null,0);
-        
+        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 3, 1, 10, 4, null, 0);
+
         int apartment_id;
         int apartmentPost_id;
+        LocalDate todayDate = LocalDate.now();
+        Date today = Date.valueOf(todayDate);
 
         try {
             apartment_id = (Apartment_id == null) ? 0 : Integer.parseInt(Apartment_id);
@@ -83,7 +87,7 @@ public class ApartmentDetail extends HttpServlet {
             apartment_propertieses_list = apartmentDao.get_apartment_properties_list_by_id(apartment_id);
             Apartment_Post apartment_Post = apartmentPostDao.getApartment_Post(apartmentPost_id);
             Apartment a = apartmentDao.getApartment(apartment_id);
-            List<Apartment_Post> apartment_Post_nearby_list = apartmentPostDao.getApartment_Post_List(null, a.getCity(), a.getDistrict(), null, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 0,null,apartmentPost_id);
+            List<Apartment_Post> apartment_Post_nearby_list = apartmentPostDao.getApartment_Post_List(null, a.getCity(), a.getDistrict(), null, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 0,today, apartmentPost_id);
             int page = 2;
             request.setAttribute("page", page);
             request.setAttribute("Apartment", a);
@@ -94,7 +98,7 @@ public class ApartmentDetail extends HttpServlet {
             request.setAttribute("apartment_Post_nearby_list", apartment_Post_nearby_list);
             request.getRequestDispatcher("ApartmentPostDetail.jsp").forward(request, response);
         } catch (NumberFormatException e) {
-        
+
         }
     }
 
@@ -108,7 +112,5 @@ public class ApartmentDetail extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
-
 
 }
