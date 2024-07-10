@@ -4,6 +4,9 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
+
 /**
  *
  * @author thinh
@@ -11,18 +14,20 @@ package model;
 public class CommentPost {
     
     private int id;
-    private String massgee;
+    private String mesage;
     private User user_id;
     private CommunityPost post_id;
+    private LocalDateTime time;
 
     public CommentPost() {
     }
 
-    public CommentPost(int id, String massgee, User user_id, CommunityPost post_id) {
+    public CommentPost(int id, String mesage, User user_id, CommunityPost post_id, LocalDateTime time) {
         this.id = id;
-        this.massgee = massgee;
+        this.mesage = mesage;
         this.user_id = user_id;
         this.post_id = post_id;
+        this.time = time;
     }
 
     public int getId() {
@@ -33,12 +38,12 @@ public class CommentPost {
         this.id = id;
     }
 
-    public String getMassgee() {
-        return massgee;
+    public String getMesage() {
+        return mesage;
     }
 
-    public void setMassgee(String massgee) {
-        this.massgee = massgee;
+    public void setMesage(String mesage) {
+        this.mesage = mesage;
     }
 
     public User getUser_id() {
@@ -57,11 +62,22 @@ public class CommentPost {
         this.post_id = post_id;
     }
 
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
     @Override
     public String toString() {
-        return "CommentPost{" + "id=" + id + ", massgee=" + massgee + ", user_id=" + user_id + ", post_id=" + post_id + '}';
+        return "CommentPost{" + "id=" + id + ", mesage=" + mesage + ", user_id=" + user_id + ", post_id=" + post_id + ", time=" + time + '}';
     }
     
+    
+
+
     
     
 }

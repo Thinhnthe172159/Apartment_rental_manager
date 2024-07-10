@@ -82,6 +82,129 @@
 
         </style>
 
+        <style>
+            .be-comment-block {
+                margin-bottom: 50px !important;
+                border: 1px solid #edeff2;
+                border-radius: 2px;
+                padding: 50px 70px;
+                border:1px solid #ffffff;
+            }
+
+            .comments-title {
+                font-size: 16px;
+                color: #262626;
+                margin-bottom: 15px;
+                font-family: 'Conv_helveticaneuecyr-bold';
+            }
+
+            .be-img-comment {
+                width: 60px;
+                height: 60px;
+                float: left;
+                margin-bottom: 15px;
+            }
+
+            .be-ava-comment {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+
+            .be-comment-content {
+                margin-left: 80px;
+            }
+
+            .be-comment-content span {
+                display: inline-block;
+                width: 49%;
+                margin-bottom: 15px;
+            }
+
+            .be-comment-name {
+                font-size: 13px;
+                font-family: 'Conv_helveticaneuecyr-bold';
+            }
+
+            .be-comment-content a {
+                color: #383b43;
+            }
+
+            .be-comment-content span {
+                display: inline-block;
+                width: 49%;
+                margin-bottom: 15px;
+            }
+
+            .be-comment-time {
+                text-align: right;
+            }
+
+            .be-comment-time {
+                font-size: 11px;
+                color: #b4b7c1;
+            }
+
+            .be-comment-text {
+                font-size: 13px;
+                line-height: 18px;
+                color: #7a8192;
+                display: block;
+                background: #f6f6f7;
+                border: 1px solid #edeff2;
+                padding: 15px 20px 20px 20px;
+            }
+
+            .form-group.fl_icon .icon {
+                position: absolute;
+                top: 1px;
+                left: 16px;
+                width: 48px;
+                height: 48px;
+                background: #f6f6f7;
+                color: #b5b8c2;
+                text-align: center;
+                line-height: 50px;
+                -webkit-border-top-left-radius: 2px;
+                -webkit-border-bottom-left-radius: 2px;
+                -moz-border-radius-topleft: 2px;
+                -moz-border-radius-bottomleft: 2px;
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+            }
+
+            .form-group .form-input {
+                font-size: 13px;
+                line-height: 50px;
+                font-weight: 400;
+                color: #b4b7c1;
+                width: 100%;
+                height: 50px;
+                padding-left: 20px;
+                padding-right: 20px;
+                border: 1px solid #edeff2;
+                border-radius: 3px;
+            }
+
+            .form-group.fl_icon .form-input {
+                padding-left: 70px;
+            }
+
+            .form-group textarea.form-input {
+                height: 150px;
+            }
+
+
+
+
+
+
+
+
+
+
+        </style>
+
         <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
         <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
         <script type="text/javascript">
@@ -196,6 +319,7 @@
                     <br><br>
                     <c:set value="${Cpost}" var="pl" />
                     <div id="${pl.id}" class="card mb-4">
+
                         <div class="card-body" style="">
                             <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
                             <div><br><div>
@@ -204,12 +328,12 @@
                                         ${pl.context}
                                     <br><br><br>
                                 </div>  
-                                    <c:forEach items="${requestScope.listImage}" var="img">
-                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${img.image}" class="card-img-bottom" alt="Post Image" />
-                                        <br>
-                                    </c:forEach>
-                                    
-                                
+                                <c:forEach items="${requestScope.listImage}" var="img">
+                                    <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;border-radius: 15px;" src="${img.image}" class="card-img-bottom" alt="Post Image" />
+                                    <br>
+                                </c:forEach>
+
+
                                 <div class="card-footer text-muted d-flex justify-content-between">
                                     <div>
                                         <span class="mr-2">
@@ -222,11 +346,10 @@
                                                        color:black;
                                                    </c:otherwise>
                                                </c:choose>"></a>${pl.num_of_like}</span>
-                                        <span class="mr-2"><i class="far fa-comment"></i> 1</span>
+                                        <span class="mr-2"><i class="far fa-comment"></i> ${pl.num_of_comment}</span>
                                         <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
                                     </div>
                                     <div>
-                                        <i class="far fa-bookmark"></i>
                                     </div>
                                 </div>
                             </div>
@@ -234,7 +357,62 @@
 
                         </div>
                     </div>
+                    <br><br>
+                    <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                                              <c:when test="${sessionScope.user_Data != null}">
+                                                  ${sessionScope.user_Data.getImage()}
+                                              </c:when>
+                                              <c:otherwise>
+                                                  https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png
+                                              </c:otherwise>
+                                          </c:choose>" alt="alt"/>
+                        <c:if test="${sessionScope.user_Data !=null}">
+                            <form action="DetailCommnityPost" method="post" class="col-lg-11"><input type="text" value="${pl.id}" name="post_id" hidden=""><input name="comment" class="col-md-11"  style="border-radius: 30px;height: 55px;z-index: 1;box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;border: 0"   type="text" placeholder="Thêm bình luận"><button type="submit" class="col-md-1 btn- btn btn-primary" style="background: #000391bf; border-radius:50px;"><svg style="color: white; height:42px; " xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
+                                    </svg></button>
+                            </form>
+                        </c:if>
+                        <c:if test="${sessionScope.user_Data == null}">
+                            <br>
+                            Bạn cần phải đăng nhập để có thể comment bài đăng này
+                        </c:if>
 
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="container">
+                            <div class="be-comment-block">
+                                <h1 class="comments-title">Comments (${pl.num_of_comment})</h1>
+
+                                <c:forEach items="${commentList}" var="cm">
+
+
+                                    <div class="be-comment">
+                                        <div class="be-img-comment">	
+                                            <a href="blog-detail-2.html">
+                                                <img src="${cm.user_id.image}" alt="" class="be-ava-comment">
+                                            </a>
+                                        </div>
+                                        <div class="be-comment-content">
+
+                                            <span class="be-comment-name">
+                                                <a href="blog-detail-2.html">${cm.user_id.last_name} ${cm.user_id.first_name}</a>
+                                            </span>
+                                            <span class="be-comment-time">
+                                                <i class="fa fa-clock-o"></i>
+                                                ${cm.time}
+                                            </span>
+
+                                            <p class="be-comment-text">
+                                                ${cm.mesage}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+
+                            </div>
+                        </div>
+                    </div>           
                 </div>
 
 

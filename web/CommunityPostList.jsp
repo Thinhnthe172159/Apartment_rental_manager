@@ -206,7 +206,7 @@
                                         <a href="DetailCommnityPost?post_id=${pl.id}" class="card-link">Xem chi tiết</a>
 
                                     </div>  <c:if test="${pl.first_image !=null}">
-                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
+                                        <img style="max-width: 100%;height: 500px;object-fit": contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
@@ -220,16 +220,14 @@
                                                            color:black;
                                                        </c:otherwise>
                                                    </c:choose>"></a>${pl.num_of_like}</span>
-                                            <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                            <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
+                                                   <span class="mr-2"><a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}</span>
+                                            <span><i class="far fa-eye"></i> ${pl.num_of_view}</span>
                                         </div>
                                         <div>
                                             <i class="far fa-bookmark"></i>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </c:forEach>

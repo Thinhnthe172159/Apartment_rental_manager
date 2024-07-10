@@ -13,8 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import model.CommentPost;
 import model.CommunityPost;
 import model.LikePost;
 import model.Post_image;
@@ -70,15 +72,17 @@ public class DetailCommnityPost extends HttpServlet {
         CommunityPostDao cpd = new CommunityPostDao();
         List<LikePost> likePosts = new ArrayList<>();
         String postIdRaw = request.getParameter("post_id");
-
+        
         int postId = (postIdRaw == null || postIdRaw.isEmpty()) ? 0 : Integer.parseInt(postIdRaw);
         CommunityPost cPost = cpd.getCommunityPost(postId);
         List<Post_image> post_images = cpd.getPostImageByPostId(postId);
+        List<CommentPost> commentList = cpd.getListCommentOfPost(postId);
         likePosts = cpd.getListLIkedPost((user == null) ? 0 : user.getId());
         List<Integer> listPostIdLiked = new ArrayList<>();
         for (LikePost index : likePosts) {
             listPostIdLiked.add(index.getPost_id().getId());
         }
+        request.setAttribute("commentList", commentList);
         request.setAttribute("page", 3);
         request.setAttribute("likePost", listPostIdLiked);
         request.setAttribute("Cpost", cPost);
@@ -97,7 +101,18 @@ public class DetailCommnityPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user_Data");
+        CommunityPostDao cpd = new CommunityPostDao();
+        String post_id = request.getParameter("post_id");
+        String comment = request.getParameter("comment");
+        int postId = (post_id == null || post_id.isEmpty()) ? 0 : Integer.parseInt(post_id);
+        CommunityPost communityPost = cpd.getCommunityPost(postId);
+        communityPost.setNum_of_like(cpd.countCommentEachPost(postId));
+        LocalDateTime now = LocalDateTime.now();
+        CommentPost commentPost = new CommentPost(0, comment, user, communityPost, now);
+        cpd.addComment(commentPost);
+        doGet(request, response);
     }
 
     /**

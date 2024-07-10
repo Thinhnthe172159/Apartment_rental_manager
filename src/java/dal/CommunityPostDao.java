@@ -5,7 +5,7 @@
 package dal;
 
 import dal.DBContext;
-import java.security.Timestamp;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,11 +17,13 @@ import model.User;
 import java.sql.SQLException;
 import model.CommentPost;
 import model.LikePost;
-import org.apache.tomcat.util.http.fileupload.ParameterParser;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class CommunityPostDao extends DBContext {
 
     private UserDao userDao = new UserDao();
+//add post 
 
     public void addPost(CommunityPost cp) {
         String query = "INSERT INTO [dbo].[Community_post]\n"
@@ -414,15 +416,18 @@ public class CommunityPostDao extends DBContext {
         String sql = "INSERT INTO [dbo].[Comment]\n"
                 + "           ([message]\n"
                 + "           ,[user_id]\n"
-                + "           ,[post_id])\n"
+                + "           ,[post_id]\n"
+                + "           ,[time])\n"
                 + "     VALUES\n"
-                + "           (?,?,?)";
+                + "           (?,?,?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, commentPost.getMassgee());
+            st.setString(1, commentPost.getMesage());
             st.setInt(2, commentPost.getUser_id().getId());
             st.setInt(3, commentPost.getPost_id().getId());
+            Timestamp timestamp = Timestamp.valueOf(commentPost.getTime());
+            st.setTimestamp(4, timestamp);
             st.executeUpdate();
 
         } catch (SQLException e) {
@@ -455,7 +460,7 @@ public class CommunityPostDao extends DBContext {
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, commentPost.getMassgee());
+            st.setString(1, commentPost.getMesage());
             st.setInt(2, commentPost.getUser_id().getId());
             st.setInt(3, commentPost.getPost_id().getId());
             st.setInt(4, messageId);
@@ -464,6 +469,36 @@ public class CommunityPostDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    //hàm nay sẽ lấy ra danh sách các comment thuộc về 1 bài đăng nào đấy
+    public List<CommentPost> getListCommentOfPost(int post_id) {
+        List<CommentPost> list = new ArrayList<>();
+        String sql = "SELECT [id]\n"
+                + "      ,[message]\n"
+                + "      ,[user_id]\n"
+                + "      ,[post_id]\n"
+                + "      ,[time]\n"
+                + "  FROM [dbo].[Comment] where [post_id] = ? order by [time] desc ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, post_id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String message = rs.getString("message");
+                User u = userDao.getUser(rs.getInt("user_id"));
+                CommunityPost communityPost = getCommunityPost(rs.getInt("post_id"));
+                Timestamp timestamp = rs.getTimestamp("time");
+                LocalDateTime time = timestamp.toLocalDateTime();
+
+                CommentPost cp = new CommentPost(id, message, u, communityPost, time);
+                list.add(cp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     // hàm đếm số lượng comment
@@ -475,22 +510,21 @@ public class CommunityPostDao extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, post_id);
             ResultSet rs = st.executeQuery();
-
-            count = rs.getInt("total");
-
+            if (rs.next()) {
+                count = rs.getInt("total");
+            }
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
         return count;
     }
 
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
-        List<Post_image> list = cpd.getPostImageByPostId(18);
-        for(Post_image i : list){
-            System.out.println(i.getImage());
+        List<CommentPost> cps = cpd.getListCommentOfPost(37);
+        for (CommentPost i : cps) {
+            System.out.println(i.getMesage());
         }
-        
 
     }
 }
