@@ -174,7 +174,7 @@
                             </div>
                             <div class="list-group">
                                     <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
-                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a>
+                            <c:if test="${user_Data != null}">  <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a></c:if>
                             </div>
                         </div>
                     </div>

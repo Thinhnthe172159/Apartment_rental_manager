@@ -301,14 +301,14 @@
                             </div>
                             <div class="list-group">
                                     <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
-                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a>
+                            <c:if test="${user_Data != null}">  <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a></c:if>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="col-md-9 post">
-                        <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                        <div class="col-md-9 post">
+                            <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
                                               <c:when test="${sessionScope.user_Data != null}">
                                                   ${sessionScope.user_Data.getImage()}
                                               </c:when>
@@ -410,8 +410,10 @@
                                                                 </button>
                                                                 <ul class="dropdown-menu">
                                                                     <c:if test="${user_Data.id == cm.user_id.id}">
-                                                                        <li><a class="dropdown-item" href="#">Xóa bỏ</a></li>
-                                                                        <li><a class="dropdown-item" href="DetailCommnityPost?comment_id=${cm.id}&commentCheck=1&post_id=${pl.id}">Chỉnh sửa</a></li>
+                                                                        <li><form class="dropdown-item" id="deleteForm-${cm.id}" action="DeleteComment?comment_id=${cm.id}" method="post">
+                                                                                <button class="btn btn-block" type="button" onclick="confirmDeletion('deleteForm-${cm.id}')">Xóa bỏ</button>
+                                                                            </form></li>
+                                                                        <li><a class="dropdown-item" href="DetailCommnityPost?comment_id=${cm.id}&commentCheck=1&post_id=${pl.id}"><button class="btn btn-block">Sửa đổi</button></a></li>
                                                                         </c:if>
                                                                         <c:if test="${user_Data.id != cm.user_id.id}">  <li><a class="dropdown-item" href="#">Báo cáo vi phạm</a></li> </c:if>
 
@@ -469,14 +471,14 @@
                     </div>           
                 </div>
                 <script type="text/javascript">
-// Hàm chuyển đổi và định dạng ngày giờ
+                    // Hàm chuyển đổi và định dạng ngày giờ
                     function formatDateTime(dateTimeString) {
                         const date = new Date(dateTimeString);
                         const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
                         return date.toLocaleDateString('en-US', options);
                     }
 
-// Thêm sự kiện load để chạy function formatDateTime
+                    // Thêm sự kiện load để chạy function formatDateTime
                     window.onload = function () {
                         const formattedTimeElements = document.querySelectorAll('.formatted-time');
                         formattedTimeElements.forEach(function (element) {
@@ -531,6 +533,29 @@
                             $el.css('width', containerWidth);
                         }
                     });
+                    </script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                                        function confirmDeletion(formId) {
+                                            Swal.fire({
+                                                title: "Are you sure?",
+                                                text: "Bạn có chắc là bạn muốn xóa bình luận này không?",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Yes, delete it!"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    Swal.fire({
+                                                        title: "Deleted!",
+                                                        text: "Bình luận của bạn đã được xóa.",
+                                                        icon: "success"
+                                                    });
+                                                    document.getElementById(formId).submit();
+                                                }
+                                            });
+                                        }
                     </script>
 
                     </body>

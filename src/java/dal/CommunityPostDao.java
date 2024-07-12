@@ -445,14 +445,13 @@ public class CommunityPostDao extends DBContext {
     }
 
     // hàm xóa commment
-    public void deleteComment(int PostId, int userId) {
+    public void deleteComment(int PostId) {
         String sql = "DELETE FROM [dbo].[Comment]\n"
-                + "      WHERE [id] = ? and [user_id] = ?";
+                + "      WHERE [id] = ?";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, PostId);
-            st.setInt(2, userId);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
