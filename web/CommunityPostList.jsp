@@ -311,24 +311,7 @@
                 <div class="sticky-lg-top">
                     <jsp:include page="Footer.jsp" />
 
-                    <script>
-                        var message = '${requestScope.message}';
-                        if (message) {
-                            if (message === "b") {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Giao dịch không thành công, vui lòng thử lại",
-                                });
-                            } else if (message === 'a') {
-                                Swal.fire({
-                                    title: "Good job!",
-                                    text: "Giao dịch thành công",
-                                    icon: "success"
-                                });
-                            }
-                        }
-                    </script>
+
 
                     <script type="text/javascript">
                         $(window).scroll(function (e) {
