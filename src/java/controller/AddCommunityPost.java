@@ -92,6 +92,7 @@ public class AddCommunityPost extends HttpServlet {
             cp.setNum_of_like(0);
             cp.setNum_of_view(0);
             cp.setNum_of_comment(0);
+            cp.setStatus(1);
             communityPostDao.addPost(cp);
 
             String applicationPath = request.getServletContext().getRealPath("");

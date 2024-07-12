@@ -20,6 +20,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="assets/jquery-1.11.3.min.js"></script>
 
         <style type="text/tailwindcss">
@@ -299,7 +301,7 @@
                             </div>
                             <div class="list-group">
                                     <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
-                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết cua tôi</a>
+                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a>
                             </div>
                         </div>
                     </div>
@@ -367,7 +369,7 @@
                                               </c:otherwise>
                                           </c:choose>" alt="alt"/>
                         <c:if test="${sessionScope.user_Data !=null}">
-                            <form action="DetailCommnityPost" method="post" class="col-lg-11"><input type="text" value="${pl.id}" name="post_id" hidden=""><input name="comment" class="col-md-11"  style="border-radius: 30px;height: 55px;z-index: 1;box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;border: 0"   type="text" placeholder="Thêm bình luận"><button type="submit" class="col-md-1 btn- btn btn-primary" style="background: #000391bf; border-radius:50px;"><svg style="color: white; height:42px; " xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                            <form action="DetailCommnityPost" method="post" class="col-lg-11"><input  type="text" value="${pl.id}" name="post_id" hidden=""><input required="" name="comment" class="col-md-11"  style="border-radius: 30px;height: 55px;z-index: 1;box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;border: 0"   type="text" placeholder="Thêm bình luận"><button type="submit" class="col-md-1 btn- btn btn-primary" style="background: #000391bf; border-radius:50px;"><svg style="color: white; height:42px; " xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
                                     <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471z"/>
                                     </svg></button>
                             </form>
@@ -381,40 +383,120 @@
                     <br><br>
                     <div class="row">
                         <div class="container">
-                            <div class="be-comment-block">
-                                <h1 class="comments-title">Comments (${pl.num_of_comment})</h1>
+                            <div class="be-comment-block" style="background: #00000024;border-radius:15px; ">
+                                <h1 id="new" class="comments-title">Comments (${pl.num_of_comment})</h1>
 
                                 <c:forEach items="${commentList}" var="cm">
 
+                                    <c:if test="${cm.getStatus() !=0 }">
+                                        <div class="be-comment">
+                                            <div class="be-img-comment">	
 
-                                    <div class="be-comment">
-                                        <div class="be-img-comment">	
-                                            <a href="blog-detail-2.html">
                                                 <img src="${cm.user_id.image}" alt="" class="be-ava-comment">
-                                            </a>
-                                        </div>
-                                        <div class="be-comment-content">
 
-                                            <span class="be-comment-name">
-                                                <a href="blog-detail-2.html">${cm.user_id.last_name} ${cm.user_id.first_name}</a>
-                                            </span>
-                                            <span class="be-comment-time">
-                                                <i class="fa fa-clock-o"></i>
-                                                ${cm.time}
-                                            </span>
+                                            </div>
+                                            <div class="be-comment-content">
 
-                                            <p class="be-comment-text">
-                                                ${cm.mesage}
-                                            </p>
-                                        </div>
-                                    </div>
+                                                <span class="be-comment-name">
+                                                    <a href="#">${cm.user_id.first_name} ${cm.user_id.last_name} <c:if test="${cm.user_id.id == pl.user_id.id}">(tác giả)✔️</c:if></a>
+                                                    </span>
+                                                    <span class="be-comment-time">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        <span style="color: black" class="formatted-time" data-datetime="${cm.time}"></span>
+                                                    <span><c:if test="${user_Data!=null}">
+                                                            <div class="dropdown-center">
+                                                                <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    . . .
+                                                                </button>
+                                                                <ul class="dropdown-menu">
+                                                                    <c:if test="${user_Data.id == cm.user_id.id}">
+                                                                        <li><a class="dropdown-item" href="#">Xóa bỏ</a></li>
+                                                                        <li><a class="dropdown-item" href="DetailCommnityPost?comment_id=${cm.id}&commentCheck=1&post_id=${pl.id}">Chỉnh sửa</a></li>
+                                                                        </c:if>
+                                                                        <c:if test="${user_Data.id != cm.user_id.id}">  <li><a class="dropdown-item" href="#">Báo cáo vi phạm</a></li> </c:if>
+
+                                                                    </ul>
+                                                                </div> </c:if>
+                                                        </span>
+                                                    </span>
+
+                                                <c:if test="${comment_id != cm.id}">
+                                                    <div id="${cm.id}" class="be-comment-text" style="border-radius: 15px;">
+                                                        ${cm.mesage} </div> 
+                                                    </c:if>
+                                                    <c:if test="${comment_id == cm.id && user_Data != null}">
+                                                    <form action="UpdateComment?comment_id=${cm.id}&post_id=${pl.id}" method="post">
+                                                        <input id="${cm.id}" class="be-comment-text form-control" style="border-radius: 15px;height: 60px;" name="comment" type="input" value="${cm.mesage}">
+                                                        <button class="btn btn-primary" type="submit">cập nhật</button>
+                                                    </form>
+                                                </c:if>
+
+                                            </div>
+                                        </div>  
+                                        <br><br>
+                                    </c:if>
+                                    <c:if test="${cm.status == 0 && cm.user_id.id == user_Data.id}">
+                                        <div class="be-comment">
+                                            <div class="be-img-comment">	
+
+                                                <img src="${cm.user_id.image}" alt="" class="be-ava-comment">
+
+                                            </div>
+                                            <div class="be-comment-content">
+
+                                                <span class="be-comment-name">
+                                                    <a href="#">${cm.user_id.first_name} ${cm.user_id.last_name} <c:if test="${cm.user_id.id == pl.user_id.id}">(tác giả)✔️</c:if></a>
+                                                    </span>
+                                                    <span class="be-comment-time">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        <span style="color: black" class="formatted-time" data-datetime="${cm.time}"></span>
+                                                    <span>
+                                                    </span>
+                                                </span>
+
+                                                <div  class="be-comment-text" style="border-radius: 15px;">
+                                                    ${cm.mesage}  <p style="color: red">Comment này của bạn đã bị ẩn do vi phạm chính sách cộng đồng (chỉ có bạn mới có thể nhìn thấy comment    này)</p>
+                                                </div> 
+                                            </div>
+                                        </div>  
+                                        <br><br>
+                                    </c:if>
+
                                 </c:forEach>
 
                             </div>
                         </div>
                     </div>           
                 </div>
+                <script type="text/javascript">
+// Hàm chuyển đổi và định dạng ngày giờ
+                    function formatDateTime(dateTimeString) {
+                        const date = new Date(dateTimeString);
+                        const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
+                        return date.toLocaleDateString('en-US', options);
+                    }
 
+// Thêm sự kiện load để chạy function formatDateTime
+                    window.onload = function () {
+                        const formattedTimeElements = document.querySelectorAll('.formatted-time');
+                        formattedTimeElements.forEach(function (element) {
+                            const originalDateTime = element.dataset.datetime; // Lấy dữ liệu từ thuộc tính data-datetime
+                            element.textContent = formatDateTime(originalDateTime); // Cập nhật nội dung với thời gian đã định dạng
+                        });
+                    };
+                </script>
+                <script>
+
+                    var scrollToPostId = '${requestScope.scrollToComment}';
+                    if (scrollToPostId) {
+
+                        var element = document.getElementById(scrollToPostId);
+                        if (element) {
+                            element.scrollIntoView({behavior: 'smooth', block: 'start'});
+                        }
+                    }
+
+                </script>
 
 
 
@@ -428,27 +510,27 @@
                     <jsp:include page="Footer.jsp" />
 
                     <script type="text/javascript">
-            $(window).scroll(function (e) {
-                var $el = $('.fixedElement');
-                var isPositionFixed = $el.hasClass('fixed');
-                var containerWidth = $el.parent().width(); // Get the parent container's width
+                    $(window).scroll(function (e) {
+                        var $el = $('.fixedElement');
+                        var isPositionFixed = $el.hasClass('fixed');
+                        var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                    $el.addClass('fixed').css('width', containerWidth);
-                }
-                if ($(this).scrollTop() < 410 && isPositionFixed) {
-                    $el.removeClass('fixed').css('width', '');
-                }
-            });
+                        if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                            $el.addClass('fixed').css('width', containerWidth);
+                        }
+                        if ($(this).scrollTop() < 410 && isPositionFixed) {
+                            $el.removeClass('fixed').css('width', '');
+                        }
+                    });
 
-            // Adjust the width on window resize to maintain proper positioning
-            $(window).resize(function () {
-                var $el = $('.fixedElement.fixed');
-                if ($el.length > 0) {
-                    var containerWidth = $el.parent().width();
-                    $el.css('width', containerWidth);
-                }
-            });
+                    // Adjust the width on window resize to maintain proper positioning
+                    $(window).resize(function () {
+                        var $el = $('.fixedElement.fixed');
+                        if ($el.length > 0) {
+                            var containerWidth = $el.parent().width();
+                            $el.css('width', containerWidth);
+                        }
+                    });
                     </script>
 
                     </body>

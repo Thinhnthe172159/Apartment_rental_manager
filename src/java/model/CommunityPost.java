@@ -21,11 +21,12 @@ public class CommunityPost {
     private int num_of_view;
     private int num_of_like;
     private int num_of_comment;
+    private int status;
 
     public CommunityPost() {
     }
 
-    public CommunityPost(int id, String title, String context, User user_id, Date time, String first_image, int num_of_view, int num_of_like, int num_of_comment) {
+    public CommunityPost(int id, String title, String context, User user_id, Date time, String first_image, int num_of_view, int num_of_like, int num_of_comment, int status) {
         this.id = id;
         this.title = title;
         this.context = context;
@@ -35,6 +36,7 @@ public class CommunityPost {
         this.num_of_view = num_of_view;
         this.num_of_like = num_of_like;
         this.num_of_comment = num_of_comment;
+        this.status = status;
     }
 
     public int getId() {
@@ -109,22 +111,18 @@ public class CommunityPost {
         this.num_of_comment = num_of_comment;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + ", first_image=" + first_image + ", num_of_view=" + num_of_view + ", num_of_like=" + num_of_like + ", num_of_comment=" + num_of_comment + '}';
+        return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + ", first_image=" + first_image + ", num_of_view=" + num_of_view + ", num_of_like=" + num_of_like + ", num_of_comment=" + num_of_comment + ", status=" + status + '}';
     }
-    
-    
-    
-      
-    
-    
-    
-    
-    
-    
-   
-    
     
     
     

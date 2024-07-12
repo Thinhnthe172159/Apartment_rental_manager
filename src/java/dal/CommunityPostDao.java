@@ -30,8 +30,8 @@ public class CommunityPostDao extends DBContext {
                 + "           ([tittle]\n"
                 + "           ,[context]\n"
                 + "           ,[user_id]\n"
-                + "           ,[time],[first_image])\n"
-                + " VALUES    (?,?,?,?,?)";
+                + "           ,[time],[first_image],[status])\n"
+                + " VALUES    (?,?,?,?,?,?)";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, cp.getTitle());
@@ -39,6 +39,7 @@ public class CommunityPostDao extends DBContext {
             statement.setInt(3, cp.getUser_id().getId());
             statement.setDate(4, cp.getTime());
             statement.setString(5, cp.getFirst_image());
+            statement.setInt(6, cp.getStatus());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -98,6 +99,7 @@ public class CommunityPostDao extends DBContext {
                 cp.setNum_of_view(rs.getInt("num_of_view"));
                 cp.setNum_of_like(rs.getInt("num_of_like"));
                 cp.setNum_of_comment(rs.getInt("num_of_comment"));
+                cp.setStatus(rs.getInt("status"));
                 posts.add(cp);
             }
         } catch (SQLException e) {
@@ -109,7 +111,7 @@ public class CommunityPostDao extends DBContext {
     // đây là list tìm kiếm có thể phân trang
     public List<CommunityPost> searchCommunityPostsList(String title, int user_id, int pageNumber, int pageSize) {
         List<CommunityPost> list = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1 ";
+        String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1";
 
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
@@ -138,6 +140,7 @@ public class CommunityPostDao extends DBContext {
                 cp.setNum_of_view(rs.getInt("num_of_view"));
                 cp.setNum_of_like(rs.getInt("num_of_like"));
                 cp.setNum_of_comment(rs.getInt("num_of_comment"));
+                cp.setStatus(rs.getInt("status"));
                 list.add(cp);
             }
         } catch (SQLException e) {
@@ -151,7 +154,7 @@ public class CommunityPostDao extends DBContext {
         List<CommunityPost> list = new ArrayList<>();
         String sql = "SELECT COUNT(*) AS list_size\n"
                 + "FROM [ams].[dbo].[Community_post]\n"
-                + "where 1=1 ";
+                + "where 1=1 and [status] = 1 ";
 
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
@@ -184,6 +187,7 @@ public class CommunityPostDao extends DBContext {
                 + "      ,[num_of_view] = ?\n"
                 + "      ,[num_of_like] = ?\n"
                 + "      ,[num_of_comment] = ?\n"
+                + "      ,[status] = ?\n"
                 + " WHERE [id] = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
@@ -193,7 +197,8 @@ public class CommunityPostDao extends DBContext {
             statement.setInt(5, post.getNum_of_view());
             statement.setInt(6, post.getNum_of_like());
             statement.setInt(7, post.getNum_of_comment());
-            statement.setInt(8, post.getId());
+            statement.setInt(8, post.getStatus());
+            statement.setInt(9, post.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -210,6 +215,7 @@ public class CommunityPostDao extends DBContext {
                 + "      ,[num_of_view] = ?\n"
                 + "      ,[num_of_like] = ?\n"
                 + "      ,[num_of_comment] = ?\n"
+                + "      ,[status] = ?\n"
                 + " WHERE [id] = ?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, post.getTitle());
@@ -220,7 +226,8 @@ public class CommunityPostDao extends DBContext {
             statement.setInt(6, post.getNum_of_view());
             statement.setInt(7, post.getNum_of_like());
             statement.setInt(8, post.getNum_of_comment());
-            statement.setInt(9, post.getId());
+            statement.setInt(9, post.getStatus());
+            statement.setInt(10, post.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -244,6 +251,7 @@ public class CommunityPostDao extends DBContext {
                 User user = userDao.getUser(rs.getInt("user_id"));
                 post.setUser_id(user);
                 post.setTime(rs.getDate("time"));
+                post.setStatus(rs.getInt("status"));
                 return post;
             }
         } catch (SQLException e) {
@@ -417,9 +425,9 @@ public class CommunityPostDao extends DBContext {
                 + "           ([message]\n"
                 + "           ,[user_id]\n"
                 + "           ,[post_id]\n"
-                + "           ,[time])\n"
+                + "           ,[time],[status])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?)";
+                + "           (?,?,?,?,?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -428,6 +436,7 @@ public class CommunityPostDao extends DBContext {
             st.setInt(3, commentPost.getPost_id().getId());
             Timestamp timestamp = Timestamp.valueOf(commentPost.getTime());
             st.setTimestamp(4, timestamp);
+            st.setInt(5, commentPost.getStatus());
             st.executeUpdate();
 
         } catch (SQLException e) {
@@ -451,11 +460,12 @@ public class CommunityPostDao extends DBContext {
     }
 
     // hàm sửa commment
-    public void updateComment(CommentPost commentPost, int messageId, int userid) {
+    public void updateComment(CommentPost commentPost) {
         String sql = "UPDATE [dbo].[Comment]\n"
                 + "   SET [message] = ?\n"
                 + "      ,[user_id] = ?\n"
                 + "      ,[post_id] = ?\n"
+                + "      ,[status] = ? \n"
                 + " WHERE [id] = ? and [user_id]= ?";
 
         try {
@@ -463,8 +473,9 @@ public class CommunityPostDao extends DBContext {
             st.setString(1, commentPost.getMesage());
             st.setInt(2, commentPost.getUser_id().getId());
             st.setInt(3, commentPost.getPost_id().getId());
-            st.setInt(4, messageId);
-            st.setInt(5, userid);
+            st.setInt(4, commentPost.getStatus());
+            st.setInt(5, commentPost.getId());
+            st.setInt(6, commentPost.getUser_id().getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -478,7 +489,7 @@ public class CommunityPostDao extends DBContext {
                 + "      ,[message]\n"
                 + "      ,[user_id]\n"
                 + "      ,[post_id]\n"
-                + "      ,[time]\n"
+                + "      ,[time],[status]\n"
                 + "  FROM [dbo].[Comment] where [post_id] = ? order by [time] desc ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -492,7 +503,7 @@ public class CommunityPostDao extends DBContext {
                 Timestamp timestamp = rs.getTimestamp("time");
                 LocalDateTime time = timestamp.toLocalDateTime();
 
-                CommentPost cp = new CommentPost(id, message, u, communityPost, time);
+                CommentPost cp = new CommentPost(id, message, u, communityPost, time, rs.getInt("status"));
                 list.add(cp);
             }
         } catch (SQLException e) {
@@ -501,10 +512,38 @@ public class CommunityPostDao extends DBContext {
         return list;
     }
 
+    public CommentPost getCommentById(int id) {
+        String sql = "SELECT [id]\n"
+                + "      ,[message]\n"
+                + "      ,[user_id]\n"
+                + "      ,[post_id]\n"
+                + "      ,[time],[status]\n"
+                + "  FROM [dbo].[Comment] where [id] = ? order by [time] desc ";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                int ids = rs.getInt("id");
+                String message = rs.getString("message");
+                User u = userDao.getUser(rs.getInt("user_id"));
+                CommunityPost communityPost = getCommunityPost(rs.getInt("post_id"));
+                Timestamp timestamp = rs.getTimestamp("time");
+                LocalDateTime time = timestamp.toLocalDateTime();
+
+                CommentPost cp = new CommentPost(ids, message, u, communityPost, time, rs.getInt("status"));
+                return cp;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // hàm đếm số lượng comment
     public int countCommentEachPost(int post_id) {
         int count = 0;
-        String sql = "SELECT count(*) as total \n"
+        String sql = "SELECT count(id) as total \n"
                 + "  FROM [dbo].[Comment] where [post_id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -523,8 +562,12 @@ public class CommunityPostDao extends DBContext {
         CommunityPostDao cpd = new CommunityPostDao();
         List<CommentPost> cps = cpd.getListCommentOfPost(37);
         for (CommentPost i : cps) {
-            System.out.println(i.getMesage());
+            System.out.println(i.getStatus());
         }
+        System.out.println(cpd.countCommentEachPost(38));
+        
+        CommentPost commentPost = cpd.getCommentById(8);
+        System.out.println(commentPost);
 
     }
 }

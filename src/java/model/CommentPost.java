@@ -18,16 +18,18 @@ public class CommentPost {
     private User user_id;
     private CommunityPost post_id;
     private LocalDateTime time;
+    private int status;
 
     public CommentPost() {
     }
 
-    public CommentPost(int id, String mesage, User user_id, CommunityPost post_id, LocalDateTime time) {
+    public CommentPost(int id, String mesage, User user_id, CommunityPost post_id, LocalDateTime time, int status) {
         this.id = id;
         this.mesage = mesage;
         this.user_id = user_id;
         this.post_id = post_id;
         this.time = time;
+        this.status = status;
     }
 
     public int getId() {
@@ -70,14 +72,18 @@ public class CommentPost {
         this.time = time;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "CommentPost{" + "id=" + id + ", mesage=" + mesage + ", user_id=" + user_id + ", post_id=" + post_id + ", time=" + time + '}';
+        return "CommentPost{" + "id=" + id + ", mesage=" + mesage + ", user_id=" + user_id + ", post_id=" + post_id + ", time=" + time + ", status=" + status + '}';
     }
-    
-    
-
-
-    
+ 
     
 }

@@ -16,10 +16,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Cộng Đồng</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="assets/jquery-1.11.3.min.js"></script>
 
         <style type="text/tailwindcss">
@@ -176,7 +174,7 @@
                             </div>
                             <div class="list-group">
                                     <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
-                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết cua tôi</a>
+                            <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a>
                             </div>
                         </div>
                     </div>
@@ -197,13 +195,30 @@
                     <c:forEach items="${postList}" var="pl">
                         <div id="${pl.id}" class="card mb-4">
                             <div class="card-body" style="">
-                                <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
-                                <div><br><div>
-                                        <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
+                                <div class="text-muted d-flex justify-content-between">
+                                    <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>    
+                                    <span> <i class="far fa-solid"><c:if test="${user_Data!=null}">
+                                                <div class="dropdown-center">
+                                                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        . . .
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <c:if test="${user_Data.id == pl.user_id.id}">
+                                                            <li><a class="dropdown-item font-monospace" href="#">Xóa bỏ</a></li>
+                                                            <li><a class="dropdown-item font-monospace" href="#">Chỉnh sửa</a></li>
+                                                            </c:if>
+                                                            <c:if test="${user_Data.id != pl.user_id.id}">  <li><a class="dropdown-item font-monospace" href="#">Báo cáo vi phạm</a></li> </c:if>
+
+                                                        </ul>
+                                                    </div> </c:if></i></span>
+                                    </div>
+
+                                    <div><br><div>
+                                            <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
                                         <span><h5 class="">${pl.title}</h5></span>
                                             ${pl.context}
                                         <br><br><br>
-                                        <a href="DetailCommnityPost?post_id=${pl.id}" class="card-link">Xem chi tiết</a>
+                                        <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link">Xem chi tiết</a>
 
                                     </div>  <c:if test="${pl.first_image !=null}">
                                         <img style="max-width: 100%;height: 500px;object-fit": contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
@@ -220,7 +235,7 @@
                                                            color:black;
                                                        </c:otherwise>
                                                    </c:choose>"></a>${pl.num_of_like}</span>
-                                                   <span class="mr-2"><a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}</span>
+                                            <span class="mr-2"><a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}</span>
                                             <span><i class="far fa-eye"></i> ${pl.num_of_view}</span>
                                         </div>
                                         <div>
