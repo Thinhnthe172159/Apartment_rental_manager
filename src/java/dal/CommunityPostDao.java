@@ -111,10 +111,10 @@ public class CommunityPostDao extends DBContext {
     // đây là list tìm kiếm có thể phân trang
     public List<CommunityPost> searchCommunityPostsList(String title, int user_id, int pageNumber, int pageSize) {
         List<CommunityPost> list = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1";
+        String sql = "SELECT * FROM [dbo].[Community_post] WHERE 1 = 1 and [status] = 1  ";
 
         if (title != null) {
-            sql += " and [tittle] like '%" + title + "%'";
+            sql += " and [tittle] like N'%" + title + "%'";
         }
         if (user_id != 0) {
             sql += " and [user_id] =" + user_id;
@@ -151,10 +151,9 @@ public class CommunityPostDao extends DBContext {
 
     // hàm này sẽ lấy ra được kích thước của list vừa mới search
     public int getSizeOfListSearch(String title, int user_id) {
-        List<CommunityPost> list = new ArrayList<>();
-        String sql = "SELECT COUNT(*) AS list_size\n"
-                + "FROM [ams].[dbo].[Community_post]\n"
-                + "where 1=1 and [status] = 1 ";
+
+        String sql = "SELECT count (id) as total\n"
+                + "  FROM [dbo].[Community_post] where 1=1 and [status] = 1 ";
 
         if (title != null) {
             sql += " and [tittle] like '%" + title + "%'";
@@ -168,7 +167,7 @@ public class CommunityPostDao extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                result = rs.getInt("list_size");
+                result = rs.getInt("total");
                 return result;
             }
         } catch (SQLException e) {
@@ -280,6 +279,7 @@ public class CommunityPostDao extends DBContext {
                 cp.setNum_of_view(rs.getInt("num_of_view"));
                 cp.setNum_of_like(rs.getInt("num_of_like"));
                 cp.setNum_of_comment(rs.getInt("num_of_comment"));
+                cp.setStatus(rs.getInt("status"));
                 return cp;
             }
         } catch (SQLException e) {
@@ -559,14 +559,8 @@ public class CommunityPostDao extends DBContext {
 
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
-        List<CommentPost> cps = cpd.getListCommentOfPost(37);
-        for (CommentPost i : cps) {
-            System.out.println(i.getStatus());
-        }
-        System.out.println(cpd.countCommentEachPost(38));
-        
-        CommentPost commentPost = cpd.getCommentById(8);
-        System.out.println(commentPost);
+
+        System.out.println(cpd.getSizeOfListSearch(null, 0));
 
     }
 }

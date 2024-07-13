@@ -126,6 +126,28 @@
                 }
             }
         </script>
+        <style>
+            .collapse-content {
+                display: none;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+                max-height: 0;
+            }
+            .collapse-content.show {
+                display: block;
+                max-height:max-content; /* Adjust based on your content */
+            }
+        </style>
+        <script>
+            function toggleCollapse(id) {
+                var content = document.getElementById('collapseContent' + id);
+                if (content.classList.contains('show')) {
+                    content.classList.remove('show');
+                } else {
+                    content.classList.add('show');
+                }
+            }
+        </script>
 
     </head>
 
@@ -175,13 +197,13 @@
                             <div class="list-group">
                                     <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
                             <c:if test="${user_Data != null}">  <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a></c:if>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="col-md-9 post">
-                        <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                        <div class="col-md-9 post">
+                            <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
                                               <c:when test="${sessionScope.user_Data != null}">
                                                   ${sessionScope.user_Data.getImage()}
                                               </c:when>
@@ -194,34 +216,51 @@
                     <br><br>
                     <c:forEach items="${postList}" var="pl">
                         <div id="${pl.id}" class="card mb-4">
-                            <div class="card-body" style="">
+                            <div class="card-body">
                                 <div class="text-muted d-flex justify-content-between">
-                                    <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>    
-                                    <span> <i class="far fa-solid"><c:if test="${user_Data!=null}">
+                                    <span>
+                                        <img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/>
+                                    </span>    
+                                    <span>
+                                        <i class="far fa-solid">
+                                            <c:if test="${user_Data!=null}">
                                                 <div class="dropdown-center">
-                                                    <button class="btn btn-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                         . . .
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <c:if test="${user_Data.id == pl.user_id.id}">
-                                                            <li><a class="dropdown-item font-monospace" href="#">Xóa bỏ</a></li>
-                                                            <li><a class="dropdown-item font-monospace" href="#">Chỉnh sửa</a></li>
+                                                            <li><a class="dropdown-item font-monospace" href="#">Xóa bài đăng</a></li>
+                                                            <li><a class="dropdown-item font-monospace" href="UpdateCommnunityPost?Post_id=${pl.id}">Chỉnh sửa bài đăng</a></li>
                                                             </c:if>
-                                                            <c:if test="${user_Data.id != pl.user_id.id}">  <li><a class="dropdown-item font-monospace" href="#">Báo cáo vi phạm</a></li> </c:if>
+                                                            <c:if test="${user_Data.id != pl.user_id.id}">
+                                                            <li><a class="dropdown-item font-monospace" href="#">Báo cáo vi phạm</a></li>
+                                                            </c:if>
+                                                    </ul>
+                                                </div> 
+                                            </c:if>
+                                        </i>
+                                    </span>
+                                </div>
 
-                                                        </ul>
-                                                    </div> </c:if></i></span>
-                                    </div>
-
-                                    <div><br><div>
-                                            <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
-                                        <span><h5 class="">${pl.title}</h5></span>
+                                <div><br>
+                                    <div>
+                                        <span>
+                                            <h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6>
+                                        </span>
+                                        <span>
+                                            <h5 class="">${pl.title}</h5>
+                                        </span>
+                                            <button style="color: blue" class="btn" onclick="toggleCollapse(${pl.id})">Xem thêm</button>
+                                        <div id="collapseContent${pl.id}" class="collapse-content">
                                             ${pl.context}
+                                        </div>
                                         <br><br><br>
                                         <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link">Xem chi tiết</a>
-
-                                    </div>  <c:if test="${pl.first_image !=null}">
-                                        <img style="max-width: 100%;height: 500px;object-fit": contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
+                                    </div>
+                                    <c:if test="${pl.first_image !=null}">
+                                          <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link"><img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" /></a>
+                                        
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
@@ -234,9 +273,16 @@
                                                        <c:otherwise>
                                                            color:black;
                                                        </c:otherwise>
-                                                   </c:choose>"></a>${pl.num_of_like}</span>
-                                            <span class="mr-2"><a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}</span>
-                                            <span><i class="far fa-eye"></i> ${pl.num_of_view}</span>
+                                                   </c:choose>">
+                                                </a>
+                                                ${pl.num_of_like}
+                                            </span>
+                                            <span class="mr-2">
+                                                <a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}
+                                            </span>
+                                            <span>
+                                                <i class="far fa-eye"></i> ${pl.num_of_view}
+                                            </span>
                                         </div>
                                         <div>
                                             <i class="far fa-bookmark"></i>
@@ -246,6 +292,7 @@
                             </div>
                         </div>
                     </c:forEach>
+
 
                     <script>
 

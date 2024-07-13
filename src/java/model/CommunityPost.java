@@ -123,6 +123,8 @@ public class CommunityPost {
     public String toString() {
         return "CommunityPost{" + "id=" + id + ", title=" + title + ", context=" + context + ", user_id=" + user_id + ", time=" + time + ", first_image=" + first_image + ", num_of_view=" + num_of_view + ", num_of_like=" + num_of_like + ", num_of_comment=" + num_of_comment + ", status=" + status + '}';
     }
+
+ 
     
     
     
