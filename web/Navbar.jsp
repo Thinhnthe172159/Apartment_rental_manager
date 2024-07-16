@@ -54,7 +54,16 @@
     <body>
 
         <!-- ***** Preloader Start ***** -->
-     
+        <div id="js-preloader" class="js-preloader">
+            <div class="preloader-inner">
+                <span class="dot"></span>
+                <div class="dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
         <!-- ***** Preloader End ***** -->
         <div class="sub-header">
             <div class="container">
@@ -109,7 +118,7 @@
                                 <li><a href="HomePage" class="<c:if test="${requestScope.page == 1}">active</c:if>">Home</a></li>
                                 <li><a href="ApartmentPostList"class="<c:if test="${requestScope.page == 2}">active</c:if>">Tìm Căn Hộ</a></li>
                                 <li><a href="CommunityPostList" class="<c:if test="${requestScope.page == 3}">active</c:if>">Blogs</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="AboutUs" class="<c:if test="${requestScope.page == 4}">active</c:if>">About Us</a></li>
                                     <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
                                 </ul>
                                 <a class='menu-trigger'>
@@ -234,19 +243,10 @@
                             &nbsp;&nbsp;Nạp tiền</a>
                         </c:if>
                     <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
-                        </svg>
-                        &nbsp;&nbsp;Ví của tôi</a>
-                    <a href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
                         </svg>&nbsp;&nbsp;Khách hàng của tôi</a>
-                    <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
-                        <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/>
-                        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
-                        </svg>
-                        &nbsp;&nbsp;Chat</a>
+                
                 </div>
                 <div class="bottom-links">
                     <a style="padding-left: 10px; background: white;" href="HomePage"><jsp:include page="img/svg.html" />

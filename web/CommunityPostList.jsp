@@ -160,7 +160,6 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <form class="search row justify-content-center" method="get" action="CommunityPostList">
-                            <i class="fa fa-search"></i>
                             <input style="border-radius: 20px;height: 40px;z-index: 1;" name="title" type="text" class="col-md-9" placeholder="tìm kiếm tiêu đề bài đăng"> 
                             <button class="btn btn-primary col-md-1" style="border-radius: 20px; z-index: 10;background:" type="submit" id="submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 0 16 16">
@@ -230,7 +229,8 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <c:if test="${user_Data.id == pl.user_id.id}">
-                                                            <li><a class="dropdown-item font-monospace" href="#">Xóa bài đăng</a></li>
+                                                            
+                                                            <li><form action="RemoveCommunityPost?post_id=${pl.id}&page_index=${pageIndex}" id="deleteForm-${pl.id}" method="post"><button class="dropdown-item font-monospace" type="button" onclick="confirmDeletion('deleteForm-${pl.id}')">Xóa bài đăng</button></form></li>
                                                             <li><a class="dropdown-item font-monospace" href="UpdateCommnunityPost?Post_id=${pl.id}">Chỉnh sửa bài đăng</a></li>
                                                             </c:if>
                                                             <c:if test="${user_Data.id != pl.user_id.id}">
@@ -251,7 +251,7 @@
                                         <span>
                                             <h5 class="">${pl.title}</h5>
                                         </span>
-                                            <button style="color: blue" class="btn" onclick="toggleCollapse(${pl.id})">Xem thêm</button>
+                                        <button style="color: blue" class="btn" onclick="toggleCollapse(${pl.id})">Xem thêm</button>
                                         <div id="collapseContent${pl.id}" class="collapse-content">
                                             ${pl.context}
                                         </div>
@@ -259,8 +259,8 @@
                                         <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link">Xem chi tiết</a>
                                     </div>
                                     <c:if test="${pl.first_image !=null}">
-                                          <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link"><img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" /></a>
-                                        
+                                        <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link"><img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" /></a>
+
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
@@ -382,6 +382,31 @@
                                 $el.css('width', containerWidth);
                             }
                         });
+                    </script>
+
+
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        function confirmDeletion(formId) {
+                            Swal.fire({
+                                title: "Are you sure?",
+                                text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire({
+                                        title: "Deleted!",
+                                        text: "Bài đăng của bạn đã được xóa.",
+                                        icon: "success"
+                                    });
+                                    document.getElementById(formId).submit();
+                                }
+                            });
+                        }
                     </script>
 
                     </body>

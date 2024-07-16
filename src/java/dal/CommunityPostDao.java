@@ -71,11 +71,16 @@ public class CommunityPostDao extends DBContext {
     }
 
     // Hàm này sẽ xóa bài đăng thuộc về 1 user nào đó
-    public void deletePost(int postId, int user_id) {
-        String query = "DELETE FROM Community_post WHERE [id] = ? and [user_id] = ? ";
+    public void deletePost(int postId) {
+        String query = "DELETE FROM [dbo].[List_of_post_liked] WHERE [post_id] = ?;\n"
+                + "DELETE FROM [dbo].[Comment] WHERE [post_id] = ?;\n"
+                + "DELETE FROM [dbo].[Image_post] WHERE [post_id] = ?;\n"
+                + "DELETE FROM Community_post WHERE [id] = ? ;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, postId);
-            statement.setInt(2, user_id);
+            statement.setInt(2, postId);
+            statement.setInt(3, postId);
+            statement.setInt(4, postId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,7 +238,6 @@ public class CommunityPostDao extends DBContext {
         }
     }
 
-// check
     // lấy ra bài post mới nhất thuộc về 1 user nào đó
     public CommunityPost getNewesPost(int user_id) {
         String sql = "  SELECT TOP (1)*\n"
@@ -319,6 +323,19 @@ public class CommunityPostDao extends DBContext {
             System.out.println(e);
         }
         return null;
+    }
+
+    // xóa toàn bộ ảnh thuôc về 1 bài đăng nào đó
+    public void deleteAllImageOfAPost(int post_id) {
+        String sql = "DELETE FROM [dbo].[Image_post]\n"
+                + "      WHERE [post_id] = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, post_id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // hàm thêm lượt thích
@@ -560,7 +577,8 @@ public class CommunityPostDao extends DBContext {
     public static void main(String[] args) {
         CommunityPostDao cpd = new CommunityPostDao();
 
-        System.out.println(cpd.getSizeOfListSearch(null, 0));
+        Post_image p = cpd.getFirstPostImage(42);
+        System.out.println(p.getImage());
 
     }
 }

@@ -79,7 +79,7 @@
         </div> 
         <br><br><br><br><br><br>
         <main class="container">
-            <form class="wrapper" action="addCommunityPost" method="post" enctype="multipart/form-data">
+            <form class="wrapper" action="UpdateCommnunityPost?id=${CommunityPost}" method="post" enctype="multipart/form-data">
                 <section class="create-post">
                     <header class="header">
                         <h1>Create post</h1>
@@ -97,8 +97,8 @@
                         </div>
                     </div>
                     <div class="post-content">
-                        <textarea name="post-title" id="post-title" cols="30" rows="2" placeholder="Write your title">${title}</textarea>
-                        <textarea name="post-desc" id="posts" cols="30" rows="5" placeholder="What's on your mind ??">${context}</textarea>
+                        <textarea name="title" id="post-title" cols="30" rows="2" placeholder="Write your title">${title}</textarea>
+                        <textarea name="context" id="posts" cols="30" rows="5" placeholder="What's on your mind ??">${context}</textarea>
                         <div class="emoji-picker">
                             <script>
                                 ClassicEditor
@@ -129,21 +129,21 @@
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <jsp:include page="Footer.jsp" />
         <script>
-                    document.getElementById('imageInput').addEventListener('change', function (event) {
-                        const files = event.target.files;
-                        const previewContainer = document.getElementById('imagePreview');
-                        previewContainer.innerHTML = '';
+                                document.getElementById('imageInput').addEventListener('change', function (event) {
+                                    const files = event.target.files;
+                                    const previewContainer = document.getElementById('imagePreview');
+                                    previewContainer.innerHTML = '';
 
-                        Array.from(files).forEach(file => {
-                            const reader = new FileReader();
-                            reader.onload = function (e) {
-                                const img = document.createElement('img');
-                                img.src = e.target.result;
-                                previewContainer.appendChild(img);
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    });
+                                    Array.from(files).forEach(file => {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            const img = document.createElement('img');
+                                            img.src = e.target.result;
+                                            previewContainer.appendChild(img);
+                                        };
+                                        reader.readAsDataURL(file);
+                                    });
+                                });
         </script>
     </body>
 

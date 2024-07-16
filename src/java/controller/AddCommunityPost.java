@@ -106,7 +106,6 @@ public class AddCommunityPost extends HttpServlet {
 
             StringBuilder fileNames = new StringBuilder();
 
-            
             CommunityPost post = communityPostDao.getNewesPost(user.getId());
 
             int countImage = 0;
@@ -116,7 +115,7 @@ public class AddCommunityPost extends HttpServlet {
                 if (fileName != null && !fileName.isEmpty()) {
                     if (countImage <= 5) {
                         Post_image post_image = new Post_image();
-                        post_image = new Post_image(0, UPLOAD_DIR+"/" +fileName.trim(), post);
+                        post_image = new Post_image(0, UPLOAD_DIR + "/" + fileName.trim(), post);
                         part.write(uploadFilePath + File.separator + fileName);
                         communityPostDao.addPostImage(post_image);
                         countImage++;
@@ -127,14 +126,16 @@ public class AddCommunityPost extends HttpServlet {
             CommunityPost post1 = communityPostDao.getNewesPost(user.getId());
 
             Post_image post_image1 = communityPostDao.getFirstPostImage(post.getId());
-            post1.setFirst_image(post_image1.getImage());
+            if (post_image1 != null) {
+                post1.setFirst_image(post_image1.getImage());
+            }
             communityPostDao.updatePost2(post1);
             response.sendRedirect("CommunityPostList");
         } catch (Exception e) {
             e.printStackTrace();
-           
+
         }
-        
+
     }
 
     @Override
