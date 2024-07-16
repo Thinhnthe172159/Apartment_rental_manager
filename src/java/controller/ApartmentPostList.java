@@ -75,12 +75,13 @@ public class ApartmentPostList extends HttpServlet {
         int Apartment_type = (apartment_type == null || apartment_type.isEmpty()) ? 0 : Integer.parseInt(apartment_type);
         int bedroom = (numberOfBedroom == null || numberOfBedroom.isEmpty()) ? 0 : Integer.parseInt(numberOfBedroom);
         int type_sort = (type_raw == null || type_raw.isEmpty()) ? 0 : Integer.parseInt(type_raw);
-        double priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp)*1000000;
-        double priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown)*1000000;
+        double priceUp = (moneyUp == null || moneyUp.isEmpty()) ? 0 : Double.parseDouble(moneyUp) * 1000000;
+        double priceDown = (moneyDown == null || moneyDown.isEmpty()) ? 0 : Double.parseDouble(moneyDown) * 1000000;
         double area_up = (areaUp == null || areaUp.isEmpty()) ? 0 : Double.parseDouble(areaUp);
         double area_down = (areaDown == null || areaDown.isEmpty()) ? 0 : Double.parseDouble(areaDown);
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
 
+        List<Apartment_Post> apartment_Posts_popular = apartmentPostDao.getApartment_Post_List(null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 3, 1, 10, 4, null, 0);
         List<Apartment_type> apartment_types_list = apartmentDao.getApartment_type_list();
         request.setAttribute("apartment_types_list", apartment_types_list);
         LocalDate today = LocalDate.now();
@@ -90,11 +91,9 @@ public class ApartmentPostList extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3,0,0,current
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, 3, 0, 0, current
         );
-        
-        
-        
+
         int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
@@ -107,13 +106,13 @@ public class ApartmentPostList extends HttpServlet {
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,
                 (phuong == null || phuong.isEmpty()) ? null : phuong,
-                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 3, pageIndex, pageSize,0,current,0
+                area_up, area_down, priceUp, priceDown, bedroom, Apartment_type, type_sort, 3, pageIndex, pageSize, 0, current, 0
         );
 
         request.setAttribute("pageList", pagelist);
         request.setAttribute("apartmentPostList", apartmentPostList);
         request.setAttribute("page_index", pageIndex);
-
+        request.setAttribute("ApartmentPopular", apartment_Posts_popular);
         request.setAttribute("name", title_name);
         request.setAttribute("apartmentType", apartment_type);
         request.setAttribute("tinh", tinh);
@@ -125,7 +124,7 @@ public class ApartmentPostList extends HttpServlet {
         request.setAttribute("areaUp", areaUp);
         request.setAttribute("areaDown", areaDown);
         request.setAttribute("type", type_raw);
-        int page =2;
+        int page = 2;
         request.setAttribute("page", page);
 
         request.getRequestDispatcher("ApartmentPostList.jsp").forward(request, response);

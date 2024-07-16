@@ -93,14 +93,14 @@
                             <p class="text-secondary">HubSpot's company and culture are a lot like our product. They're crafted, not cobbled, for a delightful experience.</p>
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
-                            <img src="https://placehold.co/500x300" alt="Team photo" class="rounded shadow-lg img-fluid">
+                            <img src="https://img.indiafilings.com/learn/wp-content/uploads/2015/10/12011006/Real-Estate-Agent-Business-India.jpg" alt="Team photo" class="rounded shadow-lg img-fluid">
                         </div>
                     </div>
                 </section>
                 <section class="mb-5">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <img src="https://placehold.co/500x300" alt="Office photo" class="rounded shadow-lg img-fluid">
+                            <img src="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F1a7cceb1-7f41-424a-8441-a9be90560eda_1536x704.jpeg" alt="Office photo" class="rounded shadow-lg img-fluid">
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
                             <h2 class="fs-1 fw-bold mb-3">Our Mission: Helping Millions of Organizations Grow Better</h2>
@@ -116,7 +116,7 @@
                             <p class="text-secondary mt-3">Along the way, HubSpot expanded beyond marketing into a crafted, not cobbled suite of products that create the frictionless customer experience that buyers expect today. Expertly led by CEO Yamini Rangan, HubSpot uses its customer platform built on an AI-powered Smart CRM to help millions of scaling organizations grow better.</p>
                         </div>
                         <div class="col-md-6 mt-4 mt-md-0">
-                            <img src="https://placehold.co/500x300" alt="Founders photo" class="rounded shadow-lg img-fluid">
+                            <img src="https://lrprealestate.com/wp-content/uploads/2023/12/Real-Estate-Trends.jpg" alt="Founders photo" class="rounded shadow-lg img-fluid">
                         </div>
                     </div>
                 </section>
