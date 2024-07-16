@@ -415,7 +415,7 @@
                                                                             </form></li>
                                                                         <li><a class="dropdown-item" href="DetailCommnityPost?comment_id=${cm.id}&commentCheck=1&post_id=${pl.id}"><button class="btn btn-block">Sửa đổi</button></a></li>
                                                                         </c:if>
-                                                                        <c:if test="${user_Data.id != cm.user_id.id}">  <li><a class="dropdown-item"> </a></li> </c:if>
+                                                                        <c:if test="${user_Data.id != cm.user_id.id}">  <li><a class="dropdown-item">Báo cáo bình luận </a></li> </c:if>
 
                                                                     </ul>
                                                                 </div> </c:if>
