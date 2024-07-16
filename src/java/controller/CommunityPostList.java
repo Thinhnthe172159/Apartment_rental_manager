@@ -49,36 +49,50 @@ public class CommunityPostList extends HttpServlet {
         CommunityPostDao cpd = new CommunityPostDao();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user_Data");
+
         int page = 3;
 
         List<LikePost> likePosts = new ArrayList<>();
 
         String post_id_raw = request.getParameter("post_id");
         String title = request.getParameter("title");
+        String selection_raw = request.getParameter("selection");
         String page_index = request.getParameter("page_index");
         title = (title == null || title.isEmpty()) ? null : title;
 
         int post_id = (post_id_raw == null || post_id_raw.isEmpty()) ? 0 : Integer.parseInt(post_id_raw);
         if (request.getParameter("checkNull") != null && user != null) {
             processLike(cpd, post_id, user);
-            likePosts = cpd.getListLIkedPost(user.getId());
+        }
+        int selection = (selection_raw == null || selection_raw.isEmpty()) ? 0 : Integer.parseInt(selection_raw);
+        int user_id = 0;
+        if (user != null && selection == 2) {
+            user_id = user.getId();
+        }
+        if (selection == 0) {
+            user_id = 0;
         }
 
-        int totalSize = cpd.getSizeOfListSearch(title);
+        int totalSize = cpd.getSizeOfListSearch(title, user_id);
         int pageIndex = (page_index == null || page_index.isEmpty()) ? 1 : Integer.parseInt(page_index);
-        int pageSize = 3;
+        int pageSize = 6;
         int totalPages = (int) Math.ceil((double) totalSize / pageSize);
         List<Integer> pagelist = new ArrayList<>();
         for (int i = 1; i <= totalPages; i++) {
             pagelist.add(i);
         }
-        List<CommunityPost> postList = cpd.searchCommunityPostsList(title, pageIndex, pageSize);
-        
+        List<CommunityPost> postList = cpd.searchCommunityPostsList(title, user_id, pageIndex, pageSize);
+        likePosts = cpd.getListLIkedPost((user == null) ? 0 : user.getId());
+        List<Integer> listPostIdLiked = new ArrayList<>();
+        for (LikePost index : likePosts) {
+            listPostIdLiked.add(index.getPost_id().getId());
+        }
+        request.setAttribute("selection", selection);
         request.setAttribute("title", title);
         request.setAttribute("pageList", pagelist);
         request.setAttribute("postList", postList);
         request.setAttribute("scrollToPost", post_id);
-        request.setAttribute("likePost", likePosts);
+        request.setAttribute("likePost", listPostIdLiked);
         request.setAttribute("page", page);
         request.setAttribute("page_index", pageIndex);
         request.setAttribute("totalPages", totalPages);
@@ -100,7 +114,6 @@ public class CommunityPostList extends HttpServlet {
             cpd.deleteLikePost(likePost.getId(), user.getId());
             cp.setNum_of_like(cpd.countLikedPost(post_id));
             cpd.updatePost(cp);
-
         }
     }
 

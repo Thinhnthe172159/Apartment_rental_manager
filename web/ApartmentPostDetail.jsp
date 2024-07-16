@@ -50,6 +50,8 @@
                 width: 100%;
                 height: 100%;
                 object-fit: contain;
+
+
             </style>
         </head>
 
@@ -282,16 +284,20 @@
                             </div>
                         </div>         
                         <div class="col-lg-4">
+
                             <div class="info-table"  style="background: #FFFFFF">
                                     <ul>
                                         <li>
                                             <img src="${Apartment.landLord_id.image}" alt="ảnh landlord" style="width: 100px;
                                             height: 100px;
                                             border-radius: 50%">
-                                            <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span>Phone --> 0987654321</span></h4>
-                                        </li>
-                                        <li>
-                                            <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
+                                            <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span><input id="textToCopy" style="position: absolute;
+                                                        left: -9999px;
+                                                    " value="0987654321" readonly class="hidden"/>
+                                                <button class="btn" onclick="copyText()">0987654321</button></span></h4>
+                                    </li>
+                                    <li>
+                                        <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
                                         <h4>${Apartment.area}<br><span>m2</span></h4>
                                     </li>
                                     <li>
@@ -551,35 +557,35 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
                 <script>
-                    document.addEventListener('DOMContentLoaded', (event) => {
-                        var myCarousel = document.querySelector('#carouselExampleAutoplaying');
-                        var carousel = new bootstrap.Carousel(myCarousel, {
-                            interval: 5000,
-                            wrap: true
-                        });
+                                                        document.addEventListener('DOMContentLoaded', (event) => {
+                                                            var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+                                                            var carousel = new bootstrap.Carousel(myCarousel, {
+                                                                interval: 5000,
+                                                                wrap: true
+                                                            });
 
-                        myCarousel.addEventListener('slide.bs.carousel', function (event) {
-                            document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
-                                thumbnail.classList.remove('active-thumb');
-                            });
-                            var nextIndex = event.to;
-                            document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
-                        });
+                                                            myCarousel.addEventListener('slide.bs.carousel', function (event) {
+                                                                document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
+                                                                    thumbnail.classList.remove('active-thumb');
+                                                                });
+                                                                var nextIndex = event.to;
+                                                                document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
+                                                            });
 
-                        document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
-                            thumbnail.addEventListener('click', function () {
-                                carousel.to(index);
-                            });
-                        });
+                                                            document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
+                                                                thumbnail.addEventListener('click', function () {
+                                                                    carousel.to(index);
+                                                                });
+                                                            });
 
-                        document.querySelectorAll('.carousel-inner img').forEach(function (image) {
-                            image.addEventListener('click', function () {
-                                var src = image.getAttribute('data-src');
-                                var modalImage = document.getElementById('modalImage');
-                                modalImage.src = src;
-                            });
-                        });
-                    });
+                                                            document.querySelectorAll('.carousel-inner img').forEach(function (image) {
+                                                                image.addEventListener('click', function () {
+                                                                    var src = image.getAttribute('data-src');
+                                                                    var modalImage = document.getElementById('modalImage');
+                                                                    modalImage.src = src;
+                                                                });
+                                                            });
+                                                        });
 
 
                 </script>
@@ -588,43 +594,58 @@
                 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
                 <script>
 
-                    var map = L.map('map');
+                                                        var map = L.map('map');
 
 
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(map);
+                                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                        }).addTo(map);
 
-                    var address = '${Apartment.city} .${Apartment.district}. ${Apartment.commune}.${Apartment.address}';
-                        var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+                                                        var address = '${Apartment.city} .${Apartment.district}. ${Apartment.commune}.${Apartment.address}';
+                                                            var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
 
-                        fetch(url)
-                                .then(response => response.json())
-                                .then(data => {
-                                    var lat = parseFloat(data[0].lat);
-                                    var long = parseFloat(data[0].lon);
-                                    map.setView([lat, long], 15);
-                                    L.marker([lat, long]).addTo(map).bindPopup(address).openPopup();
-                                })
-                                .catch(error => console.error('Error:', error));
+                                                            fetch(url)
+                                                                    .then(response => response.json())
+                                                                    .then(data => {
+                                                                        var lat = parseFloat(data[0].lat);
+                                                                        var long = parseFloat(data[0].lon);
+                                                                        map.setView([lat, long], 15);
+                                                                        L.marker([lat, long]).addTo(map).bindPopup(address).openPopup();
+                                                                    })
+                                                                    .catch(error => console.error('Error:', error));
 
-                        var schoolMarker = L.marker([schoolLat, schoolLng]).bindPopup('School Name');
-                        schoolsLayer.addLayer(schoolMarker);
+                                                            var schoolMarker = L.marker([schoolLat, schoolLng]).bindPopup('School Name');
+                                                            schoolsLayer.addLayer(schoolMarker);
 
-                        var hospitalMarker = L.marker([hospitalLat, hospitalLng]).bindPopup('Hospital Name');
-                        hospitalsLayer.addLayer(hospitalMarker);
+                                                            var hospitalMarker = L.marker([hospitalLat, hospitalLng]).bindPopup('Hospital Name');
+                                                            hospitalsLayer.addLayer(hospitalMarker);
 
-                        schoolsLayer.addTo(map);
-                        hospitalsLayer.addTo(map);
+                                                            schoolsLayer.addTo(map);
+                                                            hospitalsLayer.addTo(map);
 
-                        L.control.layers(null, {
-                            'Schools': schoolsLayer,
-                            'Hospitals': hospitalsLayer,
-                            // ... add other layers here
-                        }).addTo(map);
+                                                            L.control.layers(null, {
+                                                                'Schools': schoolsLayer,
+                                                                'Hospitals': hospitalsLayer,
+                                                                // ... add other layers here
+                                                            }).addTo(map);
 
                 </script>
+                <script>
+                    function copyText() {
+                        // Lấy nội dung từ input
+                        var textToCopy = document.getElementById("textToCopy");
 
+                        // Chọn nội dung trong input
+                        textToCopy.select();
+                        textToCopy.setSelectionRange(0, 99999); // Dành cho các thiết bị di động
+
+                        // Sao chép nội dung đã chọn vào clipboard
+                        document.execCommand("copy");
+
+                        // Thông báo cho người dùng rằng nội dung đã được sao chép
+                        alert("Nội dung đã được copy: " + textToCopy.value);
+                    }
+                </script>
 
 
             </body>

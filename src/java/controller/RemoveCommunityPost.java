@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dal.UserDao;
+import dal.CommunityPostDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,16 +12,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
-import util.Email;
+import model.CommunityPost;
 
 /**
  *
  * @author thinh
  */
-@WebServlet(name = "HomePage", urlPatterns = {"/HomePage"})
-public class HomePage extends HttpServlet {
+@WebServlet(name = "RemoveCommunityPost", urlPatterns = {"/RemoveCommunityPost"})
+public class RemoveCommunityPost extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +38,10 @@ public class HomePage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePage</title>");
+            out.println("<title>Servlet RemoveCommunityPost</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RemoveCommunityPost at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,16 +59,7 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user_ID") != null) {
-            UserDao user_DAO = new UserDao();
-            User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
-
-            session.setAttribute("user_Data", user_Data);
-        }
-        int page = 1;
-        request.setAttribute("page", page);
-        request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+        doPost(request, response);
     }
 
     /**
@@ -84,18 +73,14 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Email eMail = new Email();
+        CommunityPostDao cpd = new CommunityPostDao();
 
-        String fullName = request.getParameter("name");
-        String email = request.getParameter("email");
-        String subject = request.getParameter("subject");
-        String message = request.getParameter("message");
-
-        Email.sendEmail("thinhnthe172159@fpt.edu.vn", subject, message + "<br>Người gửi:" + fullName);
-        int page = 1;
-        request.setAttribute("page", page);
-        request.getRequestDispatcher("HomePage.jsp").forward(request, response);
-
+        String post_id = request.getParameter("post_id");
+        String page_index = request.getParameter("page_index");
+        int postId = (post_id == null || post_id.isEmpty()) ? 0 : Integer.parseInt(post_id);
+        CommunityPost cp = cpd.getCommunityPost(postId);
+        cpd.deletePost(postId);
+        response.sendRedirect("CommunityPostList?pageIndex="+page_index);
     }
 
     /**

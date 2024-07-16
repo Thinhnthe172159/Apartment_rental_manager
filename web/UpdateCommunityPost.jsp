@@ -64,6 +64,7 @@
 
 
     <body> <jsp:include page="Navbar.jsp" />
+
         <br><br><br><br><br><br>
         <div class="page-heading header-text">
             <div class="container">
@@ -71,14 +72,14 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <span class="breadcrumb"><a href="#">Community</a></span>
-                        <h3>ADD COMMUNITY POST</h3>
+                        <h3>UPDATE COMMUNITY POST</h3>
                     </div>
                 </div>
             </div>
         </div> 
         <br><br><br><br><br><br>
         <main class="container">
-            <form class="wrapper" action="addCommunityPost" method="post" enctype="multipart/form-data">
+            <form class="wrapper" action="UpdateCommnunityPost?id=${CommunityPost}" method="post" enctype="multipart/form-data">
                 <section class="create-post">
                     <header class="header">
                         <h1>Create post</h1>
@@ -88,7 +89,7 @@
                     </header>
                     <div class="post-header">
                         <div class="profile-pic">
-                            <img style="border-radius: 50%;object-fit: contain" src="${sessionScope.user_Data.getImage()}" alt="alt"/>
+                            <img style="border-radius: 50%;object-fit: contain" src="${sessionScope.user_Data.image}" alt="alt"/>
                         </div>
                         <div class="user-info">
                             <div class="full-name">${sessionScope.user_Data.last_name} ${sessionScope.user_Data.first_name}</div>
@@ -96,8 +97,8 @@
                         </div>
                     </div>
                     <div class="post-content">
-                        <textarea name="post-title" id="post-title" cols="30" rows="2" placeholder="Write your title"></textarea>
-                        <textarea name="post-desc" id="posts" cols="30" rows="5" placeholder="What's on your mind ??"></textarea>
+                        <textarea name="title" id="post-title" cols="30" rows="2" placeholder="Write your title">${title}</textarea>
+                        <textarea name="context" id="posts" cols="30" rows="5" placeholder="What's on your mind ??">${context}</textarea>
                         <div class="emoji-picker">
                             <script>
                                 ClassicEditor
@@ -117,6 +118,7 @@
                     </div>
                 </section>
             </form>
+
         </main>
         <script src="./script.js"></script>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />

@@ -16,10 +16,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>Cộng Đồng</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="assets/jquery-1.11.3.min.js"></script>
 
         <style type="text/tailwindcss">
@@ -128,6 +126,28 @@
                 }
             }
         </script>
+        <style>
+            .collapse-content {
+                display: none;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+                max-height: 0;
+            }
+            .collapse-content.show {
+                display: block;
+                max-height:max-content; /* Adjust based on your content */
+            }
+        </style>
+        <script>
+            function toggleCollapse(id) {
+                var content = document.getElementById('collapseContent' + id);
+                if (content.classList.contains('show')) {
+                    content.classList.remove('show');
+                } else {
+                    content.classList.add('show');
+                }
+            }
+        </script>
 
     </head>
 
@@ -140,7 +160,6 @@
                     <div class="col-lg-12">
                         <div><br></div>
                         <form class="search row justify-content-center" method="get" action="CommunityPostList">
-                            <i class="fa fa-search"></i>
                             <input style="border-radius: 20px;height: 40px;z-index: 1;" name="title" type="text" class="col-md-9" placeholder="tìm kiếm tiêu đề bài đăng"> 
                             <button class="btn btn-primary col-md-1" style="border-radius: 20px; z-index: 10;background:" type="submit" id="submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="" viewBox="0 0 16 16">
@@ -172,21 +191,17 @@
                                                            </c:choose>"
                                                            class="rounded-circle mb-3" alt="User Avatar" /></a>
                                 <h5 class="card-title"><c:if test="${sessionScope.user_Data!=null}">${sessionScope.user_Data.first_name} ${sessionScope.user_Data.last_name}</c:if><c:if test="${sessionScope.user_Data==null}">Bạn chưa đăng nhập</c:if></h5>
-                                    <p class="card-text">0 người theo dõi</p>
-                                    <p class="card-text">0 đang theo dõi</p>
                                 </div>
                             </div>
                             <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action active">Bảng tin</a>
-                                <a href="#" class="list-group-item list-group-item-action">Tin nhắn</a>
-                                <a href="#" class="list-group-item list-group-item-action">Bài viết đã lưu</a>
-                                <a href="#" class="list-group-item list-group-item-action">Cài đặt</a>
+                                    <a href="CommunityPostList" class="list-group-item list-group-item-action <c:if test="${selection == 0}">active</c:if>">Bảng tin</a>
+                            <c:if test="${user_Data != null}">  <a href="CommunityPostList?selection=2" class="list-group-item list-group-item-action <c:if test="${selection == 2}">active</c:if>">Bài viết của tôi</a></c:if>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
-                    <div class="col-md-9 post">
+                        <div class="col-md-9 post">
                             <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
                                               <c:when test="${sessionScope.user_Data != null}">
                                                   ${sessionScope.user_Data.getImage()}
@@ -200,38 +215,84 @@
                     <br><br>
                     <c:forEach items="${postList}" var="pl">
                         <div id="${pl.id}" class="card mb-4">
-                            <div class="card-body" style="">
-                                <span><img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/></span>
-                                <div><br><div>
-                                        <span><h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6></span>
-                                        <span><h5 class="">${pl.title}</h5></span>
-                                            ${pl.context}
-                                        <br><br><br>
-                                        <a href="#" class="card-link">Xem chi tiết</a>
+                            <div class="card-body">
+                                <div class="text-muted d-flex justify-content-between">
+                                    <span>
+                                        <img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/>
+                                    </span>    
+                                    <span>
+                                        <i class="far fa-solid">
+                                            <c:if test="${user_Data!=null}">
+                                                <div class="dropdown-center">
+                                                    <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        . . .
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <c:if test="${user_Data.id == pl.user_id.id}">
+                                                            
+                                                            <li><form action="RemoveCommunityPost?post_id=${pl.id}&page_index=${pageIndex}" id="deleteForm-${pl.id}" method="post"><button class="dropdown-item font-monospace" type="button" onclick="confirmDeletion('deleteForm-${pl.id}')">Xóa bài đăng</button></form></li>
+                                                            <li><a class="dropdown-item font-monospace" href="UpdateCommnunityPost?Post_id=${pl.id}">Chỉnh sửa bài đăng</a></li>
+                                                            </c:if>
+                                                            <c:if test="${user_Data.id != pl.user_id.id}">
+                                                            <li><a class="dropdown-item font-monospace" href="#">Báo cáo vi phạm</a></li>
+                                                            </c:if>
+                                                    </ul>
+                                                </div> 
+                                            </c:if>
+                                        </i>
+                                    </span>
+                                </div>
 
-                                    </div>  <c:if test="${pl.first_image !=null}">
-                                        <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" />
+                                <div><br>
+                                    <div>
+                                        <span>
+                                            <h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6>
+                                        </span>
+                                        <span>
+                                            <h5 class="">${pl.title}</h5>
+                                        </span>
+                                        <button style="color: blue" class="btn" onclick="toggleCollapse(${pl.id})">Xem thêm</button>
+                                        <div id="collapseContent${pl.id}" class="collapse-content">
+                                            ${pl.context}
+                                        </div>
+                                        <br><br><br>
+                                        <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link">Xem chi tiết</a>
+                                    </div>
+                                    <c:if test="${pl.first_image !=null}">
+                                        <a href="DetailCommnityPost?post_id=${pl.id}&view=1" class="card-link"><img style="max-width: 100%;height: 500px;object-fit: contain;background: black;" src="${pl.first_image}" class="card-img-bottom" alt="Post Image" /></a>
+
                                     </c:if>
                                     <div class="card-footer text-muted d-flex justify-content-between">
                                         <div>
-                                            <span class="mr-2"><a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="fa-solid fa-heart" style="<c:forEach items="${requestScope.likePost}" var="likedPost">
-                                                                      <c:if test="${likedPost.post_id.id == pl.id}">
-                                                                          color: red    
-                                                                      </c:if>
-                                                                  </c:forEach>"></a>${pl.num_of_like}</span>
-                                            <span class="mr-2"><i class="far fa-comment"></i> 1</span>
-                                            <span><i class="far fa-eye"></i>${pl.num_of_view}</span>
+                                            <span class="mr-2">
+                                                <a href="CommunityPostList?like=1&post_id=${pl.id}&checkNull=1&page_index=${page_index}&title=${title}" class="fa-solid fa-heart" 
+                                                   style="<c:choose>
+                                                       <c:when test="${requestScope.likePost.contains(pl.id)}">
+                                                           color:red;
+                                                       </c:when>
+                                                       <c:otherwise>
+                                                           color:black;
+                                                       </c:otherwise>
+                                                   </c:choose>">
+                                                </a>
+                                                ${pl.num_of_like}
+                                            </span>
+                                            <span class="mr-2">
+                                                <a href="DetailCommnityPost?post_id=${pl.id}" style="color: black" class="fa-solid fa-comment"></a> ${pl.num_of_comment}
+                                            </span>
+                                            <span>
+                                                <i class="far fa-eye"></i> ${pl.num_of_view}
+                                            </span>
                                         </div>
                                         <div>
                                             <i class="far fa-bookmark"></i>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </c:forEach>
+
 
                     <script>
 
@@ -245,29 +306,44 @@
                         }
 
                     </script>
-                    <c:set value="0" var="num"/>
+                    <c:set value="${param.page_index != null ? param.page_index : 1}" var="num"/>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                            </li>
+                            <c:if test="${num > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="CommunityPostList?page_index=${num-1}&title=${title}&selection=${selection}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                            </c:if>
 
-                            <c:forEach items="${requestScope.pageList}" var="Index">
-                                <c:set value="${num+1}" var="num"/>
-                                <li class="page-item"><a class="page-link" href="CommunityPostList?page_index=${num}&title=${title}">${num}</a></li>  
-                                </c:forEach>
+                            <c:forEach items="${requestScope.pageList}" var="pageIndex">
+                                <c:choose>
+                                    <c:when test="${pageIndex == num}">
+                                        <li class="page-item active">
+                                            <a class="page-link" href="CommunityPostList?page_index=${pageIndex}&title=${title}&selection=${selection}">${pageIndex}</a>
+                                        </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li class="page-item">
+                                            <a class="page-link" href="CommunityPostList?page_index=${pageIndex}&title=${title}&selection=${selection}">${pageIndex}</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
 
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </li>
+                            <c:if test="${num < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="CommunityPostList?page_index=${num+1}&title=${title}&selection=${selection}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </c:if>
                         </ul>
                     </nav>
+
                 </div>
 
 
@@ -282,24 +358,7 @@
                 <div class="sticky-lg-top">
                     <jsp:include page="Footer.jsp" />
 
-                    <script>
-                        var message = '${requestScope.message}';
-                        if (message) {
-                            if (message === "b") {
-                                Swal.fire({
-                                    icon: "error",
-                                    title: "Oops...",
-                                    text: "Giao dịch không thành công, vui lòng thử lại",
-                                });
-                            } else if (message === 'a') {
-                                Swal.fire({
-                                    title: "Good job!",
-                                    text: "Giao dịch thành công",
-                                    icon: "success"
-                                });
-                            }
-                        }
-                    </script>
+
 
                     <script type="text/javascript">
                         $(window).scroll(function (e) {
@@ -323,6 +382,31 @@
                                 $el.css('width', containerWidth);
                             }
                         });
+                    </script>
+
+
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        function confirmDeletion(formId) {
+                            Swal.fire({
+                                title: "Are you sure?",
+                                text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Yes, delete it!"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire({
+                                        title: "Deleted!",
+                                        text: "Bài đăng của bạn đã được xóa.",
+                                        icon: "success"
+                                    });
+                                    document.getElementById(formId).submit();
+                                }
+                            });
+                        }
                     </script>
 
                     </body>

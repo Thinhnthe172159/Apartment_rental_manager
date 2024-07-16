@@ -86,7 +86,7 @@
         <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNL8QV6"
                           height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
-        <div class="page_loader"></div>
+ 
 
 
         <!-- Properties section body start -->
@@ -479,114 +479,19 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- Advanced search end -->
-
-                        <!-- Category posts start -->
-                        <div class="sidebar-widget category-posts">
-                            <div class="main-title-4">
-                                <h1>Popular Category</h1>
-                            </div>
-                            <ul class="list-unstyled list-cat">
-                                <li><a href="#">Single Family </a> <span>(45)  </span></li>
-                                <li><a href="#">Apartment  </a> <span>(21)  </span></li>
-                                <li><a href="#">Condo </a> <span>(23)  </span></li>
-                                <li><a href="#">Multi Family </a> <span>(19)  </span></li>
-                                <li><a href="#">Villa </a> <span>(19)  </span></li>
-                                <li><a href="#">Other  </a> <span>(22)  </span></li>
-                            </ul>
-                        </div>
-                        <!-- Category posts end -->
+                     
 
                         <!-- Popular posts start -->
                         <div class="sidebar-widget popular-posts">
                             <div class="main-title-4">
                                 <h1>Recent Properties</h1>
                             </div>
-                            <div class="d-flex mb-3 popular-posts-box">
-                                <a class="pr-3" href="properties-details.html">
-                                    <img src="img/properties/small-properties-2.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                                </a>
-                                <div class="detail align-self-center">
-                                    <h4>
-                                        <a href="properties-details.html">Modern Family Home</a>
-                                    </h4>
-                                    <div class="listing-post-meta">
-                                        Sep 18, 2021 | <a href="#">$470,00</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex mb-3 popular-posts-box">
-                                <a class="pr-3" href="properties-details.html">
-                                    <img src="img/properties/small-properties-1.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                                </a>
-                                <div class="detail align-self-center">
-                                    <h4>
-                                        <a href="properties-details.html">Sweet Family Home</a>
-                                    </h4>
-                                    <div class="listing-post-meta">
-                                        Aug 18, 2020 | <a href="#">$485,00</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex popular-posts-box">
-                                <a class="pr-3" href="properties-details.html">
-                                    <img src="img/properties/small-properties-3.jpg" alt="small-photo" class="flex-shrink-0 me-3">
-                                </a>
-                                <div class="detail align-self-center">
-                                    <h4>
-                                        <a href="properties-details.html">Beautful Single Home</a>
-                                    </h4>
-                                    <div class="listing-post-meta">
-                                        Aug Feb, 2021 | <a href="#">$850,00</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <c:forEach items="${ApartmentPopular}" var="app">
+                                <ul style="text-decoration: dotted;">
+                                    <li><a href="ApartmentDetail?Apartment_id=${app.apartment_id.id}&apartment_post_id=${app.id}" style="color: blue">* ${app.title}</a></li>
+                            </ul></c:forEach>
                         </div>
-                        <!-- Popular posts end -->
-
-                        <!-- Helping box Start -->
-                        <div class="sidebar-widget helping-box clearfix">
-                            <div class="main-title-4">
-                                <h1>Helping Center</h1>
-                            </div>
-                            <div class="helping-center">
-                                <div class="icon"><i class="fa fa-map-marker"></i></div>
-                                <h4>Address</h4>
-                                <p>123 Kathal St. Tampa City,</p>
-                            </div>
-                            <div class="helping-center">
-                                <div class="icon"><i class="fa fa-phone"></i></div>
-                                <h4>Phone</h4>
-                                <p><a href="tel:+55-417-634-7071">+55 417 634 7071</a> </p>
-                            </div>
-                        </div>
-                        <!-- Helping box end -->
-
-                        <!-- Latest reviews start -->
-                        <div class="sidebar-widget latest-reviews mb-30">
-                            <div class="main-title-4">
-                                <h1>Latest  Reviews</h1>
-                            </div>
-                            <div class="latest-reviews-box d-flex mb-4">
-                                <a class="pr-3" href="#">
-                                    <img src="img/avatar/avatar-1.jpg" alt="avatar" class="flex-shrink-0 me-3">
-                                </a>
-                                <div class="detail">
-                                    <h3><a href="#">John Antony</a></h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
-                                </div>
-                            </div>
-                            <div class="latest-reviews-box d-flex">
-                                <a class="pr-3" href="#">
-                                    <img src="img/avatar/avatar-2.jpg" alt="avatar" class="flex-shrink-0 me-3">
-                                </a>
-                                <div class="detail">
-                                    <h3><a href="#">Karen Paran</a></h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiamrisus tortor, accumsan at,</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Latest reviews end -->
+                      
                     </div>
 
 
