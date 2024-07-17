@@ -221,6 +221,9 @@
                                         <img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/>
                                     </span>    
                                     <span>
+                                          <h6>${pl.user_id.first_name} ${pl.user_id.last_name} </h6>
+                                    </span>
+                                    <span>
                                         <i class="far fa-solid">
                                             <c:if test="${user_Data!=null}">
                                                 <div class="dropdown-center">
@@ -245,9 +248,9 @@
 
                                 <div><br>
                                     <div>
-                                        <span>
-                                            <h6 class="">${pl.user_id.first_name} ${pl.user_id.last_name} - ${pl.time}</h6>
-                                        </span>
+                                 
+                                          <p>${pl.time}</p>
+                                 
                                         <span>
                                             <h5 class="">${pl.title}</h5>
                                         </span>

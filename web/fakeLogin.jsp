@@ -1,3 +1,13 @@
+<%-- 
+    Document   : fakeLogin
+    Created on : Jul 17, 2024, 10:21:13 AM
+    Author     : thinh
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+
 <html>
 
     <head>
@@ -91,25 +101,40 @@
                 text-decoration: none;
             }
         </style>
+        <script>
+            function redirectToRegister() {
+                window.location.href = "Register";
+            }
+        </script>
     </head>
 
     <body>
 
 
         <form class="row" action="Login" method="post">
-            <input class="form-control col-md-7" type="text" name="email"  placeholder="email@examp.com"><br>
+            <h1>Login</h1><div><br></div>
+            <c:if test="${message != null}">
+                <div class="" role="alert" style="color: red">
+                    ${message}
+                </div>
+            </c:if>
+            <input class="form-control col-md-4" type="text" name="email"  placeholder="email@examp.com"><br>
             <div><br></div>
-            <input class="form-control col-md-7" type="password" name="password"  placeholder="password"><br>
-            <div><br></div><div><br></div>
-            <div class="button-wrapper">
-                <button type="submit">Login</button>
+            <input class="form-control col-md-4" type="password" name="password"  placeholder="password"><br>
+            <div><br></div><div><br></div><div><br></div><div><br></div>
+            <div class="button-wrapper col-md-12 flex-active row">
+                <button class="justify-content-center col-md-6" type="submit">Login</button>
+                <input type="button" class="btn btn-register justify-content-center col-md-6" style="background: hsl(218deg 92% 57%);color: white;border-radius: 4px" value="Register" onclick="redirectToRegister()">
+                <div><br></div>
+                <a href="https://accounts.google.com/o/oauth2/auth?scope=profile email&redirect_uri=http://localhost:9999/SWP391_Apartment_rental_management_system/LoginByGoogle&response_type=code&client_id=369413613183-srjd8p76m1hr9b21s70gjl8ooebf0t1f.apps.googleusercontent.com&approval_prompt=force" class="btn btn-primary google-plus col-md-12" style="background: hsl(218deg 92% 57%);color: white;border-radius: 4px">
+                    <!--       <span class="fontawesome-google-plus"></span> -->
+                    <i class="fa fa-google" aria-hidden="true"></i>Google
+                </a>
             </div>
         </form>
 
-        <h3><a href="https://twitter.com/hakimel" tabindex="-1"></a></h3>
 
 
-       
 
         <script>
             const button = document.querySelector('button');
@@ -135,15 +160,15 @@
                 const rx = oy / 2;
                 const ry = -ox / 2;
 
-                button.style.transition = `all 0.1s ease`;
-                button.style.transform = `translate(${ox}px, ${oy}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-                button.style.boxShadow = `0px ${Math.abs(oy)}px ${Math.abs(oy) / radius * 40}px rgba(0,0,0,0.15)`;
+                button.style.transition = 'all 0.1s ease';
+                button.style.transform = 'translate(' + ox + 'px, ' + oy + 'px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+                button.style.boxShadow = '0px ' + Math.abs(oy) + 'px ' + (Math.abs(oy) / radius * 40) + 'px rgba(0,0,0,0.15)';
             });
 
-            const nocheat = () => button.textContent = 'No cheating 🙅‍♂️';
-            const notouch = () => button.textContent = 'This thing doesn\'t work with touch 😢';
+            const nocheat = () => button.textContent = 'No cheating';
+            const notouch = () => button.textContent = 'This thing doesn\'t work with touch';
 
-            button.addEventListener('click', event => button.textContent = 'You win 🎉🙃');
+            button.addEventListener('click', event => button.textContent = 'You win');
             button.addEventListener('keydown', event => {
                 event.preventDefault();
                 nocheat();
@@ -154,6 +179,7 @@
                 notouch();
             window.addEventListener('touchstart', notouch);
         </script>
+
 
     </body>
 

@@ -131,7 +131,7 @@
                                                 </h3>
                                                 <br>
                                                 <h6>
-                                                    start at: ${apl.post_start}/ end: ${apl.post_end}<br> limitation: ${apl.week} week<br> paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
+                                                    start at: <fmt:formatDate value="${apl.post_start}" pattern="dd-MM-yyyy"/>/ end: <fmt:formatDate value="${apl.post_end}" pattern="dd-MM-yyyy"/><br> limitatpost_startion: ${apl.week} week<br> paid for post: <fmt:formatNumber value="${apl.paid_for_post}" pattern="#,###"/>d
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
