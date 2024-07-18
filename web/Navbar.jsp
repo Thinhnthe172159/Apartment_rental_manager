@@ -79,6 +79,9 @@
                             <c:if test="${user_Data.getRole_id().getId() == 1}">
                                 <li><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>
                                     </c:if>
+                                <c:if test="${user_Data.getRole_id().getId() == 2}">
+                                    <li><a href="LandLordDashboard"><i class="fa fa-dashboard"></i></a></li>
+                                    </c:if>
                                     <c:if test="${user_Data.getRole_id().getId() != 0}">
                                 <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>
                                     </c:if>
