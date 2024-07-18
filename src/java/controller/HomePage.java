@@ -91,7 +91,7 @@ public class HomePage extends HttpServlet {
         String subject = request.getParameter("subject");
         String message = request.getParameter("message");
 
-        Email.sendEmail("thinhnthe172159@fpt.edu.vn", subject, message + "<br>Người gửi:" + fullName);
+        Email.sendEmail("thinhnthe172159@fpt.edu.vn", subject, message + "<br>Người gửi : " + fullName + "<br> email trả lời : " + email);
         int page = 1;
         request.setAttribute("page", page);
         request.getRequestDispatcher("HomePage.jsp").forward(request, response);

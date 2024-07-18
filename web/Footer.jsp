@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/font-size/font-size.css">
         <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/utilities/padding/padding.css">
         <title>JSP Page</title>
+        <style>
+        </style>
     </head>
     <body>
         <!-- Footer 2 - Bootstrap Brain Component -->
