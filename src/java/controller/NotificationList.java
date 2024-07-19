@@ -74,6 +74,11 @@ public class NotificationList extends HttpServlet {
         } else {
             int id = (notification == null || notification.isEmpty()) ? 0 : Integer.parseInt(notification);
             Notification notification1 = nd.getNotification(id);
+            if (notification1 != null) {
+                notification1.setStatus(2);
+                nd.updateNotification(notification1);
+            }
+
             List<Notification> notificationList = nd.getListNotificationList(user.getId(), search);
 
             if (search != null) { // Handle AJAX request

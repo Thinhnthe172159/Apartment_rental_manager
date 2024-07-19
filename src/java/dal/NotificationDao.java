@@ -28,7 +28,7 @@ import model.User;
  * @author thinh
  */
 public class NotificationDao extends DBContext {
-
+    
     private UserDao ud = new UserDao();
 
     // add notification 
@@ -40,7 +40,7 @@ public class NotificationDao extends DBContext {
                 + "           ,[title],[status],[time])\n"
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?)";
-
+        
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, n.getFrom_user_id().getId());
@@ -87,7 +87,7 @@ public class NotificationDao extends DBContext {
                 + "      ,[message]\n"
                 + "      ,[title],[status],[time]\n"
                 + "  FROM [dbo].[Notification] where [id] = ? ";
-
+        
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, notfiId);
@@ -131,16 +131,16 @@ public class NotificationDao extends DBContext {
                 + "    n.From_user_id = u.id\n"
                 + "WHERE \n"
                 + "    n.[To_user_id] = ?\n";
-
+        
         if (search != null) {
-            sql += "AND (u.last_name LIKE N'%"+search+"%' OR u.first_name LIKE N'%"+search+"%' OR n.title LIKE N'%"+search+"%') ";
+            sql += "AND (u.last_name LIKE N'%" + search + "%' OR u.first_name LIKE N'%" + search + "%' OR n.title LIKE N'%" + search + "%') ";
         }
-
+        
         sql += "ORDER BY [time] DESC";
-
+        
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, userTo);
-
+            
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Notification n = new Notification();
@@ -159,8 +159,42 @@ public class NotificationDao extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         return list;
+    }
+
+    // get the newest request 
+    public Notification getNewestNotification(int FromUser, int ToUser) {
+        String sql = "SELECT top 1 [id]\n"
+                + "      ,[From_user_id]\n"
+                + "      ,[To_user_id]\n"
+                + "      ,[message]\n"
+                + "      ,[title],[status],[time]\n"
+                + "  FROM [dbo].[Notification] where [From_user_id] = ?  and [To_User_id] = ? order by [time] desc";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, FromUser);
+            st.setInt(2, ToUser);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Notification n = new Notification();
+                n.setId(rs.getInt("id"));
+                User u = ud.getUser(rs.getInt("From_user_id"));
+                User u2 = ud.getUser(rs.getInt("To_user_id"));
+                n.setFrom_user_id(u);
+                n.setTo_user_id(u2);
+                n.setMessage(rs.getString("message"));
+                n.setTitle(rs.getString("title"));
+                n.setStatus(rs.getInt("status"));
+                Timestamp timestamp = rs.getTimestamp("time");
+                n.setTime(timestamp.toLocalDateTime());
+                return n;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // count not read notification
@@ -176,7 +210,7 @@ public class NotificationDao extends DBContext {
                 count = rs.getInt("not_read");
             }
         } catch (SQLException e) {
-
+            
         }
         return count;
     }
@@ -194,8 +228,8 @@ public class NotificationDao extends DBContext {
 //        n.setStatus(1);
 //        n.setTime(LocalDateTime.now());
 //         nd.addNotification(n);
-        Notification n = nd.getNotification(1);
-        System.out.println(n);
+        Notification n = nd.getNotification(8);
+        System.out.println(n.getTitle());
     }
-
+    
 }

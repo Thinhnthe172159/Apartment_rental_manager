@@ -292,7 +292,7 @@
                                             height: 100px;
                                             border-radius: 50%">
                                             <h4>${Apartment.landLord_id.first_name} ${Apartment.landLord_id.last_name}<br><span>Liên hệ tư vấn</span><br><span><input id="textToCopy" style="position: absolute;
-                                                        left: -9999px;
+                                                    left: -9999px;
                                                     " value="0987654321" readonly class="hidden"/>
                                                 <button class="btn" onclick="copyText()">0987654321</button></span></h4>
                                     </li>
@@ -316,8 +316,8 @@
                                             <form action="RequestContract?apartment_id=${Apartment.id}&apartment_post_id=${apartment_Post.id}" method="post">
                                                 <button class="btn btn-primary" type="submit">Request contract</button>
                                             </form>
-                                    </c:if>
-                                        
+                                        </c:if>
+
                                     </li>
                                 </ul>
                             </div>
@@ -564,35 +564,35 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
                 <script>
-                                                        document.addEventListener('DOMContentLoaded', (event) => {
-                                                            var myCarousel = document.querySelector('#carouselExampleAutoplaying');
-                                                            var carousel = new bootstrap.Carousel(myCarousel, {
-                                                                interval: 5000,
-                                                                wrap: true
-                                                            });
+                                                    document.addEventListener('DOMContentLoaded', (event) => {
+                                                        var myCarousel = document.querySelector('#carouselExampleAutoplaying');
+                                                        var carousel = new bootstrap.Carousel(myCarousel, {
+                                                            interval: 5000,
+                                                            wrap: true
+                                                        });
 
-                                                            myCarousel.addEventListener('slide.bs.carousel', function (event) {
-                                                                document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
-                                                                    thumbnail.classList.remove('active-thumb');
-                                                                });
-                                                                var nextIndex = event.to;
-                                                                document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
+                                                        myCarousel.addEventListener('slide.bs.carousel', function (event) {
+                                                            document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail) {
+                                                                thumbnail.classList.remove('active-thumb');
                                                             });
+                                                            var nextIndex = event.to;
+                                                            document.querySelectorAll('.carousel-thumbnails img')[nextIndex].classList.add('active-thumb');
+                                                        });
 
-                                                            document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
-                                                                thumbnail.addEventListener('click', function () {
-                                                                    carousel.to(index);
-                                                                });
-                                                            });
-
-                                                            document.querySelectorAll('.carousel-inner img').forEach(function (image) {
-                                                                image.addEventListener('click', function () {
-                                                                    var src = image.getAttribute('data-src');
-                                                                    var modalImage = document.getElementById('modalImage');
-                                                                    modalImage.src = src;
-                                                                });
+                                                        document.querySelectorAll('.carousel-thumbnails img').forEach(function (thumbnail, index) {
+                                                            thumbnail.addEventListener('click', function () {
+                                                                carousel.to(index);
                                                             });
                                                         });
+
+                                                        document.querySelectorAll('.carousel-inner img').forEach(function (image) {
+                                                            image.addEventListener('click', function () {
+                                                                var src = image.getAttribute('data-src');
+                                                                var modalImage = document.getElementById('modalImage');
+                                                                modalImage.src = src;
+                                                            });
+                                                        });
+                                                    });
 
 
                 </script>
@@ -601,40 +601,40 @@
                 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
                 <script>
 
-                                                        var map = L.map('map');
+                                                    var map = L.map('map');
 
 
-                                                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                                    }).addTo(map);
+
+                                                    var address = '${Apartment.city} .${Apartment.district}. ${Apartment.commune}.${Apartment.address}';
+                                                        var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
+
+                                                        fetch(url)
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    var lat = parseFloat(data[0].lat);
+                                                                    var long = parseFloat(data[0].lon);
+                                                                    map.setView([lat, long], 15);
+                                                                    L.marker([lat, long]).addTo(map).bindPopup(address).openPopup();
+                                                                })
+                                                                .catch(error => console.error('Error:', error));
+
+                                                        var schoolMarker = L.marker([schoolLat, schoolLng]).bindPopup('School Name');
+                                                        schoolsLayer.addLayer(schoolMarker);
+
+                                                        var hospitalMarker = L.marker([hospitalLat, hospitalLng]).bindPopup('Hospital Name');
+                                                        hospitalsLayer.addLayer(hospitalMarker);
+
+                                                        schoolsLayer.addTo(map);
+                                                        hospitalsLayer.addTo(map);
+
+                                                        L.control.layers(null, {
+                                                            'Schools': schoolsLayer,
+                                                            'Hospitals': hospitalsLayer,
+                                                            // ... add other layers here
                                                         }).addTo(map);
-
-                                                        var address = '${Apartment.city} .${Apartment.district}. ${Apartment.commune}.${Apartment.address}';
-                                                            var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(address);
-
-                                                            fetch(url)
-                                                                    .then(response => response.json())
-                                                                    .then(data => {
-                                                                        var lat = parseFloat(data[0].lat);
-                                                                        var long = parseFloat(data[0].lon);
-                                                                        map.setView([lat, long], 15);
-                                                                        L.marker([lat, long]).addTo(map).bindPopup(address).openPopup();
-                                                                    })
-                                                                    .catch(error => console.error('Error:', error));
-
-                                                            var schoolMarker = L.marker([schoolLat, schoolLng]).bindPopup('School Name');
-                                                            schoolsLayer.addLayer(schoolMarker);
-
-                                                            var hospitalMarker = L.marker([hospitalLat, hospitalLng]).bindPopup('Hospital Name');
-                                                            hospitalsLayer.addLayer(hospitalMarker);
-
-                                                            schoolsLayer.addTo(map);
-                                                            hospitalsLayer.addTo(map);
-
-                                                            L.control.layers(null, {
-                                                                'Schools': schoolsLayer,
-                                                                'Hospitals': hospitalsLayer,
-                                                                // ... add other layers here
-                                                            }).addTo(map);
 
                 </script>
                 <script>
@@ -651,6 +651,25 @@
 
                         // Thông báo cho người dùng rằng nội dung đã được sao chép
                         alert("Nội dung đã được copy: " + textToCopy.value);
+                    }
+                </script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    var message = '${requestScope.mess}';
+                    if (message) {
+                        if (message === "1") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Denied!",
+                                text: "Bạn chỉ có thể gửi yêu cầu này sau 1 giờ nữa",
+                            });
+                        } else if (message === '2') {
+                            Swal.fire({
+                                title: "Success!",
+                                text: "Yêu cầu bạn vừa gửi đã thành công, vui lòng kiểm tra thông báo phản hồi sau ít phút",
+                                icon: "success"
+                            });
+                        }
                     }
                 </script>
 

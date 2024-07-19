@@ -15,7 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import model.Apartment;
 import model.Notification;
 import model.User;
@@ -60,48 +62,70 @@ public class RequestContract extends HttpServlet {
         User user = (User) session.getAttribute("user_Data");
         if (user == null) {
             response.sendRedirect("Login");
-        } 
+            return;
+        }
 
-            String apartment_id_raw = request.getParameter("apartment_id");
-            String post_id = request.getParameter("apartment_post_id");
+        String apartment_id_raw = request.getParameter("apartment_id");
+        String post_id = request.getParameter("apartment_post_id");
 
-            int apartment_id = (apartment_id_raw == null || apartment_id_raw.isEmpty()) ? 0 : Integer.parseInt(apartment_id_raw);
-            Apartment apartment = apd.getApartment(apartment_id);
-            String status_ap = "";
-            if (apartment.getStatus_apartment() == 1) {
-                status_ap = "Chưa có người thuê";
+        int apartment_id = (apartment_id_raw == null || apartment_id_raw.isEmpty()) ? 0 : Integer.parseInt(apartment_id_raw);
+        Apartment apartment = apd.getApartment(apartment_id);
+        String status_ap = "";
+        if (apartment.getStatus_apartment() == 1) {
+            status_ap = "Chưa có người thuê";
+        }
+        if (apartment.getStatus_apartment() == 2) {
+            status_ap = "Đã có người thuê";
+        }
+
+        String message = "     <table border=\"" + 1 + "\">\n"
+                + "                            <thead>\n"
+                + "                                <tr>\n"
+                + "                                    <th>Tên căn hộ</th>\n"
+                + "                                    <th>Trạng Thái</th>\n"
+                + "                                    <th>Link bài đăng</th>\n"
+                + "                                </tr>\n"
+                + "                            </thead>\n"
+                + "                            <tbody>\n"
+                + "                                <tr>\n"
+                + "                                    <td>" + apartment.getName() + "</td>\n"
+                + "                                    <td>" + status_ap + "</td>\n"
+                + "                                    <td><a href=" + "http://localhost:9999/SWP391_Apartment_rental_management_system/ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id + ">link bài đăng</a></td>\n"
+                + "                                </tr>\n"
+                + "                            </tbody>\n"
+                + "                        </table><br>"
+                + "Người gửi yêu cầu : " + user.getFirst_name() + " " + user.getLast_name();
+        String title = "Yêu hợp đồng từ khách hàng";
+        LocalDateTime dateTime = LocalDateTime.now();
+        int status = 1;
+        User ToUser = apartment.getLandLord_id();
+
+        Notification notification = new Notification(0, user, ToUser, message, title, status, dateTime);
+        //xử lý tránh spam nhiều lần
+        int mess = 0;
+        Notification notificationNew = nd.getNewestNotification(user.getId(), ToUser.getId());
+
+        if (notificationNew != null) {
+            Duration duration = Duration.between(notificationNew.getTime(), dateTime); // Correct the order of parameters
+            long hours = duration.toHours();
+            if (hours >= 1) {
+                mess = 2;
+                nd.addNotification(notification);
+                Email.sendEmail(ToUser.getEmail(), title, message);
             }
-            if (apartment.getStatus_apartment() == 2) {
-                status_ap = "Đã có người thuê";
+
+            if (hours < 1) {
+                mess = 1;
             }
+        }
 
-            String message = "     <table border=\"" + 1 + "\">\n"
-                    + "                            <thead>\n"
-                    + "                                <tr>\n"
-                    + "                                    <th>Tên căn hộ</th>\n"
-                    + "                                    <th>Trạng Thái</th>\n"
-                    + "                                    <th>Link bài đăng</th>\n"
-                    + "                                </tr>\n"
-                    + "                            </thead>\n"
-                    + "                            <tbody>\n"
-                    + "                                <tr>\n"
-                    + "                                    <td>" + apartment.getName() + "</td>\n"
-                    + "                                    <td>" + status_ap + "</td>\n"
-                    + "                                    <td><a href=" + "http://localhost:9999/SWP391_Apartment_rental_management_system/ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id + ">link bài đăng</a></td>\n"
-                    + "                                </tr>\n"
-                    + "                            </tbody>\n"
-                    + "                        </table><br>"
-                    + "Người gửi yêu cầu : " + user.getFirst_name() + " " + user.getLast_name();
-            String title = "Yêu hợp đồng từ khách hàng";
-            LocalDateTime dateTime = LocalDateTime.now();
-            int status = 1;
-            User ToUser = apartment.getLandLord_id();
-
-            Notification notification = new Notification(0, user, ToUser, message, title, status, dateTime);
+        if (notificationNew == null) {
             nd.addNotification(notification);
             Email.sendEmail(ToUser.getEmail(), title, message);
-            response.sendRedirect("ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id);
-        
+            mess = 2;
+        }
+        response.sendRedirect("ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id + "&mess=" + mess);
+
     }
 
     @Override
