@@ -155,7 +155,7 @@
         <jsp:include page="Navbar.jsp"/>
         <div class="container light-style flex-grow-1 container-p-y" style="padding-top: 150px">
             <h4 class="font-weight-bold py-3 mb-4">
-                Account settings
+                Send Maintenance Report
             </h4>
             <div class="card overflow-hidden">
                 <div class="row no-gutters row-bordered row-border-light">
