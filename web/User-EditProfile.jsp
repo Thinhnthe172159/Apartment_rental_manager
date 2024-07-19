@@ -131,9 +131,9 @@
                     <div class="col-md-3 pt-0 d-flex flex-column">
                         <!-- List group -->
                         <div class="list-group list-group-flush account-settings-links flex-grow-1">
-                            <a class="list-group-item list-group-item-action active" href="UserProfile">General</a>
+                            <a class="list-group-item list-group-item-action" href="User-ViewProfile.jsp">General</a>
                             <a class="list-group-item list-group-item-action" href="ChangePassword">Change password</a>
-                            <a class="list-group-item list-group-item-action" href="User-ViewProfile.jsp">Info</a>
+                            <a class="list-group-item list-group-item-action active" href="UserProfile">Change Info</a>
                         </div>
 
                         <!-- Back to Home button -->
