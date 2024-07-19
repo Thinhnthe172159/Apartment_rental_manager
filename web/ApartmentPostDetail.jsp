@@ -298,7 +298,7 @@
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-01.png" alt="" style="max-width: 52px;">
-                                        <h4>${Apartment.area}<br><span>m2</span></h4>
+                                        <h4><fmt:formatNumber value="${Apartment.area}" pattern="#,###"/> ㎡ <span></span></h4>
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-02.png" alt="" style="max-width: 52px;">
@@ -311,6 +311,13 @@
                                     <li>
                                         <img src="https://thumbs.dreamstime.com/b/bed-sleep-bedroom-icon-orange-vector-sketch-well-organized-simple-use-commercial-purposes-web-printing-any-type-design-241213928.jpg" alt="" style="max-width: 60px;">
                                         <h4>${Apartment.number_of_bedroom}<br><span>Bedroom</span></h4>
+                                    </li>
+                                    <li><c:if test="${user_Data.id!=Apartment.landLord_id.id}">
+                                            <form action="RequestContract?apartment_id=${Apartment.id}&apartment_post_id=${apartment_Post.id}" method="post">
+                                                <button class="btn btn-primary" type="submit">Request contract</button>
+                                            </form>
+                                    </c:if>
+                                        
                                     </li>
                                 </ul>
                             </div>
