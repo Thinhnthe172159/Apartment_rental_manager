@@ -80,8 +80,7 @@
 
         </style>
 
-        <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-        <script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+
         <script type="text/javascript">
             window.tailwind.config = {
                 darkMode: ['class'],
