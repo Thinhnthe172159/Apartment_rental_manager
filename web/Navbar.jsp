@@ -107,6 +107,9 @@
                                     </c:choose>
                         </ul>
                     </div>
+                    <div class="col-md-12">
+                        <br>
+                    </div>
                 </div>
             </div>
         </div>
