@@ -50,19 +50,21 @@ public class RequestContract extends HttpServlet {
             return;
         }
 
-        String message = generateMessage(apartment, postId, user);
+       
         String title = "Yêu hợp đồng từ khách hàng";
         LocalDateTime dateTime = LocalDateTime.now();
         User toUser = apartment.getLandLord_id();
 
-        Notification notification = new Notification(0, user, toUser, message, title, 1, dateTime);
-
+        Notification notification = new Notification(0, user, toUser, null, title, 1, dateTime);
         int mess = processNotification(notificationDao, notification, user, toUser, dateTime);
-
+        
+        Notification n = notificationDao.getNewestNotification(user.getId(), toUser.getId());
+        n.setMessage(generateMessage( apartment, postId, user, n.getId()));
+        notificationDao.updateNotification(n);
         response.sendRedirect("ApartmentDetail?Apartment_id=" + apartmentId + "&apartment_post_id=" + postId + "&mess=" + mess);
     }
 
-    private String generateMessage(Apartment apartment, String postId, User user) {
+    private String generateMessage(Apartment apartment, String postId, User user,int newNoti_id) {
         return "<table border=\"1\">"
                 + "<thead>"
                 + "<tr>"
@@ -93,6 +95,7 @@ public class RequestContract extends HttpServlet {
                 + "                                    console.error(error);\n"
                 + "                                });\n"
                 + "                    </script>"
+                + "<input hidden name=\"notification_id\"  type=\"text\" value=\"" + newNoti_id +"\">"
                 + "<span><input name=\"send\" class=\"btn btn-primary\" type=\"submit\" value=\"Đồng ý và gửi mẫu hợp đồng\"></span>"
                 + "<span><input name=\"send\" class=\"btn btn-primary\" type=\"submit\" value=\"Từ chối yêu cầu\"></span>"
                 + "</form>";
