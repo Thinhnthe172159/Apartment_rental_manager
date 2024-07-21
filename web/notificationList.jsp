@@ -10,6 +10,8 @@
     <head>
         <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
                     </head>
                     <body>
                         <jsp:include page="Navbar.jsp"/>
@@ -40,10 +42,10 @@
                                                                     </div>
                                                                     <div class="flex-grow-1 overflow-auto" id="notificationListContainer">
                                                                         <c:forEach items="${requestScope.notificationList}" var="no">
-                                                                            
+
                                                                             <a class="d-flex align-items-center p-2 text-white mb-2 rounded cursor-pointer" href="NotificationList?notification_id=${no.id}" style="background: #221fc49c;text-decoration: none; <c:if test="${notification!= null && notification.id == no.id}"> border:5px solid #000391bf</c:if>">
                                                                                 <img class="rounded-circle me-2" src="${no.getFrom_user_id().getImage()}" alt="User profile picture" style="width: 40px; height: 40px;" />
-                                                                                
+
                                                                                 <div class="flex-grow-1">
                                                                                     <div class="">${no.getFrom_user_id().getFirst_name()} ${no.getFrom_user_id().getLast_name()}</div>
                                                                                     <div>
@@ -51,7 +53,7 @@
                                                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" style="color: white" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
                                                                                                     <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
                                                                                                 </svg>
-                                                                                        </c:if> </h2>
+                                                                                            </c:if> </h2>
                                                                                         <p class="formatted-time text-white" data-datetime="${no.time}"></p>
                                                                                     </div>
                                                                                 </div>
@@ -127,7 +129,7 @@
                                                                     });
                                                                 };
                                                             </script>
-                                                          
+
                                                             </body>
 
                                                             </html>

@@ -14,9 +14,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-
-
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -24,9 +21,8 @@
         <!-- Additional CSS Files -->
         <link rel="stylesheet" href="assets/css/fontawesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
-        <link rel="stylesheet" href="assets/css/owl.css">
-        <link rel="stylesheet" href="assets/css/animate.css">
-        <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    
+        
 
         <style>
             /* Custom CSS for hover dropdown */
@@ -80,33 +76,33 @@
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <ul class="social-links">
+                        <ul style="">
                             <c:if test="${user_Data.getRole_id().getId() == 1}">
-                                <li><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>
+                                <li style="background-color: black"><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
                                     <c:if test="${user_Data.getRole_id().getId() == 2}">
-                                <li><a href="LandLordDashboard"><i class="fa fa-dashboard"></i></a></li>
+                                <li><a href="LandLordDashboard"><i class="fa fa-dashboard"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
                                     <c:if test="${user_Data.getRole_id().getId() != 0}">
-                                <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>
+                                <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
-                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook"></i></a></li> &nbsp;&nbsp;&nbsp;
+                            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>&nbsp;&nbsp;&nbsp;
+                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>&nbsp;&nbsp;&nbsp;
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     <c:choose>
                                         <c:when test="${user_Data == null}">
                                     <li><a href="Login"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z"/>
   <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
-</svg></i></a></li>
+</svg></i></a></li>&nbsp;&nbsp;&nbsp;
                                         </c:when>
                                         <c:otherwise>
-                                    <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>
+                                    <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     <li><a href="Logout"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
   <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-</svg></i></a></li>
+</svg></i></a></li>&nbsp;&nbsp;&nbsp;
                                         </c:otherwise>
                                     </c:choose>
                         </ul>
