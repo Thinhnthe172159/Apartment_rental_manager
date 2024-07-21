@@ -201,7 +201,7 @@
 
 
                         <div class="col-md-9 post">
-                            <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                            <div class="row"><img height="55" width="55" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
                                               <c:when test="${sessionScope.user_Data != null}">
                                                   ${sessionScope.user_Data.getImage()}
                                               </c:when>

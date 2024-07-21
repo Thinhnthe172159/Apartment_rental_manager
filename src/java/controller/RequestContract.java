@@ -1,62 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.ApartmentDao;
 import dal.ApartmentPostDao;
 import dal.NotificationDao;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 import model.Apartment;
 import model.Notification;
 import model.User;
 import util.Email;
 
-/**
- *
- * @author thinh
- */
 @WebServlet(name = "RequestContract", urlPatterns = {"/RequestContract"})
 public class RequestContract extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RequestContract</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RequestContract at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        NotificationDao nd = new NotificationDao();
-        ApartmentDao apd = new ApartmentDao();
+        NotificationDao notificationDao = new NotificationDao();
+        ApartmentDao apartmentDao = new ApartmentDao();
         HttpSession session = request.getSession();
 
         User user = (User) session.getAttribute("user_Data");
@@ -65,72 +33,91 @@ public class RequestContract extends HttpServlet {
             return;
         }
 
-        String apartment_id_raw = request.getParameter("apartment_id");
-        String post_id = request.getParameter("apartment_post_id");
+        String apartmentIdRaw = request.getParameter("apartment_id");
+        String postId = request.getParameter("apartment_post_id");
 
-        int apartment_id = (apartment_id_raw == null || apartment_id_raw.isEmpty()) ? 0 : Integer.parseInt(apartment_id_raw);
-        Apartment apartment = apd.getApartment(apartment_id);
-        String status_ap = "";
-        if (apartment.getStatus_apartment() == 1) {
-            status_ap = "Chưa có người thuê";
-        }
-        if (apartment.getStatus_apartment() == 2) {
-            status_ap = "Đã có người thuê";
+        int apartmentId = 0;
+        try {
+            apartmentId = Integer.parseInt(apartmentIdRaw);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid apartment ID");
+            return;
         }
 
-        String message = "     <table border=\"" + 1 + "\">\n"
-                + "                            <thead>\n"
-                + "                                <tr>\n"
-                + "                                    <th>Tên căn hộ</th>\n"
-                + "                                    <th>Trạng Thái</th>\n"
-                + "                                    <th>Link bài đăng</th>\n"
-                + "                                </tr>\n"
-                + "                            </thead>\n"
-                + "                            <tbody>\n"
-                + "                                <tr>\n"
-                + "                                    <td>" + apartment.getName() + "</td>\n"
-                + "                                    <td>" + status_ap + "</td>\n"
-                + "                                    <td><a href=" + "http://localhost:9999/SWP391_Apartment_rental_management_system/ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id + ">link bài đăng</a></td>\n"
-                + "                                </tr>\n"
-                + "                            </tbody>\n"
-                + "                        </table><br>"
-                + "Người gửi yêu cầu : " + user.getFirst_name() + " " + user.getLast_name();
+        Apartment apartment = apartmentDao.getApartment(apartmentId);
+        if (apartment == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Apartment not found");
+            return;
+        }
+
+        String message = generateMessage(apartment, postId, user);
         String title = "Yêu hợp đồng từ khách hàng";
         LocalDateTime dateTime = LocalDateTime.now();
-        int status = 1;
-        User ToUser = apartment.getLandLord_id();
+        User toUser = apartment.getLandLord_id();
 
-        Notification notification = new Notification(0, user, ToUser, message, title, status, dateTime);
-        //xử lý tránh spam nhiều lần
-        int mess = 0;
-        Notification notificationNew = nd.getNewestNotification(user.getId(), ToUser.getId());
+        Notification notification = new Notification(0, user, toUser, message, title, 1, dateTime);
 
-        if (notificationNew != null) {
-            Duration duration = Duration.between(notificationNew.getTime(), dateTime); // Correct the order of parameters
-            long hours = duration.toHours();
-            if (hours >= 1) {
-                mess = 2;
-                nd.addNotification(notification);
-                Email.sendEmail(ToUser.getEmail(), title, message);
+        int mess = processNotification(notificationDao, notification, user, toUser, dateTime);
+
+        response.sendRedirect("ApartmentDetail?Apartment_id=" + apartmentId + "&apartment_post_id=" + postId + "&mess=" + mess);
+    }
+
+    private String generateMessage(Apartment apartment, String postId, User user) {
+        return "<table border=\"1\">"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Tên căn hộ được yêu cầu</th>"
+                + "<th>Thông tin căn hộ</th>"
+                + "<th>Link bài đăng</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>"
+                + "<tr>"
+                + "<td>" + apartment.getName() + "</td>"
+                + "<td><a href=\"http://localhost:9999/SWP391_Apartment_rental_management_system/ViewApartmentDetail?apartment_id=" + apartment.getId() + "\">Thông tin căn hộ</a></td>"
+                + "<td><a href=\"http://localhost:9999/SWP391_Apartment_rental_management_system/ApartmentDetail?Apartment_id=" + apartment.getId() + "&apartment_post_id=" + postId + "\">link bài đăng</a></td>"
+                + "</tr>"
+                + "</tbody>"
+                + "</table><br>"
+                + "Người gửi yêu cầu : " + user.getFirst_name() + " " + user.getLast_name() + "<br>"
+                + "<form action=\"ResponseMessage\" method=\"post\">"
+                + "<input hidden name=\"userTo\"  type=\"text\" value=\"" + user.getId() + "\">"
+                + "  <textarea id=\"editor\" required=\"\" name=\"description\" class=\"form-control\" placeholder=\"Nhập phản hồi của bạn   \" id=\"floatingTextarea2\"  cols=\"300\" rows=\"10\">\n"
+                + "                              \n"
+                + "                    </textarea>\n"
+                + "\n"
+                + "                    <script>\n"
+                + "                        ClassicEditor\n"
+                + "                                .create(document.querySelector('#editor'))\n"
+                + "                                .catch(error => {\n"
+                + "                                    console.error(error);\n"
+                + "                                });\n"
+                + "                    </script>"
+                + "<span><input name=\"send\" class=\"btn btn-primary\" type=\"submit\" value=\"Đồng ý và gửi mẫu hợp đồng\"></span>"
+                + "<span><input name=\"send\" class=\"btn btn-primary\" type=\"submit\" value=\"Từ chối yêu cầu\"></span>"
+                + "</form>";
+    }
+
+    private int processNotification(NotificationDao notificationDao, Notification notification, User fromUser, User toUser, LocalDateTime currentDateTime) {
+        Notification latestNotification = notificationDao.getNewestNotification(fromUser.getId(), toUser.getId());
+        if (latestNotification != null) {
+            Duration duration = Duration.between(latestNotification.getTime(), currentDateTime);
+            if (duration.toHours() >= 1) {
+                notificationDao.addNotification(notification);
+                Email.sendEmail(toUser.getEmail(), notification.getTitle(), notification.getMessage());
+                return 2;
+            } else {
+                return 1;
             }
-
-            if (hours < 1) {
-                mess = 1;
-            }
+        } else {
+            notificationDao.addNotification(notification);
+            Email.sendEmail(toUser.getEmail(), notification.getTitle(), notification.getMessage());
+            return 2;
         }
-
-        if (notificationNew == null) {
-            nd.addNotification(notification);
-            Email.sendEmail(ToUser.getEmail(), title, message);
-            mess = 2;
-        }
-        response.sendRedirect("ApartmentDetail?Apartment_id=" + apartment_id + "&apartment_post_id=" + post_id + "&mess=" + mess);
-
     }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Handles contract requests from users";
     }
-
 }
