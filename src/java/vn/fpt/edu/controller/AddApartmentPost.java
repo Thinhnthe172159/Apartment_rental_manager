@@ -129,7 +129,7 @@ public class AddApartmentPost extends HttpServlet {
                 ap.setPost_start(PostStart);
                 ap.setWeek(week);
                 ap.setPaid_for_post(pm.getPrice() * week);
-                ap.setPost_status(2);
+                ap.setPost_status(3);
                 double money = user_Data.getMoney() - ap.getPaid_for_post();
                 user_Data.setMoney(money);
                 userDao.UserMoneyChange(user_Data);

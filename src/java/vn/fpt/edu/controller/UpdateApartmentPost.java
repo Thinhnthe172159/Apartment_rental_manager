@@ -107,7 +107,7 @@ public class UpdateApartmentPost extends HttpServlet {
         if ("Cập Nhật".equals(submit)) {
             ap.setPost_status(ap.getPost_status());
         } else {
-            ap.setPost_status(2);
+            ap.setPost_status(3);
         }
 
         apartmentPostDao.updateApartmentPost(ap, ap.getId());

@@ -217,10 +217,8 @@
                             <select    class="form-select" name="status"  aria-label="Default select example">
                                 <option value="0">Trạng Thái Bài Đăng</option>
                                 <option value="1">Lưu Nháp</option>
-                                <option value="2">Chờ Duyệt</option>
                                 <option value="3">Xuất Bản</option>
                                 <option value="4">Hết Hạn</option>
-                                <option value="5">Căn Hộ Đã Cho Thuê</option>
                             </select>
                         </div>
                         <div class="form-group">

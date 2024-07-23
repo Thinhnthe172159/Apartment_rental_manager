@@ -147,7 +147,7 @@ public class UpdateApartmentPost4 extends HttpServlet {
         } else {
 
             if (check == 1) {
-                ap.setPost_status(2);  // trạng thái đợi bài đăng được duyệt do admin
+                ap.setPost_status(3);  // trạng thái public
             } else {
                 ap.setPost_status(4); // trạng thái không có đủ tiền để thanh toán cho bài đăng và nó chỉ lưu lại nội dung
             }

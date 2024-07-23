@@ -148,7 +148,7 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setPost_status(1);
         } else {
             if(check == 1){
-              ap.setPost_status(2);  
+              ap.setPost_status(3);  
             }else{
                ap.setPost_status(1);
             }
