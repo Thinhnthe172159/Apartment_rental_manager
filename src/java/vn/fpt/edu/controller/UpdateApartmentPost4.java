@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import vn.fpt.edu.model.Apartment;
@@ -119,7 +120,8 @@ public class UpdateApartmentPost4 extends HttpServlet {
         if (firstImage != null) {
             ap.setFirst_image(firstImage.getImage());
         }
-
+        LocalTime time_now = LocalTime.now();
+        ap.setTime_post(time_now);
         ap.setCity(apartment.getCity());
         ap.setDistrict(apartment.getDistrict());
         ap.setCommune(apartment.getCommune());

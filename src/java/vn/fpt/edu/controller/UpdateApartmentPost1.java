@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import vn.fpt.edu.model.Apartment;
@@ -119,7 +120,8 @@ public class UpdateApartmentPost1 extends HttpServlet {
         if (firstImage != null) {
             ap.setFirst_image(firstImage.getImage());
         }
-
+        LocalTime time_now = LocalTime.now();
+        ap.setTime_post(time_now);
         ap.setCity(apartment.getCity());
         ap.setDistrict(apartment.getDistrict());
         ap.setCommune(apartment.getCommune());
@@ -128,14 +130,14 @@ public class UpdateApartmentPost1 extends HttpServlet {
         ap.setNumber_of_bedroom(apartment.getNumber_of_bedroom());
         ap.setApartment_type(apartment.getType_id());
         ap.setApartment_name(apartment.getName());
-        
+
         int check = -1;
-        
+
         List<Apartment_image> imageList = apartmentDao.getAllApartmentImageList(apartmentId);
         ap.setTotal_image(imageList.size());
 
         if (week != 0 && !"Cập Nhật".equals(submit)) {
-           check = processPayment(ap, paymentMethod, week, user, session, request);
+            check = processPayment(ap, paymentMethod, week, user, session, request);
         } else {
             check = 0;
             session.setAttribute("message", "d");// chỉ thông báo là đã cập nhật thành công mà không trừ đi khoản tiền vốn có của user
@@ -147,12 +149,12 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setWeek(0);
             ap.setPost_status(1); // trạng thái lưu nháp bài đăng
         } else {
-            if(check == 1){
-              ap.setPost_status(3);  // trangh thái đã public bài đăng
-            }else{
-               ap.setPost_status(1); // trạng thái lưu nháp bài đăng
+            if (check == 1) {
+                ap.setPost_status(3);  // trangh thái đã public bài đăng
+            } else {
+                ap.setPost_status(1); // trạng thái lưu nháp bài đăng
             }
-            
+
         }
 
         apartmentPostDao.updateApartmentPost(ap, ap.getId());
@@ -181,7 +183,7 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setPayment_id(paymentMethod);
             return 1;
         }
-        
+
     }
 
     /**

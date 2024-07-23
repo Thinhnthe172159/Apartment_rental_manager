@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
+import java.time.LocalTime;
 import java.util.List;
 import vn.fpt.edu.model.Apartment;
 import vn.fpt.edu.model.Apartment_Post;
@@ -55,28 +56,28 @@ public class AddApartmentPost extends HttpServlet {
             out.println("</html>");
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
+        
         User user_Data = (User) session.getAttribute("user_Data");
-
+        
         if (user_Data == null) {
             request.getRequestDispatcher("Login").forward(request, response);
         }
         ApartmentDao apartmentDao = new ApartmentDao();
         List<Apartment> apartmentList = apartmentDao.getApartmentList(user_Data.getId());
         List<Payment_method> payment_methodsList = apartmentDao.getPayment_method_list();
-
+        
         request.setAttribute("apartmentList", apartmentList);
         request.setAttribute("payment_methodsList", payment_methodsList);
         int page = 3;
         request.setAttribute("page", page);
         request.getRequestDispatcher("AddApartmentPost.jsp").forward(request, response);
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -86,7 +87,7 @@ public class AddApartmentPost extends HttpServlet {
         UserDao userDao = new UserDao();
         User user_Data;
         user_Data = (User) session.getAttribute("user_Data");
-
+        
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String apartment_id = request.getParameter("apartment");
@@ -95,9 +96,9 @@ public class AddApartmentPost extends HttpServlet {
         String week_raw = request.getParameter("week");
         String postStart = request.getParameter("Post_start");
         String postEnd = request.getParameter("Post_end");
-
+        
         int week = (week_raw == null || week_raw.isEmpty()) ? 0 : Integer.parseInt(week_raw);
-
+        
         Apartment_Post ap = new Apartment_Post();
         ap.setTitle(title);
         ap.setDescription(description);
@@ -116,6 +117,8 @@ public class AddApartmentPost extends HttpServlet {
         ap.setCommune(a.getCommune());
         ap.setArea(a.getArea());
         ap.setPrice(a.getPrice());
+        LocalTime time_now = LocalTime.now();
+        ap.setTime_post(time_now);
         ap.setNumber_of_bedroom(a.getNumber_of_bedroom());
         ap.setApartment_type(a.getType_id());
         ap.setApartment_name(a.getName());
@@ -135,24 +138,24 @@ public class AddApartmentPost extends HttpServlet {
                 userDao.UserMoneyChange(user_Data);
                 session.setAttribute("message", "a");
             }
-
+            
             if (user_Data.getMoney() < (pm.getPrice() * week)) {
                 ap.setPost_status(1);
                 session.setAttribute("message", "b");
             }
-
+            
         } else {
             ap.setPost_status(1);
             session.setAttribute("message", "c");
-
+            
         }
         apartmentPostDao.addApartmentPost(ap);
         request.getRequestDispatcher("ApartmentPostForLandlord").forward(request, response);
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";
     }
-
+    
 }

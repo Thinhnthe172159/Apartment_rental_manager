@@ -4,12 +4,15 @@
  */
 package vn.fpt.edu.dal;
 
+import java.security.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.sql.Time;
 import java.util.List;
 import vn.fpt.edu.model.Apartment;
 import vn.fpt.edu.model.Apartment_Post;
@@ -47,9 +50,9 @@ public class ApartmentPostDao extends DBContext {
                 + "           ,[apartment_type] \n"
                 + "           ,[total_image]\n"
                 + "           ,[paid_for_post]\n"
-                + "           ,[week])\n"
+                + "           ,[week],[time_post])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, ap.getTitle());
@@ -72,6 +75,8 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(18, ap.getTotal_image());
             st.setDouble(19, ap.getPaid_for_post());
             st.setInt(20, ap.getWeek());
+            Time time = Time.valueOf(ap.getTime_post());
+            st.setTime(21, time);
             st.executeUpdate();
         } catch (SQLException e) {
 
@@ -100,7 +105,7 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
                 + "      ,[paid_for_post]\n"
-                + "      ,[week]\n"
+                + "      ,[week],[time_post]\n"
                 + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -133,6 +138,8 @@ public class ApartmentPostDao extends DBContext {
                 ap.setTotal_image(rs.getInt("total_image"));
                 ap.setPaid_for_post(rs.getDouble("paid_for_post"));
                 ap.setWeek(rs.getInt("week"));
+                Time time = rs.getTime("time_post");
+                ap.setTime_post((time).toLocalTime());
                 return ap;
             }
         } catch (SQLException e) {
@@ -164,7 +171,7 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[apartment_type]\n"
                 + "      ,[total_image]\n"
                 + "      ,[paid_for_post]\n"
-                + "      ,[week]\n"
+                + "      ,[week],[time_post]\n"
                 + "  FROM [dbo].[Apartment_Posts] where [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -197,6 +204,8 @@ public class ApartmentPostDao extends DBContext {
                 ap.setTotal_image(rs.getInt("total_image"));
                 ap.setPaid_for_post(rs.getDouble("paid_for_post"));
                 ap.setWeek(rs.getInt("week"));
+                Time time = rs.getTime("time_post");
+                ap.setTime_post((time).toLocalTime());
                 list.add(ap);
             }
         } catch (SQLException e) {
@@ -354,7 +363,7 @@ public class ApartmentPostDao extends DBContext {
             case 2 ->
                 sql += "ORDER BY [price] desc ";
             default ->
-                sql += " order by [payment_id] desc, [post_start] DESC  , [id] DESC ";
+                sql += " order by [payment_id] desc, [post_start] DESC,[time_post] desc  , [id] DESC ";
         }
 
         int offset = (pageNumber - 1) * pageSize;
@@ -392,6 +401,8 @@ public class ApartmentPostDao extends DBContext {
                 ap.setTotal_image(rs.getInt("total_image"));
                 ap.setPaid_for_post(rs.getDouble("paid_for_post"));
                 ap.setWeek(rs.getInt("week"));
+                Time time = rs.getTime("time_post");
+                ap.setTime_post((time).toLocalTime());
                 list.add(ap);
 
             }
@@ -504,6 +515,8 @@ public class ApartmentPostDao extends DBContext {
                 ap.setTotal_image(rs.getInt("total_image"));
                 ap.setPaid_for_post(rs.getDouble("paid_for_post"));
                 ap.setWeek(rs.getInt("week"));
+                Time time = rs.getTime("time_post");
+                ap.setTime_post((time).toLocalTime());
                 list.add(ap);
 
             }
@@ -553,6 +566,8 @@ public class ApartmentPostDao extends DBContext {
                 ap.setTotal_image(rs.getInt("total_image"));
                 ap.setPaid_for_post(rs.getDouble("paid_for_post"));
                 ap.setWeek(rs.getInt("week"));
+                Time time = rs.getTime("time_post");
+                ap.setTime_post((time).toLocalTime());
                 list.add(ap);
 
             }
@@ -585,6 +600,7 @@ public class ApartmentPostDao extends DBContext {
                 + "      ,[total_image] = ?\n"
                 + "      ,[paid_for_post] = ? \n"
                 + "      ,[week] = ? \n"
+                + "      ,[time_post] = ? \n"
                 + " WHERE [id]= ? ";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -608,7 +624,9 @@ public class ApartmentPostDao extends DBContext {
             st.setInt(18, ap.getTotal_image());
             st.setDouble(19, ap.getPaid_for_post());
             st.setInt(20, ap.getWeek());
-            st.setInt(21, id);
+            Time time = Time.valueOf(ap.getTime_post());
+            st.setTime(21, time);
+            st.setInt(22, id);
             st.executeUpdate();
         } catch (SQLException e) {
 
