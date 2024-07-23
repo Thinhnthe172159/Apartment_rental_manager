@@ -19,9 +19,9 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="assets/jquery-1.11.3.min.js"></script>
-        
+
         <style type="">
-        
+
             .fixedElement.fixed {
                 position: fixed;
                 top: 100px;
@@ -259,69 +259,70 @@
                     </nav>
 
                 </div>
+            </div>
+        </div>
 
 
 
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-                <div class="sticky-lg-top">
-                    <jsp:include page="Footer.jsp" />
-
+        <div class="sticky-lg-top">
+            <jsp:include page="Footer.jsp" />
 
 
-                    <script type="text/javascript">
-                        $(window).scroll(function (e) {
-                            var $el = $('.fixedElement');
-                            var isPositionFixed = $el.hasClass('fixed');
-                            var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                            if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                                $el.addClass('fixed').css('width', containerWidth);
-                            }
-                            if ($(this).scrollTop() < 410 && isPositionFixed) {
-                                $el.removeClass('fixed').css('width', '');
-                            }
-                        });
+            <script type="text/javascript">
+                $(window).scroll(function (e) {
+                    var $el = $('.fixedElement');
+                    var isPositionFixed = $el.hasClass('fixed');
+                    var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                        // Adjust the width on window resize to maintain proper positioning
-                        $(window).resize(function () {
-                            var $el = $('.fixedElement.fixed');
-                            if ($el.length > 0) {
-                                var containerWidth = $el.parent().width();
-                                $el.css('width', containerWidth);
-                            }
-                        });
-                    </script>
+                    if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                        $el.addClass('fixed').css('width', containerWidth);
+                    }
+                    if ($(this).scrollTop() < 410 && isPositionFixed) {
+                        $el.removeClass('fixed').css('width', '');
+                    }
+                });
+
+                // Adjust the width on window resize to maintain proper positioning
+                $(window).resize(function () {
+                    var $el = $('.fixedElement.fixed');
+                    if ($el.length > 0) {
+                        var containerWidth = $el.parent().width();
+                        $el.css('width', containerWidth);
+                    }
+                });
+            </script>
 
 
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script>
-                        function confirmDeletion(formId) {
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function confirmDeletion(formId) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
                             Swal.fire({
-                                title: "Are you sure?",
-                                text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                        title: "Deleted!",
-                                        text: "Bài đăng của bạn đã được xóa.",
-                                        icon: "success"
-                                    });
-                                    document.getElementById(formId).submit();
-                                }
+                                title: "Deleted!",
+                                text: "Bài đăng của bạn đã được xóa.",
+                                icon: "success"
                             });
+                            document.getElementById(formId).submit();
                         }
-                    </script>
+                    });
+                }
+            </script>
 
-                    </body>
-                    </html>
+    </body>
+</html>

@@ -457,7 +457,7 @@
                                 } else if (message === 'a') {
                                     Swal.fire({
                                         title: "Done!",
-                                        text: "Đăng bài thành công, bài đăng của bạn sẽ được công khai trong vài phút",
+                                        text: "Đăng bài thành công",
                                         icon: "success"
                                     });
                                 } else if (message === 'c') {

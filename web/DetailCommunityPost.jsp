@@ -147,7 +147,7 @@
             }
         </style>
 
-      
+
 
     </head>
 
@@ -365,93 +365,95 @@
                         </div>
                     </div>           
                 </div>
-                <script type="text/javascript">
-                    // Hàm chuyển đổi và định dạng ngày giờ
-                    function formatDateTime(dateTimeString) {
-                        const date = new Date(dateTimeString);
-                        const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
-                        return date.toLocaleDateString('en-US', options);
-                    }
+            </div>
+        </div>
+        <script type="text/javascript">
+            // Hàm chuyển đổi và định dạng ngày giờ
+            function formatDateTime(dateTimeString) {
+                const date = new Date(dateTimeString);
+                const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
+                return date.toLocaleDateString('en-US', options);
+            }
 
-                    // Thêm sự kiện load để chạy function formatDateTime
-                    window.onload = function () {
-                        const formattedTimeElements = document.querySelectorAll('.formatted-time');
-                        formattedTimeElements.forEach(function (element) {
-                            const originalDateTime = element.dataset.datetime; // Lấy dữ liệu từ thuộc tính data-datetime
-                            element.textContent = formatDateTime(originalDateTime); // Cập nhật nội dung với thời gian đã định dạng
+            // Thêm sự kiện load để chạy function formatDateTime
+            window.onload = function () {
+                const formattedTimeElements = document.querySelectorAll('.formatted-time');
+                formattedTimeElements.forEach(function (element) {
+                    const originalDateTime = element.dataset.datetime; // Lấy dữ liệu từ thuộc tính data-datetime
+                    element.textContent = formatDateTime(originalDateTime); // Cập nhật nội dung với thời gian đã định dạng
+                });
+            };
+        </script>
+        <script>
+
+            var scrollToPostId = '${requestScope.scrollToComment}';
+            if (scrollToPostId) {
+
+                var element = document.getElementById(scrollToPostId);
+                if (element) {
+                    element.scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
+            }
+
+        </script>
+
+
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+        <div class="sticky-lg-top">
+            <jsp:include page="Footer.jsp" />
+
+            <script type="text/javascript">
+            $(window).scroll(function (e) {
+                var $el = $('.fixedElement');
+                var isPositionFixed = $el.hasClass('fixed');
+                var containerWidth = $el.parent().width(); // Get the parent container's width
+
+                if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                    $el.addClass('fixed').css('width', containerWidth);
+                }
+                if ($(this).scrollTop() < 410 && isPositionFixed) {
+                    $el.removeClass('fixed').css('width', '');
+                }
+            });
+
+            // Adjust the width on window resize to maintain proper positioning
+            $(window).resize(function () {
+                var $el = $('.fixedElement.fixed');
+                if ($el.length > 0) {
+                    var containerWidth = $el.parent().width();
+                    $el.css('width', containerWidth);
+                }
+            });
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+            function confirmDeletion(formId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Bạn có chắc là bạn muốn xóa bình luận này không?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Bình luận của bạn đã được xóa.",
+                            icon: "success"
                         });
-                    };
-                </script>
-                <script>
-
-                    var scrollToPostId = '${requestScope.scrollToComment}';
-                    if (scrollToPostId) {
-
-                        var element = document.getElementById(scrollToPostId);
-                        if (element) {
-                            element.scrollIntoView({behavior: 'smooth', block: 'start'});
-                        }
+                        document.getElementById(formId).submit();
                     }
+                });
+            }
+            </script>
 
-                </script>
-
-
-
-                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-                <div class="sticky-lg-top">
-                    <jsp:include page="Footer.jsp" />
-
-                    <script type="text/javascript">
-                    $(window).scroll(function (e) {
-                        var $el = $('.fixedElement');
-                        var isPositionFixed = $el.hasClass('fixed');
-                        var containerWidth = $el.parent().width(); // Get the parent container's width
-
-                        if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                            $el.addClass('fixed').css('width', containerWidth);
-                        }
-                        if ($(this).scrollTop() < 410 && isPositionFixed) {
-                            $el.removeClass('fixed').css('width', '');
-                        }
-                    });
-
-                    // Adjust the width on window resize to maintain proper positioning
-                    $(window).resize(function () {
-                        var $el = $('.fixedElement.fixed');
-                        if ($el.length > 0) {
-                            var containerWidth = $el.parent().width();
-                            $el.css('width', containerWidth);
-                        }
-                    });
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script>
-                                        function confirmDeletion(formId) {
-                                            Swal.fire({
-                                                title: "Are you sure?",
-                                                text: "Bạn có chắc là bạn muốn xóa bình luận này không?",
-                                                icon: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Yes, delete it!"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    Swal.fire({
-                                                        title: "Deleted!",
-                                                        text: "Bình luận của bạn đã được xóa.",
-                                                        icon: "success"
-                                                    });
-                                                    document.getElementById(formId).submit();
-                                                }
-                                            });
-                                        }
-                    </script>
-
-                    </body>
-                    </html>
+    </body>
+</html>

@@ -84,7 +84,7 @@ public class RequestContract extends HttpServlet {
                 + "Người gửi yêu cầu : " + user.getFirst_name() + " " + user.getLast_name() + "<br>"
                 + "<form action=\"ResponseMessage\" method=\"post\">"
                 + "<input hidden name=\"userTo\"  type=\"text\" value=\"" + user.getId() + "\">"
-                + "  <textarea id=\"editor\" required=\"\" name=\"description\" class=\"form-control\" placeholder=\"Nhập phản hồi của bạn   \" id=\"floatingTextarea2\"  cols=\"300\" rows=\"10\">\n"
+                + "  <textarea id=\"editor\" required=\"\" name=\"description\" class=\"form-control\" placeholder=\"Nhập phản hồi của bạn   \" cols=\"300\" rows=\"10\">\n"
                 + "                              \n"
                 + "                    </textarea>\n"
                 + "\n"

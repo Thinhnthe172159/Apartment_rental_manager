@@ -145,12 +145,12 @@ public class UpdateApartmentPost1 extends HttpServlet {
             ap.setPost_start(null);
             ap.setPost_end(null);
             ap.setWeek(0);
-            ap.setPost_status(1);
+            ap.setPost_status(1); // trạng thái lưu nháp bài đăng
         } else {
             if(check == 1){
-              ap.setPost_status(3);  
+              ap.setPost_status(3);  // trangh thái đã public bài đăng
             }else{
-               ap.setPost_status(1);
+               ap.setPost_status(1); // trạng thái lưu nháp bài đăng
             }
             
         }
