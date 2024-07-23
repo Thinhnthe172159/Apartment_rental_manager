@@ -8,8 +8,6 @@
         <servlet-name>javax.websocket.server.ServerContainer</servlet-name>
         <url-pattern>/communityPostSocket</url-pattern>
     </servlet-mapping>
-
-    
     <servlet>
         <servlet-name>DeleteCommunityPost</servlet-name>
         <servlet-class>controller.DeleteCommunityPost</servlet-class>
@@ -29,11 +27,11 @@
     </session-config>
     <servlet>
         <servlet-name>addApartment</servlet-name>
-        <servlet-class>controller.AddApartments</servlet-class>
+        <servlet-class>vn.fpt.edu.controller.AddApartments</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Register</servlet-name>
-        <servlet-class>controller.Register</servlet-class>
+        <servlet-class>vn.fpt.edu.controller.Register</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>addApartment</servlet-name>
@@ -42,5 +40,4 @@
     <welcome-file-list>
         <welcome-file>HomePage</welcome-file>
     </welcome-file-list>
-    
 </web-app>

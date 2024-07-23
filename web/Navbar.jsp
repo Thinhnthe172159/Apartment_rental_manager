@@ -6,8 +6,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="dal.NotificationDao" %>
-<%@page  import="model.User"%>
+<%@page import="vn.fpt.edu.dal.NotificationDao" %>
+<%@page  import="vn.fpt.edu.model.User"%>
 <!DOCTYPE html>
 <html>
     <head>
