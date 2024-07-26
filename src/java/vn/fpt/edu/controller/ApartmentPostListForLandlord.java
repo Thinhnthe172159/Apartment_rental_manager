@@ -112,7 +112,7 @@ public class ApartmentPostListForLandlord extends HttpServlet {
         request.setAttribute("apartment_types_list", apartment_types_list);
         request.setAttribute("payment_methods_list", payment_methods_list);
 
-        int totalSize = apartmentPostDao.getApartmentPostSize(
+        int totalSize = apartmentPostDao.getApartmentPostSize2(
                 (title_name == null || title_name.isEmpty()) ? null : title_name,
                 (tinh == null || tinh.isEmpty()) ? null : tinh,
                 (quan == null || quan.isEmpty()) ? null : quan,

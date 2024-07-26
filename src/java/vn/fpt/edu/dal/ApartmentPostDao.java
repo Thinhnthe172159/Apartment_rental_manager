@@ -232,6 +232,86 @@ public class ApartmentPostDao extends DBContext {
         int result = 0;
         String sql = "SELECT COUNT([id]) AS list_size\n"
                 + "FROM [ams].[dbo].[Apartment_Posts]\n"
+                + "where 1=1 CAST([post_start] AS DATE) <= CAST(GETDATE() AS DATE) ";
+
+        if (name != null) {
+            sql += " and [title] LIKE N'%" + name + "%' ";
+        }
+        if (city != null) {
+            sql += " and [city] LIKE N'%" + city + "%' ";
+        }
+        if (district != null) {
+            sql += " and [district] LIKE N'%" + district + "%' ";
+        }
+        if (commune != null) {
+            sql += " and [commune] LIKE N'%" + commune + "%' ";
+        }
+        if (areaUp != 0) {
+            sql += " and [area] >= " + areaUp;
+        }
+        if (areaDown != 0) {
+            sql += " and [area] <= " + areaDown;
+        }
+        if (priceUp != 0) {
+            sql += " and [price] >= " + priceUp;
+        }
+        if (priceDown != 0) {
+            sql += " and [price] <= " + priceDown;
+        }
+        if (numberOfBedroom != 0) {
+            sql += " and [number_of_bedroom] =" + numberOfBedroom;
+        }
+
+        if (apartment_type != 0) {
+            sql += " And [apartment_type] =" + apartment_type;
+        }
+
+        if (status != 0) {
+            sql += " and [post_status] = " + status;
+        }
+        if (landlord_id != 0) {
+            sql += " and [landlord_id] = " + landlord_id;
+        }
+        if (payment_id != 0) {
+            sql += " and [payment_id] =" + payment_id;
+        }
+
+        if (current != null) {
+            sql += "and [post_end] >= '" + current + "' ";
+        }
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("list_size");
+                return result;
+            }
+        } catch (SQLException e) {
+
+        }
+        return 0;
+    }
+    
+    // list size for landlord
+     public int getApartmentPostSize2(
+            String name,
+            String city,
+            String district,
+            String commune,
+            double areaUp,
+            double areaDown,
+            double priceUp,
+            double priceDown,
+            int numberOfBedroom,
+            int apartment_type,
+            int status,
+            int landlord_id,
+            int payment_id, Date current) {
+        int result = 0;
+        String sql = "SELECT COUNT([id]) AS list_size\n"
+                + "FROM [ams].[dbo].[Apartment_Posts]\n"
                 + "where 1=1 ";
 
         if (name != null) {
@@ -310,7 +390,7 @@ public class ApartmentPostDao extends DBContext {
             int pageNumber,
             int pageSize, int payment_id, Date current, int currentPostId) {
         List<Apartment_Post> list = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 ";
+        String sql = "SELECT * FROM [dbo].[Apartment_Posts] WHERE 1=1 and CAST([post_start] AS DATE) <= CAST(GETDATE() AS DATE) ";
 
         if (name != null) {
             sql += "AND [title] LIKE N'%" + name + "%' ";

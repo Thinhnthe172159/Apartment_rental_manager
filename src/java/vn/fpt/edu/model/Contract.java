@@ -25,11 +25,12 @@ public class Contract {
     private Date dob;
     private Date cccd_receive_date;
     private String office_name;
+    private Date sign_date;
 
     public Contract() {
     }
 
-    public Contract(int id, User tenant_id, User landlord_id, Apartment apartment_id, int status, String phone, String full_name, String email, String city, String district, String commune, String address, String note, String cccd, String current_living, String tenant_avatar, String cccd_civil_card_front, String cccd_civil_card_back, Date dob, Date cccd_receive_date, String office_name) {
+    public Contract(int id, User tenant_id, User landlord_id, Apartment apartment_id, int status, String phone, String full_name, String email, String city, String district, String commune, String address, String note, String cccd, String current_living, String tenant_avatar, String cccd_civil_card_front, String cccd_civil_card_back, Date dob, Date cccd_receive_date, String office_name, Date sign_date) {
         this.id = id;
         this.tenant_id = tenant_id;
         this.landlord_id = landlord_id;
@@ -51,6 +52,7 @@ public class Contract {
         this.dob = dob;
         this.cccd_receive_date = cccd_receive_date;
         this.office_name = office_name;
+        this.sign_date = sign_date;
     }
 
     public int getId() {
@@ -220,13 +222,21 @@ public class Contract {
     public void setOffice_name(String office_name) {
         this.office_name = office_name;
     }
-    
-    
+
+    public Date getSign_date() {
+        return sign_date;
+    }
+
+    public void setSign_date(Date sign_date) {
+        this.sign_date = sign_date;
+    }
 
     @Override
     public String toString() {
-        return "Contract{" + "id=" + id + ", tenant_id=" + tenant_id + ", landlord_id=" + landlord_id + ", apartment_id=" + apartment_id + ", status=" + status + ", phone=" + phone + ", full_name=" + full_name + ", email=" + email + ", city=" + city + ", district=" + district + ", commune=" + commune + ", address=" + address + ", note=" + note + ", cccd=" + cccd + ", current_living=" + current_living + ", tenant_avatar=" + tenant_avatar + ", cccd_civil_card_front=" + cccd_civil_card_front + ", cccd_civil_card_back=" + cccd_civil_card_back + ", dob=" + dob + ", cccd_receive_date=" + cccd_receive_date + ", office_name=" + office_name + '}';
+        return "Contract{" + "id=" + id + ", tenant_id=" + tenant_id + ", landlord_id=" + landlord_id + ", apartment_id=" + apartment_id + ", status=" + status + ", phone=" + phone + ", full_name=" + full_name + ", email=" + email + ", city=" + city + ", district=" + district + ", commune=" + commune + ", address=" + address + ", note=" + note + ", cccd=" + cccd + ", current_living=" + current_living + ", tenant_avatar=" + tenant_avatar + ", cccd_civil_card_front=" + cccd_civil_card_front + ", cccd_civil_card_back=" + cccd_civil_card_back + ", dob=" + dob + ", cccd_receive_date=" + cccd_receive_date + ", office_name=" + office_name + ", sign_date=" + sign_date + '}';
     }
+
+   
 
    
    
