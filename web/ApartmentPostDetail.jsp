@@ -302,7 +302,7 @@
                                     </li>
                                     <li>
                                         <img src="assets/images/info-icon-02.png" alt="" style="max-width: 52px;">
-                                        <h4><c:if test="${Apartment.status_apartment == 0}">Available<br><span>Contract is Ready</span></c:if><c:if test="${Apartment.status_apartment == 1}">Not Available</c:if><br></h4>
+                                        <h4><c:if test="${Apartment.status_apartment == 1}">Available<br><span>Contract is Ready</span></c:if><c:if test="${Apartment.status_apartment == 2}">Not Available</c:if><br></h4>
                                         </li>
                                         <li>
                                             <img src="assets/images/info-icon-03.png" alt="" style="max-width: 52px;">
@@ -314,7 +314,7 @@
                                     </li>
                                     <li><c:if test="${user_Data.id!=Apartment.landLord_id.id}">
                                             <form action="RequestContract?apartment_id=${Apartment.id}&apartment_post_id=${apartment_Post.id}" method="post">
-                                                <button class="btn btn-primary" type="submit">Request contract</button>
+                                                <button class="btn btn-primary" type="submit">Gửi yêu cầu thuê</button>
                                             </form>
                                         </c:if>
 

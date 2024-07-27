@@ -141,6 +141,7 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
+    
     // get Property
     public Property getProperty(int id) {
         String sql = "SELECT [id]\n"
@@ -164,6 +165,7 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
+    
     //get property list
     public List<Property> getPropertyList(int id) {
         List<Property> list = new ArrayList<>();
@@ -188,6 +190,7 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    
     // get all properties list 
     public List<Property> getPropertyList() {
         List<Property> list = new ArrayList<>();
@@ -207,6 +210,7 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    
     //delete properties
     public void deleteApartmentProperties(int apartment_id) {
         String sql = "DELETE FROM [dbo].[Apartment_room]\n"
@@ -220,6 +224,7 @@ public class ApartmentDao extends DBContext {
         }
     }
 
+    
     //Apartment type
     public Apartment_type getApartment_type(int id) {
         String sql = "SELECT [id]\n"
@@ -239,6 +244,7 @@ public class ApartmentDao extends DBContext {
 
         return null;
     }
+    
 
     //Apartment type list
     public List<Apartment_type> getApartment_type_list() {
@@ -259,6 +265,7 @@ public class ApartmentDao extends DBContext {
 
         return list;
     }
+    
 
     //payment_type_select
     public Payment_method getPayment_method(int id) {
@@ -281,6 +288,7 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
+    
     //payment list
     public List<Payment_method> getPayment_method_list() {
         List<Payment_method> list = new ArrayList<>();
@@ -302,6 +310,7 @@ public class ApartmentDao extends DBContext {
         return list;
     }
 
+    
     //image insert
     public void insertApartmentImage(Apartment_image ai) {
         String sql = "INSERT INTO [dbo].[Apartment_image]\n"
@@ -320,6 +329,7 @@ public class ApartmentDao extends DBContext {
         }
     }
 
+    
     // get first image
     public Apartment_image get_First_Apartment_Image(int id) {
         String sql = "SELECT top 1 [id]\n"
@@ -345,6 +355,8 @@ public class ApartmentDao extends DBContext {
         return null;
     }
 
+    
+    
     // get image by id
     public Apartment_image getApartmentImage(int id) {
         String sql = "SELECT [id]\n"
@@ -369,6 +381,7 @@ public class ApartmentDao extends DBContext {
 
     //get all image each apartment
     public List<Apartment_image> getAllApartmentImageList(int id) {
+        
         List<Apartment_image> list = new ArrayList<>();
         String sql = "SELECT [id]\n"
                 + "      ,[image]\n"
@@ -400,8 +413,10 @@ public class ApartmentDao extends DBContext {
                 + "      ,[Apartment_id]\n"
                 + "  FROM [dbo].[Apartment_image] where 1=1 ";
         try {
+            
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
+            
             while (rs.next()) {
                 Apartment_image ai = new Apartment_image();
                 ai.setId(rs.getInt("id"));
@@ -442,7 +457,7 @@ public class ApartmentDao extends DBContext {
                 + "           ,[number_of_bedroom]\n"
                 + "           ,[status_apartment]\n"
                 + "           ,[landlord_id])\n"
-               // + "           ,[tenant_id])\n"
+                // + "           ,[tenant_id])\n"
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -617,22 +632,22 @@ public class ApartmentDao extends DBContext {
             if (landlord_id != 0) {
                 st.setInt(paramIndex++, landlord_id);
             }
-            if (name != null ) {
+            if (name != null) {
                 st.setString(paramIndex++, "%" + name + "%");
             }
             if (apartment_type_id != 0) {
                 st.setInt(paramIndex++, apartment_type_id);
             }
-            if (city != null ) {
+            if (city != null) {
                 st.setString(paramIndex++, "%" + city + "%");
             }
-            if (district != null ) {
+            if (district != null) {
                 st.setString(paramIndex++, "%" + district + "%");
             }
             if (status != 0) {
                 st.setInt(paramIndex++, status);
             }
-            if (commune != null ) {
+            if (commune != null) {
                 st.setString(paramIndex++, "%" + commune + "%");
             }
             int offset = (pageNumber - 1) * pageSize;
@@ -676,19 +691,19 @@ public class ApartmentDao extends DBContext {
         if (landlord_id != 0) {
             sql += " AND [landlord_id] = ?";
         }
-        if (name != null ) {
+        if (name != null) {
             sql += " AND [name] LIKE ?";
         }
         if (apartment_type_id != 0) {
             sql += " AND [type_id] = ?";
         }
-        if (city != null ) {
+        if (city != null) {
             sql += " AND [city] LIKE ?";
         }
-        if (district != null ) {
+        if (district != null) {
             sql += " AND [district] LIKE ?";
         }
-        if (commune != null ) {
+        if (commune != null) {
             sql += " AND [commune] LIKE ?";
         }
         if (status != 0) {
@@ -701,19 +716,19 @@ public class ApartmentDao extends DBContext {
             if (landlord_id != 0) {
                 st.setInt(paramIndex++, landlord_id);
             }
-            if (name != null ) {
+            if (name != null) {
                 st.setString(paramIndex++, "%" + name + "%");
             }
             if (apartment_type_id != 0) {
                 st.setInt(paramIndex++, apartment_type_id);
             }
-            if (city != null ) {
+            if (city != null) {
                 st.setString(paramIndex++, "%" + city + "%");
             }
-            if (district != null ) {
+            if (district != null) {
                 st.setString(paramIndex++, "%" + district + "%");
             }
-            if (commune != null ) {
+            if (commune != null) {
                 st.setString(paramIndex++, "%" + commune + "%");
             }
             if (status != 0) {
@@ -768,6 +783,7 @@ public class ApartmentDao extends DBContext {
 
     // update date apartment information
     public void updateApartment(Apartment a, int id) {
+        
         String sql = "UPDATE [dbo].[Aparment]\n"
                 + "   SET [name] = ?\n"
                 + "      ,[type_id] = ?\n"
@@ -780,7 +796,7 @@ public class ApartmentDao extends DBContext {
                 + "      ,[number_of_bedroom] =?\n"
                 + "      ,[status_apartment] = ?\n"
                 + "      ,[landlord_id] = ?\n"
-              //  + "      ,[tenant_id] = ?\n"
+                //  + "      ,[tenant_id] = ?\n"
                 + " WHERE [id] = ?";
 
         try {
@@ -804,6 +820,47 @@ public class ApartmentDao extends DBContext {
         }
     }
 
+    
+    // udpate status when tenant sign contract and approved
+    public void updateApartment2(Apartment a) {
+        String sql = "UPDATE [dbo].[Aparment]\n"
+                + "   SET [name] = ?\n"
+                + "      ,[type_id] = ?\n"
+                + "      ,[address] = ?\n"
+                + "      ,[city] = ?\n"
+                + "      ,[district] =?\n"
+                + "      ,[commune] = ?\n"
+                + "      ,[price] = ?\n"
+                + "      ,[area] = ?\n"
+                + "      ,[number_of_bedroom] =?\n"
+                + "      ,[status_apartment] = ?\n"
+                + "      ,[landlord_id] = ?\n"
+                + "      ,[tenant_id] = ?\n"
+                + " WHERE [id] = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, a.getName());
+            st.setInt(2, a.getType_id().getId());
+            st.setString(3, a.getAddress());
+            st.setString(4, a.getCity());
+            st.setString(5, a.getDistrict());
+            st.setString(6, a.getCommune());
+            st.setDouble(7, a.getPrice());
+            st.setDouble(8, a.getArea());
+            st.setInt(9, a.getNumber_of_bedroom());
+            st.setInt(10, a.getStatus_apartment());
+            st.setInt(11, a.getLandLord_id().getId());
+            st.setInt(12, a.getTenant_id().getId());
+            st.setInt(13, a.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    
+    
     //delete apartment
     public void removeApartment(int id_apartment) {
         String sql = "DELETE FROM [dbo].[Apartment_room]\n"
@@ -826,7 +883,7 @@ public class ApartmentDao extends DBContext {
         }
 
     }
-    
+
     public List<Apartment> getApartmentListForTenant(int tenant_id, String name, int apartment_type_id, String city, String district, String commune, int status, int pageNumber, int pageSize) {
 
         List<Apartment> list = new ArrayList<>();
@@ -849,24 +906,31 @@ public class ApartmentDao extends DBContext {
         if (tenant_id != 0) {
             sql += " AND [tenant_id] = ?";
         }
+        
         if (name != null && !name.isEmpty()) {
             sql += " AND [name] LIKE ?";
         }
+        
         if (apartment_type_id != 0) {
             sql += " AND [type_id] = ?";
         }
+        
         if (city != null) {
             sql += " AND [city] LIKE ?";
         }
+        
         if (district != null) {
             sql += " AND [district] LIKE ?";
         }
+        
         if (commune != null) {
             sql += " AND [commune] LIKE ?";
         }
+        
         if (status != 0) {
             sql += " and [status_apartment] = ?";
         }
+        
         sql += " ORDER BY [id] DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -875,24 +939,31 @@ public class ApartmentDao extends DBContext {
             if (tenant_id != 0) {
                 st.setInt(paramIndex++, tenant_id);
             }
-            if (name != null ) {
+            
+            if (name != null) {
                 st.setString(paramIndex++, "%" + name + "%");
             }
+            
             if (apartment_type_id != 0) {
                 st.setInt(paramIndex++, apartment_type_id);
             }
-            if (city != null ) {
+            
+            if (city != null) {
                 st.setString(paramIndex++, "%" + city + "%");
             }
-            if (district != null ) {
+            
+            if (district != null) {
                 st.setString(paramIndex++, "%" + district + "%");
             }
+            
             if (status != 0) {
                 st.setInt(paramIndex++, status);
             }
-            if (commune != null ) {
+            
+            if (commune != null) {
                 st.setString(paramIndex++, "%" + commune + "%");
             }
+            
             int offset = (pageNumber - 1) * pageSize;
             st.setInt(paramIndex++, offset);
             st.setInt(paramIndex++, pageSize);
@@ -928,8 +999,10 @@ public class ApartmentDao extends DBContext {
 
     public static void main(String[] args) {
         ApartmentDao apartmentDao = new ApartmentDao();
+        
         Apartment_image a = apartmentDao.get_First_Apartment_Image(51);
         Apartment_image b = apartmentDao.get_First_Apartment_Image(51);
+        
         System.out.println(a);
         System.out.println(b);
     }

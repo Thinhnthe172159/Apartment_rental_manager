@@ -225,18 +225,23 @@
                 <br>
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">V. Tình trạng căn hộ</h2>
+
                     <c:if test="${ap.status_apartment == 1}">
                         <h4> Trạng Thái : Chưa có người ở</h4><br>
                     </c:if>
-                        <c:if test="${ap.status_apartment == 2}">
-                            Thông tin người thuê:
-                            <input readonly=""  required placeholder="Thông tin người thuê" value="" type="text" name="address" class="form-control col-md-6" aria-label="Text input with checkbox"><br>
-                            Thời hạn thuê:
-                            <input readonly=""  required placeholder="Thông tin người thuê" value="" type="text" name="address" class="form-control col-md-6" aria-label="Text input with checkbox">
-                            <div><br></div>
-                            <a href="https://www.google.com.vn/?hl=vi" class="btn btn-primary col-lg-12">Xem Hợp đồng thuê</a>
-                    </c:if>
-                   
+                    <c:if test="${ap.status_apartment == 2}">
+                        Người dùng:<br>
+                        <img class="col-md-1" src="${ap.tenant_id.image}" width="85" height="85" style="border-radius: 90%;object-fit: contain" alt="alt"/><div><br></div>
+                        Thông tin người thuê:
+                        <h3>${ap.tenant_id.first_name} ${ap.tenant_id.last_name} </h3><br>
+                        Thông tin liên lạc:    
+                        <h3> ${ap.tenant_id.email}</h3><br>   
+
+                        <a href="contractList?tenant_id=${ap.tenant_id.id}">Xem hợp đồng trong danh sách</a>
+
+                        <div><br></div>
+                        </c:if>
+
                 </div>
                 <hr>
             </div>

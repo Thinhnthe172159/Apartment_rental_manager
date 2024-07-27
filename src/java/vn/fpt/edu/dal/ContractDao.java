@@ -4,7 +4,6 @@
  */
 package vn.fpt.edu.dal;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -101,6 +100,7 @@ public class ContractDao extends DBContext {
                 + "      ,[dob] = ?\n"
                 + "      ,[cccd_receive_date] = ?\n"
                 + "      ,[office_name] = ?\n"
+                + "      ,[sign_date] = ? \n"
                 + " WHERE [id] = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -124,6 +124,8 @@ public class ContractDao extends DBContext {
             st.setDate(18, c.getDob());
             st.setDate(19, c.getCccd_receive_date());
             st.setString(20, c.getOffice_name());
+            st.setDate(21, c.getSign_date());
+            st.setInt(22, c.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,7 +133,7 @@ public class ContractDao extends DBContext {
     }
 
     // get Contract
-    public Contract getContract(int id, int tentId, int landId, int apId) {
+    public Contract getContract(int id) {
         String sql = "SELECT [id]\n"
                 + "      ,[tenant_id]\n"
                 + "      ,[landlord_id]\n"
@@ -157,28 +159,18 @@ public class ContractDao extends DBContext {
         if (id != 0) {
             sql += " and [id] = ?";
         }
-        if (tentId != 0) {
-            sql += " and [tenant_id] = ?";
-        }
-        if (landId != 0) {
-            sql += " and [landlord_id] = ?";
-        }
-        if (apId != 0) {
-            sql += " and [apartment_id] = ?";
-        }
+
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
-            st.setInt(2, tentId);
-            st.setInt(3, landId);
-            st.setInt(4, apId);
+
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 Contract c = new Contract();
                 User ten = UD.getUser(rs.getInt("tenant_id"));
                 User lan = UD.getUser(rs.getInt("landlord_id"));
                 Apartment a = AD.getApartment(rs.getInt("apartment_id"));
-
+                c.setId(rs.getInt("id"));
                 c.setTenant_id(ten);
                 c.setLandlord_id(lan);
                 c.setApartment_id(a);
@@ -198,7 +190,7 @@ public class ContractDao extends DBContext {
                 c.setCccd_civil_card_back(rs.getString("cccd_civil_card_back"));
                 c.setDob(rs.getDate("dob"));
                 c.setCccd_receive_date(rs.getDate("cccd_receive_date"));
-                c.setOffice_name(rs.getString("office"));
+                c.setOffice_name(rs.getString("office_name"));
                 c.setSign_date(rs.getDate("sign_date"));
                 return c;
             }
@@ -252,7 +244,7 @@ public class ContractDao extends DBContext {
                 User ten = UD.getUser(rs.getInt("tenant_id"));
                 User lan = UD.getUser(rs.getInt("landlord_id"));
                 Apartment a = AD.getApartment(rs.getInt("apartment_id"));
-
+                c.setId(rs.getInt("id"));
                 c.setTenant_id(ten);
                 c.setLandlord_id(lan);
                 c.setApartment_id(a);
@@ -272,7 +264,7 @@ public class ContractDao extends DBContext {
                 c.setCccd_civil_card_back(rs.getString("cccd_civil_card_back"));
                 c.setDob(rs.getDate("dob"));
                 c.setCccd_receive_date(rs.getDate("cccd_receive_date"));
-                c.setOffice_name(rs.getString("office"));
+                c.setOffice_name(rs.getString("office_name"));
                 c.setSign_date(rs.getDate("sign_date"));
                 list.add(c);
             }
@@ -326,8 +318,14 @@ public class ContractDao extends DBContext {
         ContractDao cd = new ContractDao();
         User user = UD.getUser(13);
         Apartment a = AD.getApartment(47);
-        Contract contract = new Contract(0, user, user, a, 1, "123213", "aasdasdasd", "ádasdasdasd", "ádasdasd", "adasdasd", "adasdsad", "adasdsad", "ADASDSAD", "ádfsdfsdf", "ádasdasdasd", "ádasdasd", "adasdasdasd", "ádasdasdsad", null, null, "ádasdasdasd", null);
-        cd.addContract(contract);
-        System.out.println(contract);
+//        List<Contract> list = cd.listContract(null, 2, 0);
+//        for (Contract item : list) {
+//            System.out.println(item);
+//        }
+
+        Contract c = cd.getContract(3);
+        c.setPhone("111111111");
+        cd.updateContract(c);
+        //System.out.println(c);
     }
 }

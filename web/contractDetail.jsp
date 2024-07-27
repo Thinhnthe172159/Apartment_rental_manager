@@ -12,6 +12,19 @@
         </style>
     </head>
     <body>
+        <jsp:include page="Navbar.jsp"/>
+        <br><br><br>
+        <div class="page-heading header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div><br></div>
+                        <br><br>
+                        <span class="breadcrumb"><a href="#">CONTRACT DETAIL</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container mt-5 p-4 bg-light text-dark">
             <h2 class="text-center mb-4">Thông tin khách hàng</h2>
             <div class="row">
@@ -42,7 +55,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="dob">Ngày sinh</label>
-                            <input readonly="" type="text" name="dob" value="${contract.dob}" class="form-control" id="birth-date">
+                            <input readonly="" type="date" name="dob" value="${contract.dob}" class="form-control" id="birth-date">
 
                         </div>
                         <div class="form-group col-md-6">
@@ -102,14 +115,14 @@
                             <label for="residence">CCCD mặt trước</label>
                             <div class="border p-4">
                                 <img src="${contract.cccd_civil_card_front}" width="200" height="200" style="object-fit: contain" alt="ID Front Image" class="img-fluid mb-3" />
-                                
+
                             </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="residence">CCCD mặt sau</label>
                             <div class="border p-4">
                                 <img src="${contract.cccd_civil_card_back}" width="200" height="200" style="object-fit: contain" alt="ID Back Image" class="img-fluid mb-3" />
-                           
+
                             </div>
                         </div>
                     </div>
@@ -118,24 +131,24 @@
             <input type="text" value="${notification}" name="notification" hidden="">
             <input type="text" hidden="" value="${apartment}" name="apartment">
             <c:if test="${contract.status!=3}">
-
+                <form action="ViewContractDetail" method="post" class="d-flex justify-content-between border-top pt-3">
+                    <div>
+                        <textarea id="id" class="form-control" name="name" rows="5" cols="300" name="message" placeholder="Nhập thông báo mà bạn muốn gửi"></textarea>
+                        <c:if test="${user_Data.id == contract.tenant_id.id}">
+                            <input type="text" name="contract_id" value="${contract.id}" hidden="">
+                            <button class="btn btn-secondary ml-2" type="submit" name="action" value="1">yêu cầu hủy bỏ hợp đồng</button>
+                        </c:if>
+                        <c:if test="${user_Data.id != contract.tenant_id.id}">
+                            <input type="text" name="contract_id" value="${contract.id}" hidden="">
+                            <button class="btn btn-danger ml-2" type="submit" name="action" value="2">Hủy bỏ hợp đồng</button>
+                            <c:if test="${contract.status != 2}">
+                                <button class="btn btn-primary ml-2" type="submit" name="action" value="3">Chấp thuận hợp đồng</button>
+                            </c:if>
+                        </c:if>
+                    </div>
+                </form>
             </c:if>
-            <form action="processContract" method="post" class="d-flex justify-content-between border-top pt-3">
-                <div>
-                    <c:if test="${user_Data.id == contract.tenant_id.id}">
-
-                        <input type="text" hidden="" value="" name="">
-                        <button class="btn btn-secondary ml-2" type="submit" name="action" value="2">yêu cầu hủy bỏ hợp đồng</button>
-                        
-                    </c:if>
-                    <c:if test="${user_Data.id == contract.tenant_id.id}">
-
-                        <button class="btn btn-secondary ml-2" type="submit" name="action" value="1">Chấp thuận hợp đồng</button>
-                        <button class="btn btn-primary ml-2" type="submit" name="action" value="2">Hủy bỏ hợp đồng</button>
-
-                    </c:if>
-                </div>
-            </form>
         </div>
+        <jsp:include page="Footer.jsp"/>
     </body>
 </html>
