@@ -109,14 +109,14 @@
                 </div>
             </div>
         </div>
-        
+
         <br><br><br><br>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <div class="mb-3">
                         <form action="contractList">
-                            <h5 class="card-title">Contract List <span class="text-muted fw-normal ms-2">()</span>
+                            <h5 class="card-title">Danh sách hợp đồng <span class="text-muted fw-normal ms-2">()</span>
                                 <span><input placeholder="Nhập tên cửa người thuê" class="form-control" type="text"name="fullName"><button type="submit" class="btn btn-primary fa-searchz">Tìm kiếm</button></span>
                             </h5> 
                         </form>
@@ -124,12 +124,25 @@
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-                        <span><select class="form-select" name="tenant_id" >
-                                <option class="" value="0">tìm kiếm người thuê</option>
+                        <span><select id="tenantSelect" class="form-select" name="tenant_id"  onchange="navigateToPage(this)" >
+                                <option>Tìm khách hàng</option>
+                                <option value="contractList?tenant_id=0"><a href="contractList?tenant_id=0">tất cả khách hàng</a></option>
+                                <c:forEach items="${listTenant}" var="ta">
+                                    <option value="contractList?tenant_id=${ta.id}"><a href="contractList?tenant_id=${ta.id}">${ta.first_name} ${ta.last_name}</a></option>
+                                </c:forEach>
+                               
                             </select></span>
                     </div>
                 </div>
             </div>
+            <script>
+                function navigateToPage(select) {
+                    const value = select.value;
+                    if (value) {
+                        window.location.href = value;
+                    }
+                }
+            </script>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="">
