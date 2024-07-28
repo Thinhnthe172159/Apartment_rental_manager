@@ -38,7 +38,7 @@ public class UserProfile extends HttpServlet {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
             session.setAttribute("user_Data", user_Data);
-            request.getRequestDispatcher("User-Profile.jsp").forward(request, response);
+            request.getRequestDispatcher("User-EditProfile.jsp").forward(request, response);
         } else {
             response.sendRedirect("Login");
         }
