@@ -232,7 +232,7 @@ public class ApartmentPostDao extends DBContext {
         int result = 0;
         String sql = "SELECT COUNT([id]) AS list_size\n"
                 + "FROM [ams].[dbo].[Apartment_Posts]\n"
-                + "where 1=1 CAST([post_start] AS DATE) <= CAST(GETDATE() AS DATE) ";
+                + "where 1=1 and CAST([post_start] AS DATE) <= CAST(GETDATE() AS DATE) ";
 
         if (name != null) {
             sql += " and [title] LIKE N'%" + name + "%' ";

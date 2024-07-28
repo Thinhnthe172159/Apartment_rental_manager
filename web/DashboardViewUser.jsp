@@ -206,7 +206,7 @@
                             <div class="col-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Edit user</h4>
+                                        <h4 class="card-title">View user</h4>
                                         <!--<p class="card-description">Basic form elements</p>-->
 <!--                                        <form action="ViewUser" method="post" class="forms-sample">-->
                                             <input hidden readonly value="${specific_user_data.id}" type="text" name="userId">

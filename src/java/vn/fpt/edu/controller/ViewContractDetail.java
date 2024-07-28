@@ -80,7 +80,7 @@ public class ViewContractDetail extends HttpServlet {
         Contract contract = cd.getContract(id);
         request.setAttribute("contract", contract);
         request.getRequestDispatcher("contractDetail.jsp").forward(request, response);
-
+        
     }
 
     /**
@@ -115,11 +115,15 @@ public class ViewContractDetail extends HttpServlet {
         Apartment apartment = contract.getApartment_id();
         User tenanUser = contract.getTenant_id();
         if (action.equals("1")) {
-
+            User tUser = contract.getLandlord_id();
+            sendNotification3(user, tUser, nd, now, message);
         }
         if (action.equals("2")) {
             contract.setStatus(3);
             sendNotification2(user, tenanUser, nd, now, message);
+            apartment.setStatus_apartment(1);
+            apartment.setTenant_id(null);
+            ad.updateApartment2(apartment);
             cd.updateContract(contract);
         }
         if (action.equals("3")) {
@@ -129,10 +133,11 @@ public class ViewContractDetail extends HttpServlet {
             cd.updateContract(contract);
             apartment.setTenant_id(tenanUser);
             ad.updateApartment2(apartment);
-            response.sendRedirect("contractList");
+            
         }
+        response.sendRedirect("contractList");
     }
-
+    
     private void sendNotification1(User fromUser, User toUser, NotificationDao nd, LocalDateTime now, String message) {
         Notification n = new Notification();
         n.setFrom_user_id(fromUser);
@@ -142,7 +147,7 @@ public class ViewContractDetail extends HttpServlet {
         if (message != null) {
             n.setMessage(message);
         }
-        if (message == null || message.isEmpty()) {
+        if (message == null) {
             n.setMessage("   <div style=\"font-family: Arial, sans-serif; line-height: 1.6; background-color: #f9f9f9; padding: 20px;\">\n"
                     + "        <div style=\"max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\">\n"
                     + "            <h1 style=\"color: #333333;\">Thông báo cảm ơn</h1>\n"
@@ -160,19 +165,36 @@ public class ViewContractDetail extends HttpServlet {
         nd.addNotification(n);
         vn.fpt.edu.util.Email.sendEmail(toUser.getEmail(), "Phản hồi của chủ nhà về hợp đồng", message);
     }
-
+    
     private void sendNotification2(User fromUser, User toUser, NotificationDao nd, LocalDateTime now, String message) {
         Notification n = new Notification();
         n.setFrom_user_id(fromUser);
         n.setTo_user_id(toUser);
         n.setStatus(1);
         n.setTitle("Phản hồi của chủ nhà về hợp đồng");
-        if (message != null || !message.isEmpty()) {
+        if (message != null) {
             n.setMessage(message);
         }
-        if (message == null || message.isEmpty()) {
+        if (message == null) {
             n.setMessage("<h2>Thông báo hợp đồng bị hủy<h2><br>Chúng tôi rất tiếc vì không thể tiếp nhận hợp đồng này, mong bạn thông cảm.");
             message = n.getMessage();
+        }
+        n.setTime(now);
+        nd.addNotification(n);
+        vn.fpt.edu.util.Email.sendEmail(toUser.getEmail(), "Phản hồi của chủ nhà về hợp đồng", message);
+    }
+    
+    private void sendNotification3(User fromUser, User toUser, NotificationDao nd, LocalDateTime now, String message) {
+        Notification n = new Notification();
+        n.setFrom_user_id(fromUser);
+        n.setTo_user_id(toUser);
+        n.setStatus(1);
+        n.setTitle("Yêu cầu kết thúc hợp đồng thuê nhà");
+        if (message != null) {
+            n.setMessage("<h2>Kết thúc hợp đồng thuê nhà<h2><br>" + message);
+        }
+        if (message == null) {
+            n.setMessage("<h2>Yêu cầu kết thúc hợp đồng thuê nhà từ khách hàng " + fromUser.getFirst_name() + " " + fromUser.getLast_name() + "<h2><br>");
         }
         n.setTime(now);
         nd.addNotification(n);

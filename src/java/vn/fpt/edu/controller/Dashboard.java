@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package vn.fpt.edu.controller;
 
 import vn.fpt.edu.dal.UserDao;
@@ -22,25 +21,30 @@ import vn.fpt.edu.model.User;
  */
 @WebServlet(name = "Dashboard", urlPatterns = {"/Dashboard"})
 public class Dashboard extends HttpServlet {
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
+
         if (session.getAttribute("user_ID") != null) {
             UserDao user_DAO = new UserDao();
             User user_Data = user_DAO.getUser((int) session.getAttribute("user_ID"));
+            if (user_Data.getRole_id().getId() != 1) {
+                response.sendRedirect("HomePage");
+                return;
+            }
 
             session.setAttribute("user_Data", user_Data);
+
             request.getRequestDispatcher("Dashboard.jsp").forward(request, response);
         } else {
             response.sendRedirect("Login");
         }
 
-        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 }

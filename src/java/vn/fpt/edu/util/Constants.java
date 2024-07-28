@@ -10,9 +10,9 @@ package vn.fpt.edu.util;
  */
 public class Constants {
 
-	public static String GOOGLE_CLIENT_ID = "Your_Key";
+	public static String GOOGLE_CLIENT_ID = "";
 
-	public static String GOOGLE_CLIENT_SECRET = "Your_Key";
+	public static String GOOGLE_CLIENT_SECRET = "";
 
 	public static String GOOGLE_REDIRECT_URI = "http://localhost:9999/SWP391_Apartment_rental_management_system/LoginByGoogle";
 

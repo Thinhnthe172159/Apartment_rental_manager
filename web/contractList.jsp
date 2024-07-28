@@ -117,7 +117,7 @@
                     <div class="mb-3">
                         <form action="contractList">
                             <h5 class="card-title">Danh sách hợp đồng <span class="text-muted fw-normal ms-2">()</span>
-                                <span><input placeholder="Nhập tên cửa người thuê" class="form-control" type="text"name="fullName"><button type="submit" class="btn btn-primary fa-searchz">Tìm kiếm</button></span>
+                                <span><input placeholder="Nhập tên cửa người thuê" class="form-control" type="text"name="fullName"><button type="submit" class="btn btn-primary fa-searchz">Tìm kiếm</button></span><a class="btn btn-secondary" href="contractList?tenant_id=${user_Data.id}&check=1">Hợp đồng của tôi</a>
                             </h5> 
                         </form>
                     </div>

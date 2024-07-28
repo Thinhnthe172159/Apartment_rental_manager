@@ -42,7 +42,6 @@
                             </div>
                             <div class="nav-profile-text d-flex flex-column pr-3">
                                 <span class="font-weight-medium mb-2">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
-                                <span class="font-weight-normal">${user_Data.getMoney()}$</span>
                             </div>
                             <!--<span class="badge badge-danger text-white ml-3 rounded">3</span> notification-->
                         </a>
@@ -206,7 +205,7 @@
                             <div class="col-12 grid-margin stretch-card">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Edit user</h4>
+                                        <h4 class="card-title">Add user</h4>
                                         <!--<p class="card-description">Basic form elements</p>-->
                                         <form action="DashboardAddUser" method="post" class="forms-sample">
 

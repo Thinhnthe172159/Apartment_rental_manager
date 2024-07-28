@@ -42,7 +42,6 @@
                             </div>
                             <div class="nav-profile-text d-flex flex-column pr-3">
                                 <span class="font-weight-medium mb-2">${user_Data.getFirst_name()} ${user_Data.getLast_name()}</span>
-                                <span class="font-weight-normal">${user_Data.getMoney()}$</span>
                             </div>
                             <!--<span class="badge badge-danger text-white ml-3 rounded">3</span> notification-->
                         </a>

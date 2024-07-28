@@ -130,24 +130,27 @@
             </div>
             <input type="text" value="${notification}" name="notification" hidden="">
             <input type="text" hidden="" value="${apartment}" name="apartment">
-            <c:if test="${contract.status!=3}">
-                <form action="ViewContractDetail" method="post" class="d-flex justify-content-between border-top pt-3">
-                    <div>
-                        <textarea id="id" class="form-control" name="name" rows="5" cols="300" name="message" placeholder="Nhập thông báo mà bạn muốn gửi"></textarea>
-                        <c:if test="${user_Data.id == contract.tenant_id.id}">
+
+            <form action="ViewContractDetail" method="post" class="d-flex justify-content-between border-top pt-3">
+                <div>
+                    <textarea id="id" class="form-control" name="name" rows="5" cols="300" name="message" placeholder="Nhập thông báo mà bạn muốn gửi"></textarea>
+                    <c:if test="${user_Data.id == contract.tenant_id.id}">
+                        <c:if test="${contract.status!=3}">
                             <input type="text" name="contract_id" value="${contract.id}" hidden="">
-                            <button class="btn btn-secondary ml-2" type="submit" name="action" value="1">yêu cầu hủy bỏ hợp đồng</button>
+                            <button class="btn btn-secondary ml-2" type="submit" name="action" value="1">yêu kết thúc hợp đồng</button>
                         </c:if>
-                        <c:if test="${user_Data.id != contract.tenant_id.id}">
-                            <input type="text" name="contract_id" value="${contract.id}" hidden="">
-                            <button class="btn btn-danger ml-2" type="submit" name="action" value="2">Hủy bỏ hợp đồng</button>
+                    </c:if>
+                    <c:if test="${user_Data.id != contract.tenant_id.id}">
+                        <input type="text" name="contract_id" value="${contract.id}" hidden="">
+                        <button class="btn btn-danger ml-2" type="submit" name="action" value="2">Hủy bỏ hợp đồng</button>
+                        <c:if test="${contract.status!=3}">
                             <c:if test="${contract.status != 2}">
                                 <button class="btn btn-primary ml-2" type="submit" name="action" value="3">Chấp thuận hợp đồng</button>
-                            </c:if>
-                        </c:if>
-                    </div>
-                </form>
-            </c:if>
+                            </c:if></c:if>
+                    </c:if>
+                </div>
+            </form>
+
         </div>
         <jsp:include page="Footer.jsp"/>
     </body>

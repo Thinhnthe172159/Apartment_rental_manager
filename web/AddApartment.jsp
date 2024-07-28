@@ -241,14 +241,14 @@
                                 <td>Giá tiền (VNĐ)</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="price" class="form-control" aria-label="Text input with checkbox">
+                                        <input id="numberInput" required type="number" min="1000" max="100000000" name="price" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="price_error"></div>
                                     </div>
                                 </td>
                                 <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Diện tích (m2)*</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="area" class="form-control" aria-label="Text input with checkbox">
+                                        <input id="numberInput" required type="number" min="1000" max="100000000" name="area" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="area_error"></div>
                                     </div>
                                 </td>
@@ -257,7 +257,7 @@
                                 <td>Số lượng phòng ngủ</td>
                                 <td> 
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="number_of_bedroom" class="form-control" aria-label="Text input with checkbox">
+                                        <input id="numberInput" required type="number" name="number_of_bedroom" min="1000" max="100000000" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="number_of_bedroom_error"></div>
                                     </div>
                                 </td>
@@ -588,6 +588,22 @@
                 document.getElementById('hidden_phuong').value = phuong;
 
                 updateMap(tinh + ' ' + quan + ' ' + phuong);
+            });
+        </script>
+
+        <script>
+            document.getElementById('numberInput').addEventListener('keydown', function (event) {
+                if (event.key === '-' || event.key === 'e') {
+                    event.preventDefault();
+                }
+            });
+
+            document.getElementById('numberInput').addEventListener('input', function (event) {
+                const input = event.target;
+                const value = input.value;
+                if (value < 0) {
+                    input.value = 0;
+                }
             });
         </script>
 
