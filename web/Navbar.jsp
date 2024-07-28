@@ -6,17 +6,15 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="dal.NotificationDao" %>
-<%@page  import="model.User"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@page import="vn.fpt.edu.dal.NotificationDao" %>
+<%@page  import="vn.fpt.edu.model.User"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-
-
         <!-- Bootstrap core CSS -->
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -24,9 +22,8 @@
         <!-- Additional CSS Files -->
         <link rel="stylesheet" href="assets/css/fontawesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-villa-agency.css">
-        <link rel="stylesheet" href="assets/css/owl.css">
-        <link rel="stylesheet" href="assets/css/animate.css">
-        <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
+
 
         <style>
             /* Custom CSS for hover dropdown */
@@ -56,16 +53,19 @@
     <body>
 
         <!-- ***** Preloader Start ***** -->
-        <div id="js-preloader" class="js-preloader">
-            <div class="preloader-inner">
-                <span class="dot"></span>
-                <div class="dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        <c:if test="${notification == null}">
+            <div id="js-preloader" class="js-preloader">
+                <div class="preloader-inner">
+                    <span class="dot"></span>
+                    <div class="dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </c:if>
+
         <!-- ***** Preloader End ***** -->
         <div class="sub-header">
             <div class="container">
@@ -77,30 +77,39 @@
                         </ul>
                     </div>
                     <div class="col-lg-4 col-md-4">
-                        <ul class="social-links">
+                        <ul style="">
                             <c:if test="${user_Data.getRole_id().getId() == 1}">
-                                <li><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>
+                                <li style="background-color: black"><a href="Dashboard"><i class="fa fa-dashboard"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
-                                <c:if test="${user_Data.getRole_id().getId() == 2}">
-                                    <li><a href="LandLordDashboard"><i class="fa fa-dashboard"></i></a></li>
+                                    <c:if test="${user_Data.getRole_id().getId() == 2}">
+                                <li><a href="LandLordDashboard"><i class="fa fa-dashboard"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
                                     <c:if test="${user_Data.getRole_id().getId() != 0}">
-                                <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>
+                                <li><a href="AparmentListForTenant"><i class="fa fa-home"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     </c:if>
-                            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fab fa-facebook"></i></a></li> &nbsp;&nbsp;&nbsp;
+                            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>&nbsp;&nbsp;&nbsp;
+                            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>&nbsp;&nbsp;&nbsp;
+                            <li><a href="#"><i class="fab fa-instagram"></i></a></li>&nbsp;&nbsp;&nbsp;
                                     <c:choose>
                                         <c:when test="${user_Data == null}">
-                                    <li><a href="Login"><i class="fa fa-sign-in"></i></a></li>
+                                    <li><a href="Login"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z"/>
+                                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+                                            </svg></i></a></li>&nbsp;&nbsp;&nbsp;
                                         </c:when>
                                         <c:otherwise>
-                                    <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>
-                                    <li><a href="Logout"><i class="fa fa-sign-out"></i></a></li>
+                                    <li><a href="UserProfile"><i class="fa fa-user"></i></a></li>&nbsp;&nbsp;&nbsp;
+                                    <li><a href="Logout"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                                            </svg></i></a></li>&nbsp;&nbsp;&nbsp;
                                         </c:otherwise>
                                     </c:choose>
                         </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
                     </div>
                 </div>
             </div>
@@ -210,7 +219,11 @@
                         </c:if>
 
                     <c:if test="${sessionScope.user_Data != null}">
-
+                        <a href="UserProfile">
+                            <img class="" src="${user_Data.image}" style="object-fit: cover;border-radius: 15px"  width="170" height="170" alt="alt"/>
+                            <img src="${user_Data.image}" style="border-radius: 50%;max-width: 100px;position: absolute; left: 35px;top:  170px;border: 3px solid white;" alt="alt"/>
+                        </a>
+                        <br>
                         <a href="AddApartmentPost"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                             <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -249,7 +262,7 @@
                             <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z"/>
                             <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
                             </svg>
-                            &nbsp;&nbsp;Nạp tiền</a>
+                            &nbsp;&nbsp;Nạp tiền (số dư: <fmt:formatNumber value="${user_Data.money}" pattern="#,###"/> vnd)</a>
                         <a href="NotificationList"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
                             </svg>
@@ -267,13 +280,26 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
                             <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
                             </svg>&nbsp;&nbsp;Khách hàng của tôi</a>
-                        </c:if>
+                        <a href="contractList">
+                            <svg fill="#000000" height="30" width="30" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 237.783 237.783" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 237.783 237.783">
+                            <g>
+                            <path d="m42.735,50.071h96.959c3.313,0 6,2.687 6,6s-2.687,6-6,6h-96.959c-3.313,0-6-2.687-6-6s2.686-6 6-6zm0,25.934h96.959c3.313,0 6,2.687 6,6s-2.687,6-6,6h-96.959c-3.313,0-6-2.687-6-6s2.686-6 6-6zm0,25.935h96.959c3.313,0 6,2.687 6,6s-2.687,6-6,6h-96.959c-3.313,0-6-2.687-6-6s2.686-6 6-6zm0,25.935h96.959c3.313,0 6,2.687 6,6s-2.687,6-6,6h-96.959c-3.313,0-6-2.687-6-6s2.686-6 6-6z"/>
+                            <path d="m42.735,62.071h96.959c3.313,0 6-2.687 6-6s-2.687-6-6-6h-96.959c-3.313,0-6,2.687-6,6s2.686,6 6,6z"/>
+                            <path d="m42.735,88.005h96.959c3.313,0 6-2.687 6-6s-2.687-6-6-6h-96.959c-3.313,0-6,2.687-6,6s2.686,6 6,6z"/>
+                            <path d="m42.735,113.94h96.959c3.313,0 6-2.687 6-6s-2.687-6-6-6h-96.959c-3.313,0-6,2.687-6,6s2.686,6 6,6z"/>
+                            <path d="m42.735,139.875h96.959c3.313,0 6-2.687 6-6s-2.687-6-6-6h-96.959c-3.313,0-6,2.687-6,6s2.686,6 6,6z"/>
+                            <path d="m237.783,98.361c0-1.591-0.632-3.117-1.757-4.243l-16.356-16.355c-1.125-1.125-2.651-1.757-4.243-1.757s-3.117,0.632-4.243,1.757l-28.756,28.756v-88.117c0-3.313-2.686-6-6-6h-170.428c-3.314,0-6,2.687-6,6v200.979c0,3.313 2.686,6 6,6h170.429c3.314,0 6-2.687 6-6v-63.18l53.597-53.597c1.125-1.125 1.757-2.651 1.757-4.243zm-225.783,115.02v-188.979h158.429v94.117l-35.291,35.291h-92.403c-3.313,0-6,2.687-6,6s2.687,6 6,6h80.403l-1.033,1.033c-0.777,0.777-1.326,1.753-1.586,2.821l-4.157,17.05h-25.148c-3.313,0-6,2.687-6,6s2.687,6 6,6c0,0 29.714,0 29.86,0 0.473,0 0.95-0.056 1.421-0.171l21.629-5.273c1.068-0.26 2.044-0.809 2.821-1.586l23.482-23.482v45.181h-158.427zm127.649-31.374l-10.408,2.538 2.538-10.408 83.648-83.648 7.871,7.871-83.649,83.647z"/>
+                            </g>
+                            </svg>
+                            &nbsp;&nbsp;Quản lý hợp đồng
+                        </a>
+                    </c:if>
                 </div>
                 <div class="bottom-links">
                     <a style="padding-left: 10px; background: white;" href="HomePage"><jsp:include page="img/svg.html" />
                         &nbsp;&nbsp;</a>
                         <c:if test="${sessionScope.user_Data != null}">
-                        <a href="#">
+                        <a href="Logout">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                             <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>

@@ -20,52 +20,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="assets/jquery-1.11.3.min.js"></script>
 
-        <style type="text/tailwindcss">
-            @layer base {
-                :root {
-                    --background: 0 0% 100%;
-                    --foreground: 240 10% 3.9%;
-                    --card: 0 0% 100%;
-                    --card-foreground: 240 10% 3.9%;
-                    --popover: 0 0% 100%;
-                    --popover-foreground: 240 10% 3.9%;
-                    --primary: 240 5.9% 10%;
-                    --primary-foreground: 0 0% 98%;
-                    --secondary: 240 4.8% 95.9%;
-                    --secondary-foreground: 240 5.9% 10%;
-                    --muted: 240 4.8% 95.9%;
-                    --muted-foreground: 240 3.8% 46.1%;
-                    --accent: 240 4.8% 95.9%;
-                    --accent-foreground: 240 5.9% 10%;
-                    --destructive: 0 84.2% 60.2%;
-                    --destructive-foreground: 0 0% 98%;
-                    --border: 240 5.9% 90%;
-                    --input: 240 5.9% 90%;
-                    --ring: 240 5.9% 10%;
-                    --radius: 0.5rem;
-                }
-                .dark {
-                    --background: 240 10% 3.9%;
-                    --foreground: 0 0% 98%;
-                    --card: 240 10% 3.9%;
-                    --card-foreground: 0 0% 98%;
-                    --popover: 240 10% 3.9%;
-                    --popover-foreground: 0 0% 98%;
-                    --primary: 0 0% 98%;
-                    --primary-foreground: 240 5.9% 10%;
-                    --secondary: 240 3.7% 15.9%;
-                    --secondary-foreground: 0 0% 98%;
-                    --muted: 240 3.7% 15.9%;
-                    --muted-foreground: 240 5% 64.9%;
-                    --accent: 240 3.7% 15.9%;
-                    --accent-foreground: 0 0% 98%;
-                    --destructive: 0 62.8% 30.6%;
-                    --destructive-foreground: 0 0% 98%;
-                    --border: 240 3.7% 15.9%;
-                    --input: 240 3.7% 15.9%;
-                    --ring: 240 4.9% 83.9%;
-                }
-            }
+        <style type="">
 
             .fixedElement.fixed {
                 position: fixed;
@@ -81,50 +36,7 @@
         </style>
 
 
-        <script type="text/javascript">
-            window.tailwind.config = {
-                darkMode: ['class'],
-                theme: {
-                    extend: {
-                        colors: {
-                            border: 'hsl(var(--border))',
-                            input: 'hsl(var(--input))',
-                            ring: 'hsl(var(--ring))',
-                            background: 'hsl(var(--background))',
-                            foreground: 'hsl(var(--foreground))',
-                            primary: {
-                                DEFAULT: 'hsl(var(--primary))',
-                                foreground: 'hsl(var(--primary-foreground))'
-                            },
-                            secondary: {
-                                DEFAULT: 'hsl(var(--secondary))',
-                                foreground: 'hsl(var(--secondary-foreground))'
-                            },
-                            destructive: {
-                                DEFAULT: 'hsl(var(--destructive))',
-                                foreground: 'hsl(var(--destructive-foreground))'
-                            },
-                            muted: {
-                                DEFAULT: 'hsl(var(--muted))',
-                                foreground: 'hsl(var(--muted-foreground))'
-                            },
-                            accent: {
-                                DEFAULT: 'hsl(var(--accent))',
-                                foreground: 'hsl(var(--accent-foreground))'
-                            },
-                            popover: {
-                                DEFAULT: 'hsl(var(--popover))',
-                                foreground: 'hsl(var(--popover-foreground))'
-                            },
-                            card: {
-                                DEFAULT: 'hsl(var(--card))',
-                                foreground: 'hsl(var(--card-foreground))'
-                            },
-                        },
-                    }
-                }
-            }
-        </script>
+
         <style>
             .collapse-content {
                 display: none;
@@ -201,7 +113,7 @@
 
 
                         <div class="col-md-9 post">
-                            <div class="row"><img height="50" width="50" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
+                            <div class="row"><img height="55" width="55" style="border-radius: 50%; object-fit: contain" class="col-lg-1" src="<c:choose>
                                               <c:when test="${sessionScope.user_Data != null}">
                                                   ${sessionScope.user_Data.getImage()}
                                               </c:when>
@@ -220,7 +132,7 @@
                                         <img style="width: 50px; height: 50px; object-fit: contain" src="${pl.user_id.getImage()}" class="card-img" alt="alt"/>
                                     </span>    
                                     <span>
-                                          <h6>${pl.user_id.first_name} ${pl.user_id.last_name} </h6>
+                                        <h6>${pl.user_id.first_name} ${pl.user_id.last_name} </h6>
                                     </span>
                                     <span>
                                         <i class="far fa-solid">
@@ -231,7 +143,7 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <c:if test="${user_Data.id == pl.user_id.id}">
-                                                            
+
                                                             <li><form action="RemoveCommunityPost?post_id=${pl.id}&page_index=${pageIndex}" id="deleteForm-${pl.id}" method="post"><button class="dropdown-item font-monospace" type="button" onclick="confirmDeletion('deleteForm-${pl.id}')">Xóa bài đăng</button></form></li>
                                                             <li><a class="dropdown-item font-monospace" href="UpdateCommnunityPost?Post_id=${pl.id}">Chỉnh sửa bài đăng</a></li>
                                                             </c:if>
@@ -247,9 +159,9 @@
 
                                 <div><br>
                                     <div>
-                                 
-                                          <p>${pl.time}</p>
-                                 
+
+                                        <p>${pl.time}</p>
+
                                         <span>
                                             <h5 class="">${pl.title}</h5>
                                         </span>
@@ -347,69 +259,70 @@
                     </nav>
 
                 </div>
+            </div>
+        </div>
 
 
 
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-                <div class="sticky-lg-top">
-                    <jsp:include page="Footer.jsp" />
-
+        <div class="sticky-lg-top">
+            <jsp:include page="Footer.jsp" />
 
 
-                    <script type="text/javascript">
-                        $(window).scroll(function (e) {
-                            var $el = $('.fixedElement');
-                            var isPositionFixed = $el.hasClass('fixed');
-                            var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                            if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                                $el.addClass('fixed').css('width', containerWidth);
-                            }
-                            if ($(this).scrollTop() < 410 && isPositionFixed) {
-                                $el.removeClass('fixed').css('width', '');
-                            }
-                        });
+            <script type="text/javascript">
+                $(window).scroll(function (e) {
+                    var $el = $('.fixedElement');
+                    var isPositionFixed = $el.hasClass('fixed');
+                    var containerWidth = $el.parent().width(); // Get the parent container's width
 
-                        // Adjust the width on window resize to maintain proper positioning
-                        $(window).resize(function () {
-                            var $el = $('.fixedElement.fixed');
-                            if ($el.length > 0) {
-                                var containerWidth = $el.parent().width();
-                                $el.css('width', containerWidth);
-                            }
-                        });
-                    </script>
+                    if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                        $el.addClass('fixed').css('width', containerWidth);
+                    }
+                    if ($(this).scrollTop() < 410 && isPositionFixed) {
+                        $el.removeClass('fixed').css('width', '');
+                    }
+                });
+
+                // Adjust the width on window resize to maintain proper positioning
+                $(window).resize(function () {
+                    var $el = $('.fixedElement.fixed');
+                    if ($el.length > 0) {
+                        var containerWidth = $el.parent().width();
+                        $el.css('width', containerWidth);
+                    }
+                });
+            </script>
 
 
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script>
-                        function confirmDeletion(formId) {
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function confirmDeletion(formId) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
                             Swal.fire({
-                                title: "Are you sure?",
-                                text: "Bạn có chắc là bạn muốn xóa bài đăng này không?",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Yes, delete it!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    Swal.fire({
-                                        title: "Deleted!",
-                                        text: "Bài đăng của bạn đã được xóa.",
-                                        icon: "success"
-                                    });
-                                    document.getElementById(formId).submit();
-                                }
+                                title: "Deleted!",
+                                text: "Bài đăng của bạn đã được xóa.",
+                                icon: "success"
                             });
+                            document.getElementById(formId).submit();
                         }
-                    </script>
+                    });
+                }
+            </script>
 
-                    </body>
-                    </html>
+    </body>
+</html>

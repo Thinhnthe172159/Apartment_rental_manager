@@ -18,59 +18,9 @@
         <title>Cộng Đồng</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="assets/jquery-1.11.3.min.js"></script>
 
-        <style type="text/tailwindcss">
-            @layer base {
-                :root {
-                    --background: 0 0% 100%;
-                    --foreground: 240 10% 3.9%;
-                    --card: 0 0% 100%;
-                    --card-foreground: 240 10% 3.9%;
-                    --popover: 0 0% 100%;
-                    --popover-foreground: 240 10% 3.9%;
-                    --primary: 240 5.9% 10%;
-                    --primary-foreground: 0 0% 98%;
-                    --secondary: 240 4.8% 95.9%;
-                    --secondary-foreground: 240 5.9% 10%;
-                    --muted: 240 4.8% 95.9%;
-                    --muted-foreground: 240 3.8% 46.1%;
-                    --accent: 240 4.8% 95.9%;
-                    --accent-foreground: 240 5.9% 10%;
-                    --destructive: 0 84.2% 60.2%;
-                    --destructive-foreground: 0 0% 98%;
-                    --border: 240 5.9% 90%;
-                    --input: 240 5.9% 90%;
-                    --ring: 240 5.9% 10%;
-                    --radius: 0.5rem;
-                }
-                .dark {
-                    --background: 240 10% 3.9%;
-                    --foreground: 0 0% 98%;
-                    --card: 240 10% 3.9%;
-                    --card-foreground: 0 0% 98%;
-                    --popover: 240 10% 3.9%;
-                    --popover-foreground: 0 0% 98%;
-                    --primary: 0 0% 98%;
-                    --primary-foreground: 240 5.9% 10%;
-                    --secondary: 240 3.7% 15.9%;
-                    --secondary-foreground: 0 0% 98%;
-                    --muted: 240 3.7% 15.9%;
-                    --muted-foreground: 240 5% 64.9%;
-                    --accent: 240 3.7% 15.9%;
-                    --accent-foreground: 0 0% 98%;
-                    --destructive: 0 62.8% 30.6%;
-                    --destructive-foreground: 0 0% 98%;
-                    --border: 240 3.7% 15.9%;
-                    --input: 240 3.7% 15.9%;
-                    --ring: 240 4.9% 83.9%;
-                }
-            }
-
+        <style type="">
             .fixedElement.fixed {
                 position: fixed;
                 top: 100px;
@@ -195,62 +145,9 @@
             .form-group textarea.form-input {
                 height: 150px;
             }
-
-
-
-
-
-
-
-
-
-
         </style>
 
-        <script type="text/javascript">
-            window.tailwind.config = {
-                darkMode: ['class'],
-                theme: {
-                    extend: {
-                        colors: {
-                            border: 'hsl(var(--border))',
-                            input: 'hsl(var(--input))',
-                            ring: 'hsl(var(--ring))',
-                            background: 'hsl(var(--background))',
-                            foreground: 'hsl(var(--foreground))',
-                            primary: {
-                                DEFAULT: 'hsl(var(--primary))',
-                                foreground: 'hsl(var(--primary-foreground))'
-                            },
-                            secondary: {
-                                DEFAULT: 'hsl(var(--secondary))',
-                                foreground: 'hsl(var(--secondary-foreground))'
-                            },
-                            destructive: {
-                                DEFAULT: 'hsl(var(--destructive))',
-                                foreground: 'hsl(var(--destructive-foreground))'
-                            },
-                            muted: {
-                                DEFAULT: 'hsl(var(--muted))',
-                                foreground: 'hsl(var(--muted-foreground))'
-                            },
-                            accent: {
-                                DEFAULT: 'hsl(var(--accent))',
-                                foreground: 'hsl(var(--accent-foreground))'
-                            },
-                            popover: {
-                                DEFAULT: 'hsl(var(--popover))',
-                                foreground: 'hsl(var(--popover-foreground))'
-                            },
-                            card: {
-                                DEFAULT: 'hsl(var(--card))',
-                                foreground: 'hsl(var(--card-foreground))'
-                            },
-                        },
-                    }
-                }
-            }
-        </script>
+
 
     </head>
 
@@ -468,93 +365,95 @@
                         </div>
                     </div>           
                 </div>
-                <script type="text/javascript">
-                    // Hàm chuyển đổi và định dạng ngày giờ
-                    function formatDateTime(dateTimeString) {
-                        const date = new Date(dateTimeString);
-                        const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
-                        return date.toLocaleDateString('en-US', options);
-                    }
+            </div>
+        </div>
+        <script type="text/javascript">
+            // Hàm chuyển đổi và định dạng ngày giờ
+            function formatDateTime(dateTimeString) {
+                const date = new Date(dateTimeString);
+                const options = {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true};
+                return date.toLocaleDateString('en-US', options);
+            }
 
-                    // Thêm sự kiện load để chạy function formatDateTime
-                    window.onload = function () {
-                        const formattedTimeElements = document.querySelectorAll('.formatted-time');
-                        formattedTimeElements.forEach(function (element) {
-                            const originalDateTime = element.dataset.datetime; // Lấy dữ liệu từ thuộc tính data-datetime
-                            element.textContent = formatDateTime(originalDateTime); // Cập nhật nội dung với thời gian đã định dạng
+            // Thêm sự kiện load để chạy function formatDateTime
+            window.onload = function () {
+                const formattedTimeElements = document.querySelectorAll('.formatted-time');
+                formattedTimeElements.forEach(function (element) {
+                    const originalDateTime = element.dataset.datetime; // Lấy dữ liệu từ thuộc tính data-datetime
+                    element.textContent = formatDateTime(originalDateTime); // Cập nhật nội dung với thời gian đã định dạng
+                });
+            };
+        </script>
+        <script>
+
+            var scrollToPostId = '${requestScope.scrollToComment}';
+            if (scrollToPostId) {
+
+                var element = document.getElementById(scrollToPostId);
+                if (element) {
+                    element.scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
+            }
+
+        </script>
+
+
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+        <div class="sticky-lg-top">
+            <jsp:include page="Footer.jsp" />
+
+            <script type="text/javascript">
+            $(window).scroll(function (e) {
+                var $el = $('.fixedElement');
+                var isPositionFixed = $el.hasClass('fixed');
+                var containerWidth = $el.parent().width(); // Get the parent container's width
+
+                if ($(this).scrollTop() > 510 && !isPositionFixed) {
+                    $el.addClass('fixed').css('width', containerWidth);
+                }
+                if ($(this).scrollTop() < 410 && isPositionFixed) {
+                    $el.removeClass('fixed').css('width', '');
+                }
+            });
+
+            // Adjust the width on window resize to maintain proper positioning
+            $(window).resize(function () {
+                var $el = $('.fixedElement.fixed');
+                if ($el.length > 0) {
+                    var containerWidth = $el.parent().width();
+                    $el.css('width', containerWidth);
+                }
+            });
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+            function confirmDeletion(formId) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Bạn có chắc là bạn muốn xóa bình luận này không?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Bình luận của bạn đã được xóa.",
+                            icon: "success"
                         });
-                    };
-                </script>
-                <script>
-
-                    var scrollToPostId = '${requestScope.scrollToComment}';
-                    if (scrollToPostId) {
-
-                        var element = document.getElementById(scrollToPostId);
-                        if (element) {
-                            element.scrollIntoView({behavior: 'smooth', block: 'start'});
-                        }
+                        document.getElementById(formId).submit();
                     }
+                });
+            }
+            </script>
 
-                </script>
-
-
-
-                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-                <div class="sticky-lg-top">
-                    <jsp:include page="Footer.jsp" />
-
-                    <script type="text/javascript">
-                    $(window).scroll(function (e) {
-                        var $el = $('.fixedElement');
-                        var isPositionFixed = $el.hasClass('fixed');
-                        var containerWidth = $el.parent().width(); // Get the parent container's width
-
-                        if ($(this).scrollTop() > 510 && !isPositionFixed) {
-                            $el.addClass('fixed').css('width', containerWidth);
-                        }
-                        if ($(this).scrollTop() < 410 && isPositionFixed) {
-                            $el.removeClass('fixed').css('width', '');
-                        }
-                    });
-
-                    // Adjust the width on window resize to maintain proper positioning
-                    $(window).resize(function () {
-                        var $el = $('.fixedElement.fixed');
-                        if ($el.length > 0) {
-                            var containerWidth = $el.parent().width();
-                            $el.css('width', containerWidth);
-                        }
-                    });
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script>
-                                        function confirmDeletion(formId) {
-                                            Swal.fire({
-                                                title: "Are you sure?",
-                                                text: "Bạn có chắc là bạn muốn xóa bình luận này không?",
-                                                icon: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Yes, delete it!"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    Swal.fire({
-                                                        title: "Deleted!",
-                                                        text: "Bình luận của bạn đã được xóa.",
-                                                        icon: "success"
-                                                    });
-                                                    document.getElementById(formId).submit();
-                                                }
-                                            });
-                                        }
-                    </script>
-
-                    </body>
-                    </html>
+    </body>
+</html>

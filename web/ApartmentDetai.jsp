@@ -17,7 +17,7 @@
         <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
         <style>
             .preview {
-                
+
                 display: flex;
                 flex-wrap: wrap;
             }
@@ -92,7 +92,7 @@
                                 <td>Tên căn hộ</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required placeholder="Điền tên căn hộ" type="text" name="name_apartment" value="${ap.name}" class="form-control" aria-label="Text input with checkbox">
+                                        <input readonly="" required placeholder="Điền tên căn hộ" type="text" name="name_apartment" value="${ap.name}" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="name_apartment_error"></div>
                                     </div>
                                 </td>
@@ -101,7 +101,7 @@
                                 <td>Loại căn hộ</td>
                                 <td>
                                     <select required class="form-select" name="apartment_type" aria-label="Default select example">
-                                   
+
 
                                         <option value="">${ap.type_id.name}</option>
 
@@ -140,7 +140,7 @@
                                 <td>Địa chỉ cụ thể</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required placeholder="" value="${ap.address}" type="text" name="address" class="form-control" aria-label="Text input with checkbox">
+                                        <input readonly="" required placeholder="" value="${ap.address}" type="text" name="address" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="address_error"></div>
                                     </div>
                                 </td>
@@ -175,14 +175,14 @@
                                 <td>Giá tiền (VNĐ)</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" value="<fmt:formatNumber value="${ap.price}" pattern="#,###"/>vnd" name="price" class="form-control" aria-label="Text input with checkbox">
+                                        <input readonly="" required type="text" value="<fmt:formatNumber value="${ap.price}" pattern="#,###"/>vnd" name="price" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="price_error"></div>
                                     </div>
                                 </td>
                                 <td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Diện tích (m2)*</td>
                                 <td>
                                     <div class="input-group mb-3">
-                                        <input required type="text" value="<fmt:formatNumber value="${ap.area}" pattern="#,###"/> m2" name="area" class="form-control" aria-label="Text input with checkbox">
+                                        <input readonly="" required type="text" value="<fmt:formatNumber value="${ap.area}" pattern="#,###"/> m2" name="area" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="area_error"></div>
                                     </div>
                                 </td>
@@ -191,7 +191,7 @@
                                 <td>Số lượng phòng ngủ</td>
                                 <td> 
                                     <div class="input-group mb-3">
-                                        <input required type="text" name="number_of_bedroom" value="${ap.number_of_bedroom}" class="form-control" aria-label="Text input with checkbox">
+                                        <input readonly="" required type="text" name="number_of_bedroom" value="${ap.number_of_bedroom}" class="form-control" aria-label="Text input with checkbox">
                                         <div class="error" id="number_of_bedroom_error"></div>
                                     </div>
                                 </td>
@@ -213,12 +213,35 @@
                     </div>
                 </div>
                 <hr>
+                <br><br>
                 <div class="row">
                     <h2 class="col-md-12" style="color: royalblue">IV. Thông tin bổ sung</h2>
-                        <c:forEach items="${requestScope.apartment_propertieses_list}" var="p"> 
-                            <span  class="col-md-4"><img style="width: 35px;" src="${p.property_id.image}" alt="alt"/>  ${p.property_id.name} </span>  
-                            </c:forEach>
-                   
+                    <c:forEach items="${requestScope.apartment_propertieses_list}" var="p"> 
+                        <span  class="col-md-4"><img style="width: 35px;" src="${p.property_id.image}" alt="alt"/>  ${p.property_id.name} </span>  
+                        </c:forEach>
+
+                </div>
+                <hr>
+                <br>
+                <div class="row">
+                    <h2 class="col-md-12" style="color: royalblue">V. Tình trạng căn hộ</h2>
+
+                    <c:if test="${ap.status_apartment == 1}">
+                        <h4> Trạng Thái : Chưa có người ở</h4><br>
+                    </c:if>
+                    <c:if test="${ap.status_apartment == 2}">
+                        Người dùng:<br>
+                        <img class="col-md-1" src="${ap.tenant_id.image}" width="85" height="85" style="border-radius: 90%;object-fit: contain" alt="alt"/><div><br></div>
+                        Thông tin người thuê:
+                        <h3>${ap.tenant_id.first_name} ${ap.tenant_id.last_name} </h3><br>
+                        Thông tin liên lạc:    
+                        <h3> ${ap.tenant_id.email}</h3><br>   
+
+                        <a href="contractList?tenant_id=${ap.tenant_id.id}">Xem hợp đồng trong danh sách</a>
+
+                        <div><br></div>
+                        </c:if>
+
                 </div>
                 <hr>
             </div>
@@ -228,7 +251,7 @@
         </form>
 
         <script>
-           
+
         </script>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
         <script>
