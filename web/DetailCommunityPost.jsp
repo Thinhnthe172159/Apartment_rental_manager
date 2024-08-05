@@ -226,8 +226,8 @@
                                     <br><br><br>
                                 </div>  
                                 <c:forEach items="${requestScope.listImage}" var="img">
-                                    <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;border-radius: 15px;" src="${img.image}" class="card-img-bottom" alt="Post Image" />
-                                    <br>
+                                    <img style="max-width: 100%;height: 500px;object-fit: contain;background: black;border-radius: 15px" src="${img.image}" class="card-img-bottom" alt="Post Image" />
+                                    
                                 </c:forEach>
 
 

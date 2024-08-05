@@ -130,7 +130,7 @@
                                 aria-label="postend" aria-describedby="addon-wrapping">
                     </div>
                     <br><br>
-                    <div class="col-md-4 form-select" style="font-size: 20px;padding-left;box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;">
+                    <div class="col-md-4 form-select" style="font-size: 20px;padding-left: 40px;box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;">
                         Quý khách nên chọn đăng tin VIP để có hiệu quả hơn.<br>
                         VD: Tin HDY Diamond có lượt xem trung bình cao hơn 20 lần so với tin thường.<br>
                         Mô tả gói:

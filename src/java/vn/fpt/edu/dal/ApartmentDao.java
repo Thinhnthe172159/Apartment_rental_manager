@@ -4,14 +4,14 @@
  */
 package vn.fpt.edu.dal;
 
-import java.io.File;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import vn.fpt.edu.model.Apartment;
-import vn.fpt.edu.model.Apartment_Post;
+
 import vn.fpt.edu.model.Apartment_properties;
 import vn.fpt.edu.model.Apartment_type;
 import vn.fpt.edu.model.Payment_method;
@@ -19,7 +19,7 @@ import vn.fpt.edu.model.Property;
 import vn.fpt.edu.model.Room;
 import vn.fpt.edu.model.Apartment_image;
 import vn.fpt.edu.model.User;
-import org.apache.tomcat.util.http.fileupload.ParameterParser;
+
 
 /**
  *

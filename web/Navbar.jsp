@@ -267,7 +267,8 @@
                             <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567"/>
                             </svg>
                             &nbsp;&nbsp;Nạp tiền (số dư: <fmt:formatNumber value="${user_Data.money}" pattern="#,###"/> vnd)</a>
-                        <a href="NotificationList"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                       
+                        </c:if> <a href="NotificationList"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
                             </svg>
                             &nbsp;&nbsp;Thông báo <%   // Retrieve user_Data from session
@@ -279,7 +280,6 @@
     
                             %><span class="badge rounded-pill badge-notification bg-danger"><%= count %></span>
                         </a>
-                        </c:if>
                         <a href="contractList">
                             <svg fill="#000000" height="30" width="30" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 237.783 237.783" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 237.783 237.783">
                             <g>
