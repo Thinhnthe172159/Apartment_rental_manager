@@ -1,0 +1,271 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
+using WebApplication1.Models;
+using ZXing;
+using ZXing.QrCode;
+using System.IO;
+using ZXing.OneD;
+using Microsoft.CodeAnalysis.RulesetToEditorconfig;
+using SelectPdf;
+
+namespace WebApplication1.Controllers
+{
+    public class ItemsController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ItemsController(ApplicationDbContext context)
+        {
+            _context = context;
+
+        }
+
+        // GET: Items
+        public async Task<IActionResult> Index(string? Name, int? index)
+        {
+            IQueryable<Item> items = _context.Items;
+            if (!string.IsNullOrEmpty(Name))
+            {
+                items = items.Where(x => x.Name.Contains(Name));
+            }
+            return View(items.ToList().ToList());
+        }
+
+        // GET: Items/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Items
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        // GET: Items/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Items/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Title")] Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(item);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(item);
+        }
+
+        // GET: Items/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+            return View(item);
+        }
+
+        // POST: Items/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Title")] Item item)
+        {
+            if (id != item.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(item);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ItemExists(item.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(item);
+        }
+
+        // GET: Items/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Items
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        // POST: Items/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            if (item != null)
+            {
+                _context.Items.Remove(item);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool ItemExists(int id)
+        {
+            return _context.Items.Any(e => e.Id == id);
+        }
+
+        public IActionResult QRCode(int? id)
+        {
+            var item = _context.Items.FirstOrDefault(e => e.Id == id);
+            return View(item);
+        }
+
+        [HttpPost]
+        public ActionResult GenerateFile(int? id)
+        {
+            // Kích thước và margin của mã QR
+            var width = 250;
+            var height = 250;
+            var margin = 0;
+
+            // Khởi tạo BarcodeWriter để tạo mã QR
+            var qrCodeWriter = new ZXing.BarcodeWriterPixelData
+            {
+                Format = ZXing.BarcodeFormat.QR_CODE,
+                Options = new QrCodeEncodingOptions
+                {
+                    Height = height,
+                    Width = width,
+                    Margin = margin
+                }
+            };
+
+            // Tạo mã QR từ văn bản đầu vào
+            var pixelData = qrCodeWriter.Write(id + "png");
+            var item = _context.Items.Find(id);
+            item.Description = id + ".png";
+            _context.SaveChanges();
+
+            // Tạo bitmap từ dữ liệu mã QR
+            using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+            {
+                // Khoá bitmap để ghi dữ liệu
+                var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                try
+                {
+                    // Sao chép dữ liệu pixel vào bitmap
+                    System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+                }
+                finally
+                {
+                    bitmap.UnlockBits(bitmapData);
+                }
+
+                // Lưu bitmap dưới dạng tệp PNG vào thư mục "qrr" trong wwwroot
+
+                string folderPath = Path.Combine("wwwroot", "QRImage");
+                string filePath = Path.Combine(folderPath, id + ".png");
+
+                // Tạo thư mục nếu chưa tồn tại
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                // Lưu ảnh mã QR vào tệp PNG
+                bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DownloadPdf()
+        {
+            List<Item> listItem = _context.Items.ToList();
+            // Đường dẫn tuyệt đối tới ảnh QRCode
+           // string imagePath = Url.Content("~/QRImage/1.png"); // Chuyển đổi đường dẫn hợp lệ cho web
+
+            // HTML có chứa ảnh với đường dẫn tuyệt đối
+            string htmlString = $@"
+        <h1>Báo cáo</h1>
+        <p>Đây là hình ảnh mô tả:</p>"
+        ;
+            foreach (var item in listItem)
+            {
+                string imagePath = Url.Content("~/QRImage/"+item.Description);
+                htmlString += $@"<img src='{Request.Scheme}://{Request.Host}{imagePath}' alt='Hình minh họa' width='300px' height='200px'><br>";
+            }
+            
+
+            // Tạo đối tượng converter
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // Chuyển đổi HTML thành PDF
+            PdfDocument doc = converter.ConvertHtmlString(htmlString);
+
+            // Lưu PDF thành MemoryStream
+            using (var stream = new System.IO.MemoryStream())
+            {
+                doc.Save(stream);
+                byte[] pdfBytes = stream.ToArray();
+
+                // Trả về file PDF để tải xuống
+                return File(pdfBytes, "application/pdf", "Sample.pdf");
+            }
+        }
+
+    }
+}
