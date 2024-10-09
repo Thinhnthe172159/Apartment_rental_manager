@@ -269,3 +269,5 @@ namespace WebApplication1.Controllers
 
     }
 }
+https://www.npmjs.com/package/html5-qrcode/v/2.2.7
+https://github.com/mebjas/html5-qrcode
