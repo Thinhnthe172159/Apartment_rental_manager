@@ -19,7 +19,7 @@ public class Email {
     // Password: nebeekfipcstxcox
 
     static final String from = "thinhnthe172159@fpt.edu.vn";
-    static final String password = "zfuhgagukkwewwth";
+    static final String password = "*****************";
 
     public static boolean sendEmail(String to, String tieuDe, String noiDung) {
         // Properties : khai báo các thuộc tính
